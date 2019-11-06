@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Plantar Siderurgica S/A</string>
+    <string name="apk_name">Plantar App</string>
     <string name="title_activity_login">Login</string>
     <string name="prompt_email">Usuário</string>
     <string name="prompt_password">Senha</string>
@@ -11,4 +12,8 @@
     <string name="login_failed">"Login Falhou"</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string-array name="array_nivel">
+        <item>OPERADOR</item>
+        <item>ADMIN</item>
+    </string-array>
 </resources>

@@ -15,6 +15,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+import static com.example.forestsys.LoginActivity.nomeEmpresaPref;
+import static com.example.forestsys.LoginActivity.usuarioLogado;
 
 public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -24,11 +26,12 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+        setTitle(nomeEmpresaPref);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_dash);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setSubtitle("Fulano");
+        getSupportActionBar().setSubtitle(usuarioLogado.getNome());
 
         drawer = findViewById(R.id.drawer_layout_dash);
         NavigationView navigationView = findViewById(R.id.nav_view_dash);
@@ -56,12 +59,12 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 startActivity(it1);
                 break;
 
-            case R.id.os:
+            case R.id.cadastrar_conta:
                 Intent it2 = new Intent(this, MainActivity.class);
                 startActivity(it2);
                 break;
 
-            case R.id.config:
+            case R.id.config_login:
                 Toast.makeText(this, "Clicou nas configs", Toast.LENGTH_LONG).show();
                 break;
         }

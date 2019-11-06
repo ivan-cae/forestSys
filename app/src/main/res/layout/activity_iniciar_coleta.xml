@@ -7,7 +7,7 @@
     tools:context=".IniciarColetaActivity">
 
     <Button
-        android:id="@+id/button_calibragem"
+        android:id="@+id/botao_calibragem"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="140dp"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toBottomOf="@+id/spinner_projeto_calibragem" />
 
     <Button
-        android:id="@+id/button_qualidade"
+        android:id="@+id/botao_qualidade"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="140dp"
@@ -28,10 +28,10 @@
         android:text="Qualidade"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_calibragem" />
+        app:layout_constraintTop_toBottomOf="@+id/botao_calibragem" />
 
     <Button
-        android:id="@+id/button_apontamento"
+        android:id="@+id/botao_apontamento"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="140dp"
@@ -40,7 +40,7 @@
         android:text="Apontamento"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_qualidade" />
+        app:layout_constraintTop_toBottomOf="@+id/botao_qualidade" />
 
     <Spinner
         android:id="@+id/spinner_talhao_calibragem"

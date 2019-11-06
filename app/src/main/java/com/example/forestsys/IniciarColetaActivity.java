@@ -16,6 +16,9 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import static com.example.forestsys.LoginActivity.nomeEmpresaPref;
+import static com.example.forestsys.LoginActivity.usuarioLogado;
+
 public class IniciarColetaActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     DrawerLayout drawer;
@@ -24,11 +27,12 @@ public class IniciarColetaActivity extends AppCompatActivity implements Navigati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_iniciar_coleta);
+        setTitle(nomeEmpresaPref);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_coleta);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setSubtitle("Fulano");
+        getSupportActionBar().setSubtitle(usuarioLogado.getNome());
 
         drawer = findViewById(R.id.drawer_layout_coleta);
         NavigationView navigationView = findViewById(R.id.nav_view_coleta);
@@ -56,12 +60,12 @@ public class IniciarColetaActivity extends AppCompatActivity implements Navigati
                 startActivity(it1);
                 break;
 
-            case R.id.os:
+            case R.id.cadastrar_conta:
                 Intent it2 = new Intent(this, MainActivity.class);
                 startActivity(it2);
                 break;
 
-            case R.id.config:
+            case R.id.config_login:
                 Toast.makeText(this, "Clicou nas configs", Toast.LENGTH_LONG).show();
                 break;
         }

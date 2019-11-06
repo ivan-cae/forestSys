@@ -33,4 +33,24 @@ dependencies {
     implementation 'androidx.mediarouter:mediarouter:1.1.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
+
+    implementation 'de.hdodenhof:circleimageview:3.0.1'
+
+
+    implementation 'androidx.room:room-runtime:2.2.0'
+    annotationProcessor 'androidx.room:room-compiler:2.2.0'
+
+
+    def lifecycle_version = "2.1.0"
+
+    // ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+    // For Kotlin use kapt instead of annotationProcessor
+
+    // optional - Test helpers for LiveData
+    testImplementation "androidx.arch.core:core-testing:$lifecycle_version"
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.mediarouter:mediarouter:1.1.0'
 }

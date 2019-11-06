@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import static com.example.forestsys.LoginActivity.nomeEmpresaPref;
+import static com.example.forestsys.LoginActivity.usuarioLogado;
 
 public class ContinuarOSActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -28,6 +30,7 @@ public class ContinuarOSActivity extends AppCompatActivity implements Navigation
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_continuar_os);
+        setTitle(nomeEmpresaPref);
 
         iniciarColeta = findViewById(R.id.botao_iniciar_coleta);
         tracarRota = findViewById(R.id.botao_tracar_rota);
@@ -36,7 +39,7 @@ public class ContinuarOSActivity extends AppCompatActivity implements Navigation
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_continuar);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setSubtitle("Fulano");
+        getSupportActionBar().setSubtitle(usuarioLogado.getNome());
 
         drawer = findViewById(R.id.drawer_layout_continuar);
         NavigationView navigationView = findViewById(R.id.nav_view_continuar);
@@ -72,12 +75,12 @@ public class ContinuarOSActivity extends AppCompatActivity implements Navigation
                 startActivity(it1);
                 break;
 
-            case R.id.os:
+            case R.id.cadastrar_conta:
                 Intent it2 = new Intent(this, MainActivity.class);
                 startActivity(it2);
                 break;
 
-            case R.id.config:
+            case R.id.config_login:
                 Toast.makeText(this, "Clicou nas configs", Toast.LENGTH_LONG).show();
                 break;
         }
