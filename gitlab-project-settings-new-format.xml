@@ -1,0 +1,29 @@
+<application>
+  <component name="SettingsState">
+    <option name="projects">
+      <list>
+        <ProjectDto>
+          <option name="httpUrl" value="https://gitlab.com/herculesluiz/forestsys-plantar-app.git" />
+          <option name="name" value="Forestsys Plantar App" />
+          <option name="namespace" value="Hercules Luiz Oliveira" />
+          <option name="sshUrl" value="git@gitlab.com:herculesluiz/forestsys-plantar-app.git" />
+        </ProjectDto>
+        <ProjectDto>
+          <option name="httpUrl" value="https://gitlab.com/herculesluiz/forestsys-plantar-app.git" />
+          <option name="name" value="Forestsys Plantar App" />
+          <option name="namespace" value="Hercules Luiz Oliveira" />
+          <option name="sshUrl" value="git@gitlab.com:herculesluiz/forestsys-plantar-app.git" />
+        </ProjectDto>
+      </list>
+    </option>
+    <option name="gitlabServers">
+      <list>
+        <GitlabServer>
+          <option name="apiToken" value="QARewkGzt_JxCS4DtzPx" />
+          <option name="apiUrl" value="https://gitlab.com/" />
+          <option name="repositoryUrl" value="gitlab.com" />
+        </GitlabServer>
+      </list>
+    </option>
+  </component>
+</application>
