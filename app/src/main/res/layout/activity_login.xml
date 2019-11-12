@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#2F7E96"
     tools:menu="@menu/menu_login_lateral"
-    tools:context=".LoginActivity">
+    tools:context=".ActivityLogin">
 
 
     <Button

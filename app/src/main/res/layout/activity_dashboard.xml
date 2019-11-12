@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#007E2121"
-    tools:context=".DashboardActivity">
+    tools:context=".ActivityDashboard">
 
     <TextView
         android:id="@+id/textView"
@@ -126,7 +126,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:maxWidth="230dp"
-            app:headerLayout="@layout/nav_header"
             app:menu="@menu/menu_main_lateral" />
     </androidx.drawerlayout.widget.DrawerLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

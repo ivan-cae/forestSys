@@ -10,16 +10,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ConfiguracoesActivity"></activity>
-        <activity android:name=".ValidarAdminActivity" />
-        <activity android:name=".CadastrarUsuarioActivity" />
-        <activity android:name=".CalibragemActivity" />
-        <activity android:name=".IniciarColetaActivity" />
-        <activity android:name=".ContinuarOSActivity" />
-        <activity android:name=".DashboardActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".ActivityConfiguracoes"></activity>
+        <activity android:name=".ActivityValidarAdmin" />
+        <activity android:name=".ActivityCadastrarUsuario" />
+        <activity android:name=".ActivityCalibragem" />
+        <activity android:name=".ActivityIniciarColeta" />
+        <activity android:name=".ActivityContinuarOS" />
+        <activity android:name=".ActivityDashboard" />
+        <activity android:name=".ActivityMain" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ActivityLogin"
             android:label="@string/apk_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

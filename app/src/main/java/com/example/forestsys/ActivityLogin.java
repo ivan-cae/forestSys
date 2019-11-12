@@ -1,8 +1,6 @@
 package com.example.forestsys;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -14,17 +12,18 @@ import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
-import static com.example.forestsys.ConfiguracoesActivity.SHARED_PREFS;
-import static com.example.forestsys.ConfiguracoesActivity.TEXT;
 
-public class LoginActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
+public class ActivityLogin extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
 
-    public static Users usuarioLogado;
+
     public static String nomeEmpresaPref;
+    public static ClasseUsers usuarioLogado = null;
+
+
 
     private String nomeUsuario;
     private String senhaUsuario;
-    private UsersViewModel usersViewModel;
+    private ViewModelUsers viewModelUsers;
 
 
 
@@ -32,18 +31,35 @@ public class LoginActivity extends AppCompatActivity implements PopupMenu.OnMenu
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        usersViewModel = ViewModelProviders.of(this).get(UsersViewModel.class);
+
+        /*Boolean primeiraVez = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean("primeiraVez", true);
+
+        if (primeiraVez) {
+            startActivity(new Intent(ActivityLogin.this, ActivityConfiguracoes.class));
+            Toast.makeText(ActivityLogin.this, "First Run", Toast.LENGTH_LONG)
+                    .show();
+        }
+
+
+        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                .putBoolean("primeiraVez", false).commit();
+*/
+
+        nomeEmpresaPref = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getString("nomeEmpresaPref", "Plantar Siderurgica S/A");
+
+        viewModelUsers = ViewModelProviders.of(this).get(ViewModelUsers.class);
         final EditText usernameEditText = findViewById(R.id.username);
         final EditText passwordEditText = findViewById(R.id.password);
         final Button loginButton = findViewById(R.id.botao_login);
         final ImageButton configButton = findViewById(R.id.botao_config);
-        carregarDados();
 
         configButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popup = new PopupMenu(LoginActivity.this, v);
-                popup.setOnMenuItemClickListener(LoginActivity.this);
+                PopupMenu popup = new PopupMenu(ActivityLogin.this, v);
+                popup.setOnMenuItemClickListener(ActivityLogin.this);
                 popup.inflate(R.menu.menu_login_lateral);
                 popup.show();
             }
@@ -54,36 +70,34 @@ public class LoginActivity extends AppCompatActivity implements PopupMenu.OnMenu
             public void onClick(View v) {
                 nomeUsuario = usernameEditText.getText().toString();
                 senhaUsuario = passwordEditText.getText().toString();
-                usuarioLogado = usersViewModel.consulta(nomeUsuario, senhaUsuario);
+                usuarioLogado = viewModelUsers.consulta(nomeUsuario, senhaUsuario);
                 if(usuarioLogado!= null) {
-                    Toast.makeText(LoginActivity.this, "Bem vindo(a) " +
+                    Toast.makeText(ActivityLogin.this, "Bem vindo(a) " +
                             usuarioLogado.getNome(), Toast.LENGTH_SHORT).show();
-                    Intent it = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent it = new Intent(ActivityLogin.this, ActivityMain.class);
                     startActivity(it);
-                }else{
-                    Toast.makeText(LoginActivity.this, "Credenciais Inválidas", Toast.LENGTH_SHORT).show();
+                }else if(usuarioLogado == null){
+                    Toast.makeText(ActivityLogin.this, "Credenciais Inválidas", Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
         });
+
+
+
     }
 
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.cadastrar_conta:
-                Intent it1 = new Intent(this, ValidarAdminActivity.class);
+                Intent it1 = new Intent(this, ActivityValidarAdmin.class);
                 startActivity(it1);
                 return true;
             case R.id.config_login:
-                Intent it2 = new Intent(this, ConfiguracoesActivity.class);
+                Intent it2 = new Intent(this, ActivityConfiguracoes.class);
                 startActivity(it2);
             default:
                 return false;
         }
-    }
-
-    public void carregarDados() {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        nomeEmpresaPref = sharedPreferences.getString(TEXT, "Plantar Siderurgica S/A");
     }
 }

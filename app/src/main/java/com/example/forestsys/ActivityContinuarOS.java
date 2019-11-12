@@ -1,12 +1,5 @@
 package com.example.forestsys;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,27 +7,51 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.android.material.navigation.NavigationView;
-import static com.example.forestsys.LoginActivity.nomeEmpresaPref;
-import static com.example.forestsys.LoginActivity.usuarioLogado;
 
-public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import static com.example.forestsys.ActivityLogin.nomeEmpresaPref;
+import static com.example.forestsys.ActivityLogin.usuarioLogado;
 
-    DrawerLayout drawer;
+public class ActivityContinuarOS extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private DrawerLayout drawer;
+    private Button iniciarColeta;
+    private Button tracarRota;
+    private TextView idOs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
+        setContentView(R.layout.activity_continuar_os);
         setTitle(nomeEmpresaPref);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_dash);
+        Intent it = getIntent();
+        ClasseOs classeOs = (ClasseOs) it.getSerializableExtra("abrir_os");
+
+        idOs = findViewById(R.id.id_os);
+        idOs.setText(classeOs.getId());
+
+        iniciarColeta = findViewById(R.id.botao_iniciar_coleta);
+        tracarRota = findViewById(R.id.botao_tracar_rota);
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_continuar);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setSubtitle(usuarioLogado.getNome());
 
-        drawer = findViewById(R.id.drawer_layout_dash);
-        NavigationView navigationView = findViewById(R.id.nav_view_dash);
+        drawer = findViewById(R.id.drawer_layout_continuar);
+        NavigationView navigationView = findViewById(R.id.nav_view_continuar);
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -42,6 +59,14 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        iniciarColeta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(ActivityContinuarOS.this, ActivityIniciarColeta.class);
+                startActivity(it);
+            }
+        });
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -55,12 +80,12 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.dash:
-                Intent it1 = new Intent(this, DashboardActivity.class);
+                Intent it1 = new Intent(this, ActivityDashboard.class);
                 startActivity(it1);
                 break;
 
             case R.id.cadastrar_conta:
-                Intent it2 = new Intent(this, MainActivity.class);
+                Intent it2 = new Intent(this, ActivityMain.class);
                 startActivity(it2);
                 break;
 

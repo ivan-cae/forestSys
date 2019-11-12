@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class CadastrarUsuarioActivity extends AppCompatActivity {
+public class ActivityCadastrarUsuario extends AppCompatActivity {
 
     private EditText editNome;
     private EditText editMatricula;
@@ -22,7 +22,7 @@ public class CadastrarUsuarioActivity extends AppCompatActivity {
     private EditText editLogin;
     private EditText editSenha;
     private Button botaoCadastrar;
-    private UsersViewModel usersViewModel;
+    private ViewModelUsers viewModelUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class CadastrarUsuarioActivity extends AppCompatActivity {
         editSenha = findViewById(R.id.edit_senha);
         botaoCadastrar = findViewById(R.id.botao_cadastrar_conta);
 
-        usersViewModel = ViewModelProviders.of(this).get(UsersViewModel.class);
+        viewModelUsers = ViewModelProviders.of(this).get(ViewModelUsers.class);
 
 
         botaoCadastrar.setOnClickListener(new View.OnClickListener() {
@@ -44,7 +44,7 @@ public class CadastrarUsuarioActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (editNome.getText().toString().isEmpty() || editMatricula.getText().toString().isEmpty() || editCargo.getText().toString().isEmpty() ||
                         editLogin.getText().toString().isEmpty() || editSenha.getText().toString().isEmpty()) {
-                    AlertDialog dialog = new AlertDialog.Builder(CadastrarUsuarioActivity.this)
+                    AlertDialog dialog = new AlertDialog.Builder(ActivityCadastrarUsuario.this)
                             .setTitle("ERRO")
                             .setMessage("Favor Preencher todos os campos marcados")
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -64,13 +64,13 @@ public class CadastrarUsuarioActivity extends AppCompatActivity {
                 if(spinnerNivel.getSelectedItem().toString() == "ADMIN") j=1;
                 else j = 2;
                 Enumeraveis.nivelAcesso i = Enumeraveis.nivelAcesso.getNivelAcesso(j);
-                Users novo = new Users(editNome.getText().toString(), editMatricula.getText().toString(),
+                ClasseUsers novo = new ClasseUsers(editNome.getText().toString(), editMatricula.getText().toString(),
                         editCargo.getText().toString(), i,
                             editLogin.getText().toString(), editSenha.getText().toString());
 
-                if (usersViewModel.consultaLogin(novo.getLogin()) != null ||
-                        usersViewModel.consultaMatricula(novo.getMatricula()) != null) {
-                    AlertDialog dialog = new AlertDialog.Builder(CadastrarUsuarioActivity.this)
+                if (viewModelUsers.consultaLogin(novo.getLogin()) != null ||
+                        viewModelUsers.consultaMatricula(novo.getMatricula()) != null) {
+                    AlertDialog dialog = new AlertDialog.Builder(ActivityCadastrarUsuario.this)
                             .setTitle("ERRO")
                             .setMessage("Login ou Matricula já cadastrados, favor alterar os valores.")
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -81,9 +81,9 @@ public class CadastrarUsuarioActivity extends AppCompatActivity {
                     dialog.show();
                     return;
                 }
-                usersViewModel.insert(novo);
-                Toast.makeText(CadastrarUsuarioActivity.this, "Usuário "+novo.getLogin()+"Cadastrado!", Toast.LENGTH_SHORT).show();
-                Intent it = new Intent(CadastrarUsuarioActivity.this, LoginActivity.class);
+                viewModelUsers.insert(novo);
+                Toast.makeText(ActivityCadastrarUsuario.this, "Usuário '"+novo.getLogin()+"' Cadastrado!", Toast.LENGTH_SHORT).show();
+                Intent it = new Intent(ActivityCadastrarUsuario.this, ActivityLogin.class);
                 startActivity(it);
             }
         });

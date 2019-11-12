@@ -1,0 +1,34 @@
+package com.example.forestsys;
+
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+
+import java.util.List;
+
+public class ViewModelFazenda extends AndroidViewModel{
+
+    private RepositorioFazenda repositorioFazenda;
+    private LiveData<List<ClasseFazenda>> listaFazendas;
+    private LiveData<ClasseFazenda> Consulta;
+
+    public ViewModelFazenda(@NonNull Application application) {
+        super(application);
+        repositorioFazenda = new RepositorioFazenda(application);
+        listaFazendas = repositorioFazenda.getTodasFazendas();
+    }
+
+    public void insert(ClasseFazenda classeFazenda) {
+        repositorioFazenda.insert(classeFazenda);
+    }
+
+    public void update(ClasseFazenda classeFazenda) {
+        repositorioFazenda.update(classeFazenda);
+    }
+
+    public void delete(ClasseFazenda classeFazenda) {
+        repositorioFazenda.delete(classeFazenda);
+    }
+}

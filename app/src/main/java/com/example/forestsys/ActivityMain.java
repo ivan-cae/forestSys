@@ -1,40 +1,37 @@
 package com.example.forestsys;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
-
 import com.google.android.material.navigation.NavigationView;
+import java.util.List;
+import static com.example.forestsys.ActivityLogin.nomeEmpresaPref;
+import static com.example.forestsys.ActivityLogin.usuarioLogado;
 
-import static com.example.forestsys.LoginActivity.nomeEmpresaPref;
-import static com.example.forestsys.LoginActivity.usuarioLogado;
+public class ActivityMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
+    private ViewModelOs viewModelOs;
+    private RecyclerView recyclerView;
     private DrawerLayout drawer;
-    private Button botaoContinuar;
-    private Button botaoIniciar;
-    private Button botaoVisualizar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle(nomeEmpresaPref);
-
-        botaoIniciar = findViewById(R.id.botao_iniciar_os);
-        botaoContinuar = findViewById(R.id.botao_continuar_os);
-        botaoVisualizar = findViewById(R.id.botao_visualizar_os);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
 
@@ -51,11 +48,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        botaoContinuar.setOnClickListener(new View.OnClickListener() {
+
+        recyclerView = findViewById(R.id.lista_os);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+
+
+        final AdaptadorOs adaptador = new AdaptadorOs();
+        recyclerView.setAdapter(adaptador);
+
+        viewModelOs = ViewModelProviders.of(this).get(ViewModelOs.class);
+        viewModelOs.getTodasOS().observe(this, new Observer<List<ClasseOs>>() {
             @Override
-            public void onClick(View v) {
-                Intent it = new Intent(MainActivity.this, ContinuarOSActivity.class);
-                startActivity(it);
+            public void onChanged(@Nullable List<ClasseOs> ordemServicos) {
+                adaptador.setOrdens(ordemServicos);
+            }
+        });
+
+
+        adaptador.setOnItemClickListener(new AdaptadorOs.OnItemClickListener() {
+            @Override
+            public void onItemClick(ClasseOs classeOs) {
+                Toast.makeText(ActivityMain.this, "Numeral " + classeOs.getStatus().numeral, Toast.LENGTH_SHORT).show();
+                if(classeOs.getStatus().numeral == 1) {
+                    Intent it = new Intent(ActivityMain.this, ActivityContinuarOS.class);
+                    it.putExtra("abrir_os", classeOs);
+                    startActivity(it);
+                }
             }
         });
     }
@@ -71,12 +90,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.dash:
-                Intent it1 = new Intent(this, DashboardActivity.class);
+                Intent it1 = new Intent(this, ActivityDashboard.class);
                 startActivity(it1);
                     break;
 
             case R.id.cadastrar_conta:
-                    Intent it2 = new Intent(this, MainActivity.class);
+                    Intent it2 = new Intent(this, ActivityMain.class);
                     startActivity(it2);
                 break;
 

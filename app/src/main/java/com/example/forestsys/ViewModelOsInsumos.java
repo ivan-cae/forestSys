@@ -1,0 +1,30 @@
+package com.example.forestsys;
+import android.app.Application;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import java.util.List;
+
+public class ViewModelOsInsumos extends AndroidViewModel {
+    private RepositorioOsInsumos repositorioOsInsumos;
+    private LiveData<List<ClasseOsInsumos>> listaOsInsumos;
+    private LiveData<ClasseOsInsumos> Consulta;
+
+    public ViewModelOsInsumos(@NonNull Application application) {
+        super(application);
+        repositorioOsInsumos = new RepositorioOsInsumos(application);
+        listaOsInsumos = repositorioOsInsumos.getTodosOsInsumos();
+    }
+
+    public void insert(ClasseOsInsumos classeOsInsumos) {
+        repositorioOsInsumos.insert( classeOsInsumos);
+    }
+
+    public void update(ClasseOsInsumos classeOsInsumos) {
+        repositorioOsInsumos.update(classeOsInsumos);
+    }
+
+    public void delete(ClasseOsInsumos classeOsInsumos) {
+        repositorioOsInsumos.delete(classeOsInsumos);
+    }
+}

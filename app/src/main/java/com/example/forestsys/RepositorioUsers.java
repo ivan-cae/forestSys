@@ -1,96 +1,95 @@
 package com.example.forestsys;
 import android.app.Application;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import java.util.List;
 
 public class RepositorioUsers {
 
-    private UsersDAO dao;
-    private LiveData<List<Users>> users;
+    private DAO dao;
+    private LiveData<List<ClasseUsers>> users;
 
     public RepositorioUsers(Application application) {
-        BaseUsers baseUsers = BaseUsers.getInstance(application);
-        dao = baseUsers.usersDAO();
+        BaseDeDados baseDeDados = BaseDeDados.getInstance(application);
+        dao = baseDeDados.dao();
         users = dao.todosUsers();
     }
 
-    public LiveData<Users> getUser(int id) {
-        return dao.selecionaTodos(id);
+    public LiveData<ClasseUsers> getUser(int id) {
+        return dao.selecionaUser(id);
     }
 
-    public LiveData<List<Users>>getTodosUsers() {
+    public LiveData<List<ClasseUsers>>getTodosUsers() {
         return users;
     }
 
-    public Users valida(String login, String senha){
+    public ClasseUsers valida(String login, String senha){
         return dao.valida(login, senha);
     }
 
-    public Users validaAdmin(String login, String senha){
+    public ClasseUsers validaAdmin(String login, String senha){
         return dao.validaAdmin(login, senha);
     }
 
-    public Users validaLogin(String login){
+    public ClasseUsers validaLogin(String login){
         return dao.validaLogin(login);
     }
 
-    public Users validaMatricula(String matricula){
+    public ClasseUsers validaMatricula(String matricula){
         return dao.validaMatricula(matricula);
     }
 
-    public void insert(Users users) {
-        new InsertAsyncTask(dao).execute(users);
+    public void insert(ClasseUsers classeUsers) {
+        new InsertAsyncTask(dao).execute(classeUsers);
     }
 
-    public void update(Users users) {
-        new UpdateOSAsync(dao).execute(users);
+    public void update(ClasseUsers classeUsers) {
+        new UpdateAsyncTask(dao).execute(classeUsers);
     }
 
-    public void delete(Users users) {
-        new DeleteOSAsync(dao).execute(users);
+    public void delete(ClasseUsers classeUsers) {
+        new DeleteAsyncTask(dao).execute(classeUsers);
     }
 
 
-    private static class InsertAsyncTask extends AsyncTask<Users, Void, Void> {
-        private UsersDAO dao;
+    private static class InsertAsyncTask extends AsyncTask<ClasseUsers, Void, Void> {
+        private DAO dao;
 
-        private InsertAsyncTask(UsersDAO dao) {
+        private InsertAsyncTask(DAO dao) {
             this.dao = dao;
         }
 
         @Override
-        protected Void doInBackground(Users... users) {
+        protected Void doInBackground(ClasseUsers... users) {
             dao.insert(users[0]);
             return null;
         }
     }
 
-    private static class UpdateOSAsync extends AsyncTask<Users, Void, Void> {
-        private UsersDAO dao;
+    private static class UpdateAsyncTask extends AsyncTask<ClasseUsers, Void, Void> {
+        private DAO dao;
 
-        private UpdateOSAsync(UsersDAO dao) {
+        private UpdateAsyncTask(DAO dao) {
             this.dao = dao;
         }
 
         @Override
-        protected Void doInBackground(Users... users) {
+        protected Void doInBackground(ClasseUsers... users) {
             dao.update(users[0]);
             return null;
         }
     }
 
-    private static class DeleteOSAsync extends AsyncTask<Users, Void, Void> {
-        private UsersDAO dao;
+    private static class DeleteAsyncTask extends AsyncTask<ClasseUsers, Void, Void> {
+        private DAO dao;
 
-        private DeleteOSAsync(UsersDAO dao) {
+        private DeleteAsyncTask(DAO dao) {
             this.dao = dao;
         }
 
         @Override
-        protected Void doInBackground(Users... users) {
+        protected Void doInBackground(ClasseUsers... users) {
             dao.delete(users[0]);
             return null;
         }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#2F7E96"
-    tools:context=".ValidarAdminActivity">
+    tools:context=".ActivityValidarAdmin">
 
     <Button
         android:id="@+id/botao_login_validar"

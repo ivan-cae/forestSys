@@ -1,5 +1,12 @@
 package com.example.forestsys;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,42 +14,28 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
-
 import com.google.android.material.navigation.NavigationView;
-import static com.example.forestsys.LoginActivity.nomeEmpresaPref;
-import static com.example.forestsys.LoginActivity.usuarioLogado;
 
-public class ContinuarOSActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import static com.example.forestsys.ActivityLogin.nomeEmpresaPref;
+import static com.example.forestsys.ActivityLogin.usuarioLogado;
 
-    private DrawerLayout drawer;
-    private Button iniciarColeta;
-    private Button tracarRota;
+public class ActivityDashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_continuar_os);
+        setContentView(R.layout.activity_dashboard);
         setTitle(nomeEmpresaPref);
 
-        iniciarColeta = findViewById(R.id.botao_iniciar_coleta);
-        tracarRota = findViewById(R.id.botao_tracar_rota);
-
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_continuar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_dash);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setSubtitle(usuarioLogado.getNome());
 
-        drawer = findViewById(R.id.drawer_layout_continuar);
-        NavigationView navigationView = findViewById(R.id.nav_view_continuar);
+        drawer = findViewById(R.id.drawer_layout_dash);
+        NavigationView navigationView = findViewById(R.id.nav_view_dash);
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -50,14 +43,6 @@ public class ContinuarOSActivity extends AppCompatActivity implements Navigation
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-        iniciarColeta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent it = new Intent(ContinuarOSActivity.this, IniciarColetaActivity.class);
-                startActivity(it);
-            }
-        });
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -71,12 +56,12 @@ public class ContinuarOSActivity extends AppCompatActivity implements Navigation
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.dash:
-                Intent it1 = new Intent(this, DashboardActivity.class);
+                Intent it1 = new Intent(this, ActivityDashboard.class);
                 startActivity(it1);
                 break;
 
             case R.id.cadastrar_conta:
-                Intent it2 = new Intent(this, MainActivity.class);
+                Intent it2 = new Intent(this, ActivityMain.class);
                 startActivity(it2);
                 break;
 

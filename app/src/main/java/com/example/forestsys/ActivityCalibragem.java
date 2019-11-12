@@ -3,9 +3,10 @@ package com.example.forestsys;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import static com.example.forestsys.LoginActivity.nomeEmpresaPref;
 
-public class CalibragemActivity extends AppCompatActivity {
+import static com.example.forestsys.ActivityLogin.nomeEmpresaPref;
+
+public class ActivityCalibragem extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -8,24 +8,18 @@ import androidx.room.TypeConverters;
 import java.io.Serializable;
 
 @Entity
-public class Users implements Serializable {
+public class ClasseUsers implements Serializable {
             @PrimaryKey(autoGenerate = true)
     private int id;
 
     @NonNull
     private String nome;
+
     @NonNull
     private String matricula;
+
     @NonNull
     private String cargo;
-
-    public Enumeraveis.nivelAcesso getNivelAcesso() {
-        return nivelAcesso;
-    }
-
-    public void setNivelAcesso(Enumeraveis.nivelAcesso nivelAcesso) {
-        this.nivelAcesso = nivelAcesso;
-    }
 
     @TypeConverters(Enumeraveis.nivelAcesso.class)
     private Enumeraveis.nivelAcesso nivelAcesso;
@@ -35,7 +29,7 @@ public class Users implements Serializable {
     @NonNull
     private String senha;
 
-    Users(String nome, String matricula, String cargo, Enumeraveis.nivelAcesso nivelAcesso, String login, String senha){
+    ClasseUsers(String nome, String matricula, String cargo, Enumeraveis.nivelAcesso nivelAcesso, String login, String senha){
         this.nome = nome;
         this.matricula = matricula;
         this.cargo = cargo;
@@ -91,5 +85,13 @@ public class Users implements Serializable {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public Enumeraveis.nivelAcesso getNivelAcesso() {
+        return nivelAcesso;
+    }
+
+    public void setNivelAcesso(Enumeraveis.nivelAcesso nivelAcesso) {
+        this.nivelAcesso = nivelAcesso;
     }
 }

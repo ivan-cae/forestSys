@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".IniciarColetaActivity">
+    tools:context=".ActivityIniciarColeta">
 
     <Button
         android:id="@+id/botao_calibragem"
@@ -173,7 +173,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:maxWidth="230dp"
-            app:headerLayout="@layout/nav_header"
             app:menu="@menu/menu_main_lateral" />
     </androidx.drawerlayout.widget.DrawerLayout>
 

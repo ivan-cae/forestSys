@@ -16,10 +16,10 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
-import static com.example.forestsys.LoginActivity.nomeEmpresaPref;
-import static com.example.forestsys.LoginActivity.usuarioLogado;
+import static com.example.forestsys.ActivityLogin.nomeEmpresaPref;
+import static com.example.forestsys.ActivityLogin.usuarioLogado;
 
-public class IniciarColetaActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class ActivityIniciarColeta extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     DrawerLayout drawer;
 
@@ -56,12 +56,12 @@ public class IniciarColetaActivity extends AppCompatActivity implements Navigati
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.dash:
-                Intent it1 = new Intent(this, DashboardActivity.class);
+                Intent it1 = new Intent(this, ActivityDashboard.class);
                 startActivity(it1);
                 break;
 
             case R.id.cadastrar_conta:
-                Intent it2 = new Intent(this, MainActivity.class);
+                Intent it2 = new Intent(this, ActivityMain.class);
                 startActivity(it2);
                 break;
 
