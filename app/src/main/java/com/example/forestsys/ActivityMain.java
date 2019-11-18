@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,8 +16,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
+import android.widget.SearchView;
 import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.ArrayList;
 import java.util.List;
 import static com.example.forestsys.ActivityLogin.nomeEmpresaPref;
 import static com.example.forestsys.ActivityLogin.usuarioLogado;
@@ -26,6 +31,8 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
     private ViewModelOs viewModelOs;
     private RecyclerView recyclerView;
     private DrawerLayout drawer;
+    private AdaptadorOs adaptador;
+    private List<ClasseOs> listaOs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +61,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         recyclerView.setHasFixedSize(true);
 
 
-        final AdaptadorOs adaptador = new AdaptadorOs();
+        adaptador = new AdaptadorOs();
         recyclerView.setAdapter(adaptador);
 
         viewModelOs = ViewModelProviders.of(this).get(ViewModelOs.class);
@@ -75,6 +82,22 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                     it.putExtra("abrir_os", classeOs);
                     startActivity(it);
                 }
+            }
+        });
+
+        SearchView sv=(SearchView) findViewById(R.id.searchview);
+
+        sv.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                adaptador.getFilter().filter(s);
+                return false;
             }
         });
     }

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -21,7 +22,9 @@ import static com.example.forestsys.ActivityLogin.usuarioLogado;
 
 public class ActivityIniciarColeta extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    DrawerLayout drawer;
+    private DrawerLayout drawer;
+    private TextView idOs;
+    private ClasseOs classeOs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,13 @@ public class ActivityIniciarColeta extends AppCompatActivity implements Navigati
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setSubtitle(usuarioLogado.getNome());
+
+        Intent it = getIntent();
+        classeOs = (ClasseOs) it.getSerializableExtra("abrir_os");
+
+        idOs = findViewById(R.id.id_os_coleta);
+        idOs.setText(String.valueOf(classeOs.getId()));
+
 
         drawer = findViewById(R.id.drawer_layout_coleta);
         NavigationView navigationView = findViewById(R.id.nav_view_coleta);

@@ -12,6 +12,7 @@
     <string name="login_failed">"Login Falhou"</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
     <string-array name="array_nivel">
         <item>OPERADOR</item>
         <item>ADMIN</item>

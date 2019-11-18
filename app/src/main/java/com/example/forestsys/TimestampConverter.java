@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class TimestampConverter {
-    private static DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     @TypeConverter
     public static Date fromTimestamp(String value) {

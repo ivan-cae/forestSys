@@ -10,6 +10,7 @@ import java.util.List;
 public class RepositorioOs {
     private DAO dao;
     private LiveData<List<ClasseOs>> os;
+    private List <ClasseOs> listaOs;
 
     public RepositorioOs(Application application) {
         BaseDeDados baseDeDados = BaseDeDados.getInstance(application);
@@ -25,6 +26,7 @@ public class RepositorioOs {
         return os;
     }
 
+    public List<ClasseOs> getListaOs(){return dao.selecionaListaOs();}
 
     public void insert(ClasseOs classeOs) {
         new RepositorioOs.InsertAsyncTask(dao).execute(classeOs);

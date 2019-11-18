@@ -28,6 +28,7 @@ public class ActivityContinuarOS extends AppCompatActivity implements Navigation
     private Button iniciarColeta;
     private Button tracarRota;
     private TextView idOs;
+    private ClasseOs classeOs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +37,10 @@ public class ActivityContinuarOS extends AppCompatActivity implements Navigation
         setTitle(nomeEmpresaPref);
 
         Intent it = getIntent();
-        ClasseOs classeOs = (ClasseOs) it.getSerializableExtra("abrir_os");
+        classeOs = (ClasseOs) it.getSerializableExtra("abrir_os");
 
-        idOs = findViewById(R.id.id_os);
-        idOs.setText(classeOs.getId());
+        idOs = findViewById(R.id.id_os_continuar);
+        idOs.setText(String.valueOf(classeOs.getId()));
 
         iniciarColeta = findViewById(R.id.botao_iniciar_coleta);
         tracarRota = findViewById(R.id.botao_tracar_rota);
@@ -64,6 +65,7 @@ public class ActivityContinuarOS extends AppCompatActivity implements Navigation
             @Override
             public void onClick(View v) {
                 Intent it = new Intent(ActivityContinuarOS.this, ActivityIniciarColeta.class);
+                it.putExtra("abrir_os", classeOs);
                 startActivity(it);
             }
         });

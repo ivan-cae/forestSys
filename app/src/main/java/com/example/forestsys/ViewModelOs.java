@@ -39,4 +39,6 @@ public class ViewModelOs extends AndroidViewModel {
     public LiveData<ClasseOs> getOs(int i){
         return repositorioOs.getOs(i);
     }
+
+    public List<ClasseOs> getListaOs(){return repositorioOs.getListaOs(); }
 }

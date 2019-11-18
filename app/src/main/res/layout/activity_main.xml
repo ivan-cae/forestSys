@@ -1,46 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+<androidx.drawerlayout.widget.DrawerLayout android:id="@+id/drawer_layout_main"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:focusable="auto"
+    android:keepScreenOn="false"
+    android:visibility="visible"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:openDrawer="start"
     tools:context=".ActivityMain"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="90dp"
-        android:layout_marginEnd="100dp"
-        android:text="Odens de Serviço"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/lista_os"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="150dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        tools:listitem="@layout/item_lista_os" />
-
-    <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawer_layout_main"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        tools:openDrawer="start">
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="90dp"
+            android:layout_marginEnd="100dp"
+            android:text="Odens de Serviço"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lista_os"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="200dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            tools:listitem="@layout/item_lista_os" />
+
+        <SearchView
+            android:id="@+id/searchview"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="400dp"
+            android:layout_marginBottom="8dp"
+            android:hint="Numero da OS"
+            android:inputType="number"
+            app:layout_constraintBottom_toTopOf="@+id/lista_os"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <LinearLayout
             android:id="@+id/linear_layout_main"
@@ -73,4 +96,3 @@
             android:maxWidth="230dp"
             app:menu="@menu/menu_main_lateral" />
     </androidx.drawerlayout.widget.DrawerLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>

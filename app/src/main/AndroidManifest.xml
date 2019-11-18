@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.forestsys">
 
-    <uses-permission android:name="android.permisson.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permisson.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ActivityConfiguracoes"></activity>
+        <activity android:name=".ActivityLogin" />
+        <activity android:name=".ActivityConfiguracoes" />
         <activity android:name=".ActivityValidarAdmin" />
         <activity android:name=".ActivityCadastrarUsuario" />
         <activity android:name=".ActivityCalibragem" />
@@ -19,7 +20,7 @@
         <activity android:name=".ActivityDashboard" />
         <activity android:name=".ActivityMain" />
         <activity
-            android:name=".ActivityLogin"
+            android:name=".ActivityInicializacao"
             android:label="@string/apk_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

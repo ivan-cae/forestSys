@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="100dp"
         android:text="Alterar Nome da Empresa"
         android:textSize="24sp"
@@ -51,28 +51,41 @@
 
     <Button
         android:id="@+id/botao_salvar_configs"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginEnd="160dp"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="550dp"
+        android:layout_marginEnd="130dp"
         android:layout_marginBottom="8dp"
         android:text="Salvar"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView24" />
 
     <ImageView
         android:id="@+id/imagem_logo"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="32dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/botao_salvar_configs"
+        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView24"
         app:srcCompat="@mipmap/ic_login_round" />
+
+    <Button
+        android:id="@+id/botao_selecionar_imagem"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="400dp"
+        android:layout_marginEnd="130dp"
+        android:text="Alterar Logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,10 +9,17 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import static com.example.forestsys.DataHoraAtual.getCurrentDateTime;
+
 
 @Database(entities = {ClasseUsers.class, ClasseEncarregados.class, ClasseFazenda.class, ClasseSetor.class,
                         ClasseRegional.class, ClasseUpdate.class, ClasseOsInsumos.class,
-                            ClasseOs.class}, version = 1, exportSchema = false)
+                            ClasseOs.class, ClasseMaquinas.class, ClassePrestadores.class}, version = 1, exportSchema = false)
 
 
 public abstract class BaseDeDados extends RoomDatabase {
@@ -48,9 +55,11 @@ public abstract class BaseDeDados extends RoomDatabase {
             auxDao = db.dao();
         }
 
+
         @Override
         protected Void doInBackground(Void... voids) {
             auxDao.insert(new ClasseUsers("ForestSys", "01", "ForestSys", Enumeraveis.nivelAcesso.getNivelAcesso(1), "a", "a"));
+
 
             auxDao.insert(new ClasseOs(1,1,1,1, 1,1,1,1,1,
                     1,Enumeraveis.manejo.getManejo(1),"a",null,1,false

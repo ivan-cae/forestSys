@@ -27,6 +27,10 @@ public interface DAO {
     void insert(ClasseOsInsumos osInsumos);
     @Insert
     void insert(ClasseOs classeOs);
+    @Insert
+    void insert(ClasseMaquinas classeMaquinas);
+    @Insert
+    void insert(ClassePrestadores classePrestadores);
 
 
     @Update
@@ -45,7 +49,10 @@ public interface DAO {
     void update(ClasseOsInsumos osInsumos);
     @Update
     void update(ClasseOs classeOs);
-
+    @Update
+    void update(ClasseMaquinas classeMaquinas);
+    @Update
+    void update(ClassePrestadores classePrestadores);
 
     @Delete
     void delete(ClasseUsers classeUsers);
@@ -63,6 +70,10 @@ public interface DAO {
     void delete(ClasseOsInsumos classeOsInsumos);
     @Delete
     void delete(ClasseOs classeOs);
+    @Delete
+    void delete(ClasseMaquinas classeMaquinas);
+    @Delete
+    void delete(ClassePrestadores classePrestadores);
 
     //Scripts ClasseUsers
     @Query("SELECT * FROM ClasseUsers ORDER BY id asc")
@@ -141,4 +152,23 @@ public interface DAO {
 
     @Query("SELECT * FROM ClasseOs WHERE id=:taskId")
     LiveData<ClasseOs> selecionaOs(int taskId);
+
+    @Query("SELECT * FROM ClasseOs ORDER BY id asc")
+    List<ClasseOs> selecionaListaOs();
+
+
+    //Scripts ClassePrestadores
+    @Query("SELECT * FROM ClassePrestadores ORDER BY id asc")
+    LiveData<List<ClassePrestadores>> todosPrestadores();
+
+    @Query("SELECT * FROM ClassePrestadores WHERE id=:taskId")
+    LiveData<ClassePrestadores> selecionaPrestador(int taskId);
+
+
+    //Scripts ClasseMaquinas
+    @Query("SELECT * FROM ClasseMaquinas ORDER BY id asc")
+    LiveData<List<ClasseMaquinas>> todasMaquinas();
+
+    @Query("SELECT * FROM ClasseMaquinas WHERE id=:taskId")
+    LiveData<ClasseMaquinas> selecionaMaquina(int taskId);
 }
