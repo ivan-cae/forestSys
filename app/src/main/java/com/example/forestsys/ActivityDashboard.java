@@ -66,7 +66,8 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
                 break;
 
             case R.id.config_login:
-                Toast.makeText(this, "Clicou nas configs", Toast.LENGTH_LONG).show();
+                Intent it3 = new Intent(this, FragmentoCalculadora.class);
+                startActivity(it3);
                 break;
         }
 

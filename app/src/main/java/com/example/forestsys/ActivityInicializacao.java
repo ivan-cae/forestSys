@@ -13,16 +13,22 @@ public class ActivityInicializacao extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicializacao);
 
+
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 Intent it = new Intent(ActivityInicializacao.this, ActivityLogin.class);
+
+
+                //Intent it = new Intent(ActivityInicializacao.this, AActivityTesteRelogio.class);
+
+                //Intent it = new Intent(ActivityInicializacao.this, ActivityMaps.class);
+
+
                 startActivity(it);
                 finish();
             }
         }, 5000);
-
-
     }
-
 }

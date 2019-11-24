@@ -19,6 +19,8 @@ public class ViewModelSetor extends AndroidViewModel {
         listaSetor = repositorioSetor.getTodosSetores();
     }
 
+    public ClasseSetor consulta (int id){return repositorioSetor.getSetor(id);}
+
     public void insert(ClasseSetor classeSetor) {
         repositorioSetor.insert(classeSetor);
     }

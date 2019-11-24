@@ -1,43 +1,50 @@
 package com.example.forestsys;
-
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> implements Filterable {
     private List<ClasseOs> ordens = new ArrayList<>();
     private List<ClasseOs> ordensFiltradas;
     private OnItemClickListener listener;
+    private DAO dao;
+    Context context = ApplicationTodos.getAppContext();
+
 
     @NonNull
     @Override
     public OsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_lista_os, parent, false);
+
         return new OsHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull OsHolder holder, int position) {
+
+        BaseDeDados baseDeDados = BaseDeDados.getInstance(context);
+        dao = baseDeDados.dao();
+
         ClasseOs ordem = ordens.get(position);
 
         holder.status.setText(ordem.getStatus().toString());
         holder.numero.setText(String.valueOf(ordem.getId()));
         holder.atividade.setText(String.valueOf(ordem.getId_atividade()));
-        holder.setor.setText(String.valueOf(ordem.getId_setor()));
+        holder.setor.setText(dao.selecionaSetor(ordem.getId_setor()).getSetor());
         holder.talhao.setText(String.valueOf(ordem.getId_talhao()));
         holder.area.setText(String.valueOf(ordem.getArea()));
-        holder.data.setText(String.valueOf(ordem.getProgramacao()));
-        holder.atualizacao.setText("Vazio");
+        holder.data.setText("");
+        holder.atualizacao.setText("");
     }
 
     @Override

@@ -14,7 +14,8 @@ import java.util.Date;
 
 
 @Entity
-        /*(foreignKeys = {
+        (foreignKeys = {
+
                 @ForeignKey(entity = ClasseUsers.class,
                         parentColumns = "id",
                         childColumns = "id_user",
@@ -27,17 +28,20 @@ import java.util.Date;
                         onDelete = ForeignKey.NO_ACTION,
                         onUpdate = ForeignKey.NO_ACTION),
 
+                @ForeignKey(entity = ClasseRegional.class,
+                        parentColumns = "id",
+                        childColumns = "id_regional",
+                        onDelete = ForeignKey.NO_ACTION,
+                        onUpdate = ForeignKey.NO_ACTION),
+        })
+        /*
                 @ForeignKey(entity = ClasseEncarregados.class,
                         parentColumns = "id",
                         childColumns = "id_encarregado",
                         onDelete = ForeignKey.NO_ACTION,
                         onUpdate = ForeignKey.NO_ACTION),
 
-                @ForeignKey(entity = ClasseRegional.class,
-                        parentColumns = "id",
-                        childColumns = "id_regional",
-                        onDelete = ForeignKey.NO_ACTION,
-                        onUpdate = ForeignKey.NO_ACTION),
+
 
                 @ForeignKey(entity = ClasseFazenda.class,
                         parentColumns = "id",
@@ -82,6 +86,7 @@ public class ClasseOs implements Serializable {
 
     @Nullable
     private int id_fazenda;
+
 
     @Nullable
     @TypeConverters(Enumeraveis.manejo.class)

@@ -14,7 +14,7 @@ public class RepositorioSetor{
         setores = dao.todosSetores();
     }
 
-    public LiveData<ClasseSetor> getSetor(int id) {
+    public ClasseSetor getSetor(int id) {
         return dao.selecionaSetor(id);
     }
 

@@ -14,8 +14,8 @@
             android:title="Ordens de Serviço" />
         <item
             android:id="@+id/config_login"
-            android:icon="@drawable/ic_config"
-            android:title="Configurações" />
+            android:icon="@android:drawable/ic_input_add"
+            android:title="Calculadora" />
     </group>
 
 </menu>

@@ -17,7 +17,7 @@ public class RepositorioRegional {
         regionais = dao.todosRegionais();
     }
 
-    public LiveData<ClasseRegional> getRegional(int id) {
+    public ClasseRegional getRegional(int id) {
         return dao.selecionaRegional(id);
     }
 

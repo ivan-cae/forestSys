@@ -5,9 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DataHoraAtual {
-    public static Date getCurrentDateTime(){
-        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/YYYY HH:mm");
-        String s = formato.format(new Date());
+
+    public static Date dataHora(){
+
+        SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+        String s = formato.format( new java.util.Date());
+
+        //String s = formato.format(new Date());
         Date data = null;
         try {
             data = formato.parse (s);

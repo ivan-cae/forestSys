@@ -75,6 +75,7 @@ public interface DAO {
     @Delete
     void delete(ClassePrestadores classePrestadores);
 
+
     //Scripts ClasseUsers
     @Query("SELECT * FROM ClasseUsers ORDER BY id asc")
     LiveData<List<ClasseUsers>> todosUsers();
@@ -116,7 +117,7 @@ public interface DAO {
     LiveData<List<ClasseSetor>> todosSetores();
 
     @Query("SELECT * FROM ClasseSetor WHERE id=:taskId")
-    LiveData<ClasseSetor> selecionaSetor(int taskId);
+    ClasseSetor selecionaSetor(int taskId);
 
 
     //Scripts ClasseRegional
@@ -124,7 +125,7 @@ public interface DAO {
     LiveData<List<ClasseRegional>> todosRegionais();
 
     @Query("SELECT * FROM ClasseRegional WHERE id=:taskId")
-    LiveData<ClasseRegional> selecionaRegional(int taskId);
+    ClasseRegional selecionaRegional(int taskId);
 
 
     //Scripts ClasseUpdate

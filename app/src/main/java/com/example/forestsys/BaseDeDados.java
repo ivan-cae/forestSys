@@ -9,17 +9,11 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
-import static com.example.forestsys.DataHoraAtual.getCurrentDateTime;
 
 
 @Database(entities = {ClasseUsers.class, ClasseEncarregados.class, ClasseFazenda.class, ClasseSetor.class,
-                        ClasseRegional.class, ClasseUpdate.class, ClasseOsInsumos.class,
-                            ClasseOs.class, ClasseMaquinas.class, ClassePrestadores.class}, version = 1, exportSchema = false)
+                        ClasseRegional.class, ClasseUpdate.class, ClasseOsInsumos.class, ClasseOs.class,
+                            ClasseMaquinas.class, ClassePrestadores.class}, version = 1, exportSchema = false)
 
 
 public abstract class BaseDeDados extends RoomDatabase {
@@ -58,36 +52,45 @@ public abstract class BaseDeDados extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
+            //insert adimistrador
             auxDao.insert(new ClasseUsers("ForestSys", "01", "ForestSys", Enumeraveis.nivelAcesso.getNivelAcesso(1), "a", "a"));
 
+            //insert Setor
+            auxDao.insert(new ClasseSetor("SARACURAS"));
+            auxDao.insert(new ClasseSetor("PINDAIBAS"));
+            auxDao.insert(new ClasseSetor("CASTELO"));
 
+            //inserir Regional
+            auxDao.insert(new ClasseRegional("MG 15"));
+
+            //inserir OS
             auxDao.insert(new ClasseOs(1,1,1,1, 1,1,1,1,1,
-                    1,Enumeraveis.manejo.getManejo(1),"a",null,1,false
+                    1,Enumeraveis.manejo.getManejo(1),"a",null,48,false
                     ,true,"1",
                     Enumeraveis.status.getStatus(2),"1",false));
 
-            auxDao.insert(new ClasseOs(1,1,1,1,1, 1,1,1,1,
-                    1,Enumeraveis.manejo.getManejo(2),"a",null,1,false
+            auxDao.insert(new ClasseOs(1,1,1,2,1, 1,1,1,1,
+                    1,Enumeraveis.manejo.getManejo(2),"a",null,26,false
                     ,true,"1",
                     Enumeraveis.status.getStatus(1),"1",false));
 
-            auxDao.insert(new ClasseOs(1,1,1,1,1,1, 1,1,1,
-                    1,Enumeraveis.manejo.getManejo(1),"a",null,1,false
+            auxDao.insert(new ClasseOs(1,1,1,3,1,1, 1,1,1,
+                    1,Enumeraveis.manejo.getManejo(1),"a",null,33,false
                     ,true,"1",
                     Enumeraveis.status.getStatus(2),"1",false));
 
             auxDao.insert(new ClasseOs(1,1,1,1,1,1,1, 1,1,
-                    1,Enumeraveis.manejo.getManejo(2),"a",null,1,false
+                    1,Enumeraveis.manejo.getManejo(2),"a",null,48,false
                     ,true,"1",
                     Enumeraveis.status.getStatus(1),"1",false));
 
-            auxDao.insert(new ClasseOs(1,1,1,1,1,1,1,1, 1,
-                    1,Enumeraveis.manejo.getManejo(1),"a",null,1,false
+            auxDao.insert(new ClasseOs(1,1,1,2,1,1,1,1, 1,
+                    1,Enumeraveis.manejo.getManejo(1),"a",null,26,false
                     ,true,"1",
                     Enumeraveis.status.getStatus(2),"1",false));
 
-            auxDao.insert(new ClasseOs(1,1,1,1,1,1,1,1, 1,
-                    1,Enumeraveis.manejo.getManejo(2),"a",null,1,false
+            auxDao.insert(new ClasseOs(1,1,1,3,1,1,1,1, 1,
+                    1,Enumeraveis.manejo.getManejo(2),"a",null,33,false
                     ,true,"1",
                     Enumeraveis.status.getStatus(1),"1",false));
             return null;

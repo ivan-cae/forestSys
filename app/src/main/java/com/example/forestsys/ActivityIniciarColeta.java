@@ -32,7 +32,7 @@ public class ActivityIniciarColeta extends AppCompatActivity implements Navigati
         setContentView(R.layout.activity_iniciar_coleta);
         setTitle(nomeEmpresaPref);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_coleta);
+        Toolbar toolbar = findViewById(R.id.toolbar_coleta);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setSubtitle(usuarioLogado.getNome());
@@ -76,7 +76,8 @@ public class ActivityIniciarColeta extends AppCompatActivity implements Navigati
                 break;
 
             case R.id.config_login:
-                Toast.makeText(this, "Clicou nas configs", Toast.LENGTH_LONG).show();
+                Intent it3 = new Intent(this, FragmentoCalculadora.class);
+                startActivity(it3);
                 break;
         }
 

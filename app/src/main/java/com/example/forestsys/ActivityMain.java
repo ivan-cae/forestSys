@@ -123,7 +123,10 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.config_login:
-                Toast.makeText(this, "Clicou nas configs", Toast.LENGTH_LONG).show();
+                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_main,
+                 //       new FragmentoCalculadora()).commit();
+                Intent it3 = new Intent(this, FragmentoCalculadora.class);
+                startActivity(it3);
                 break;
         }
 

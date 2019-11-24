@@ -1,13 +1,9 @@
 package com.example.forestsys;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,26 +11,52 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
 
 import static com.example.forestsys.ActivityLogin.nomeEmpresaPref;
 import static com.example.forestsys.ActivityLogin.usuarioLogado;
 
-public class ActivityContinuarOS extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ActivityContinuarOS extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
 
+    private final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private DrawerLayout drawer;
     private Button iniciarColeta;
-    private Button tracarRota;
     private TextView idOs;
     private ClasseOs classeOs;
+    GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_continuar_os);
         setTitle(nomeEmpresaPref);
+
+        checarPermissaodeLocalizacao();
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
 
         Intent it = getIntent();
         classeOs = (ClasseOs) it.getSerializableExtra("abrir_os");
@@ -43,15 +65,17 @@ public class ActivityContinuarOS extends AppCompatActivity implements Navigation
         idOs.setText(String.valueOf(classeOs.getId()));
 
         iniciarColeta = findViewById(R.id.botao_iniciar_coleta);
-        tracarRota = findViewById(R.id.botao_tracar_rota);
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_continuar);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setSubtitle(usuarioLogado.getNome());
+
+        getSupportActionBar().
+
+                setSubtitle(usuarioLogado.getNome());
 
         drawer = findViewById(R.id.drawer_layout_continuar);
+
         NavigationView navigationView = findViewById(R.id.nav_view_continuar);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -92,7 +116,8 @@ public class ActivityContinuarOS extends AppCompatActivity implements Navigation
                 break;
 
             case R.id.config_login:
-                Toast.makeText(this, "Clicou nas configs", Toast.LENGTH_LONG).show();
+                Intent it3 = new Intent(this, FragmentoCalculadora.class);
+                startActivity(it3);
                 break;
         }
 
@@ -109,5 +134,78 @@ public class ActivityContinuarOS extends AppCompatActivity implements Navigation
             super.onBackPressed();
         }
 
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        LatLng talhao1 = new LatLng(-30.662593,-52.8119419);
+
+
+        desenharCirculo(talhao1);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(talhao1));
+        mMap.setMyLocationEnabled(true);
+        //mMap.setMinZoomPreference(1.f);
+        //mMap.setMaxZoomPreference(14.0f);
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+    }
+
+    private void desenharCirculo(LatLng posicao){
+        double raio = 100.0;
+        int corLinha = 0xffff0000; //red outline
+        int corShade = 0x44ff0000; //opaque red fill
+
+        CircleOptions circleOptions = new CircleOptions().center(posicao)
+                .radius(raio).fillColor(corShade).strokeColor(corLinha).strokeWidth(8);
+        Circle mCircle = mMap.addCircle(circleOptions);
+
+        MarkerOptions markerOptions = new MarkerOptions().position(posicao);
+        mMap.addMarker(markerOptions.title("Talhao 1"));
+    }
+
+    public boolean checarPermissaodeLocalizacao() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+
+                new AlertDialog.Builder(this)
+                        .setTitle("Fornecer permissão")
+                        .setMessage("Fornecer permissão para localizar dispositivo")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                ActivityCompat.requestPermissions(ActivityContinuarOS.this,
+                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        MY_PERMISSIONS_REQUEST_LOCATION);
+                            }
+                        })
+                        .create()
+                        .show();
+
+
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+        }
     }
 }
