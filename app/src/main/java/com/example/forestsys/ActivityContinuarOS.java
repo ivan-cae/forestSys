@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.forestsys.calculadora.i.CalculadoraMain;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,7 +39,7 @@ import static com.example.forestsys.ActivityLogin.usuarioLogado;
 public class ActivityContinuarOS extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
 
-    private final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+    private final int PERMISSAO_LOCALIZACAO = 99;
     private DrawerLayout drawer;
     private Button iniciarColeta;
     private TextView idOs;
@@ -116,7 +117,7 @@ public class ActivityContinuarOS extends AppCompatActivity
                 break;
 
             case R.id.config_login:
-                Intent it3 = new Intent(this, FragmentoCalculadora.class);
+                Intent it3 = new Intent(this, CalculadoraMain.class);
                 startActivity(it3);
                 break;
         }
@@ -151,10 +152,11 @@ public class ActivityContinuarOS extends AppCompatActivity
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
     }
 
+    //Desenha um circulo no marcador do mapa
     private void desenharCirculo(LatLng posicao){
         double raio = 100.0;
-        int corLinha = 0xffff0000; //red outline
-        int corShade = 0x44ff0000; //opaque red fill
+        int corLinha = 0xffff0000;
+        int corShade = 0x44ff0000;
 
         CircleOptions circleOptions = new CircleOptions().center(posicao)
                 .radius(raio).fillColor(corShade).strokeColor(corLinha).strokeWidth(8);
@@ -164,6 +166,7 @@ public class ActivityContinuarOS extends AppCompatActivity
         mMap.addMarker(markerOptions.title("Talhao 1"));
     }
 
+    //chega as permissões de localização
     public boolean checarPermissaodeLocalizacao() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -181,7 +184,7 @@ public class ActivityContinuarOS extends AppCompatActivity
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 ActivityCompat.requestPermissions(ActivityContinuarOS.this,
                                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        MY_PERMISSIONS_REQUEST_LOCATION);
+                                        PERMISSAO_LOCALIZACAO);
                             }
                         })
                         .create()
@@ -191,7 +194,7 @@ public class ActivityContinuarOS extends AppCompatActivity
             } else {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION);
+                        PERMISSAO_LOCALIZACAO);
             }
             return false;
         } else {

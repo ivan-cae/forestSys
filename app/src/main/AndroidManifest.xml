@@ -30,7 +30,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".FragmentoCalculadora" />
         <activity android:name=".AActivityTesteRelogio" />
         <activity android:name=".ActivityLogin" />
         <activity android:name=".ActivityConfiguracoes" />
@@ -41,6 +40,7 @@
         <activity android:name=".ActivityContinuarOS" />
         <activity android:name=".ActivityDashboard" />
         <activity android:name=".ActivityMain" />
+        <activity android:name=".calculadora.i.CalculadoraMain" />
         <activity
             android:name=".ActivityInicializacao"
             android:label="@string/apk_name">

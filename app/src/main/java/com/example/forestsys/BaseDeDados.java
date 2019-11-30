@@ -52,10 +52,10 @@ public abstract class BaseDeDados extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            //insert adimistrador
+            //inserir adimistrador
             auxDao.insert(new ClasseUsers("ForestSys", "01", "ForestSys", Enumeraveis.nivelAcesso.getNivelAcesso(1), "a", "a"));
 
-            //insert Setor
+            //inserir Setor
             auxDao.insert(new ClasseSetor("SARACURAS"));
             auxDao.insert(new ClasseSetor("PINDAIBAS"));
             auxDao.insert(new ClasseSetor("CASTELO"));

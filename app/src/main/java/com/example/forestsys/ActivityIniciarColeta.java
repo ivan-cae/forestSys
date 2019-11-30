@@ -13,8 +13,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.forestsys.calculadora.i.CalculadoraMain;
 import com.google.android.material.navigation.NavigationView;
 
 import static com.example.forestsys.ActivityLogin.nomeEmpresaPref;
@@ -76,7 +76,7 @@ public class ActivityIniciarColeta extends AppCompatActivity implements Navigati
                 break;
 
             case R.id.config_login:
-                Intent it3 = new Intent(this, FragmentoCalculadora.class);
+                Intent it3 = new Intent(this, CalculadoraMain.class);
                 startActivity(it3);
                 break;
         }

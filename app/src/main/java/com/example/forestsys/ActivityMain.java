@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,9 +18,10 @@ import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.SearchView;
 import android.widget.Toast;
+
+import com.example.forestsys.calculadora.i.CalculadoraMain;
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.ArrayList;
 import java.util.List;
 import static com.example.forestsys.ActivityLogin.nomeEmpresaPref;
 import static com.example.forestsys.ActivityLogin.usuarioLogado;
@@ -125,7 +125,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
             case R.id.config_login:
                 //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_main,
                  //       new FragmentoCalculadora()).commit();
-                Intent it3 = new Intent(this, FragmentoCalculadora.class);
+                Intent it3 = new Intent(this, CalculadoraMain.class);
                 startActivity(it3);
                 break;
         }

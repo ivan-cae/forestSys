@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:openDrawer="start"
-    tools:visibility="visible">
+    android:visibility="visible"
+    tools:openDrawer="start">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -22,6 +22,7 @@
             android:layout_marginTop="70dp"
             android:layout_marginEnd="140dp"
             android:text="Calibragem"
+            android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinner_projeto_calibragem" />
@@ -45,6 +46,7 @@
             android:layout_marginTop="70dp"
             android:layout_marginEnd="140dp"
             android:text="Qualidade"
+            android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/botao_calibragem" />
@@ -57,6 +59,7 @@
             android:layout_marginTop="70dp"
             android:layout_marginEnd="140dp"
             android:text="Apontamento"
+            android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/botao_qualidade" />

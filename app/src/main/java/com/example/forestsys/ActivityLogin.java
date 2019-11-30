@@ -105,6 +105,7 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
             }});
     }
 
+    //checa as permissões de localização
     public boolean checarPermissaodeLocalizacao() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)

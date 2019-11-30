@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import java.util.Date;
 
-import static java.lang.String.format;
 
 public class AActivityTesteRelogio extends AppCompatActivity {
 

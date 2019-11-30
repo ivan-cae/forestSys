@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.1"
+    buildToolsVersion '29.0.2'
     defaultConfig {
         applicationId "com.example.forestsys"
         minSdkVersion 23
@@ -35,8 +35,8 @@ dependencies {
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
 
 
-    implementation 'androidx.room:room-runtime:2.2.1'
-    annotationProcessor 'androidx.room:room-compiler:2.2.1'
+    implementation 'androidx.room:room-runtime:2.2.2'
+    annotationProcessor 'androidx.room:room-compiler:2.2.2'
 
 
     def lifecycle_version = "2.1.0"
@@ -46,4 +46,5 @@ dependencies {
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
 
+    implementation files('libs/javaluator-3.0.1.jar')
 }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -47,14 +49,14 @@ public class ActivityConfiguracoes extends AppCompatActivity {
         botaoLogo = (Button) findViewById(R.id.botao_selecionar_imagem);
         imageView = findViewById(R.id.imagem_logo);
 
-        if(preferenceLogo == null) imageView.setImageResource(R.mipmap.ic_login_round);
+        if (preferenceLogo == null) imageView.setImageResource(R.mipmap.ic_login_round);
         else imageView.setImageURI(Uri.parse(preferenceLogo));
 
 
-        //
 
 
-       // if(imageView == null) imageView.setImageResource(R.mipmap.ic_login_round);
+
+        // if(imageView == null) imageView.setImageResource(R.mipmap.ic_login_round);
 
         editNomeEmpresa.setText(nomeEmpresaPref);
 
@@ -64,7 +66,7 @@ public class ActivityConfiguracoes extends AppCompatActivity {
                 getSharedPreferences("nomeEmpresa", MODE_PRIVATE).edit()
                         .putString("nomeEmpresaPref", editNomeEmpresa.getText().toString()).commit();
 
-                if(mudou == true) {
+                if (mudou == true) {
                     getSharedPreferences("imagemLogo", MODE_PRIVATE).edit()
                             .putString("preferenceLogo", mImageUri.toString()).commit();
                 }
@@ -80,6 +82,7 @@ public class ActivityConfiguracoes extends AppCompatActivity {
         });
     }
 
+    //Volta para a ActivityLogin
     public void voltarAoinicio() {
         AlertDialog dialog = new AlertDialog.Builder(ActivityConfiguracoes.this)
                 .setTitle("ERRO")
@@ -109,8 +112,9 @@ public class ActivityConfiguracoes extends AppCompatActivity {
         }
     }
 
+    //Abre a galeria do celular para selecionar uma imagem
     public void selecionarImagem() {
-        checarPermissoes();
+        checarPermissoesDeArmazenamento();
         Intent intent;
         if (Build.VERSION.SDK_INT < 19) {
             intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -123,41 +127,14 @@ public class ActivityConfiguracoes extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Selecionar Imagem"), PICK_IMAGE_REQUEST);
     }
 
-    public void checarPermissoes() {
+    //Checa as permissões de acesso ao armazenamento
+    public void checarPermissoesDeArmazenamento() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
             return;
-        }
-    }
-
-    public static void copiarArquivo(String inputPath) {
-        String outputPath = "R.logos."+inputPath;
-        InputStream in = null;
-        OutputStream out = null;
-        try {
-            in = new FileInputStream(inputPath);
-            out = new FileOutputStream(outputPath);
-
-            byte[] buffer = new byte[1024];
-            int read;
-            while ((read = in.read(buffer)) != -1) {
-                out.write(buffer, 0, read);
-            }
-            in.close();
-            in = null;
-
-            // write the output file (You have now copied the file)
-            out.flush();
-            out.close();
-            out = null;
-
-
-
-        } catch (FileNotFoundException fnfe1) {
-        } catch (Exception e) {
         }
     }
 }
