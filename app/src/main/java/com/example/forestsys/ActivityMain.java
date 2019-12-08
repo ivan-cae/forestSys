@@ -2,6 +2,7 @@ package com.example.forestsys;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -10,6 +11,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -28,11 +31,12 @@ import static com.example.forestsys.ActivityLogin.usuarioLogado;
 
 public class ActivityMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static ClasseOs osSelecionada;
+
     private ViewModelOs viewModelOs;
     private RecyclerView recyclerView;
     private DrawerLayout drawer;
     private AdaptadorOs adaptador;
-    private List<ClasseOs> listaOs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         setTitle(nomeEmpresaPref);
 
+        osSelecionada = null;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
 
         setSupportActionBar(toolbar);
@@ -76,10 +81,10 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         adaptador.setOnItemClickListener(new AdaptadorOs.OnItemClickListener() {
             @Override
             public void onItemClick(ClasseOs classeOs) {
-                Toast.makeText(ActivityMain.this, "Numeral " + classeOs.getStatus().numeral, Toast.LENGTH_SHORT).show();
                 if(classeOs.getStatus().numeral == 1) {
+                    osSelecionada = classeOs;
                     Intent it = new Intent(ActivityMain.this, ActivityContinuarOS.class);
-                    it.putExtra("abrir_os", classeOs);
+                    //it.putExtra("abrir_os", classeOs);
                     startActivity(it);
                 }
             }
@@ -102,11 +107,42 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         });
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater i = getMenuInflater();
-        i.inflate(R.menu.menu_main, menu);
-
+        i.inflate(R.menu.menu_main_action_bar, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.atualizar:
+
+                return true;
+            case R.id.logout:
+                new AlertDialog.Builder(this)
+                        .setTitle("LOGOUT")
+                        .setMessage("Deslogar usuário ?")
+                        .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent it = new Intent(ActivityMain.this, ActivityLogin.class);
+                                boolean deslogou = true;
+                                it.putExtra("deslogar", deslogou);
+                                startActivity(it);
+                            }
+                        })
+                        .setNegativeButton("NÃO",  new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {}
+                        })
+                        .create()
+                        .show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -123,8 +159,6 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.config_login:
-                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_main,
-                 //       new FragmentoCalculadora()).commit();
                 Intent it3 = new Intent(this, CalculadoraMain.class);
                 startActivity(it3);
                 break;
@@ -140,7 +174,24 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            new AlertDialog.Builder(this)
+                    .setTitle("SAIR")
+                    .setMessage("Deseja fechar o aplicativo ?")
+                    .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent it = new Intent(ActivityMain.this, ActivityLogin.class);
+                            boolean fechou = true;
+                            it.putExtra("fechar", fechou);
+                            startActivity(it);
+                        }
+                    })
+                    .setNegativeButton("NÃO",  new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {}
+                    })
+                    .create()
+                    .show();
         }
     }
 }

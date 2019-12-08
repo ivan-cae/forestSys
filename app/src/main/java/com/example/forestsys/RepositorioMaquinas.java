@@ -17,23 +17,31 @@ public class RepositorioMaquinas {
         maquinas = dao.todasMaquinas();
     }
 
+    //retorna uma instância da ClasseMaquinas
+//parâmetro de entrada: id inteiro para busca na tabela ClasseMaquinas
     public LiveData<ClasseMaquinas> getMaquina(int id) {
         return dao.selecionaMaquina(id);
     }
 
+    //retorna uma lista com todos os itens cadastrados na tabela ClasseMaquinas
     public LiveData<List<ClasseMaquinas>> getTodasMaquinas() {
         return maquinas;
     }
 
-
+    //inclui uma instância da ClasseMaquinas no DB
+//parâmetro de entrada: instancia da ClasseMaquinas
     public void insert(ClasseMaquinas classeMaquinas) {
         new RepositorioMaquinas.InsertAsyncTask(dao).execute(classeMaquinas);
     }
 
+    //atualiza uma instância da ClasseMaquinas no DB
+//parâmetro de entrada: instancia da ClasseMaquinas
     public void update(ClasseMaquinas classeMaquinas) {
         new RepositorioMaquinas.UpdateAsyncTask(dao).execute(classeMaquinas);
     }
 
+    //apaga uma instância da ClasseMaquinas no DB
+//parâmetro de entrada: instancia da ClasseMaquinas
     public void delete(ClasseMaquinas classeMaquinas) {
         new RepositorioMaquinas.DeleteAsyncTask(dao).execute(classeMaquinas);
     }

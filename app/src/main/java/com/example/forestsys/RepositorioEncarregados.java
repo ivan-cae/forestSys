@@ -18,23 +18,31 @@ public class RepositorioEncarregados {
         encarregados = dao.todosEncarregados();
     }
 
+    //retorna uma instância da ClasseEncarregado
+    //parâmetro de entrada: numero inteiro para busca de um encarregado pelo id
     public LiveData<ClasseEncarregados> getEncarregado(int id) {
         return dao.selecionaEncarregado(id);
     }
 
+    //retorna uma lista com todos os encarregados
     public LiveData<List<ClasseEncarregados>> getTodosEncarregados() {
         return encarregados;
     }
 
-
+    //inclui uma instância da ClasseEncarregado no DB
+    //parâmetro de entrada: instancia da ClasseEncarregado
     public void insert(ClasseEncarregados classeEncarregados) {
         new InsertAsyncTask(dao).execute(classeEncarregados);
     }
 
+    //atualiza uma instância da ClasseEncarregado no DB
+    //parâmetro de entrada: instancia da ClasseEncarregado
     public void update(ClasseEncarregados classeEncarregados) {
         new UpdateAsyncTask(dao).execute(classeEncarregados);
     }
 
+    //apaga uma instância da ClasseEncarregado no DB
+    //parâmetro de entrada: instancia da ClasseEncarregado
     public void delete(ClasseEncarregados classeEncarregados) {
         new DeleteAsyncTask(dao).execute(classeEncarregados);
     }
@@ -67,7 +75,6 @@ public class RepositorioEncarregados {
             return null;
         }
     }
-
 
     private static class DeleteAsyncTask extends AsyncTask<ClasseEncarregados, Void, Void> {
         private DAO dao;

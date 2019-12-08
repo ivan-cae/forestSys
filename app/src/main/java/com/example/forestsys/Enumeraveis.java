@@ -9,13 +9,14 @@ public class Enumeraveis {
         Admin(1),
         Operador(2);
 
-
         public int numeral;
 
         nivelAcesso(int i) {
             numeral = i;
         }
 
+        //retorna o enumerável nivel de acesso
+        //parâmetro de entrada: numero que indica o enumerável que será retornado
         @TypeConverter
         public static nivelAcesso getNivelAcesso(int numeral) {
             for (nivelAcesso nivel : values()) {
@@ -27,7 +28,6 @@ public class Enumeraveis {
         }
 
         @TypeConverter
-
         public static int getNivelAcessoNumeral(nivelAcesso nivel) {
             return nivel.numeral;
         }
@@ -38,9 +38,9 @@ public class Enumeraveis {
         Alto_Fuste (1),
         Talhadia(2);
 
-
         public int numeral;
-
+        //retorna o enumerável manejo
+        //parâmetro de entrada: numero que indica o enumerável que será retornado
         manejo(int i) {
             numeral = i;
         }
@@ -74,6 +74,8 @@ public class Enumeraveis {
             numeral = i;
         }
 
+        //retorna o enumerável status
+        //parâmetro de entrada: numero que indica o enumerável que será retornado
         @TypeConverter
         public static status getStatus(int numeral) {
             for (status stts : values()) {

@@ -19,15 +19,20 @@ public class ViewModelFazenda extends AndroidViewModel{
         repositorioFazenda = new RepositorioFazenda(application);
         listaFazendas = repositorioFazenda.getTodasFazendas();
     }
-
+//inclui uma instância da ClasseFazenda no DB
+    //parâmetro de entrada: instancia da ClasseFazenda
     public void insert(ClasseFazenda classeFazenda) {
         repositorioFazenda.insert(classeFazenda);
     }
 
+    //atualiza uma instância da ClasseFazenda no DB
+//parâmetro de entrada: instancia da ClasseFazenda
     public void update(ClasseFazenda classeFazenda) {
         repositorioFazenda.update(classeFazenda);
     }
 
+    //apaga uma instância da ClasseFazenda no DB
+//parâmetro de entrada: instancia da ClasseFazenda
     public void delete(ClasseFazenda classeFazenda) {
         repositorioFazenda.delete(classeFazenda);
     }

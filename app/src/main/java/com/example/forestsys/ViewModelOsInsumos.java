@@ -16,14 +16,20 @@ public class ViewModelOsInsumos extends AndroidViewModel {
         listaOsInsumos = repositorioOsInsumos.getTodosOsInsumos();
     }
 
+    //inclui uma instância da ClasseOsInsumos no DB
+//parâmetro de entrada: instancia da ClasseOsInsumos
     public void insert(ClasseOsInsumos classeOsInsumos) {
         repositorioOsInsumos.insert( classeOsInsumos);
     }
 
+    //atualiza uma instância da ClasseOsInsumos no DB
+//parâmetro de entrada: instancia da ClasseOsInsumos
     public void update(ClasseOsInsumos classeOsInsumos) {
         repositorioOsInsumos.update(classeOsInsumos);
     }
 
+    //apaga uma instância da ClasseOsInsumos no DB
+//parâmetro de entrada: instancia da ClasseOsInsumos
     public void delete(ClasseOsInsumos classeOsInsumos) {
         repositorioOsInsumos.delete(classeOsInsumos);
     }

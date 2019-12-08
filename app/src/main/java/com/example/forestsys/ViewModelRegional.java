@@ -20,14 +20,21 @@ public class ViewModelRegional extends AndroidViewModel {
         listaRegional = repositorioRegional.getTodosRegionais();
     }
 
+
+    //inclui uma instância da ClasseRegional no DB
+//parâmetro de entrada: instancia da ClasseRegional
     public void insert(ClasseRegional classeRegional) {
         repositorioRegional.insert(classeRegional);
     }
 
+    //atualiza uma instância da ClasseRegional no DB
+//parâmetro de entrada: instancia da ClasseRegional
     public void update(ClasseRegional classeRegional) {
         repositorioRegional.update(classeRegional);
     }
 
+    //apaga uma instância da ClasseRegional no DB
+//parâmetro de entrada: instancia da ClasseRegional
     public void delete(ClasseRegional classeRegional) {
         repositorioRegional.delete(classeRegional);
     }

@@ -38,7 +38,7 @@
     <Button
         android:id="@+id/botao_limpar"
         style="@style/botaoDestaque"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:layout_below="@+id/editText2"
         android:layout_alignParentStart="true"
@@ -51,7 +51,7 @@
     <Button
         android:id="@+id/botao_backspace"
         style="@style/botaoDestaque"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:layout_below="@+id/editText2"
         android:layout_marginStart="208dp"
@@ -67,7 +67,7 @@
     <Button
         android:id="@+id/botao_percentual"
         style="@style/botaoDestaque"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:layout_above="@+id/botao_adicao"
         android:layout_below="@+id/editText2"
@@ -82,7 +82,7 @@
     <Button
         android:id="@+id/num7"
         style="@style/botaoBranco"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:layout_below="@+id/botao_limpar"
         android:layout_alignParentStart="true"
@@ -94,7 +94,7 @@
     <Button
         android:id="@+id/num8"
         style="@style/botaoBranco"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:layout_below="@id/botao_limpar"
         android:layout_toEndOf="@id/num7"
@@ -106,7 +106,7 @@
     <Button
         android:id="@+id/num9"
         style="@style/botaoBranco"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:layout_below="@id/botao_limpar"
         android:layout_toEndOf="@id/num8"
@@ -116,7 +116,7 @@
         android:text="9" />
 
     <Button
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:text="4"
         android:id="@+id/num4"
@@ -130,7 +130,7 @@
     <Button
         android:id="@+id/num5"
         style="@style/botaoBranco"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:layout_below="@id/num7"
         android:textSize="30sp"
@@ -142,7 +142,7 @@
     <Button
         android:id="@+id/num6"
         style="@style/botaoBranco"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:layout_below="@id/num7"
         android:layout_toEndOf="@id/num5"
@@ -152,7 +152,7 @@
         android:text="6" />
 
     <Button
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:text="1"
         android:id="@+id/num1"
@@ -166,7 +166,7 @@
     <Button
         android:id="@+id/num2"
         style="@style/botaoBranco"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:layout_below="@id/num4"
         android:layout_toEndOf="@id/num1"
@@ -178,7 +178,7 @@
     <Button
         android:id="@+id/num3"
         style="@style/botaoBranco"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:layout_below="@id/num4"
         android:layout_toEndOf="@id/num2"
@@ -190,7 +190,7 @@
     <Button
         android:id="@+id/botao_posneg"
         style="@style/botaoBranco"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:layout_below="@+id/num1"
         android:layout_alignParentStart="true"
@@ -202,7 +202,7 @@
     <Button
         android:id="@+id/num0"
         style="@style/botaoBranco"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:layout_below="@id/num1"
         android:layout_toEndOf="@id/botao_posneg"
@@ -214,7 +214,7 @@
     <Button
         android:id="@+id/botao_ponto"
         style="@style/botaoBranco"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:layout_below="@id/num1"
         android:layout_toEndOf="@+id/num0"
@@ -226,7 +226,7 @@
     <Button
         android:id="@+id/botao_adicao"
         style="@style/botaoDestaque"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:layout_below="@id/botao_limpar"
         android:layout_toEndOf="@id/num9"
@@ -239,7 +239,7 @@
     <Button
         android:id="@+id/botao_subtracao"
         style="@style/botaoDestaque"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:layout_below="@id/num7"
         android:layout_alignParentLeft="false"
@@ -253,7 +253,7 @@
     <Button
         android:id="@+id/botao_dividir"
         style="@style/botaoDestaque"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:layout_below="@id/num4"
         android:layout_toEndOf="@id/num3"
@@ -266,7 +266,7 @@
     <Button
         android:id="@+id/botao_multiplica"
         style="@style/botaoDestaque"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:layout_below="@id/num1"
         android:layout_toEndOf="@id/botao_ponto"
@@ -279,7 +279,7 @@
     <Button
         android:id="@+id/botao_igualdade"
         style="@style/botaoDestaque"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:layout_below="@+id/botao_abre_parenteses"
         android:layout_alignParentStart="true"
@@ -294,7 +294,7 @@
     <Button
         android:id="@+id/botao_quadrado"
         style="@style/botaoDestaque"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:layout_below="@id/num0"
         android:layout_toEndOf="@id/botao_fecha_parenteses"
@@ -307,7 +307,7 @@
     <Button
         android:id="@+id/botao_raiz"
         style="@style/botaoDestaque"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:layout_below="@id/botao_multiplica"
         android:layout_toEndOf="@id/botao_quadrado"
@@ -320,7 +320,7 @@
     <Button
         android:id="@+id/botao_abre_parenteses"
         style="@style/botaoDestaque"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:layout_below="@+id/botao_posneg"
         android:layout_alignParentStart="true"
@@ -333,7 +333,7 @@
     <Button
         android:id="@+id/botao_fecha_parenteses"
         style="@style/botaoDestaque"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="100dp"
         android:layout_below="@id/num0"
         android:layout_toEndOf="@+id/botao_abre_parenteses"

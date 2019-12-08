@@ -20,14 +20,20 @@ public class ViewModelMaquinas extends AndroidViewModel {
         listaMaquinas = repositorioMaquinas.getTodasMaquinas();
     }
 
+    //inclui uma instância da ClasseMaquinas no DB
+//parâmetro de entrada: instancia da ClasseMaquinas
     public void insert(ClasseMaquinas classeMaquinas) {
         repositorioMaquinas.insert(classeMaquinas);
     }
 
+    //atualiza uma instância da ClasseMaquinas no DB
+//parâmetro de entrada: instancia da ClasseMaquinas
     public void update(ClasseMaquinas classeMaquinas) {
         repositorioMaquinas.update(classeMaquinas);
     }
 
+    //apaga uma instância da ClasseMaquinas no DB
+//parâmetro de entrada: instancia da ClasseMaquinas
     public void delete(ClasseMaquinas classeMaquinas) {
         repositorioMaquinas.delete(classeMaquinas);
     }

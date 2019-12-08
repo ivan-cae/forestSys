@@ -17,23 +17,29 @@ public class RepositorioOsInsumos {
         osInsumos = dao.todosInsumos();
     }
 
-    public LiveData<ClasseOsInsumos> getEncarregado(int id) {
+    //retorna uma instância da ClasseOsInsumos
+//parâmetro de entrada: id inteiro para busca na tabela ClasseOsInsumos
+    public LiveData<ClasseOsInsumos> getInsumos(int id) {
         return dao.selecionaInsumo(id);
     }
 
+    //retorna uma lista com todos os itens cadastrados na tabela ClasseOsInsumos
     public LiveData<List<ClasseOsInsumos>> getTodosOsInsumos() {
         return osInsumos;
     }
 
-
+    //inclui uma instância da ClasseOsInsumos no DB
+//parâmetro de entrada: instancia da ClasseOsInsumos
     public void insert(ClasseOsInsumos classeOsInsumos) {
         new RepositorioOsInsumos.InsertAsyncTask(dao).execute(classeOsInsumos);
     }
-
+    //atualiza uma instância da ClasseOsInsumos no DB
+//parâmetro de entrada: instancia da ClasseOsInsumos
     public void update(ClasseOsInsumos classeOsInsumos) {
         new RepositorioOsInsumos.UpdateAsyncTask(dao).execute(classeOsInsumos);
     }
-
+    //apaga uma instância da ClasseOsInsumos no DB
+//parâmetro de entrada: instancia da ClasseOsInsumos
     public void delete(ClasseOsInsumos classeOsInsumos) {
         new RepositorioOsInsumos.DeleteAsyncTask(dao).execute(classeOsInsumos);
     }

@@ -17,23 +17,33 @@ public class RepositorioFazenda {
         fazendas = dao.todasFazendas();
     }
 
+    //retorna uma instância da ClasseFazenda
+    //parâmetro de entrada: id inteiro para busca na tabela ClasseFazenda
     public LiveData<ClasseFazenda> getFazenda(int id) {
         return dao.selecionaFazenda(id);
     }
 
+
+    //retorna uma lista com todos os itens cadastrados na tabela ClasseFazenda
     public LiveData<List<ClasseFazenda>> getTodasFazendas() {
         return fazendas;
     }
 
-
+    //inclui uma instância da ClasseFazenda no DB
+    //parâmetro de entrada: instancia da ClasseFazenda
     public void insert(ClasseFazenda classeFazenda) {
         new RepositorioFazenda.InsertAsyncTask(dao).execute(classeFazenda);
     }
 
+    //atualiza uma instância da ClasseFazenda no DB
+    //parâmetro de entrada: instancia da ClasseFazenda
     public void update(ClasseFazenda classeFazenda) {
         new UpdateAsyncTask(dao).execute(classeFazenda);
     }
 
+
+    //apaga uma instância da ClasseFazenda no DB
+    //parâmetro de entrada: instancia da ClasseFazenda
     public void delete(ClasseFazenda classeFazenda) {
         new DeleteAsyncTask(dao).execute(classeFazenda);
     }

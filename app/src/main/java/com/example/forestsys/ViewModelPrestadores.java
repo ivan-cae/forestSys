@@ -20,14 +20,21 @@ public class ViewModelPrestadores extends AndroidViewModel {
         listaPrestadores = repositorioPrestadores.getTodosPrestadores();
     }
 
+
+    //inclui uma instância da ClassePrestadores no DB
+//parâmetro de entrada: instancia da ClassePrestadores
     public void insert(ClassePrestadores classeMaquinas) {
         repositorioPrestadores.insert(classeMaquinas);
     }
-
+    
+    //atualiza uma instância da ClassePrestadores no DB
+//parâmetro de entrada: instancia da ClassePrestadores
     public void update(ClassePrestadores classeMaquinas) {
         repositorioPrestadores.update(classeMaquinas);
     }
 
+    //apaga uma instância da ClassePrestadores no DB
+//parâmetro de entrada: instancia da ClassePrestadores
     public void delete(ClassePrestadores classeMaquinas) {
         repositorioPrestadores.delete(classeMaquinas);
     }

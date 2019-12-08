@@ -19,14 +19,20 @@ public class ViewModelUpdate extends AndroidViewModel {
         listaUpdate = repositorioUpdate.getTodosUpdates();
     }
 
+    //inclui uma instância da ClasseUpdate no DB
+//parâmetro de entrada: instancia da ClasseUpdate
     public void insert(ClasseUpdate classeUpdate) {
         repositorioUpdate.insert(classeUpdate);
     }
 
+    //atualiza uma instância da ClasseUpdate no DB
+//parâmetro de entrada: instancia da ClasseUpdate
     public void update(ClasseUpdate classeUpdate) {
         repositorioUpdate.update(classeUpdate);
     }
 
+    //apaga uma instância da ClasseUpdate no DB
+//parâmetro de entrada: instancia da ClasseUpdate
     public void delete(ClasseUpdate classeUpdate) {
         repositorioUpdate.delete(classeUpdate);
     }

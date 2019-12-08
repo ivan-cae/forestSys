@@ -45,11 +45,23 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
         toggle.syncState();
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater i = getMenuInflater();
-        i.inflate(R.menu.menu_main, menu);
+        i.inflate(R.menu.menu_action_bar, menu);
 
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.atualizar:
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -83,6 +95,5 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
         } else {
             super.onBackPressed();
         }
-
     }
 }

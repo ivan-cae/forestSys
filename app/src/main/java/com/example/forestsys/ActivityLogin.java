@@ -3,34 +3,20 @@ package com.example.forestsys;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
-
-import android.preference.PreferenceManager;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.Toast;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-
-
 
 public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnMenuItemClickListener{
 
@@ -49,8 +35,19 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        super.onCreate(savedInstanceState);
+        Intent it = getIntent();
+        if(it.hasExtra("fechar")){
+            finishAffinity();
+            moveTaskToBack(true);
+            //Toast.makeText(this, "fechou", Toast.LENGTH_LONG).show();
+        }
+
+        if(it.hasExtra("deslogar")){
+            usuarioLogado=null;
+        }
+
         final EditText usernameEditText = findViewById(R.id.username);
         final EditText passwordEditText = findViewById(R.id.password);
         final Button loginButton = findViewById(R.id.botao_login);
@@ -106,6 +103,7 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
     }
 
     //checa as permissões de localização
+    //retorna true se a permissão for concedida e false se não for
     public boolean checarPermissaodeLocalizacao() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)

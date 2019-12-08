@@ -1,5 +1,4 @@
 package com.example.forestsys;
-
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
@@ -21,7 +19,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import com.example.forestsys.calculadora.i.CalculadoraMain;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,6 +32,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import static com.example.forestsys.ActivityLogin.nomeEmpresaPref;
 import static com.example.forestsys.ActivityLogin.usuarioLogado;
+import static com.example.forestsys.ActivityMain.osSelecionada;
 
 public class ActivityContinuarOS extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
@@ -43,7 +41,6 @@ public class ActivityContinuarOS extends AppCompatActivity
     private DrawerLayout drawer;
     private Button iniciarColeta;
     private TextView idOs;
-    private ClasseOs classeOs;
     GoogleMap mMap;
 
     @Override
@@ -59,11 +56,8 @@ public class ActivityContinuarOS extends AppCompatActivity
         mapFragment.getMapAsync(this);
 
 
-        Intent it = getIntent();
-        classeOs = (ClasseOs) it.getSerializableExtra("abrir_os");
-
         idOs = findViewById(R.id.id_os_continuar);
-        idOs.setText(String.valueOf(classeOs.getId()));
+        idOs.setText(String.valueOf(osSelecionada.getId()));
 
         iniciarColeta = findViewById(R.id.botao_iniciar_coleta);
 
@@ -72,7 +66,6 @@ public class ActivityContinuarOS extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         getSupportActionBar().
-
                 setSubtitle(usuarioLogado.getNome());
 
         drawer = findViewById(R.id.drawer_layout_continuar);
@@ -90,17 +83,9 @@ public class ActivityContinuarOS extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent it = new Intent(ActivityContinuarOS.this, ActivityIniciarColeta.class);
-                it.putExtra("abrir_os", classeOs);
                 startActivity(it);
             }
         });
-    }
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater i = getMenuInflater();
-        i.inflate(R.menu.menu_main, menu);
-
-        return true;
     }
 
     @Override
@@ -128,13 +113,22 @@ public class ActivityContinuarOS extends AppCompatActivity
     }
 
     @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater i = getMenuInflater();
+        i.inflate(R.menu.menu_action_bar, menu);
 
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.atualizar:
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -153,6 +147,7 @@ public class ActivityContinuarOS extends AppCompatActivity
     }
 
     //Desenha um circulo no marcador do mapa
+    //Parâmetro de entrada: variável tipo LatLng indicando a posição do marcador
     private void desenharCirculo(LatLng posicao){
         double raio = 100.0;
         int corLinha = 0xffff0000;
@@ -166,7 +161,8 @@ public class ActivityContinuarOS extends AppCompatActivity
         mMap.addMarker(markerOptions.title("Talhao 1"));
     }
 
-    //chega as permissões de localização
+    //checa as permissões de localização
+    //retorna true se a permissão for concedida e false se não for
     public boolean checarPermissaodeLocalizacao() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -209,6 +205,15 @@ public class ActivityContinuarOS extends AppCompatActivity
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
     }
 }

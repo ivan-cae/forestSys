@@ -19,16 +19,24 @@ public class ViewModelSetor extends AndroidViewModel {
         listaSetor = repositorioSetor.getTodosSetores();
     }
 
+    //retorna uma instância da ClasseSetor
+//parâmetro de entrada: id inteiro para busca na tabela ClasseSetor
     public ClasseSetor consulta (int id){return repositorioSetor.getSetor(id);}
 
+    //inclui uma instância da ClasseSetor no DB
+//parâmetro de entrada: instancia da ClasseSetor
     public void insert(ClasseSetor classeSetor) {
         repositorioSetor.insert(classeSetor);
     }
 
+    //atualiza uma instância da ClasseSetor no DB
+//parâmetro de entrada: instancia da ClasseSetor
     public void update(ClasseSetor classeSetor) {
         repositorioSetor.update(classeSetor);
     }
 
+    //apaga uma instância da ClasseSetor no DB
+//parâmetro de entrada: instancia da ClasseSetor
     public void delete(ClasseSetor classeSetor) {
         repositorioSetor.delete(classeSetor);
     }

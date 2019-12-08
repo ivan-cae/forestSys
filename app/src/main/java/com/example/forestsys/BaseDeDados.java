@@ -34,6 +34,7 @@ public abstract class BaseDeDados extends RoomDatabase {
         return instance;
     }
 
+    //Método usado para popular o DB programaticamente
     private static RoomDatabase.Callback roomCallBack = new RoomDatabase.Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {

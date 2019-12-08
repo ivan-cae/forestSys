@@ -17,22 +17,31 @@ public class RepositorioRegional {
         regionais = dao.todosRegionais();
     }
 
+    //retorna uma instância da ClasseRegional
+//parâmetro de entrada: id inteiro para busca na tabela ClasseRegional
     public ClasseRegional getRegional(int id) {
         return dao.selecionaRegional(id);
     }
 
+    //retorna uma lista com todos os itens cadastrados na tabela ClasseRegional
     public LiveData<List<ClasseRegional>> getTodosRegionais() {
         return regionais;
     }
 
+    //inclui uma instância da ClasseRegional no DB
+//parâmetro de entrada: instancia da ClasseRegional
     public void insert(ClasseRegional classeRegional) {
         new RepositorioRegional.InsertAsyncTask(dao).execute(classeRegional);
     }
 
+    //atualiza uma instância da ClasseRegional no DB
+//parâmetro de entrada: instancia da ClasseRegional
     public void update(ClasseRegional classeRegional) {
         new UpdateAsyncTask(dao).execute(classeRegional);
     }
 
+    //apaga uma instância da ClasseRegional no DB
+//parâmetro de entrada: instancia da ClasseRegional
     public void delete(ClasseRegional classeRegional) {
         new DeleteAsyncTask(dao).execute(classeRegional);
     }
