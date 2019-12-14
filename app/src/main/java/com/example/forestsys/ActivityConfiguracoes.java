@@ -17,12 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 import static com.example.forestsys.ActivityLogin.nomeEmpresaPref;
 import static com.example.forestsys.ActivityLogin.preferenceLogo;
 
@@ -49,7 +43,7 @@ public class ActivityConfiguracoes extends AppCompatActivity {
         botaoLogo = (Button) findViewById(R.id.botao_selecionar_imagem);
         imageView = findViewById(R.id.imagem_logo);
 
-        if (preferenceLogo == null) imageView.setImageResource(R.mipmap.ic_login_round);
+        if (preferenceLogo == null) imageView.setImageResource(R.drawable.logo_forest);
         else imageView.setImageURI(Uri.parse(preferenceLogo));
 
 

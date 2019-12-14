@@ -30,10 +30,24 @@
                                           </PersistentState>
                                         </value>
                                       </entry>
+                                      <entry key="image">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="color" value="000000" />
+                                                <entry key="opacityPercent" value="60" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
                                     </map>
                                   </option>
                                   <option name="values">
                                     <map>
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="imageAsset" value="C:\Users\ivanm\Downloads\Logo Forest Sys Final.png" />
                                       <entry key="themeColor" value="ffffff" />
                                     </map>
                                   </option>
@@ -85,9 +99,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="foregroundAssetType" value="CLIP_ART" />
                                       <entry key="foregroundImage" value="C:\Users\ivanm\Downloads\Logo Forest Sys Final.png" />
-                                      <entry key="outputName" value="ic_calculadora" />
+                                      <entry key="outputName" value="ic_logo_inicializacao" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -135,6 +148,11 @@
                                 </PersistentState>
                               </value>
                             </entry>
+                          </map>
+                        </option>
+                        <option name="values">
+                          <map>
+                            <entry key="outputIconType" value="ACTIONBAR" />
                           </map>
                         </option>
                       </PersistentState>

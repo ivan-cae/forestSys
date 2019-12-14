@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.lifecycle.ViewModelProviders;
 import android.view.View;
 import android.widget.Button;
@@ -64,7 +65,7 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
         preferenceLogo = getSharedPreferences("imagemLogo", MODE_PRIVATE)
                 .getString("preferenceLogo", null);
 
-        if(preferenceLogo == null) imageView.setImageResource(R.mipmap.ic_login_round);
+        if(preferenceLogo == null) imageView.setImageResource(R.drawable.logo_forest);
         else imageView.setImageURI(Uri.parse(preferenceLogo));
 
 
@@ -137,6 +138,27 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
         }
     }
 
+    @Override
+    public void onBackPressed() {
+            new AlertDialog.Builder(this)
+                    .setTitle("SAIR")
+                    .setMessage("Deseja fechar o aplicativo ?")
+                    .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent it = new Intent(ActivityLogin.this, ActivityLogin.class);
+                            boolean fechou = true;
+                            it.putExtra("fechar", fechou);
+                            startActivity(it);
+                        }
+                    })
+                    .setNegativeButton("NÃO",  new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {}
+                    })
+                    .create()
+                    .show();
+        }
 
 /*
     public boolean onMenuItemClick(MenuItem item) {
