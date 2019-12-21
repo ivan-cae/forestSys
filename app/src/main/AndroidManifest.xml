@@ -30,30 +30,26 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".AActivityTesteRelogio"
+        <activity android:name=".activities.AActivityTesteRelogio"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ActivityLogin"
+        <activity android:name=".activities.ActivityLogin"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ActivityConfiguracoes"
+        <activity android:name=".activities.ActivityConfiguracoes"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ActivityValidarAdmin"
+        <activity android:name=".activities.ActivityCalibragem"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ActivityCadastrarUsuario"
+        <activity android:name=".activities.ActivityIniciarColeta"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ActivityCalibragem"
+        <activity android:name=".activities.ActivityContinuarOS"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ActivityIniciarColeta"
+        <activity android:name=".activities.ActivityDashboard"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ActivityContinuarOS"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ActivityDashboard"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ActivityMain"
+        <activity android:name=".activities.ActivityMain"
             android:screenOrientation="portrait"/>
         <activity android:name=".calculadora.i.CalculadoraMain"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ActivityInicializacao"
+            android:name=".activities.ActivityInicializacao"
             android:label="@string/apk_name"
             android:screenOrientation="portrait">
             <intent-filter>

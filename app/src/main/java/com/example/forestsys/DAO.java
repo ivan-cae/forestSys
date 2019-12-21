@@ -6,94 +6,90 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.example.forestsys.classes.ClasseEncarregados;
+import com.example.forestsys.classes.ClasseFazenda;
+import com.example.forestsys.classes.ClasseOs;
+import com.example.forestsys.classes.ClasseOsInsumos;
+import com.example.forestsys.classes.GEO_REGIONAIS;
+import com.example.forestsys.classes.GEO_SETORES;
+import com.example.forestsys.classes.ClasseUpdate;
+import com.example.forestsys.classes.GGF_USUARIOS;
+
 import java.util.List;
 
 @Dao
 public interface DAO {
 
     @Insert
-    void insert (ClasseUsers classeUsers);
+    void insert (GGF_USUARIOS GGFUSUARIOS);
     @Insert
     void insert(ClasseEncarregados classeEncarregados);
     @Insert
     void insert(ClasseFazenda classeFazenda);
     @Insert
-    void insert(ClasseSetor classeSetor);
+    void insert(GEO_SETORES GEOSETORES);
     @Insert
-    void insert(ClasseRegional classeRegional);
+    void insert(GEO_REGIONAIS GEOREGIONAIS);
     @Insert
     void insert(ClasseUpdate classeUpdate);
     @Insert
     void insert(ClasseOsInsumos osInsumos);
     @Insert
     void insert(ClasseOs classeOs);
-    @Insert
-    void insert(ClasseMaquinas classeMaquinas);
-    @Insert
-    void insert(ClassePrestadores classePrestadores);
+
 
 
     @Update
-    void update(ClasseUsers classeUsers);
+    void update(GGF_USUARIOS GGFUSUARIOS);
     @Update
     void update(ClasseEncarregados classeEncarregados);
     @Update
     void update(ClasseFazenda classeFazenda);
     @Update
-    void update(ClasseSetor classeSetor);
+    void update(GEO_SETORES GEOSETORES);
     @Update
-    void update(ClasseRegional classeRegional);
+    void update(GEO_REGIONAIS GEOREGIONAIS);
     @Update
     void update(ClasseUpdate classeUpdate);
     @Update
     void update(ClasseOsInsumos osInsumos);
     @Update
     void update(ClasseOs classeOs);
-    @Update
-    void update(ClasseMaquinas classeMaquinas);
-    @Update
-    void update(ClassePrestadores classePrestadores);
+
+
 
     @Delete
-    void delete(ClasseUsers classeUsers);
+    void delete(GGF_USUARIOS GGFUSUARIOS);
     @Delete
     void delete(ClasseEncarregados classeEncarregados);
     @Delete
     void delete(ClasseFazenda classeFazenda);
     @Delete
-    void delete(ClasseSetor classeSetor);
+    void delete(GEO_SETORES GEOSETORES);
     @Delete
-    void delete(ClasseRegional classeRegional);
+    void delete(GEO_REGIONAIS GEOREGIONAIS);
     @Delete
     void delete(ClasseUpdate classeUpdate);
     @Delete
     void delete(ClasseOsInsumos classeOsInsumos);
     @Delete
     void delete(ClasseOs classeOs);
-    @Delete
-    void delete(ClasseMaquinas classeMaquinas);
-    @Delete
-    void delete(ClassePrestadores classePrestadores);
 
 
-    //Scripts ClasseUsers
-    @Query("SELECT * FROM ClasseUsers ORDER BY id asc")
-    LiveData<List<ClasseUsers>> todosUsers();
 
-    @Query("SELECT * FROM ClasseUsers WHERE id=:taskId")
-    LiveData<ClasseUsers> selecionaUser(int taskId);
+    //Scripts GGF_USUARIOS
+    @Query("SELECT * FROM GGF_USUARIOS ORDER BY ID_USUARIO asc")
+    LiveData<List<GGF_USUARIOS>> todosUsers();
 
-    @Query("SELECT * FROM ClasseUsers WHERE login=:taskLogin AND senha=:taskSenha")
-    ClasseUsers valida(String taskLogin, String taskSenha);
+    @Query("SELECT * FROM GGF_USUARIOS WHERE ID_USUARIO=:taskId")
+    LiveData<GGF_USUARIOS> selecionaUser(int taskId);
 
-    @Query("SELECT * FROM ClasseUsers WHERE login=:taskLogin AND senha=:taskSenha AND nivelAcesso=1")
-    ClasseUsers validaAdmin(String taskLogin, String taskSenha);
+    @Query("SELECT * FROM GGF_USUARIOS WHERE EMAIL=:taskLogin AND senha=:taskSenha")
+    GGF_USUARIOS valida(String taskLogin, String taskSenha);
 
-    @Query("SELECT * FROM ClasseUsers WHERE login=:taskLogin")
-    ClasseUsers validaLogin(String taskLogin);
-
-    @Query("SELECT * FROM ClasseUsers WHERE matricula=:taskMatricula")
-    ClasseUsers validaMatricula(String taskMatricula);
+    @Query("SELECT * FROM GGF_USUARIOS WHERE EMAIL=:taskLogin")
+    GGF_USUARIOS validaLogin(String taskLogin);
 
 
     //Scripts ClasseEncarregados
@@ -112,20 +108,20 @@ public interface DAO {
     LiveData<ClasseFazenda> selecionaFazenda(int taskId);
 
 
-    //Scripts ClasseSetor
-    @Query("SELECT * FROM ClasseSetor ORDER BY id asc")
-    LiveData<List<ClasseSetor>> todosSetores();
+    //Scripts GEO_SETORES
+    @Query("SELECT * FROM GEO_SETORES ORDER BY ID_SETOR asc")
+    LiveData<List<GEO_SETORES>> todosSetores();
 
-    @Query("SELECT * FROM ClasseSetor WHERE id=:taskId")
-    ClasseSetor selecionaSetor(int taskId);
+    @Query("SELECT * FROM GEO_SETORES WHERE ID_SETOR=:taskId")
+    GEO_SETORES selecionaSetor(int taskId);
 
 
-    //Scripts ClasseRegional
-    @Query("SELECT * FROM ClasseRegional ORDER BY id asc")
-    LiveData<List<ClasseRegional>> todosRegionais();
+    //Scripts GEO_REGIONAIS
+    @Query("SELECT * FROM GEO_REGIONAIS ORDER BY ID_REGIONAL asc")
+    LiveData<List<GEO_REGIONAIS>> todosRegionais();
 
-    @Query("SELECT * FROM ClasseRegional WHERE id=:taskId")
-    ClasseRegional selecionaRegional(int taskId);
+    @Query("SELECT * FROM GEO_REGIONAIS WHERE ID_REGIONAL=:taskId")
+    GEO_REGIONAIS selecionaRegional(int taskId);
 
 
     //Scripts ClasseUpdate
@@ -156,20 +152,4 @@ public interface DAO {
 
     @Query("SELECT * FROM ClasseOs ORDER BY id asc")
     List<ClasseOs> selecionaListaOs();
-
-
-    //Scripts ClassePrestadores
-    @Query("SELECT * FROM ClassePrestadores ORDER BY id asc")
-    LiveData<List<ClassePrestadores>> todosPrestadores();
-
-    @Query("SELECT * FROM ClassePrestadores WHERE id=:taskId")
-    LiveData<ClassePrestadores> selecionaPrestador(int taskId);
-
-
-    //Scripts ClasseMaquinas
-    @Query("SELECT * FROM ClasseMaquinas ORDER BY id asc")
-    LiveData<List<ClasseMaquinas>> todasMaquinas();
-
-    @Query("SELECT * FROM ClasseMaquinas WHERE id=:taskId")
-    LiveData<ClasseMaquinas> selecionaMaquina(int taskId);
 }

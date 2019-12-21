@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout_dash"
     tools:openDrawer="start"
-    tools:context=".ActivityDashboard"
+    tools:context=".activities.ActivityDashboard"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">

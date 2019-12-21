@@ -9,11 +9,43 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.example.forestsys.classes.ATIVIDADES;
+import com.example.forestsys.classes.ATIVIDADE_INDICADORES;
+import com.example.forestsys.classes.CADASTRO_FLORESTAL;
+import com.example.forestsys.classes.ClasseEncarregados;
+import com.example.forestsys.classes.ClasseFazenda;
+import com.example.forestsys.classes.ClasseOs;
+import com.example.forestsys.classes.ClasseOsInsumos;
+import com.example.forestsys.classes.ClasseUpdate;
+import com.example.forestsys.classes.ESPACAMENTOS;
+import com.example.forestsys.classes.GEO_REGIONAIS;
+import com.example.forestsys.classes.GEO_SETORES;
+import com.example.forestsys.classes.GGF_DEPARTAMENTOS;
+import com.example.forestsys.classes.GGF_FUNCOES;
+import com.example.forestsys.classes.GGF_USUARIOS;
+import com.example.forestsys.classes.IMPLEMENTOS;
+import com.example.forestsys.classes.INSUMOS;
+import com.example.forestsys.classes.INSUMO_ATIVIDADES;
+import com.example.forestsys.classes.LOG;
+import com.example.forestsys.classes.MANEJO;
+import com.example.forestsys.classes.MAQUINAS;
+import com.example.forestsys.classes.MAQUINAS_IMPLEMENTO;
+import com.example.forestsys.classes.MATERIAL_GENETICO;
+import com.example.forestsys.classes.OPERADORES;
+import com.example.forestsys.classes.O_S_ATIVIDADES;
+import com.example.forestsys.classes.O_S_ATIVIDADES_DIA;
+import com.example.forestsys.classes.O_S_ATIVIDADE_INSUMOS_DIA;
+import com.example.forestsys.classes.PRESTADORES;
+import com.example.forestsys.classes.TPRODUTO;
+import com.example.forestsys.classes.USUARIO;
 
 
-@Database(entities = {ClasseUsers.class, ClasseEncarregados.class, ClasseFazenda.class, ClasseSetor.class,
-                        ClasseRegional.class, ClasseUpdate.class, ClasseOsInsumos.class, ClasseOs.class,
-                            ClasseMaquinas.class, ClassePrestadores.class}, version = 1, exportSchema = false)
+@Database(entities = {ATIVIDADE_INDICADORES.class, ATIVIDADES.class, CADASTRO_FLORESTAL.class, ClasseEncarregados.class,
+        ClasseFazenda.class, ClasseOs.class, ClasseOsInsumos.class, ClasseUpdate.class, ESPACAMENTOS.class, GEO_REGIONAIS.class,
+        GEO_SETORES.class, GGF_DEPARTAMENTOS.class, GGF_FUNCOES.class, GGF_USUARIOS.class, IMPLEMENTOS.class, INSUMO_ATIVIDADES.class,
+        INSUMOS.class, LOG.class, MANEJO.class, MAQUINAS.class, MAQUINAS_IMPLEMENTO.class, MATERIAL_GENETICO.class,
+        O_S_ATIVIDADE_INSUMOS_DIA.class, O_S_ATIVIDADES.class, O_S_ATIVIDADES_DIA.class, OPERADORES.class,
+        PRESTADORES.class, TPRODUTO.class, USUARIO.class}, version = 1, exportSchema = false)
 
 
 public abstract class BaseDeDados extends RoomDatabase {
@@ -53,47 +85,8 @@ public abstract class BaseDeDados extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            //inserir adimistrador
-            auxDao.insert(new ClasseUsers("ForestSys", "01", "ForestSys", Enumeraveis.nivelAcesso.getNivelAcesso(1), "a", "a"));
-
-            //inserir Setor
-            auxDao.insert(new ClasseSetor("SARACURAS"));
-            auxDao.insert(new ClasseSetor("PINDAIBAS"));
-            auxDao.insert(new ClasseSetor("CASTELO"));
-
-            //inserir Regional
-            auxDao.insert(new ClasseRegional("MG 15"));
-
-            //inserir OS
-            auxDao.insert(new ClasseOs(1,1,1,1, 1,1,1,1,1,
-                    1,Enumeraveis.manejo.getManejo(1),"a",null,48,false
-                    ,true,"1",
-                    Enumeraveis.status.getStatus(2),"1",false));
-
-            auxDao.insert(new ClasseOs(1,1,1,2,1, 1,1,1,1,
-                    1,Enumeraveis.manejo.getManejo(2),"a",null,26,false
-                    ,true,"1",
-                    Enumeraveis.status.getStatus(1),"1",false));
-
-            auxDao.insert(new ClasseOs(1,1,1,3,1,1, 1,1,1,
-                    1,Enumeraveis.manejo.getManejo(1),"a",null,33,false
-                    ,true,"1",
-                    Enumeraveis.status.getStatus(2),"1",false));
-
-            auxDao.insert(new ClasseOs(1,1,1,1,1,1,1, 1,1,
-                    1,Enumeraveis.manejo.getManejo(2),"a",null,48,false
-                    ,true,"1",
-                    Enumeraveis.status.getStatus(1),"1",false));
-
-            auxDao.insert(new ClasseOs(1,1,1,2,1,1,1,1, 1,
-                    1,Enumeraveis.manejo.getManejo(1),"a",null,26,false
-                    ,true,"1",
-                    Enumeraveis.status.getStatus(2),"1",false));
-
-            auxDao.insert(new ClasseOs(1,1,1,3,1,1,1,1, 1,
-                    1,Enumeraveis.manejo.getManejo(2),"a",null,33,false
-                    ,true,"1",
-                    Enumeraveis.status.getStatus(1),"1",false));
+            //inserir usuario
+            auxDao.insert(new GGF_USUARIOS(1, "a", "a"));
             return null;
         }
     }

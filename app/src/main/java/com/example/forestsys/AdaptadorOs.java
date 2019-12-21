@@ -3,14 +3,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.forestsys.classes.ClasseOs;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +43,6 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
         holder.status.setText(ordem.getStatus().toString());
         holder.numero.setText(String.valueOf(ordem.getId()));
         holder.atividade.setText(String.valueOf(ordem.getId_atividade()));
-        holder.setor.setText(dao.selecionaSetor(ordem.getId_setor()).getSetor());
         holder.talhao.setText(String.valueOf(ordem.getId_talhao()));
         holder.area.setText(String.valueOf(ordem.getArea()));
         holder.data.setText("");
