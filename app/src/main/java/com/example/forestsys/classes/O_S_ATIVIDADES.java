@@ -21,6 +21,11 @@ import java.sql.Date;
                         parentColumns = "ID_ATIVIDADE",
                         childColumns = "ID_ATIVIDADE",
                         onDelete = ForeignKey.NO_ACTION,
+                        onUpdate = ForeignKey.NO_ACTION),
+                @ForeignKey(entity = GGF_USUARIOS.class,
+                        parentColumns = "ID_USUARIO",
+                        childColumns = "ID_RESPONSAVEL",
+                        onDelete = ForeignKey.NO_ACTION,
                         onUpdate = ForeignKey.NO_ACTION)})
 
 public class O_S_ATIVIDADES {
@@ -46,6 +51,9 @@ public class O_S_ATIVIDADES {
     @ColumnInfo(name = "ID_ATIVIDADE")
     private int ID_ATIVIDADE;
 
+    @ColumnInfo(name = "ID_RESPONSAVEL")
+    private int ID_RESPONSAVEL;
+
     @TypeConverters({TimestampConverter.class})
     private Date DATA_PROGRAMADA;
 
@@ -63,10 +71,9 @@ public class O_S_ATIVIDADES {
 
     private double AREA_REALIZADA;
 
-    public O_S_ATIVIDADES(int ID_PROGRAMACAO_ATIVIDADE, int ID_REGIONAL, int ID_SETOR, int TALHAO, int CICLO, int ID_MANEJO,
-                          int ID_ATIVIDADE, Date DATA_PROGRAMADA, double AREA_PROGRAMADA,
-                          int PRIORIDADE, int EXPERIMENTO, int MADEIRA_NO_TALHAO, String OBSERVACAO,
-                          Date DATA_INICIAL, Date DATA_FINAL, double AREA_REALIZADA) {
+    public O_S_ATIVIDADES(int ID_PROGRAMACAO_ATIVIDADE, int ID_REGIONAL, int ID_SETOR, int TALHAO, int CICLO, int ID_MANEJO, int ID_ATIVIDADE,
+                          int ID_RESPONSAVEL, Date DATA_PROGRAMADA, double AREA_PROGRAMADA, int PRIORIDADE, int EXPERIMENTO, int MADEIRA_NO_TALHAO,
+                          String OBSERVACAO, Date DATA_INICIAL, Date DATA_FINAL, double AREA_REALIZADA) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.ID_REGIONAL = ID_REGIONAL;
         this.ID_SETOR = ID_SETOR;
@@ -74,6 +81,7 @@ public class O_S_ATIVIDADES {
         this.CICLO = CICLO;
         this.ID_MANEJO = ID_MANEJO;
         this.ID_ATIVIDADE = ID_ATIVIDADE;
+        this.ID_RESPONSAVEL = ID_RESPONSAVEL;
         this.DATA_PROGRAMADA = DATA_PROGRAMADA;
         this.AREA_PROGRAMADA = AREA_PROGRAMADA;
         this.PRIORIDADE = PRIORIDADE;
@@ -139,6 +147,14 @@ public class O_S_ATIVIDADES {
 
     public void setID_ATIVIDADE(int ID_ATIVIDADE) {
         this.ID_ATIVIDADE = ID_ATIVIDADE;
+    }
+
+    public int getID_RESPONSAVEL() {
+        return ID_RESPONSAVEL;
+    }
+
+    public void setID_RESPONSAVEL(int ID_RESPONSAVEL) {
+        this.ID_RESPONSAVEL = ID_RESPONSAVEL;
     }
 
     public Date getDATA_PROGRAMADA() {

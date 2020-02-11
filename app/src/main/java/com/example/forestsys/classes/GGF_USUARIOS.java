@@ -40,7 +40,9 @@ public class GGF_USUARIOS implements Serializable {
     private int ID_FUNCAO;
 
     private String SENHA;
+
     private int ATIVO;
+
     private String EMAIL;
 
     @ColumnInfo(name = "DESCRICAO")

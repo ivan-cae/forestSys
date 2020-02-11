@@ -9,17 +9,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.forestsys.classes.ClasseOs;
-
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> implements Filterable {
-    private List<ClasseOs> ordens = new ArrayList<>();
-    private List<ClasseOs> ordensFiltradas;
-    private OnItemClickListener listener;
-    private DAO dao;
+public class AdaptadorOs{ //extends RecyclerView.Adapter<AdaptadorOs.OsHolder> implements Filterable {
+    //private List<ClasseOs> ordens = new ArrayList<>();
+    //private List<ClasseOs> ordensFiltradas;
+    //private OnItemClickListener listener;
+    /*private DAO dao;
     Context context = ApplicationTodos.getAppContext();
 
 
@@ -38,7 +36,7 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
         BaseDeDados baseDeDados = BaseDeDados.getInstance(context);
         dao = baseDeDados.dao();
 
-        ClasseOs ordem = ordens.get(position);
+       /* ClasseOs ordem = ordens.get(position);
 
         holder.status.setText(ordem.getStatus().toString());
         holder.numero.setText(String.valueOf(ordem.getId()));
@@ -46,10 +44,10 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
         holder.talhao.setText(String.valueOf(ordem.getId_talhao()));
         holder.area.setText(String.valueOf(ordem.getArea()));
         holder.data.setText("");
-        holder.atualizacao.setText("");
+        holder.atualizacao.setText("");*/
     }
 
-    @Override
+/*    @Override
     public int getItemCount() {
         return ordens.size();
     }
@@ -59,8 +57,8 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
         ordensFiltradas = new ArrayList<>(ordens);
         notifyDataSetChanged();
     }
-
-    class OsHolder extends RecyclerView.ViewHolder {
+*/
+    /*class OsHolder extends RecyclerView.ViewHolder {
         private TextView status;
         private TextView numero;
         private TextView atividade;
@@ -71,7 +69,7 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
         private TextView atualizacao;
 
 
-        public OsHolder(@NonNull View itemView) {
+        /*public OsHolder(@NonNull View itemView) {
             super(itemView);
             numero = itemView.findViewById(R.id.numero_item_lista);
             status = itemView.findViewById(R.id.status_item_lista);
@@ -128,11 +126,10 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
             return resultado;
         }
 
-        @Override
+        /*@Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             ordens.clear();
             ordens.addAll((List)results.values);
             notifyDataSetChanged();
         }
-    };
-}
+    };*/

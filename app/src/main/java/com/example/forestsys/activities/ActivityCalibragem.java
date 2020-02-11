@@ -18,7 +18,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
 import static com.example.forestsys.activities.ActivityLogin.usuarioLogado;
-import static com.example.forestsys.activities.ActivityMain.osSelecionada;
+//import static com.example.forestsys.activities.ActivityMain.osSelecionada;
 
 public class ActivityCalibragem extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private DrawerLayout drawer;
@@ -30,7 +30,7 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
         setTitle(nomeEmpresaPref);
 
         idOs = findViewById(R.id.id_os_calibragem);
-        idOs.setText(String.valueOf(osSelecionada.getId()));
+     //   idOs.setText(String.valueOf(osSelecionada.getId()));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_calibragem);
 

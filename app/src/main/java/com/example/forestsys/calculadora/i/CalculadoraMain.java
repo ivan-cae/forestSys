@@ -228,7 +228,7 @@ public class CalculadoraMain extends AppCompatActivity {
 
     }
 
-    //Recebe o operador e a operação para mostrar na tela
+    //Recebe um operador e o mostra na tela junto com seu operando
     private void operacao(String op) {
         if (e2.length() != 0) {
             String texto = e2.getText().toString();

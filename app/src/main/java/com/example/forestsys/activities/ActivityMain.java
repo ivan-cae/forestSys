@@ -22,9 +22,7 @@ import android.widget.SearchView;
 
 import com.example.forestsys.AdaptadorOs;
 import com.example.forestsys.R;
-import com.example.forestsys.viewModels.ViewModelOs;
-import com.example.forestsys.calculadora.i.CalculadoraMain;
-import com.example.forestsys.classes.ClasseOs;
+import com.example.forestsys.calculadora.i.CalcularFormulas;
 import com.google.android.material.navigation.NavigationView;
 import java.util.List;
 
@@ -33,9 +31,9 @@ import static com.example.forestsys.activities.ActivityLogin.usuarioLogado;
 
 public class ActivityMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static ClasseOs osSelecionada;
+   // public static ClasseOs osSelecionada;
 
-    private ViewModelOs viewModelOs;
+    //private ViewModelOs viewModelOs;
     private RecyclerView recyclerView;
     private DrawerLayout drawer;
     private AdaptadorOs adaptador;
@@ -46,7 +44,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         setTitle(nomeEmpresaPref);
 
-        osSelecionada = null;
+      //  osSelecionada = null;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
 
         setSupportActionBar(toolbar);
@@ -69,9 +67,9 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
 
 
         adaptador = new AdaptadorOs();
-        recyclerView.setAdapter(adaptador);
+        //recyclerView.setAdapter(adaptador);
 
-        viewModelOs = ViewModelProviders.of(this).get(ViewModelOs.class);
+        /*viewModelOs = ViewModelProviders.of(this).get(ViewModelOs.class);
         viewModelOs.getTodasOS().observe(this, new Observer<List<ClasseOs>>() {
             @Override
             public void onChanged(@Nullable List<ClasseOs> ordemServicos) {
@@ -90,7 +88,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                     startActivity(it);
                 }
             }
-        });
+        });*/
 
         SearchView sv=(SearchView) findViewById(R.id.searchview);
 
@@ -103,7 +101,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
 
             @Override
             public boolean onQueryTextChange(String s) {
-                adaptador.getFilter().filter(s);
+                //adaptador.getFilter().filter(s);
                 return false;
             }
         });
@@ -161,7 +159,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.config_login:
-                Intent it3 = new Intent(this, CalculadoraMain.class);
+                Intent it3 = new Intent(this, CalcularFormulas.class);
                 startActivity(it3);
                 break;
         }

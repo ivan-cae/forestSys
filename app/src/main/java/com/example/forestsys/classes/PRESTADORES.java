@@ -11,6 +11,7 @@ import androidx.room.PrimaryKey;
 public class PRESTADORES {
     @PrimaryKey
     private int ID_PRESTADOR;
+
     private int ATIVO;
 
     @ColumnInfo(name = "DESCRICAO")

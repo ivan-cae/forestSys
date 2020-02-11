@@ -7,10 +7,6 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.example.forestsys.classes.ClasseEncarregados;
-import com.example.forestsys.classes.ClasseFazenda;
-import com.example.forestsys.classes.ClasseOs;
-import com.example.forestsys.classes.ClasseOsInsumos;
 import com.example.forestsys.classes.GEO_REGIONAIS;
 import com.example.forestsys.classes.GEO_SETORES;
 import com.example.forestsys.classes.ClasseUpdate;
@@ -24,57 +20,31 @@ public interface DAO {
     @Insert
     void insert (GGF_USUARIOS GGFUSUARIOS);
     @Insert
-    void insert(ClasseEncarregados classeEncarregados);
-    @Insert
-    void insert(ClasseFazenda classeFazenda);
-    @Insert
     void insert(GEO_SETORES GEOSETORES);
     @Insert
     void insert(GEO_REGIONAIS GEOREGIONAIS);
     @Insert
     void insert(ClasseUpdate classeUpdate);
-    @Insert
-    void insert(ClasseOsInsumos osInsumos);
-    @Insert
-    void insert(ClasseOs classeOs);
-
 
 
     @Update
     void update(GGF_USUARIOS GGFUSUARIOS);
-    @Update
-    void update(ClasseEncarregados classeEncarregados);
-    @Update
-    void update(ClasseFazenda classeFazenda);
     @Update
     void update(GEO_SETORES GEOSETORES);
     @Update
     void update(GEO_REGIONAIS GEOREGIONAIS);
     @Update
     void update(ClasseUpdate classeUpdate);
-    @Update
-    void update(ClasseOsInsumos osInsumos);
-    @Update
-    void update(ClasseOs classeOs);
-
 
 
     @Delete
     void delete(GGF_USUARIOS GGFUSUARIOS);
-    @Delete
-    void delete(ClasseEncarregados classeEncarregados);
-    @Delete
-    void delete(ClasseFazenda classeFazenda);
     @Delete
     void delete(GEO_SETORES GEOSETORES);
     @Delete
     void delete(GEO_REGIONAIS GEOREGIONAIS);
     @Delete
     void delete(ClasseUpdate classeUpdate);
-    @Delete
-    void delete(ClasseOsInsumos classeOsInsumos);
-    @Delete
-    void delete(ClasseOs classeOs);
 
 
 
@@ -93,7 +63,7 @@ public interface DAO {
 
 
     //Scripts ClasseEncarregados
-    @Query("SELECT * FROM ClasseEncarregados ORDER BY id asc")
+    /*@Query("SELECT * FROM ClasseEncarregados ORDER BY id asc")
     LiveData<List<ClasseEncarregados>> todosEncarregados();
 
     @Query("SELECT * FROM ClasseEncarregados WHERE id=:taskId")
@@ -107,7 +77,7 @@ public interface DAO {
     @Query("SELECT * FROM ClasseFazenda WHERE id=:taskId")
     LiveData<ClasseFazenda> selecionaFazenda(int taskId);
 
-
+*/
     //Scripts GEO_SETORES
     @Query("SELECT * FROM GEO_SETORES ORDER BY ID_SETOR asc")
     LiveData<List<GEO_SETORES>> todosSetores();
@@ -135,15 +105,7 @@ public interface DAO {
     LiveData<List<ClasseUpdate>> selecionaOsUpdate(int osId);
 
 
-    //Scripts ClasseUpdate
-    @Query("SELECT * FROM ClasseOsInsumos ORDER BY id asc")
-    LiveData<List<ClasseOsInsumos>> todosInsumos();
-
-    @Query("SELECT * FROM ClasseOsInsumos WHERE id=:taskId")
-    LiveData<ClasseOsInsumos> selecionaInsumo(int taskId);
-
-
-    //Scripts ClasseOs
+    /*//Scripts ClasseOs
     @Query("SELECT * FROM ClasseOs ORDER BY id asc")
     LiveData<List<ClasseOs>> todasOs();
 
@@ -152,4 +114,6 @@ public interface DAO {
 
     @Query("SELECT * FROM ClasseOs ORDER BY id asc")
     List<ClasseOs> selecionaListaOs();
+
+     */
 }

@@ -11,15 +11,16 @@ import androidx.room.PrimaryKey;
 public class GGF_FUNCOES {
     @PrimaryKey
     private int ID_FUNCAO;
-    private int ATIVO;
 
     @ColumnInfo(name = "DESCRICAO")
     private String DESCRICAO;
 
-    public GGF_FUNCOES(int ID_FUNCAO, int ATIVO, String DESCRICAO) {
+    private int ATIVO;
+
+    public GGF_FUNCOES(int ID_FUNCAO, String DESCRICAO, int ATIVO) {
         this.ID_FUNCAO = ID_FUNCAO;
-        this.ATIVO = ATIVO;
         this.DESCRICAO = DESCRICAO;
+        this.ATIVO = ATIVO;
     }
 
     public int getID_FUNCAO() {
@@ -30,19 +31,19 @@ public class GGF_FUNCOES {
         this.ID_FUNCAO = ID_FUNCAO;
     }
 
-    public int getATIVO() {
-        return ATIVO;
-    }
-
-    public void setATIVO(int ATIVO) {
-        this.ATIVO = ATIVO;
-    }
-
     public String getDESCRICAO() {
         return DESCRICAO;
     }
 
     public void setDESCRICAO(String DESCRICAO) {
         this.DESCRICAO = DESCRICAO;
+    }
+
+    public int getATIVO() {
+        return ATIVO;
+    }
+
+    public void setATIVO(int ATIVO) {
+        this.ATIVO = ATIVO;
     }
 }

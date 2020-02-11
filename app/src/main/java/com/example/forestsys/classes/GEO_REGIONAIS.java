@@ -11,17 +11,19 @@ import java.io.Serializable;
 public class GEO_REGIONAIS implements Serializable {
     @PrimaryKey
     private int ID_REGIONAL;
-    private int SETOR_TODOS;
-    private int ATIVO;
 
     @ColumnInfo(name = "DESCRICAO")
     private String DESCRICAO;
 
-    public GEO_REGIONAIS(int ID_REGIONAL, int SETOR_TODOS, int ATIVO, String DESCRICAO) {
+    private int SETOR_TODOS;
+
+    private int ATIVO;
+
+    public GEO_REGIONAIS(int ID_REGIONAL, String DESCRICAO, int SETOR_TODOS, int ATIVO) {
         this.ID_REGIONAL = ID_REGIONAL;
+        this.DESCRICAO = DESCRICAO;
         this.SETOR_TODOS = SETOR_TODOS;
         this.ATIVO = ATIVO;
-        this.DESCRICAO = DESCRICAO;
     }
 
     public int getID_REGIONAL() {
@@ -30,6 +32,14 @@ public class GEO_REGIONAIS implements Serializable {
 
     public void setID_REGIONAL(int ID_REGIONAL) {
         this.ID_REGIONAL = ID_REGIONAL;
+    }
+
+    public String getDESCRICAO() {
+        return DESCRICAO;
+    }
+
+    public void setDESCRICAO(String DESCRICAO) {
+        this.DESCRICAO = DESCRICAO;
     }
 
     public int getSETOR_TODOS() {
@@ -46,13 +56,5 @@ public class GEO_REGIONAIS implements Serializable {
 
     public void setATIVO(int ATIVO) {
         this.ATIVO = ATIVO;
-    }
-
-    public String getDESCRICAO() {
-        return DESCRICAO;
-    }
-
-    public void setDESCRICAO(String DESCRICAO) {
-        this.DESCRICAO = DESCRICAO;
     }
 }

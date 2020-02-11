@@ -10,15 +10,16 @@ import androidx.room.PrimaryKey;
 public class ATIVIDADES {
     @PrimaryKey
     private int ID_ATIVIDADE;
-    private int ATIVO;
 
     @ColumnInfo (name = "DESCRICAO")
     private String DESCRICAO;
 
-    public ATIVIDADES(int ID_ATIVIDADE, int ATIVO, String DESCRICAO) {
+    private int ATIVO;
+
+    public ATIVIDADES(int ID_ATIVIDADE, String DESCRICAO, int ATIVO) {
         this.ID_ATIVIDADE = ID_ATIVIDADE;
-        this.ATIVO = ATIVO;
         this.DESCRICAO = DESCRICAO;
+        this.ATIVO = ATIVO;
     }
 
     public int getID_ATIVIDADE() {
@@ -29,19 +30,19 @@ public class ATIVIDADES {
         this.ID_ATIVIDADE = ID_ATIVIDADE;
     }
 
-    public int getATIVO() {
-        return ATIVO;
-    }
-
-    public void setATIVO(int ATIVO) {
-        this.ATIVO = ATIVO;
-    }
-
     public String getDESCRICAO() {
         return DESCRICAO;
     }
 
     public void setDESCRICAO(String DESCRICAO) {
         this.DESCRICAO = DESCRICAO;
+    }
+
+    public int getATIVO() {
+        return ATIVO;
+    }
+
+    public void setATIVO(int ATIVO) {
+        this.ATIVO = ATIVO;
     }
 }

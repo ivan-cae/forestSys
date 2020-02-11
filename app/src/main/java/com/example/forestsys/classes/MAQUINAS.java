@@ -10,17 +10,19 @@ import androidx.room.PrimaryKey;
 )
 
 public class MAQUINAS {
+
     @PrimaryKey
     private int ID_MAQUINA;
-    private int ATIVO;
 
     @ColumnInfo(name = "DESCRICAO")
     private String DESCRICAO;
 
-    public MAQUINAS(int ID_MAQUINA, int ATIVO, String DESCRICAO) {
+    private int ATIVO;
+
+    public MAQUINAS(int ID_MAQUINA, String DESCRICAO, int ATIVO) {
         this.ID_MAQUINA = ID_MAQUINA;
-        this.ATIVO = ATIVO;
         this.DESCRICAO = DESCRICAO;
+        this.ATIVO = ATIVO;
     }
 
     public int getID_MAQUINA() {
@@ -31,19 +33,19 @@ public class MAQUINAS {
         this.ID_MAQUINA = ID_MAQUINA;
     }
 
-    public int getATIVO() {
-        return ATIVO;
-    }
-
-    public void setATIVO(int ATIVO) {
-        this.ATIVO = ATIVO;
-    }
-
     public String getDESCRICAO() {
         return DESCRICAO;
     }
 
     public void setDESCRICAO(String DESCRICAO) {
         this.DESCRICAO = DESCRICAO;
+    }
+
+    public int getATIVO() {
+        return ATIVO;
+    }
+
+    public void setATIVO(int ATIVO) {
+        this.ATIVO = ATIVO;
     }
 }

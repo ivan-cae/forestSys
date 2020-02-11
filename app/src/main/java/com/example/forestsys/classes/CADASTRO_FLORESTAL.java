@@ -43,45 +43,51 @@ public class CADASTRO_FLORESTAL {
     @NonNull
     @ColumnInfo (name = "ID_REGIONAL")
     private int ID_REGIONAL;
+
     @NonNull
     @ColumnInfo (name ="ID_SETOR")
     private int ID_SETOR;
-    @NonNull
-    @ColumnInfo (name = "ID_MANEJO")
-    private int ID_MANEJO;
-    @NonNull
-    @ColumnInfo (name = "ID_MATERIAL_GENETICO")
-    private int ID_MATERIAL_GENETICO;
-    @NonNull
-    @ColumnInfo (name = "ID_ESPACAMENTO")
-    private int ID_ESPACAMENTO;
+
     @NonNull
     @ColumnInfo (name = "TALHAO")
     private String TALHAO;
+
     @NonNull
     @ColumnInfo (name = "CICLO")
-	private int CICLO;
+    private int CICLO;
+
+    @NonNull
+    @ColumnInfo (name = "ID_MANEJO")
+    private int ID_MANEJO;
 
     @TypeConverters({TimestampConverter.class})
-	private Date DATA_MANEJO;
+    private Date DATA_MANEJO;
 
-	private String OBSERVACAO;
+    @NonNull
+    @ColumnInfo (name = "ID_MATERIAL_GENETICO")
+    private int ID_MATERIAL_GENETICO;
+
+    @NonNull
+    @ColumnInfo (name = "ID_ESPACAMENTO")
+    private int ID_ESPACAMENTO;
+
+    private String OBSERVACAO;
+
 	private int ATIVO;
 
     @TypeConverters({TimestampConverter.class})
 	private Date DATA_PROGRAMACAO_REFORMA;
 
-    public CADASTRO_FLORESTAL(int ID_REGIONAL, int ID_SETOR, int ID_MANEJO, int ID_MATERIAL_GENETICO,
-                              int ID_ESPACAMENTO, String TALHAO, int CICLO, Date DATA_MANEJO, String OBSERVACAO,
-                              int ATIVO, Date DATA_PROGRAMACAO_REFORMA) {
+    public CADASTRO_FLORESTAL(int ID_REGIONAL, int ID_SETOR, @NonNull String TALHAO, int CICLO, int ID_MANEJO, Date DATA_MANEJO,
+                              int ID_MATERIAL_GENETICO, int ID_ESPACAMENTO, String OBSERVACAO, int ATIVO, Date DATA_PROGRAMACAO_REFORMA) {
         this.ID_REGIONAL = ID_REGIONAL;
         this.ID_SETOR = ID_SETOR;
-        this.ID_MANEJO = ID_MANEJO;
-        this.ID_MATERIAL_GENETICO = ID_MATERIAL_GENETICO;
-        this.ID_ESPACAMENTO = ID_ESPACAMENTO;
         this.TALHAO = TALHAO;
         this.CICLO = CICLO;
+        this.ID_MANEJO = ID_MANEJO;
         this.DATA_MANEJO = DATA_MANEJO;
+        this.ID_MATERIAL_GENETICO = ID_MATERIAL_GENETICO;
+        this.ID_ESPACAMENTO = ID_ESPACAMENTO;
         this.OBSERVACAO = OBSERVACAO;
         this.ATIVO = ATIVO;
         this.DATA_PROGRAMACAO_REFORMA = DATA_PROGRAMACAO_REFORMA;
@@ -103,12 +109,37 @@ public class CADASTRO_FLORESTAL {
         this.ID_SETOR = ID_SETOR;
     }
 
+    @NonNull
+    public String getTALHAO() {
+        return TALHAO;
+    }
+
+    public void setTALHAO(@NonNull String TALHAO) {
+        this.TALHAO = TALHAO;
+    }
+
+    public int getCICLO() {
+        return CICLO;
+    }
+
+    public void setCICLO(int CICLO) {
+        this.CICLO = CICLO;
+    }
+
     public int getID_MANEJO() {
         return ID_MANEJO;
     }
 
     public void setID_MANEJO(int ID_MANEJO) {
         this.ID_MANEJO = ID_MANEJO;
+    }
+
+    public Date getDATA_MANEJO() {
+        return DATA_MANEJO;
+    }
+
+    public void setDATA_MANEJO(Date DATA_MANEJO) {
+        this.DATA_MANEJO = DATA_MANEJO;
     }
 
     public int getID_MATERIAL_GENETICO() {
@@ -125,30 +156,6 @@ public class CADASTRO_FLORESTAL {
 
     public void setID_ESPACAMENTO(int ID_ESPACAMENTO) {
         this.ID_ESPACAMENTO = ID_ESPACAMENTO;
-    }
-
-    public String getTALHAO() {
-        return TALHAO;
-    }
-
-    public void setTALHAO(String TALHAO) {
-        this.TALHAO = TALHAO;
-    }
-
-    public int getCICLO() {
-        return CICLO;
-    }
-
-    public void setCICLO(int CICLO) {
-        this.CICLO = CICLO;
-    }
-
-    public Date getDATA_MANEJO() {
-        return DATA_MANEJO;
-    }
-
-    public void setDATA_MANEJO(Date DATA_MANEJO) {
-        this.DATA_MANEJO = DATA_MANEJO;
     }
 
     public String getOBSERVACAO() {

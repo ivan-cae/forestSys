@@ -34,7 +34,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
 import static com.example.forestsys.activities.ActivityLogin.usuarioLogado;
-import static com.example.forestsys.activities.ActivityMain.osSelecionada;
+//import static com.example.forestsys.activities.ActivityMain.osSelecionada;
 
 public class ActivityContinuarOS extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
@@ -59,7 +59,7 @@ public class ActivityContinuarOS extends AppCompatActivity
 
 
         idOs = findViewById(R.id.id_os_continuar);
-        idOs.setText(String.valueOf(osSelecionada.getId()));
+        //idOs.setText(String.valueOf(osSelecionada.getId()));
 
         iniciarColeta = findViewById(R.id.botao_iniciar_coleta);
 

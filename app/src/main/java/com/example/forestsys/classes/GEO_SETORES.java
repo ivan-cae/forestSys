@@ -6,6 +6,7 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
 
 @Entity(
@@ -16,22 +17,29 @@ import java.io.Serializable;
                         onDelete = ForeignKey.NO_ACTION,
                         onUpdate = ForeignKey.NO_ACTION)},
 
-        indices = {@Index(value = "DESCRICAO",unique = true)})
+        indices = {@Index(value = "DESCRICAO", unique = true),
+        @Index(value = "ID_SETOR", unique = true)},
+
+        primaryKeys = {"ID_REGIONAL", "ID_SETOR"})
 
 public class GEO_SETORES implements Serializable {
-    @PrimaryKey
-    private int ID_SETOR;
+
+    @ColumnInfo(name = "ID_REGIONAL")
     private int ID_REGIONAL;
-    private int ATIVO;
+
+    @ColumnInfo(name = "ID_SETOR")
+    private int ID_SETOR;
 
     @ColumnInfo(name = "DESCRICAO")
     private String DESCRICAO;
 
-    public GEO_SETORES(int ID_SETOR, int ID_REGIONAL, int ATIVO, String DESCRICAO) {
-        this.ID_SETOR = ID_SETOR;
+    private int ATIVO;
+
+    public GEO_SETORES(int ID_REGIONAL, int ID_SETOR, String DESCRICAO, int ATIVO) {
         this.ID_REGIONAL = ID_REGIONAL;
-        this.ATIVO = ATIVO;
+        this.ID_SETOR = ID_SETOR;
         this.DESCRICAO = DESCRICAO;
+        this.ATIVO = ATIVO;
     }
 
     public int getID_REGIONAL() {
@@ -50,19 +58,19 @@ public class GEO_SETORES implements Serializable {
         this.ID_SETOR = ID_SETOR;
     }
 
-    public int getATIVO() {
-        return ATIVO;
-    }
-
-    public void setATIVO(int ATIVO) {
-        this.ATIVO = ATIVO;
-    }
-
     public String getDESCRICAO() {
         return DESCRICAO;
     }
 
     public void setDESCRICAO(String DESCRICAO) {
         this.DESCRICAO = DESCRICAO;
+    }
+
+    public int getATIVO() {
+        return ATIVO;
+    }
+
+    public void setATIVO(int ATIVO) {
+        this.ATIVO = ATIVO;
     }
 }

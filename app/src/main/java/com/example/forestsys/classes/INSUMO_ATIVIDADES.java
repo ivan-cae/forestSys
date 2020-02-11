@@ -3,6 +3,7 @@ package com.example.forestsys.classes;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.PrimaryKey;
 
 @Entity(
         foreignKeys = {@ForeignKey(entity = ATIVIDADES.class,
@@ -16,14 +17,16 @@ import androidx.room.ForeignKey;
                         childColumns = "ID_INSUMO",
                         onDelete = ForeignKey.NO_ACTION,
                         onUpdate = ForeignKey.NO_ACTION)},
-        primaryKeys = {"ID_INSUMO","ID_ATIVIDADE"})
+        primaryKeys = {"ID_INSUMO", "ID_ATIVIDADE"})
 
 public class INSUMO_ATIVIDADES {
-    @ColumnInfo (name = "ID_INSUMO")
+    @ColumnInfo(name = "ID_INSUMO")
     private int ID_INSUMO;
-	@ColumnInfo (name = "ID_ATIVIDADE")
+
+    @ColumnInfo(name = "ID_ATIVIDADE")
     private int ID_ATIVIDADE;
-	private int ATIVO;
+
+    private int ATIVO;
 
     public INSUMO_ATIVIDADES(int ID_INSUMO, int ID_ATIVIDADE, int ATIVO) {
         this.ID_INSUMO = ID_INSUMO;

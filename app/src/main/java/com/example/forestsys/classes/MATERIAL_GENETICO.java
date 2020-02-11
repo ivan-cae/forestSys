@@ -8,13 +8,14 @@ import androidx.room.PrimaryKey;
 public class MATERIAL_GENETICO {
     @PrimaryKey
     private int ID_MATERIAL_GENETICO;
-    private int ATIVO;
-    private String DESCRICAO;
 
-    public MATERIAL_GENETICO(int ID_MATERIAL_GENETICO, int ATIVO, String DESCRICAO) {
+    private String DESCRICAO;
+    private int ATIVO;
+
+    public MATERIAL_GENETICO(int ID_MATERIAL_GENETICO, String DESCRICAO, int ATIVO) {
         this.ID_MATERIAL_GENETICO = ID_MATERIAL_GENETICO;
-        this.ATIVO = ATIVO;
         this.DESCRICAO = DESCRICAO;
+        this.ATIVO = ATIVO;
     }
 
     public int getID_MATERIAL_GENETICO() {
@@ -25,19 +26,19 @@ public class MATERIAL_GENETICO {
         this.ID_MATERIAL_GENETICO = ID_MATERIAL_GENETICO;
     }
 
-    public int getATIVO() {
-        return ATIVO;
-    }
-
-    public void setATIVO(int ATIVO) {
-        this.ATIVO = ATIVO;
-    }
-
     public String getDESCRICAO() {
         return DESCRICAO;
     }
 
     public void setDESCRICAO(String DESCRICAO) {
         this.DESCRICAO = DESCRICAO;
+    }
+
+    public int getATIVO() {
+        return ATIVO;
+    }
+
+    public void setATIVO(int ATIVO) {
+        this.ATIVO = ATIVO;
     }
 }

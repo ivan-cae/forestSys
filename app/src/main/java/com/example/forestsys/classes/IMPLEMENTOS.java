@@ -10,17 +10,19 @@ import androidx.room.PrimaryKey;
         indices = {@Index(value = "DESCRICAO", unique = true)}
 )
 public class IMPLEMENTOS {
+
     @PrimaryKey
     private int ID_IMPLEMENTO;
-    private int ATIVO;
 
     @ColumnInfo(name = "DESCRICAO")
     private String DESCRICAO;
 
-    public IMPLEMENTOS(int ID_IMPLEMENTO, int ATIVO, String DESCRICAO) {
+    private int ATIVO;
+
+    public IMPLEMENTOS(int ID_IMPLEMENTO, String DESCRICAO, int ATIVO) {
         this.ID_IMPLEMENTO = ID_IMPLEMENTO;
-        this.ATIVO = ATIVO;
         this.DESCRICAO = DESCRICAO;
+        this.ATIVO = ATIVO;
     }
 
     public int getID_IMPLEMENTO() {
@@ -31,19 +33,19 @@ public class IMPLEMENTOS {
         this.ID_IMPLEMENTO = ID_IMPLEMENTO;
     }
 
-    public int getATIVO() {
-        return ATIVO;
-    }
-
-    public void setATIVO(int ATIVO) {
-        this.ATIVO = ATIVO;
-    }
-
     public String getDESCRICAO() {
         return DESCRICAO;
     }
 
     public void setDESCRICAO(String DESCRICAO) {
         this.DESCRICAO = DESCRICAO;
+    }
+
+    public int getATIVO() {
+        return ATIVO;
+    }
+
+    public void setATIVO(int ATIVO) {
+        this.ATIVO = ATIVO;
     }
 }
