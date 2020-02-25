@@ -8,9 +8,9 @@ import androidx.room.TypeConverters;
 
 import com.example.forestsys.TimestampConverter;
 
-import java.sql.Date;
+import java.util.Date;
 
-@Entity(
+@Entity/*(
         foreignKeys = {@ForeignKey(entity = CADASTRO_FLORESTAL.class,
                 parentColumns = {"ID_REGIONAL", "ID_SETOR", "TALHAO", "CICLO", "ID_MANEJO"},
                 childColumns = {"ID_REGIONAL", "ID_SETOR", "TALHAO", "CICLO", "ID_MANEJO"},
@@ -27,10 +27,11 @@ import java.sql.Date;
                         childColumns = "ID_RESPONSAVEL",
                         onDelete = ForeignKey.NO_ACTION,
                         onUpdate = ForeignKey.NO_ACTION)})
-
+*/
 public class O_S_ATIVIDADES {
 
     @PrimaryKey
+    @ColumnInfo(name = "ID_PROGRAMACAO_ATIVIDADE")
     private int ID_PROGRAMACAO_ATIVIDADE;
 
     @ColumnInfo(name = "ID_REGIONAL")
@@ -40,7 +41,7 @@ public class O_S_ATIVIDADES {
     private int ID_SETOR;
 
     @ColumnInfo(name = "TALHAO")
-    private int TALHAO;
+    private String TALHAO;
 
     @ColumnInfo(name = "CICLO")
     private int CICLO;
@@ -71,9 +72,7 @@ public class O_S_ATIVIDADES {
 
     private double AREA_REALIZADA;
 
-    public O_S_ATIVIDADES(int ID_PROGRAMACAO_ATIVIDADE, int ID_REGIONAL, int ID_SETOR, int TALHAO, int CICLO, int ID_MANEJO, int ID_ATIVIDADE,
-                          int ID_RESPONSAVEL, Date DATA_PROGRAMADA, double AREA_PROGRAMADA, int PRIORIDADE, int EXPERIMENTO, int MADEIRA_NO_TALHAO,
-                          String OBSERVACAO, Date DATA_INICIAL, Date DATA_FINAL, double AREA_REALIZADA) {
+    public O_S_ATIVIDADES(int ID_PROGRAMACAO_ATIVIDADE, int ID_REGIONAL, int ID_SETOR, String TALHAO, int CICLO, int ID_MANEJO, int ID_ATIVIDADE, int ID_RESPONSAVEL, Date DATA_PROGRAMADA, double AREA_PROGRAMADA, int PRIORIDADE, int EXPERIMENTO, int MADEIRA_NO_TALHAO, String OBSERVACAO, Date DATA_INICIAL, Date DATA_FINAL, double AREA_REALIZADA) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.ID_REGIONAL = ID_REGIONAL;
         this.ID_SETOR = ID_SETOR;
@@ -117,11 +116,11 @@ public class O_S_ATIVIDADES {
         this.ID_SETOR = ID_SETOR;
     }
 
-    public int getTALHAO() {
+    public String getTALHAO() {
         return TALHAO;
     }
 
-    public void setTALHAO(int TALHAO) {
+    public void setTALHAO(String TALHAO) {
         this.TALHAO = TALHAO;
     }
 

@@ -21,7 +21,7 @@ public class RepositorioSetor{
 
     //retorna uma instância da GEO_SETORES
 //parâmetro de entrada: id inteiro para busca na tabela GEO_SETORES
-    public GEO_SETORES getSetor(int id) {
+    public LiveData<GEO_SETORES> getSetor(int id) {
         return dao.selecionaSetor(id);
     }
 

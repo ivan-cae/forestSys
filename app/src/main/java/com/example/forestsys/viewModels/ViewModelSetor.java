@@ -24,7 +24,7 @@ public class ViewModelSetor extends AndroidViewModel {
 
     //retorna uma instância da GEO_SETORES
 //parâmetro de entrada: id inteiro para busca na tabela GEO_SETORES
-    public GEO_SETORES consulta (int id){return repositorioSetor.getSetor(id);}
+    public LiveData<GEO_SETORES> consulta (int id){return repositorioSetor.getSetor(id);}
 
     //inclui uma instância da GEO_SETORES no DB
 //parâmetro de entrada: instancia da GEO_SETORES

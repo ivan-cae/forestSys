@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 import android.view.View;
 import android.widget.Button;
@@ -29,7 +30,7 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
     public static String nomeEmpresaPref;
     public static String preferenceLogo;
 
-    public static GGF_USUARIOS usuarioLogado = null;
+    public static LiveData<GGF_USUARIOS> usuarioLogado = null;
 
 
     private ImageView imageView;

@@ -38,14 +38,10 @@ public class ActivityIniciarColeta extends AppCompatActivity implements Navigati
         setContentView(R.layout.activity_iniciar_coleta);
         setTitle(nomeEmpresaPref);
 
-        qualidade = findViewById(R.id.botao_qualidade);
-        calibragem = findViewById(R.id.botao_calibragem);
-        apontamento = findViewById(R.id.botao_apontamento);
-
         Toolbar toolbar = findViewById(R.id.toolbar_coleta);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setSubtitle(usuarioLogado.getEMAIL());
+        getSupportActionBar().setSubtitle(/*usuarioLogado.getValue().getEMAIL()*/"a");
 
 
         idOs = findViewById(R.id.id_os_coleta);

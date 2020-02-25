@@ -1,5 +1,6 @@
 package com.example.forestsys.activities;
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
@@ -19,9 +22,22 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.LiveData;
 
+import com.example.forestsys.ApplicationTodos;
+import com.example.forestsys.DAO;
 import com.example.forestsys.R;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
+import com.example.forestsys.classes.CADASTRO_FLORESTAL;
+import com.example.forestsys.classes.ESPACAMENTOS;
+import com.example.forestsys.classes.GEO_REGIONAIS;
+import com.example.forestsys.classes.GEO_SETORES;
+import com.example.forestsys.classes.GGF_USUARIOS;
+import com.example.forestsys.classes.MANEJO;
+import com.example.forestsys.classes.MATERIAL_GENETICO;
+import com.example.forestsys.classes.O_S_ATIVIDADES;
+import com.example.forestsys.repositorios.RepositorioO_S_ATIVIDADES;
+import com.example.forestsys.repositorios.RepositorioUsers;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -33,8 +49,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
 
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
+import static com.example.forestsys.activities.ActivityMain.osSelecionada;
 import static com.example.forestsys.activities.ActivityLogin.usuarioLogado;
-//import static com.example.forestsys.activities.ActivityMain.osSelecionada;
+
 
 public class ActivityContinuarOS extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
@@ -43,23 +60,26 @@ public class ActivityContinuarOS extends AppCompatActivity
     private DrawerLayout drawer;
     private Button iniciarColeta;
     private TextView idOs;
-    GoogleMap mMap;
+    private GoogleMap mMap;
+    private  DAO dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_continuar_os);
         setTitle(nomeEmpresaPref);
-
-        checarPermissaodeLocalizacao();
+        ApplicationTodos applicationTodos = new ApplicationTodos();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
 
+        RepositorioO_S_ATIVIDADES rep = new RepositorioO_S_ATIVIDADES(getApplication());
+        osSelecionada = rep.getOs(1);
+
         idOs = findViewById(R.id.id_os_continuar);
-        //idOs.setText(String.valueOf(osSelecionada.getId()));
+        idOs.setText(String.valueOf(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()));
 
         iniciarColeta = findViewById(R.id.botao_iniciar_coleta);
 
@@ -67,8 +87,7 @@ public class ActivityContinuarOS extends AppCompatActivity
 
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().
-                setSubtitle(usuarioLogado.getEMAIL());
+        getSupportActionBar().setSubtitle(/*usuarioLogado.getValue().getEMAIL()*/"a");
 
         drawer = findViewById(R.id.drawer_layout_continuar);
 

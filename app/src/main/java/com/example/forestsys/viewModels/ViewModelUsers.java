@@ -14,7 +14,6 @@ import java.util.List;
 public class ViewModelUsers extends AndroidViewModel {
     private RepositorioUsers repositorioUsers;
     private LiveData<List<GGF_USUARIOS>> listaUsers;
-    private LiveData<GGF_USUARIOS> Consulta;
 
     public ViewModelUsers(@NonNull Application application) {
         super(application);
@@ -42,13 +41,13 @@ public class ViewModelUsers extends AndroidViewModel {
 
     //retorna uma instância da GGF_USUARIOS
 //parâmetro de entrada: id e senha para busca na tabela GGF_USUARIOS
-    public GGF_USUARIOS consulta(String login, String senha){
+    public LiveData<GGF_USUARIOS> consulta(String login, String senha){
         return repositorioUsers.valida(login, senha);
     }
 
     //Verifica se já existe um User com um determinado login cadastrado e o retorna
     //parâmetros de entrada: login para validação
-    public GGF_USUARIOS consultaLogin(String login){
+    public LiveData<GGF_USUARIOS> consultaLogin(String login){
         return repositorioUsers.validaLogin(login);
     }
 }

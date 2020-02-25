@@ -35,15 +35,17 @@ public class RepositorioUsers {
 
     //Verifica se há um User cadastrado com um determinado login e senha e o retorna
     //parâmetros de entrada: login e senha para validação
-    public GGF_USUARIOS valida(String login, String senha){
+    public LiveData<GGF_USUARIOS> valida(String login, String senha){
         return dao.valida(login, senha);
     }
 
     //Verifica se já existe um User com um determinado login cadastrado e o retorna
     //parâmetros de entrada: login para validação
-    public GGF_USUARIOS validaLogin(String login){
+    public LiveData<GGF_USUARIOS> validaLogin(String login){
         return dao.validaLogin(login);
     }
+
+    public List<GGF_USUARIOS> listaUsuarios(){return dao.listaUsuarios();}
 
     //inclui uma instância da GGF_USUARIOS no DB
 //parâmetro de entrada: instancia da GGF_USUARIOS

@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
+import androidx.room.Query;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
@@ -44,7 +45,7 @@ import com.example.forestsys.classes.PRESTADORES;
         GEO_SETORES.class, GGF_DEPARTAMENTOS.class, GGF_FUNCOES.class, GGF_USUARIOS.class, IMPLEMENTOS.class, INSUMO_ATIVIDADES.class,
         INSUMOS.class, LOG.class, MANEJO.class, MAQUINAS.class, MATERIAL_GENETICO.class,
         O_S_ATIVIDADE_INSUMOS_DIA.class, O_S_ATIVIDADES.class, O_S_ATIVIDADES_DIA.class,
-        PRESTADORES.class}, version = 1, exportSchema = false)
+        PRESTADORES.class}, version = 2, exportSchema = false)
 
 
 public abstract class BaseDeDados extends RoomDatabase {
@@ -70,23 +71,47 @@ public abstract class BaseDeDados extends RoomDatabase {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
-            new InsereDados(instance).execute();
+            new InsereDados1(instance).execute();
         }
     };
 
-    private static class InsereDados extends AsyncTask<Void, Void, Void> {
+    private static class InsereDados1 extends AsyncTask<Void, Void, Void> {
         private DAO auxDao;
 
-        private InsereDados(BaseDeDados db) {
+        private InsereDados1(BaseDeDados db) {
             auxDao = db.dao();
         }
-
 
         @Override
         protected Void doInBackground(Void... voids) {
             //inserir usuario
             auxDao.insert(new GGF_USUARIOS(1, "a", "a"));
+            auxDao.insert(new GGF_USUARIOS(2, "usuario 1", "a"));
+            auxDao.insert(new GGF_USUARIOS(3, "usuario 2", "a"));
+
+            auxDao.insert(new O_S_ATIVIDADES(1, 1,1,"Talhao1",1,1,1,
+                    1,null,1, 1, 1, 1,"",
+                    null,null,1
+            ));
+
+
+            auxDao.insert(new O_S_ATIVIDADES(2, 2,2,"Talhao2",2, 2,2,
+                    1,null,2, 2,2,2," ",
+                    null, null, 2));
+
+
+            auxDao.insert(new MAQUINAS(1, "Maquina 1", 1));
+
+            auxDao.insert(new IMPLEMENTOS(1, "Implemento 1", 1));
+
+            auxDao.insert(new MAQUINAS(2, "Maquina 2", 1));
+
+            auxDao.insert(new IMPLEMENTOS(2, "Implemento 2", 1));
+
+            auxDao.insert(new MAQUINAS(3, "Maquina 3", 1));
+
+            auxDao.insert(new IMPLEMENTOS(3, "Implemento 3", 1));
+
             return null;
         }
-    }
-}
+    }}

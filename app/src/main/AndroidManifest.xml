@@ -32,7 +32,7 @@
 
         <activity android:name=".activities.AActivityTesteRelogio"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activities.ActivityLogin"
+        <activity android:name=".activities.ActivityMain"
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.ActivityConfiguracoes"
             android:screenOrientation="portrait"/>
@@ -44,14 +44,14 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.ActivityDashboard"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activities.ActivityMain"
-            android:screenOrientation="portrait"/>
         <activity android:name=".calculadora.i.CalculadoraMain"
             android:screenOrientation="portrait"/>
         <activity android:name=".calculadora.i.CalcularFormulas"
             android:screenOrientation="portrait"/>
+        <activity android:name=".activities.ActivityInicializacao"
+            android:screenOrientation="portrait"/>
         <activity
-            android:name=".activities.ActivityInicializacao"
+            android:name=".activities.ActivityLogin"
 
             android:label="@string/apk_name"
             android:screenOrientation="portrait">

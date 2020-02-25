@@ -33,6 +33,6 @@ public class ActivityInicializacao extends AppCompatActivity {
                 startActivity(it);
                 finish();
             }
-        }, 5000);
+        }, 10000);
     }
 }

@@ -1,23 +1,30 @@
 package com.example.forestsys;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.forestsys.classes.O_S_ATIVIDADES;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class AdaptadorOs{ //extends RecyclerView.Adapter<AdaptadorOs.OsHolder> implements Filterable {
-    //private List<ClasseOs> ordens = new ArrayList<>();
-    //private List<ClasseOs> ordensFiltradas;
-    //private OnItemClickListener listener;
-    /*private DAO dao;
+public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> implements Filterable {
+    private List<O_S_ATIVIDADES> ordens = new ArrayList<>();
+    private List<O_S_ATIVIDADES> ordensFiltradas;
+    private OnItemClickListener listener;
+    private DAO dao;
     Context context = ApplicationTodos.getAppContext();
 
 
@@ -36,29 +43,26 @@ public class AdaptadorOs{ //extends RecyclerView.Adapter<AdaptadorOs.OsHolder> i
         BaseDeDados baseDeDados = BaseDeDados.getInstance(context);
         dao = baseDeDados.dao();
 
-       /* ClasseOs ordem = ordens.get(position);
+        O_S_ATIVIDADES ordem = ordens.get(position);
 
-        holder.status.setText(ordem.getStatus().toString());
-        holder.numero.setText(String.valueOf(ordem.getId()));
-        holder.atividade.setText(String.valueOf(ordem.getId_atividade()));
-        holder.talhao.setText(String.valueOf(ordem.getId_talhao()));
-        holder.area.setText(String.valueOf(ordem.getArea()));
-        holder.data.setText("");
-        holder.atualizacao.setText("");*/
+        holder.numero.setText(String.valueOf(ordem.getID_PROGRAMACAO_ATIVIDADE()));
+        holder.setor.setText(String.valueOf(ordem.getID_SETOR()));
+        //holder.setor.setText(dao.selecionaSetor(ordem.getID_SETOR()).getDESCRICAO());
+        holder.talhao.setText(String.valueOf(ordem.getTALHAO()));
     }
 
-/*    @Override
+    @Override
     public int getItemCount() {
         return ordens.size();
     }
 
-    public void setOrdens(List<ClasseOs> ordens) {
+    public void setOrdens(List<O_S_ATIVIDADES> ordens) {
         this.ordens = ordens;
         ordensFiltradas = new ArrayList<>(ordens);
         notifyDataSetChanged();
     }
-*/
-    /*class OsHolder extends RecyclerView.ViewHolder {
+
+    class OsHolder extends RecyclerView.ViewHolder {
         private TextView status;
         private TextView numero;
         private TextView atividade;
@@ -69,7 +73,7 @@ public class AdaptadorOs{ //extends RecyclerView.Adapter<AdaptadorOs.OsHolder> i
         private TextView atualizacao;
 
 
-        /*public OsHolder(@NonNull View itemView) {
+        public OsHolder(@NonNull View itemView) {
             super(itemView);
             numero = itemView.findViewById(R.id.numero_item_lista);
             status = itemView.findViewById(R.id.status_item_lista);
@@ -83,8 +87,6 @@ public class AdaptadorOs{ //extends RecyclerView.Adapter<AdaptadorOs.OsHolder> i
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-
                     int position = getAdapterPosition();
                     if (listener != null && position != RecyclerView.NO_POSITION) {
                         listener.onItemClick(ordens.get(position));
@@ -95,7 +97,7 @@ public class AdaptadorOs{ //extends RecyclerView.Adapter<AdaptadorOs.OsHolder> i
     }
 
     public interface OnItemClickListener {
-        void onItemClick(ClasseOs ordemServico);
+        void onItemClick(O_S_ATIVIDADES ordemServico);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -110,13 +112,13 @@ public class AdaptadorOs{ //extends RecyclerView.Adapter<AdaptadorOs.OsHolder> i
     private Filter filtro = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<ClasseOs> listaFiltrada = new ArrayList<>();
+            List<O_S_ATIVIDADES> listaFiltrada = new ArrayList<>();
             if(constraint == null || constraint.length()==0){
                 listaFiltrada.addAll(ordensFiltradas);
             }else{
                 String filtro = constraint.toString();
-                for(ClasseOs os : ordensFiltradas){
-                    if(String.valueOf(os.getId()).startsWith(filtro)){
+                for(O_S_ATIVIDADES os : ordensFiltradas){
+                    if(String.valueOf(os.getID_PROGRAMACAO_ATIVIDADE()).startsWith(filtro)){
                         listaFiltrada.add(os);
                     }
                 }
@@ -126,10 +128,11 @@ public class AdaptadorOs{ //extends RecyclerView.Adapter<AdaptadorOs.OsHolder> i
             return resultado;
         }
 
-        /*@Override
+        @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             ordens.clear();
             ordens.addAll((List)results.values);
             notifyDataSetChanged();
         }
-    };*/
+    };
+}

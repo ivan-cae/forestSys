@@ -23,7 +23,7 @@ public class RepositorioRegional {
 
     //retorna uma instância da GEO_REGIONAIS
 //parâmetro de entrada: id inteiro para busca na tabela GEO_REGIONAIS
-    public GEO_REGIONAIS getRegional(int id) {
+    public LiveData<GEO_REGIONAIS> getRegional(int id) {
         return dao.selecionaRegional(id);
     }
 

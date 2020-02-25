@@ -48,4 +48,9 @@ public class MAQUINAS {
     public void setATIVO(int ATIVO) {
         this.ATIVO = ATIVO;
     }
+
+    @Override
+    public String toString() {
+        return DESCRICAO;
+    }
 }

@@ -33,7 +33,7 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_dash);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setSubtitle(usuarioLogado.getEMAIL());
+        getSupportActionBar().setSubtitle(usuarioLogado.getValue().getEMAIL());
 
         drawer = findViewById(R.id.drawer_layout_dash);
         NavigationView navigationView = findViewById(R.id.nav_view_dash);

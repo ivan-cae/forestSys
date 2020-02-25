@@ -110,4 +110,9 @@ public class GGF_USUARIOS implements Serializable {
     public void setDESCRICAO(String DESCRICAO) {
         this.DESCRICAO = DESCRICAO;
     }
+
+    @Override
+    public String toString() {
+        return EMAIL;
+    }
 }

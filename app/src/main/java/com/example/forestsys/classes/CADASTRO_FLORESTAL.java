@@ -8,7 +8,7 @@ import androidx.room.TypeConverters;
 
 import com.example.forestsys.TimestampConverter;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Entity(
         foreignKeys = {@ForeignKey(entity = GEO_REGIONAIS.class,
@@ -78,8 +78,8 @@ public class CADASTRO_FLORESTAL {
     @TypeConverters({TimestampConverter.class})
 	private Date DATA_PROGRAMACAO_REFORMA;
 
-    public CADASTRO_FLORESTAL(int ID_REGIONAL, int ID_SETOR, @NonNull String TALHAO, int CICLO, int ID_MANEJO, Date DATA_MANEJO,
-                              int ID_MATERIAL_GENETICO, int ID_ESPACAMENTO, String OBSERVACAO, int ATIVO, Date DATA_PROGRAMACAO_REFORMA) {
+
+    public CADASTRO_FLORESTAL(int ID_REGIONAL, int ID_SETOR, @NonNull String TALHAO, int CICLO, int ID_MANEJO, Date DATA_MANEJO, int ID_MATERIAL_GENETICO, int ID_ESPACAMENTO, String OBSERVACAO, int ATIVO, Date DATA_PROGRAMACAO_REFORMA) {
         this.ID_REGIONAL = ID_REGIONAL;
         this.ID_SETOR = ID_SETOR;
         this.TALHAO = TALHAO;
