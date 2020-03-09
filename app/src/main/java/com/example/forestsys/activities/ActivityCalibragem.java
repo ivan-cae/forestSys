@@ -436,7 +436,7 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
                         .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent it = new Intent(ActivityCalibragem.this, ActivityMain.class);
+                                Intent it = new Intent(ActivityCalibragem.this, ActivityContinuarOs.class);
                                 startActivity(it);
                             }
                         })

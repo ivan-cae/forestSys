@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,7 +22,6 @@ import android.widget.SearchView;
 import com.example.forestsys.AdaptadorOs;
 import com.example.forestsys.R;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
-import com.example.forestsys.repositorios.RepositorioUsers;
 import com.google.android.material.navigation.NavigationView;
 import java.util.List;
 
@@ -32,7 +30,6 @@ import com.example.forestsys.viewModels.ViewModelO_S_ATIVIDADES;
 
 
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
-import static com.example.forestsys.activities.ActivityLogin.usuarioLogado;
 
 
 public class ActivityMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -88,7 +85,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
             @Override
             public void onItemClick(O_S_ATIVIDADES classeOs) {
                     osSelecionada = classeOs;
-                    Intent it = new Intent(ActivityMain.this, ActivityCalibragem.class);
+                    Intent it = new Intent(ActivityMain.this, ActivityDetalhesOS.class);
                     //it.putExtra("abrir_os", classeOs);
                     startActivity(it);
             }
