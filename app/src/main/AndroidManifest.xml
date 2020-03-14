@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.forestsys">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -13,11 +12,10 @@
     <application
         android:name=".ApplicationTodos"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/icone_gelf"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".activities.FragmentoApontamento"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -30,29 +28,38 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".activities.AActivityTesteRelogio"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activities.ActivityMain"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activities.ActivityConfiguracoes"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activities.ActivityCalibragem"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activities.ActivityContinuarOs"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activities.ActivityDetalhesOS"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activities.ActivityDashboard"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".calculadora.i.CalculadoraMain"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".calculadora.i.CalcularFormulas"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activities.ActivityInicializacao"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.AActivityTesteRelogio"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ActivityMain"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ActivityConfiguracoes"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ActivityCalibragem"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ActivityContinuarOs"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ActivityDetalhesOS"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ActivityDashboard"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".calculadora.i.CalculadoraMain"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".calculadora.i.CalcularFormulas"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ActivityInicializacao"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.ActivityLogin"
-
             android:label="@string/apk_name"
             android:screenOrientation="portrait">
             <intent-filter>

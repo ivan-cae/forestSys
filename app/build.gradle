@@ -50,5 +50,4 @@ dependencies {
     implementation files('libs/javaluator-3.0.1.jar')
 
 
-
 }

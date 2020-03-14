@@ -47,7 +47,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\ivanm\Downloads\Logo Forest Sys Final.png" />
+                                      <entry key="imageAsset" value="C:\Users\ivanm\Downloads\logo_gelf_completo.png" />
+                                      <entry key="outputName" value="logo_gelf_completo" />
                                       <entry key="themeColor" value="ffffff" />
                                     </map>
                                   </option>

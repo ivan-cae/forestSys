@@ -45,7 +45,7 @@ import com.example.forestsys.classes.PRESTADORES;
         GEO_SETORES.class, GGF_DEPARTAMENTOS.class, GGF_FUNCOES.class, GGF_USUARIOS.class, IMPLEMENTOS.class, INSUMO_ATIVIDADES.class,
         INSUMOS.class, LOG.class, MANEJO.class, MAQUINAS.class, MATERIAL_GENETICO.class,
         O_S_ATIVIDADE_INSUMOS_DIA.class, O_S_ATIVIDADES.class, O_S_ATIVIDADES_DIA.class,
-        PRESTADORES.class}, version = 2, exportSchema = false)
+        PRESTADORES.class}, version = 1, exportSchema = false)
 
 
 public abstract class BaseDeDados extends RoomDatabase {
@@ -101,16 +101,16 @@ public abstract class BaseDeDados extends RoomDatabase {
 
 
             auxDao.insert(new MAQUINAS(1, "Maquina 1", 1));
-
-            auxDao.insert(new IMPLEMENTOS(1, "Implemento 1", 1));
-
             auxDao.insert(new MAQUINAS(2, "Maquina 2", 1));
-
-            auxDao.insert(new IMPLEMENTOS(2, "Implemento 2", 1));
-
             auxDao.insert(new MAQUINAS(3, "Maquina 3", 1));
 
+            auxDao.insert(new IMPLEMENTOS(1, "Implemento 1", 1));
+            auxDao.insert(new IMPLEMENTOS(2, "Implemento 2", 1));
             auxDao.insert(new IMPLEMENTOS(3, "Implemento 3", 1));
+
+            auxDao.insert(new PRESTADORES(1, "Prestador 1", 1));
+            auxDao.insert(new PRESTADORES(2, "Prestador 2", 1));
+            auxDao.insert(new PRESTADORES(3, "Prestador 3", 1));
 
             return null;
         }

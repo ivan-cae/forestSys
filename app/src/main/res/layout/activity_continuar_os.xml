@@ -112,13 +112,13 @@
 
         <TextView
             android:id="@+id/obs_os_continuar"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/textView60"
+            app:layout_constraintBottom_toTopOf="@+id/botao_apontamento"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -232,8 +232,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView40" />
 
-        <TextView
-            android:id="@+id/textView60"
+        <Button
+            android:id="@+id/botao_apontamento"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="320dp"
@@ -241,11 +241,11 @@
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/textView61"
+            app:layout_constraintEnd_toStartOf="@+id/botao_avalicao"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView61"
+        <Button
+            android:id="@+id/botao_avalicao"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="320dp"
@@ -255,7 +255,19 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <FrameLayout
+            android:id="@+id/fragmento_continuar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="30dp"
+            app:layout_constraintBottom_toTopOf="@+id/botao_continuar_voltar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/botao_avalicao" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -269,7 +281,8 @@
         <FrameLayout
             android:id="@+id/fragment_container_continuar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar_continuar"
@@ -278,6 +291,7 @@
                 android:background="#4183B1"
                 android:elevation="4dp"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                android:visibility="visible"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
         </FrameLayout>
 

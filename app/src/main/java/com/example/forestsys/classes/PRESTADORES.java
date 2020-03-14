@@ -12,15 +12,15 @@ public class PRESTADORES {
     @PrimaryKey
     private int ID_PRESTADOR;
 
-    private int ATIVO;
-
     @ColumnInfo(name = "DESCRICAO")
     private String DESCRICAO;
 
-    public PRESTADORES(int ID_PRESTADOR, int ATIVO, String DESCRICAO) {
+    private int ATIVO;
+
+    public PRESTADORES(int ID_PRESTADOR, String DESCRICAO, int ATIVO) {
         this.ID_PRESTADOR = ID_PRESTADOR;
-        this.ATIVO = ATIVO;
         this.DESCRICAO = DESCRICAO;
+        this.ATIVO = ATIVO;
     }
 
     public int getID_PRESTADOR() {
@@ -31,6 +31,14 @@ public class PRESTADORES {
         this.ID_PRESTADOR = ID_PRESTADOR;
     }
 
+    public String getDESCRICAO() {
+        return DESCRICAO;
+    }
+
+    public void setDESCRICAO(String DESCRICAO) {
+        this.DESCRICAO = DESCRICAO;
+    }
+
     public int getATIVO() {
         return ATIVO;
     }
@@ -39,11 +47,8 @@ public class PRESTADORES {
         this.ATIVO = ATIVO;
     }
 
-    public String getDESCRICAO() {
+    @Override
+    public String toString() {
         return DESCRICAO;
-    }
-
-    public void setDESCRICAO(String DESCRICAO) {
-        this.DESCRICAO = DESCRICAO;
     }
 }

@@ -45,7 +45,7 @@ public class ActivityConfiguracoes extends AppCompatActivity {
         botaoLogo = (Button) findViewById(R.id.botao_selecionar_imagem);
         imageView = findViewById(R.id.imagem_logo);
 
-        if (preferenceLogo == null) imageView.setImageResource(R.drawable.logo_forest);
+        if (preferenceLogo == null) imageView.setImageResource(R.mipmap.logo_gelf_completo);
         else imageView.setImageURI(Uri.parse(preferenceLogo));
 
 

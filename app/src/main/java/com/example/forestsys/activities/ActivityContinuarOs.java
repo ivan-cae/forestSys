@@ -7,7 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,12 +19,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.forestsys.R;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
 import com.google.android.material.navigation.NavigationView;
+
+import java.text.DateFormat;
+import java.util.Calendar;
 
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
 import static com.example.forestsys.activities.ActivityMain.osSelecionada;
@@ -41,6 +48,9 @@ public class ActivityContinuarOs extends AppCompatActivity implements Navigation
     private TextView madeiraOs;
     private ImageButton voltar;
     private Button botaoSalvar;
+    private Button botaoAvaliacao;
+    private Button botaoApontamento;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +83,8 @@ public class ActivityContinuarOs extends AppCompatActivity implements Navigation
         manejoOs.setText(String.valueOf(osSelecionada.getID_MANEJO()));
         madeiraOs.setText(String.valueOf(osSelecionada.getMADEIRA_NO_TALHAO()));
 
+        botaoApontamento = findViewById(R.id.botao_apontamento);
+        botaoAvaliacao = findViewById(R.id.botao_avalicao);
         voltar = findViewById(R.id.botao_continuar_voltar);
         botaoSalvar = findViewById(R.id.botao_salvar_continuar);
 
@@ -85,6 +97,14 @@ public class ActivityContinuarOs extends AppCompatActivity implements Navigation
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        botaoApontamento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmento_continuar,
+                        new FragmentoApontamento()).commit();
+            }
+        });
 
         botaoSalvar.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -19,6 +19,7 @@ import com.example.forestsys.classes.MANEJO;
 import com.example.forestsys.classes.MAQUINAS;
 import com.example.forestsys.classes.MATERIAL_GENETICO;
 import com.example.forestsys.classes.O_S_ATIVIDADES;
+import com.example.forestsys.classes.PRESTADORES;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,8 @@ public interface DAO {
     void insert(IMPLEMENTOS implementos);
     @Insert
     void insert(CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem);
+    @Insert
+    void insert(PRESTADORES prestadores);
 
 
     @Update
@@ -70,7 +73,8 @@ public interface DAO {
     void update(IMPLEMENTOS implementos);
     @Update
     void update(CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem);
-
+    @Update
+    void update(PRESTADORES prestadores);
 
     @Delete
     void delete(GGF_USUARIOS GGFUSUARIOS);
@@ -90,7 +94,8 @@ public interface DAO {
     void delete(IMPLEMENTOS implementos);
     @Delete
     void delete(CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem);
-
+    @Delete
+    void delete(PRESTADORES prestadores);
 
 
     //Scripts GGF_USUARIOS
@@ -181,6 +186,17 @@ public interface DAO {
 
     @Query("SELECT * FROM MAQUINAS")
     LiveData<List<MAQUINAS>> todasMaquinas();
+
+
+    //Scripts PRESTADORES
+    @Query("SELECT * FROM PRESTADORES WHERE ID_PRESTADOR=:id")
+    LiveData<PRESTADORES> selecionaPrestador(int id);
+
+    @Query("SELECT * FROM PRESTADORES")
+    List<PRESTADORES> listaPrestadores();
+
+    @Query("SELECT * FROM PRESTADORES")
+    LiveData<List<PRESTADORES>> todosPrestadores();
 
 
 }

@@ -68,7 +68,7 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
         preferenceLogo = getSharedPreferences("imagemLogo", MODE_PRIVATE)
                 .getString("preferenceLogo", null);
 
-        if(preferenceLogo == null) imageView.setImageResource(R.drawable.logo_forest);
+        if(preferenceLogo == null) imageView.setImageResource(R.mipmap.logo_gelf_completo);
         else imageView.setImageURI(Uri.parse(preferenceLogo));
 
 
