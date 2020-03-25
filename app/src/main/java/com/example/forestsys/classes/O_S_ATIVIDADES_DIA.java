@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -32,78 +33,64 @@ import java.sql.Date;
             primaryKeys ={"ID_PROGRAMACAO_ATIVIDADE", "DATA"})
 
 public class O_S_ATIVIDADES_DIA {
+    @NonNull
     @ColumnInfo(name="ID_PROGRAMACAO_ATIVIDADE")
-    private int ID_PROGRAMACAO_ATIVIDADE;
+    private Integer ID_PROGRAMACAO_ATIVIDADE;
 
     @NonNull
-    @TypeConverters({TimestampConverter.class})
     @ColumnInfo(name = "DATA")
-    private Date DATA;
+    private String DATA;
 
     @ColumnInfo(name = "ID_PRESTADOR")
-    private int ID_PRESTADOR;
+    private Integer ID_PRESTADOR;
 
     @ColumnInfo(name = "ID_RESPONSAVEL")
-    private int ID_RESPONSAVEL;
+    private Integer ID_RESPONSAVEL;
 
     private char STATUS;
-    private double AREA_REALIZADA;
-    private double HH;
-    private double HM;
-    private double HO;
-    private double HM_ESCAVADEIRA;
-    private double HO_ESCAVADEIRA;
+    private Double AREA_REALIZADA;
+    private String HH;
+    private String HM;
+    private String HO;
+    private String HM_ESCAVADEIRA;
+    private String HO_ESCAVADEIRA;
     private String OBSERVACAO;
     private char REGISTRO_DESCARREGADO;
 
-    public O_S_ATIVIDADES_DIA(int ID_PROGRAMACAO_ATIVIDADE, @NonNull Date DATA, int ID_PRESTADOR, int ID_RESPONSAVEL, char STATUS,
-                              double AREA_REALIZADA, double HH, double HM, double HO, double HM_ESCAVADEIRA, double HO_ESCAVADEIRA,
-                              String OBSERVACAO, char REGISTRO_DESCARREGADO) {
-        this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
-        this.DATA = DATA;
-        this.ID_PRESTADOR = ID_PRESTADOR;
-        this.ID_RESPONSAVEL = ID_RESPONSAVEL;
-        this.STATUS = STATUS;
-        this.AREA_REALIZADA = AREA_REALIZADA;
-        this.HH = HH;
-        this.HM = HM;
-        this.HO = HO;
-        this.HM_ESCAVADEIRA = HM_ESCAVADEIRA;
-        this.HO_ESCAVADEIRA = HO_ESCAVADEIRA;
-        this.OBSERVACAO = OBSERVACAO;
-        this.REGISTRO_DESCARREGADO = REGISTRO_DESCARREGADO;
+
+    public O_S_ATIVIDADES_DIA() {
     }
 
-    public int getID_PROGRAMACAO_ATIVIDADE() {
+    public Integer getID_PROGRAMACAO_ATIVIDADE() {
         return ID_PROGRAMACAO_ATIVIDADE;
     }
 
-    public void setID_PROGRAMACAO_ATIVIDADE(int ID_PROGRAMACAO_ATIVIDADE) {
+    public void setID_PROGRAMACAO_ATIVIDADE(Integer ID_PROGRAMACAO_ATIVIDADE) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
     }
 
     @NonNull
-    public Date getDATA() {
+    public String getDATA() {
         return DATA;
     }
 
-    public void setDATA(@NonNull Date DATA) {
+    public void setDATA(@NonNull String DATA) {
         this.DATA = DATA;
     }
 
-    public int getID_PRESTADOR() {
+    public Integer getID_PRESTADOR() {
         return ID_PRESTADOR;
     }
 
-    public void setID_PRESTADOR(int ID_PRESTADOR) {
+    public void setID_PRESTADOR(Integer ID_PRESTADOR) {
         this.ID_PRESTADOR = ID_PRESTADOR;
     }
 
-    public int getID_RESPONSAVEL() {
+    public Integer getID_RESPONSAVEL() {
         return ID_RESPONSAVEL;
     }
 
-    public void setID_RESPONSAVEL(int ID_RESPONSAVEL) {
+    public void setID_RESPONSAVEL(Integer ID_RESPONSAVEL) {
         this.ID_RESPONSAVEL = ID_RESPONSAVEL;
     }
 
@@ -115,51 +102,51 @@ public class O_S_ATIVIDADES_DIA {
         this.STATUS = STATUS;
     }
 
-    public double getAREA_REALIZADA() {
+    public Double getAREA_REALIZADA() {
         return AREA_REALIZADA;
     }
 
-    public void setAREA_REALIZADA(double AREA_REALIZADA) {
+    public void setAREA_REALIZADA(Double AREA_REALIZADA) {
         this.AREA_REALIZADA = AREA_REALIZADA;
     }
 
-    public double getHH() {
+    public String getHH() {
         return HH;
     }
 
-    public void setHH(double HH) {
+    public void setHH(String HH) {
         this.HH = HH;
     }
 
-    public double getHM() {
+    public String getHM() {
         return HM;
     }
 
-    public void setHM(double HM) {
+    public void setHM(String HM) {
         this.HM = HM;
     }
 
-    public double getHO() {
+    public String getHO() {
         return HO;
     }
 
-    public void setHO(double HO) {
+    public void setHO(String HO) {
         this.HO = HO;
     }
 
-    public double getHM_ESCAVADEIRA() {
+    public String getHM_ESCAVADEIRA() {
         return HM_ESCAVADEIRA;
     }
 
-    public void setHM_ESCAVADEIRA(double HM_ESCAVADEIRA) {
+    public void setHM_ESCAVADEIRA(String HM_ESCAVADEIRA) {
         this.HM_ESCAVADEIRA = HM_ESCAVADEIRA;
     }
 
-    public double getHO_ESCAVADEIRA() {
+    public String getHO_ESCAVADEIRA() {
         return HO_ESCAVADEIRA;
     }
 
-    public void setHO_ESCAVADEIRA(double HO_ESCAVADEIRA) {
+    public void setHO_ESCAVADEIRA(String HO_ESCAVADEIRA) {
         this.HO_ESCAVADEIRA = HO_ESCAVADEIRA;
     }
 

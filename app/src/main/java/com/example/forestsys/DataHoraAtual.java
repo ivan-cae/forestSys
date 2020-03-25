@@ -1,23 +1,21 @@
 package com.example.forestsys;
 
+import android.text.format.DateFormat;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static java.lang.String.format;
+
 public class DataHoraAtual {
 
     //Retorna a data atual do dispositivo
-    public static Date dataHora(){
-        SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy hh:mm");
-        String s = formato.format( new java.util.Date());
+    public static String hora(){
+            return DateFormat.format("HH:mm", new Date()).toString();
 
-        //String s = formato.format(new Date());
-        Date data = null;
-        try {
-            data = formato.parse (s);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return (data);
     }
-}
+
+    public static String data(){
+        return DateFormat.format("dd-MM-yyyy", new Date()).toString();
+    }}

@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -22,12 +24,14 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.LiveData;
 
 import com.example.forestsys.ApplicationTodos;
 import com.example.forestsys.DAO;
 import com.example.forestsys.R;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
-import com.example.forestsys.repositorios.RepositorioO_S_ATIVIDADES;
+import com.example.forestsys.classes.CALIBRAGEM_SUBSOLAGEM;
+import com.example.forestsys.viewModels.ViewModelCALIBRAGEM_SUBSOLAGEM;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,6 +42,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.Date;
+
+import static com.example.forestsys.activities.ActivityCalibragem.checaTurno;
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
 import static com.example.forestsys.activities.ActivityMain.osSelecionada;
 
@@ -121,8 +128,23 @@ public class ActivityDetalhesOS extends AppCompatActivity
         iniciarColeta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent(ActivityDetalhesOS.this, ActivityCalibragem.class);
-                startActivity(it);
+                ViewModelCALIBRAGEM_SUBSOLAGEM viewModelCALIBRAGEM_subsolagem = new ViewModelCALIBRAGEM_SUBSOLAGEM(getApplication());
+
+                CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem = viewModelCALIBRAGEM_subsolagem.checaCalibragem(osSelecionada.getID_ATIVIDADE(),
+                                DateFormat.format("dd-MM-yyyy", new Date()).toString(), checaTurno());
+
+                if(calibragem_subsolagem == null){
+                    Intent it = new Intent(ActivityDetalhesOS.this, ActivityCalibragem.class);
+                    startActivity(it);
+                }
+
+                if(calibragem_subsolagem != null) {
+                    Intent it = new Intent(ActivityDetalhesOS.this, ActivityContinuarOs.class);
+                    startActivity(it);
+                }
+
+
+
             }
         });
 

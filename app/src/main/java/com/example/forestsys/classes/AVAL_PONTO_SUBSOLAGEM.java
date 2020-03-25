@@ -7,7 +7,6 @@ import androidx.room.ForeignKey;
 import androidx.room.TypeConverters;
 
 import com.example.forestsys.TimestampConverter;
-
 import java.sql.Date;
 
 @Entity(

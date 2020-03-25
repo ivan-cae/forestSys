@@ -24,7 +24,7 @@
             app:srcCompat="@drawable/ic_voltar_24dp" />
 
         <Button
-            android:id="@+id/botao_salvar_continuar"
+            android:id="@+id/botao_prosseguir_continuar"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_gravity="start"
@@ -32,7 +32,7 @@
             android:layout_marginBottom="16dp"
             android:background="#75A9EB"
             android:enabled="true"
-            android:text="Salvar"
+            android:text="Prosseguir"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"

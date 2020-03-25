@@ -7,10 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
-import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +16,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -27,14 +23,12 @@ import com.example.forestsys.R;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
 import com.google.android.material.navigation.NavigationView;
 
-import java.text.DateFormat;
-import java.util.Calendar;
-
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
 import static com.example.forestsys.activities.ActivityMain.osSelecionada;
+import static com.example.forestsys.activities.FragmentoApontamento.oSAtividadesDiaAtual;
 //import static com.example.forestsys.activities.ActivityMain.osSelecionada;
 
-public class ActivityContinuarOs extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class ActivityContinuarOs extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
     private TextView idOs;
@@ -83,10 +77,11 @@ public class ActivityContinuarOs extends AppCompatActivity implements Navigation
         manejoOs.setText(String.valueOf(osSelecionada.getID_MANEJO()));
         madeiraOs.setText(String.valueOf(osSelecionada.getMADEIRA_NO_TALHAO()));
 
+
         botaoApontamento = findViewById(R.id.botao_apontamento);
         botaoAvaliacao = findViewById(R.id.botao_avalicao);
         voltar = findViewById(R.id.botao_continuar_voltar);
-        botaoSalvar = findViewById(R.id.botao_salvar_continuar);
+        botaoSalvar = findViewById(R.id.botao_prosseguir_continuar);
 
         drawer = findViewById(R.id.drawer_layout_continuar);
         NavigationView navigationView = findViewById(R.id.nav_view_continuar);
@@ -101,6 +96,7 @@ public class ActivityContinuarOs extends AppCompatActivity implements Navigation
         botaoApontamento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmento_continuar,
                         new FragmentoApontamento()).commit();
             }
@@ -109,24 +105,41 @@ public class ActivityContinuarOs extends AppCompatActivity implements Navigation
         botaoSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog dialog = new AlertDialog.Builder(ActivityContinuarOs.this)
-                        .setTitle("Concluir")
-                        .setMessage("Deseja Concluir a Ordem de Serviço?")
-                        .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent it = new Intent(ActivityContinuarOs.this, ActivityMain.class);
-                                startActivity(it);
-                            }
-                        })
-                        .setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        }).create();
-                dialog.show();
+                if (oSAtividadesDiaAtual == null) {
+                    Intent it = new Intent(ActivityContinuarOs.this, ActivityMain.class);
+                    startActivity(it);
+                }
+
+                if (oSAtividadesDiaAtual != null) {
+                    if (oSAtividadesDiaAtual.getID_PROGRAMACAO_ATIVIDADE() != null && !oSAtividadesDiaAtual.getDATA().trim().isEmpty() &&
+                            oSAtividadesDiaAtual.getID_RESPONSAVEL() != null && oSAtividadesDiaAtual.getID_PRESTADOR() != null &&
+                            !oSAtividadesDiaAtual.getHO_ESCAVADEIRA().trim().isEmpty() && !oSAtividadesDiaAtual.getHO().trim().isEmpty() &&
+                            !oSAtividadesDiaAtual.getHM_ESCAVADEIRA().trim().isEmpty() && !oSAtividadesDiaAtual.getHM().trim().isEmpty() &&
+                            !oSAtividadesDiaAtual.getHH().trim().isEmpty() && oSAtividadesDiaAtual.getAREA_REALIZADA() != null) {
+                        AlertDialog dialog = new AlertDialog.Builder(ActivityContinuarOs.this)
+                                .setTitle("Concluir")
+                                .setMessage("Deseja Concluir a Ordem de Serviço?")
+                                .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent it = new Intent(ActivityContinuarOs.this, ActivityMain.class);
+                                        startActivity(it);
+                                    }
+                                })
+                                .setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                }).create();
+                        dialog.show();
+                    } else {
+                        Intent it = new Intent(ActivityContinuarOs.this, ActivityMain.class);
+                        startActivity(it);
+                    }
+                }
             }
         });
+
 
         voltar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,11 +151,11 @@ public class ActivityContinuarOs extends AppCompatActivity implements Navigation
     }
 
     @Override
-        public boolean onCreateOptionsMenu(Menu menu) {
-            MenuInflater i = getMenuInflater();
-            i.inflate(R.menu.menu_action_bar, menu);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater i = getMenuInflater();
+        i.inflate(R.menu.menu_action_bar, menu);
 
-            return true;
+        return true;
     }
 
     @Override

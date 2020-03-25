@@ -10,7 +10,7 @@ import androidx.room.TypeConverters;
 import com.example.forestsys.TimestampConverter;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 @Entity
 public class ClasseUpdate implements Serializable {

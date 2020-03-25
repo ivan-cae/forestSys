@@ -99,7 +99,6 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
                 }else if(usuarioLogado == null){
                     Toast.makeText(ActivityLogin.this, "Credenciais Inválidas", Toast.LENGTH_SHORT).show();
                     return;
-
                 }
             }});
     }

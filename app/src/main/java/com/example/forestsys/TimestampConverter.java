@@ -2,14 +2,14 @@ package com.example.forestsys;
 
 import androidx.room.TypeConverter;
 
+import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.TimeZone;
 
 public class TimestampConverter {
-    private static DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private static DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 
     @TypeConverter
     public static Date fromTimestamp(String value) {
@@ -17,7 +17,7 @@ public class TimestampConverter {
             try {
                 TimeZone timeZone = TimeZone.getTimeZone("GMT");
                 df.setTimeZone(timeZone);
-                return df.parse(value);
+                return (Date) df.parse(value);
             } catch (ParseException e) {
                 e.printStackTrace();
             }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="500dp"
+    android:layout_height="match_parent"
     tools:context=".activities.FragmentoApontamento">
 
     <TextView
@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:text="Prestador:"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -52,7 +52,7 @@
         android:id="@+id/area_realizada_apontamento"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:inputType="numberSigned"
+        android:inputType="numberDecimal"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView42"
@@ -63,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:text="Responsável:"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -75,7 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="19dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:text="Hora Operador Escavadeira:"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -167,7 +167,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:text="Hora Operador:"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -203,7 +203,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:text="Observação"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -242,5 +242,17 @@
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView65"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/botao_salvar_apontamento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="250dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="250dp"
+        android:text="Salvar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/obs_apontamento" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

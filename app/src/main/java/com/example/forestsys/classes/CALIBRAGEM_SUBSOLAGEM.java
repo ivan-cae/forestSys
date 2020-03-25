@@ -4,12 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
-import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.example.forestsys.TimestampConverter;
 
 import java.sql.Date;
+
 
 @Entity(
         foreignKeys = {@ForeignKey(entity = MAQUINA_IMPLEMENTO.class,
@@ -22,7 +22,7 @@ import java.sql.Date;
                         childColumns = "ID_OPERADOR",
                         onDelete = ForeignKey.NO_ACTION,
                         onUpdate = ForeignKey.NO_ACTION),
-                @ForeignKey(entity = O_S_ATIVIDADE_INSUMOS_DIA.class,
+                @ForeignKey(entity = O_S_ATIVIDADES.class,
                         parentColumns = "ID_PROGRAMACAO_ATIVIDADE",
                         childColumns = "ID_PROGRAMACAO_ATIVIDADE",
                         onDelete = ForeignKey.NO_ACTION,
@@ -32,13 +32,12 @@ import java.sql.Date;
 public class CALIBRAGEM_SUBSOLAGEM {
 
     @ColumnInfo(name = "ID_PROGRAMACAO_ATIVIDADE")
+    @NonNull
     private int ID_PROGRAMACAO_ATIVIDADE;
 
-    @TypeConverters({TimestampConverter.class})
     @ColumnInfo(name = "DATA")
     @NonNull
-    private Date DATA;
-
+    private String DATA;
 
     @ColumnInfo(name = "TURNO")
     @NonNull
@@ -49,14 +48,24 @@ public class CALIBRAGEM_SUBSOLAGEM {
     private int ID_MAQUINA_IMPLEMENTO;
 
     @ColumnInfo(name = "ID_OPERADOR")
+    @NonNull
     private int ID_OPERADOR;
 
-    private double P1_MEDIA;
-    private double P1_DESVIO;
-    private double P2_MEDIA;
-    private double P2_DESVIO;
+    private Double P1_MEDIA;
+    private Double P1_DESVIO;
+    private Double P2_MEDIA;
+    private Double P2_DESVIO;
 
-    public CALIBRAGEM_SUBSOLAGEM(){
+    public CALIBRAGEM_SUBSOLAGEM(int ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, @NonNull String TURNO, int ID_MAQUINA_IMPLEMENTO, int ID_OPERADOR, Double P1_MEDIA, Double P1_DESVIO, Double P2_MEDIA, Double P2_DESVIO) {
+        this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
+        this.DATA = DATA;
+        this.TURNO = TURNO;
+        this.ID_MAQUINA_IMPLEMENTO = ID_MAQUINA_IMPLEMENTO;
+        this.ID_OPERADOR = ID_OPERADOR;
+        this.P1_MEDIA = P1_MEDIA;
+        this.P1_DESVIO = P1_DESVIO;
+        this.P2_MEDIA = P2_MEDIA;
+        this.P2_DESVIO = P2_DESVIO;
     }
 
     public int getID_PROGRAMACAO_ATIVIDADE() {
@@ -68,11 +77,11 @@ public class CALIBRAGEM_SUBSOLAGEM {
     }
 
     @NonNull
-    public Date getDATA() {
+    public String getDATA() {
         return DATA;
     }
 
-    public void setDATA(@NonNull Date DATA) {
+    public void setDATA(@NonNull String DATA) {
         this.DATA = DATA;
     }
 
@@ -101,35 +110,35 @@ public class CALIBRAGEM_SUBSOLAGEM {
         this.ID_OPERADOR = ID_OPERADOR;
     }
 
-    public double getP1_MEDIA() {
+    public Double getP1_MEDIA() {
         return P1_MEDIA;
     }
 
-    public void setP1_MEDIA(double p1_MEDIA) {
+    public void setP1_MEDIA(Double p1_MEDIA) {
         P1_MEDIA = p1_MEDIA;
     }
 
-    public double getP1_DESVIO() {
+    public Double getP1_DESVIO() {
         return P1_DESVIO;
     }
 
-    public void setP1_DESVIO(double p1_DESVIO) {
+    public void setP1_DESVIO(Double p1_DESVIO) {
         P1_DESVIO = p1_DESVIO;
     }
 
-    public double getP2_MEDIA() {
+    public Double getP2_MEDIA() {
         return P2_MEDIA;
     }
 
-    public void setP2_MEDIA(double p2_MEDIA) {
+    public void setP2_MEDIA(Double p2_MEDIA) {
         P2_MEDIA = p2_MEDIA;
     }
 
-    public double getP2_DESVIO() {
+    public Double getP2_DESVIO() {
         return P2_DESVIO;
     }
 
-    public void setP2_DESVIO(double p2_DESVIO) {
+    public void setP2_DESVIO(Double p2_DESVIO) {
         P2_DESVIO = p2_DESVIO;
     }
 }

@@ -8,7 +8,7 @@ import androidx.room.TypeConverters;
 
 import com.example.forestsys.TimestampConverter;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Entity(
         foreignKeys = {@ForeignKey(entity = GEO_REGIONAIS.class,

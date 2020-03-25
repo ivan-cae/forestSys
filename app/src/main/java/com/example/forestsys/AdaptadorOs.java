@@ -48,6 +48,7 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
         holder.numero.setText(String.valueOf(ordem.getID_PROGRAMACAO_ATIVIDADE()));
         holder.setor.setText(String.valueOf(ordem.getID_SETOR()));
         //holder.setor.setText(dao.selecionaSetor(ordem.getID_SETOR()).getDESCRICAO());
+        holder.data.setText(String.valueOf(ordem.getDATA_INICIAL()));
         holder.talhao.setText(String.valueOf(ordem.getTALHAO()));
     }
 

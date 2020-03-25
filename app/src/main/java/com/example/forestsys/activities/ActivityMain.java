@@ -86,8 +86,8 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
             public void onItemClick(O_S_ATIVIDADES classeOs) {
                     osSelecionada = classeOs;
                     Intent it = new Intent(ActivityMain.this, ActivityDetalhesOS.class);
-                    //it.putExtra("abrir_os", classeOs);
-                    startActivity(it);
+               // Intent it = new Intent(ActivityMain.this, ActivityContinuarOs.class);
+                startActivity(it);
             }
         });
 

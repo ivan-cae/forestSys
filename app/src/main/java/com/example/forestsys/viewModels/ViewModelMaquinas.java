@@ -55,7 +55,6 @@ public class ViewModelMaquinas extends AndroidViewModel {
         return repositorioMaquinas.selecionaMaquina(i);
     }
 
-
     //retorna uma lista do tipo List com todos os itens cadastrados na tabela O_S_ATIVIDADES
     public List<MAQUINAS> listaMaquinas() {
         return repositorioMaquinas.listaMaquinas();

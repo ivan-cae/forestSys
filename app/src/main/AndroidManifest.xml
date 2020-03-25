@@ -53,9 +53,6 @@
             android:name=".calculadora.i.CalculadoraMain"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".calculadora.i.CalcularFormulas"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activities.ActivityInicializacao"
             android:screenOrientation="portrait" />
         <activity

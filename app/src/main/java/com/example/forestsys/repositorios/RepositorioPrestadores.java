@@ -33,7 +33,7 @@ public class RepositorioPrestadores {
     }
 
     //retorna uma lista com todos os itens cadastrados na tabela PRESTADORES
-    public LiveData<List<PRESTADORES>> todasPrestadores() {
+    public LiveData<List<PRESTADORES>> todosPrestadores() {
         return prestadores;
     }
 

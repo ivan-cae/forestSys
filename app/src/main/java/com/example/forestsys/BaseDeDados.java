@@ -2,6 +2,7 @@ package com.example.forestsys;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.text.format.DateFormat;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -38,6 +39,9 @@ import com.example.forestsys.classes.O_S_ATIVIDADES_DIA;
 import com.example.forestsys.classes.O_S_ATIVIDADE_INSUMOS;
 import com.example.forestsys.classes.O_S_ATIVIDADE_INSUMOS_DIA;
 import com.example.forestsys.classes.PRESTADORES;
+
+import java.sql.Time;
+import java.util.Date;
 
 
 @Database(entities = {INDICADORES_SUBSOLAGEM.class, AVAL_PONTO_SUBSOLAGEM.class, AVAL_SUBSOLAGEM.class, OPERADORES.class, CALIBRAGEM_SUBSOLAGEM.class, MAQUINA_IMPLEMENTO.class,
@@ -91,13 +95,12 @@ public abstract class BaseDeDados extends RoomDatabase {
 
             auxDao.insert(new O_S_ATIVIDADES(1, 1,1,"Talhao1",1,1,1,
                     1,null,1, 1, 1, 1,"",
-                    null,null,1
-            ));
+                    (DateFormat.format("dd-MM-yyyy", new Date()).toString()),null,1));
 
 
             auxDao.insert(new O_S_ATIVIDADES(2, 2,2,"Talhao2",2, 2,2,
                     1,null,2, 2,2,2," ",
-                    null, null, 2));
+                    (DateFormat.format("dd-MM-yyyy", new Date()).toString()), null, 2));
 
 
             auxDao.insert(new MAQUINAS(1, "Maquina 1", 1));
@@ -111,6 +114,12 @@ public abstract class BaseDeDados extends RoomDatabase {
             auxDao.insert(new PRESTADORES(1, "Prestador 1", 1));
             auxDao.insert(new PRESTADORES(2, "Prestador 2", 1));
             auxDao.insert(new PRESTADORES(3, "Prestador 3", 1));
+
+            auxDao.insert(new OPERADORES(1, "Operador 1", 1));
+            auxDao.insert(new OPERADORES(2, "Operador 2", 1));
+            auxDao.insert(new OPERADORES(3, "Operador 3", 1));
+
+            auxDao.insert(new MAQUINA_IMPLEMENTO(1,1,1));
 
             return null;
         }
