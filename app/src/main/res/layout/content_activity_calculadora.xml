@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".calculadora.i.CalculadoraMain"
+    tools:showIn="@layout/activity_calculadora">
+
+    <TextView
+        android:id="@+id/editText1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:gravity="end"
+        android:textAlignment="textEnd"
+        android:textSize="40sp" />
+
+    <TextView
+        android:id="@+id/editText2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText1"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:gravity="end"
+        android:textAlignment="textEnd"
+        android:textSize="40sp" />
+
+    <Button
+        android:id="@+id/botao_limpar"
+        style="@style/botaoDestaque"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/editText2"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:onClick="onClick"
+        android:text="@string/limpar"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/botao_backspace"
+        style="@style/botaoDestaque"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/editText2"
+        android:layout_marginStart="208dp"
+        android:layout_marginLeft="208dp"
+        android:layout_marginTop="-1dp"
+        android:layout_toEndOf="@+id/botao_limpar"
+        android:layout_toRightOf="@+id/botao_limpar"
+        android:onClick="onClick"
+        android:textSize="30sp"
+        android:text="@string/backspace"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/botao_percentual"
+        style="@style/botaoDestaque"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_above="@+id/botao_adicao"
+        android:layout_below="@+id/editText2"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="4dp"
+        android:layout_toRightOf="@id/num9"
+        android:onClick="onClick"
+        android:text="%"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/num7"
+        style="@style/botaoBranco"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/botao_limpar"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:onClick="onClick"
+        android:textSize="30sp"
+        android:text="7" />
+
+    <Button
+        android:id="@+id/num8"
+        style="@style/botaoBranco"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/botao_limpar"
+        android:layout_toEndOf="@id/num7"
+        android:layout_toRightOf="@+id/num7"
+        android:onClick="onClick"
+        android:textSize="30sp"
+        android:text="8" />
+
+    <Button
+        android:id="@+id/num9"
+        style="@style/botaoBranco"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/botao_limpar"
+        android:layout_toEndOf="@id/num8"
+        android:layout_toRightOf="@+id/num8"
+        android:onClick="onClick"
+        android:textSize="30sp"
+        android:text="9" />
+
+    <Button
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:text="4"
+        android:id="@+id/num4"
+        style="@style/botaoBranco"
+        android:layout_below="@+id/num7"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="30sp"
+        android:onClick="onClick" />
+
+    <Button
+        android:id="@+id/num5"
+        style="@style/botaoBranco"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/num7"
+        android:textSize="30sp"
+        android:layout_toEndOf="@id/num4"
+        android:layout_toRightOf="@+id/num4"
+        android:onClick="onClick"
+        android:text="5" />
+
+    <Button
+        android:id="@+id/num6"
+        style="@style/botaoBranco"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/num7"
+        android:layout_toEndOf="@id/num5"
+        android:textSize="30sp"
+        android:layout_toRightOf="@+id/num5"
+        android:onClick="onClick"
+        android:text="6" />
+
+    <Button
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:text="1"
+        android:id="@+id/num1"
+        style="@style/botaoBranco"
+        android:layout_below="@+id/num4"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="30sp"
+        android:onClick="onClick" />
+
+    <Button
+        android:id="@+id/num2"
+        style="@style/botaoBranco"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/num4"
+        android:layout_toEndOf="@id/num1"
+        android:layout_toRightOf="@id/num1"
+        android:onClick="onClick"
+        android:textSize="30sp"
+        android:text="2" />
+
+    <Button
+        android:id="@+id/num3"
+        style="@style/botaoBranco"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/num4"
+        android:layout_toEndOf="@id/num2"
+        android:textSize="30sp"
+        android:layout_toRightOf="@+id/num2"
+        android:onClick="onClick"
+        android:text="3" />
+
+    <Button
+        android:id="@+id/botao_posneg"
+        style="@style/botaoBranco"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/num1"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:onClick="onClick"
+        android:text="@string/posneg"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/num0"
+        style="@style/botaoBranco"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/num1"
+        android:layout_toEndOf="@id/botao_posneg"
+        android:layout_toRightOf="@+id/botao_posneg"
+        android:textSize="30sp"
+        android:onClick="onClick"
+        android:text="0" />
+
+    <Button
+        android:id="@+id/botao_ponto"
+        style="@style/botaoBranco"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/num1"
+        android:layout_toEndOf="@+id/num0"
+        android:layout_toRightOf="@id/num0"
+        android:onClick="onClick"
+        android:text="."
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/botao_adicao"
+        style="@style/botaoDestaque"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/botao_limpar"
+        android:layout_toEndOf="@id/num9"
+        android:layout_toRightOf="@+id/num9"
+        android:onClick="onClick"
+        android:textSize="30sp"
+        android:text="+"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/botao_subtracao"
+        style="@style/botaoDestaque"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/num7"
+        android:layout_alignParentLeft="false"
+        android:layout_toEndOf="@id/num6"
+        android:layout_toRightOf="@+id/num6"
+        android:onClick="onClick"
+        android:text="-"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/botao_dividir"
+        style="@style/botaoDestaque"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/num4"
+        android:layout_toEndOf="@id/num3"
+        android:layout_toRightOf="@id/num3"
+        android:onClick="onClick"
+        android:text="@string/dividir"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/botao_multiplica"
+        style="@style/botaoDestaque"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/num1"
+        android:layout_toEndOf="@id/botao_ponto"
+        android:layout_toRightOf="@id/botao_ponto"
+        android:onClick="onClick"
+        android:textSize="30sp"
+        android:text="x"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/botao_igualdade"
+        style="@style/botaoDestaque"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/botao_abre_parenteses"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="462dp"
+        android:onClick="onClick"
+        android:textSize="30sp"
+        android:text="="
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/botao_quadrado"
+        style="@style/botaoDestaque"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/num0"
+        android:layout_toEndOf="@id/botao_fecha_parenteses"
+        android:layout_toRightOf="@id/botao_fecha_parenteses"
+        android:onClick="onClick"
+        android:text="@string/quadrado"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/botao_raiz"
+        style="@style/botaoDestaque"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/botao_multiplica"
+        android:layout_toEndOf="@id/botao_quadrado"
+        android:layout_toRightOf="@id/botao_quadrado"
+        android:onClick="onClick"
+        android:text="@string/raiz"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/botao_abre_parenteses"
+        style="@style/botaoDestaque"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/botao_posneg"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:onClick="onClick"
+        android:text="@string/abreParenteses"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/botao_fecha_parenteses"
+        style="@style/botaoDestaque"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/num0"
+        android:layout_toEndOf="@+id/botao_abre_parenteses"
+        android:layout_toRightOf="@id/botao_abre_parenteses"
+        android:onClick="onClick"
+        android:text="@string/fechaParenteses"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>
