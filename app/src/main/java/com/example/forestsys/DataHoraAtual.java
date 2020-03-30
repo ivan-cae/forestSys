@@ -17,5 +17,5 @@ public class DataHoraAtual {
     }
 
     public static String data(){
-        return DateFormat.format("dd-MM-yyyy", new Date()).toString();
+        return DateFormat.format("dd/MM/yyyy", new Date()).toString();
     }}

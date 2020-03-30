@@ -104,8 +104,6 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
     private ImageButton botaoConfirma;
     private ImageButton botaoVoltar;
 
-    private Button botaoAmostra;
-
     boolean todosConformeP1 = false;
     boolean todosConformeP2 = false;
 
@@ -209,216 +207,93 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
             amostrasP2[i] = 0.0;
         }
 
+        p1_a1.setClickable(false);
+
+        p1_a2.setClickable(false);
+
+        p1_a3.setClickable(false);
+
+        p1_a4.setClickable(false);
+
+        p1_a5.setClickable(false);
+
+
+        p2_a1.setClickable(false);
+
+        p2_a2.setClickable(false);
+
+        p2_a3.setClickable(false);
+
+        p2_a4.setClickable(false);
+
+        p2_a5.setClickable(false);
+
 
         botaoMediaP1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (atualP1 > 5) todosConformeP1 = true;
                 corrigirP1 = 0;
                 corrigirP2 = 0;
-
-                p1_a1.setClickable(false);
-                p1_a1.setError(null);
-
-                p1_a2.setClickable(false);
-                p1_a2.setError(null);
-
-                p1_a3.setClickable(false);
-                p1_a3.setError(null);
-
-                p1_a4.setClickable(false);
-                p1_a4.setError(null);
-
-                p1_a5.setClickable(false);
-                p1_a5.setError(null);
 
 
                 if (atualP1 <= 5) abreDialogoP1();
 
-                if (diferencaPercentual(amostrasP1[0], amostrasP1[1]) > 5.00 || diferencaPercentual(amostrasP1[0], amostrasP1[1]) < -5.00) {
-                    dif1_p1.setTextColor(Color.parseColor("#FF0000"));
-                    if (atualP1 > 5) {
-                        if (amostrasP1[0] > amostrasP1[1]) {
-                            p1_a1.setError("Não Conforme!");
-
-                            p1_a1.setCursorVisible(true);
-                            p1_a1.setClickable(true);
-
-                            p1_a1.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    corrigirP1 = 1;
-                                    abreDialogoP1();
-                                }
-                            });
+                if (atualP1 == 1) {
+                    p1_a1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            corrigirP1 = 1;
+                            abreDialogoP1();
                         }
-                        if (amostrasP1[0] < amostrasP1[1]) {
-                            p1_a2.setError("Não Conforme!");
+                    });
+                }
 
-                            p1_a2.setCursorVisible(true);
-                            p1_a2.setClickable(true);
-
-                            p1_a2.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    corrigirP1 = 2;
-                                    abreDialogoP1();
-                                }
-                            });
+                if (atualP1 == 2) {
+                    p1_a2.setCursorVisible(true);
+                    p1_a2.setClickable(true);
+                    p1_a2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            corrigirP1 = 2;
+                            abreDialogoP1();
                         }
-                    }
-                    todosConformeP1 = false;
-                } else dif1_p1.setTextColor(Color.parseColor("#32CD32"));
-                if (String.valueOf((diferencaPercentual(amostrasP1[0], amostrasP1[1]))) == "NaN")
-                    dif1_p1.setText("");
-                else
-                    dif1_p1.setText(String.valueOf(((diferencaPercentual(amostrasP1[0], amostrasP1[1])))));
+                    });
+                }
 
-
-                if (diferencaPercentual(amostrasP1[1], amostrasP1[2]) > 5.00 || diferencaPercentual(amostrasP1[1], amostrasP1[2]) < -5.00) {
-                    dif2_p1.setTextColor(Color.parseColor("#FF0000"));
-                    if (atualP1 > 5) {
-                        if (amostrasP1[1] > amostrasP1[2]) {
-                            p1_a2.setError("Não Conforme!");
-                            p1_a2.setCursorVisible(true);
-                            p1_a2.setClickable(true);
-
-                            p1_a2.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    corrigirP1 = 2;
-                                    abreDialogoP1();
-                                }
-                            });
+                if (atualP1 == 3) {
+                    p1_a3.setCursorVisible(true);
+                    p1_a3.setClickable(true);
+                    p1_a3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            corrigirP1 = 3;
+                            abreDialogoP1();
                         }
-                        if (amostrasP1[1] < amostrasP1[2]) {
-                            p1_a3.setError("Não Conforme!");
+                    });
+                }
 
-                            p1_a3.setCursorVisible(true);
-                            p1_a3.setClickable(true);
-
-                            p1_a3.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    corrigirP1 = 3;
-                                    abreDialogoP1();
-                                }
-                            });
+                if (atualP1 == 4) {
+                    p1_a4.setCursorVisible(true);
+                    p1_a4.setClickable(true);
+                    p1_a4.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            corrigirP1 = 4;
+                            abreDialogoP1();
                         }
-                    }
-                    todosConformeP1 = false;
+                    });
+                }
 
-                } else dif2_p1.setTextColor(Color.parseColor("#32CD32"));
-                if (String.valueOf((diferencaPercentual(amostrasP1[1], amostrasP1[2]))) == "NaN")
-                    dif2_p1.setText("");
-                else
-                    dif2_p1.setText(String.valueOf(((diferencaPercentual(amostrasP1[1], amostrasP1[2])))));
-
-
-                if (diferencaPercentual(amostrasP1[2], amostrasP1[3]) > 5.00 || diferencaPercentual(amostrasP1[2], amostrasP1[3]) < -5.00) {
-                    dif3_p1.setTextColor(Color.parseColor("#FF0000"));
-                    if (atualP1 > 5) {
-                        if (amostrasP1[2] > amostrasP1[3]) {
-                            p1_a2.setError("Não Conforme!");
-
-                            p1_a3.setCursorVisible(true);
-                            p1_a3.setClickable(true);
-
-                            p1_a3.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    corrigirP1 = 3;
-                                    abreDialogoP1();
-                                }
-                            });
+                if (atualP1 == 5) {
+                    p1_a5.setCursorVisible(true);
+                    p1_a5.setClickable(true);
+                    p1_a5.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            corrigirP1 = 5;
+                            abreDialogoP1();
                         }
-                        if (amostrasP1[2] < amostrasP1[3]) {
-
-                            p1_a4.setCursorVisible(true);
-                            p1_a4.setClickable(true);
-
-                            p1_a4.setError("Não Conforme!");
-
-                            p1_a4.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    corrigirP1 = 4;
-                                    abreDialogoP1();
-                                }
-                            });
-                        }
-                    }
-                    todosConformeP1 = false;
-
-                } else dif3_p1.setTextColor(Color.parseColor("#32CD32"));
-                if (String.valueOf((diferencaPercentual(amostrasP1[2], amostrasP1[3]))) == "NaN")
-                    dif3_p1.setText("");
-                else
-                    dif3_p1.setText(String.valueOf(((diferencaPercentual(amostrasP1[2], amostrasP1[3])))));
-
-
-                if (diferencaPercentual(amostrasP1[3], amostrasP1[4]) > 5.00 || diferencaPercentual(amostrasP1[3], amostrasP1[4]) < -5.00) {
-                    dif4_p1.setTextColor(Color.parseColor("#FF0000"));
-                    if (atualP1 > 5) {
-                        if (amostrasP1[3] > amostrasP1[4]) {
-                            p1_a4.setCursorVisible(true);
-                            p1_a4.setClickable(true);
-
-                            p1_a4.setError("Não Conforme!");
-
-                            p1_a4.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    corrigirP1 = 4;
-                                    abreDialogoP1();
-                                }
-                            });
-                        }
-                        if (amostrasP1[3] < amostrasP1[4]) {
-                            p1_a5.setError("Não Conforme!");
-
-                            p1_a5.setClickable(true);
-
-                            p1_a5.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    corrigirP1 = 5;
-                                    abreDialogoP1();
-                                }
-                            });
-                        }
-                    }
-                    todosConformeP1 = false;
-
-                } else dif4_p1.setTextColor(Color.parseColor("#32CD32"));
-                if (String.valueOf((diferencaPercentual(amostrasP1[3], amostrasP1[4]))) == "NaN")
-                    dif4_p1.setText("");
-                else
-                    dif4_p1.setText(String.valueOf(((diferencaPercentual(amostrasP1[3], amostrasP1[4])))));
-
-
-                mediaPercentualp1 = (
-                        diferencaPercentual(amostrasP1[0], amostrasP1[1]) +
-                                diferencaPercentual(amostrasP1[1], amostrasP1[2]) +
-                                diferencaPercentual(amostrasP1[2], amostrasP1[3]) +
-                                diferencaPercentual(amostrasP1[3], amostrasP1[4])) / 4;
-
-                mediaGeralp1 = (amostrasP1[0] + amostrasP1[1] + amostrasP1[2] + amostrasP1[3] + amostrasP1[4]) / 5;
-                mediaGeralp1 = arredonda3Casas(mediaGeralp1);
-
-                if (String.valueOf((mediaPercentualp1)) == "NaN") mediaDifP1.setText("");
-                else mediaDifP1.setText(String.valueOf(arredonda1Casa(mediaPercentualp1)));
-
-                p1Media.setText(String.valueOf((mediaGeralp1)));
-                mediaProduto1.setText(String.valueOf((mediaGeralp1)));
-                Double aux = arredonda2Casas(desvioPadrao(amostrasP1));
-                desvioProduto1.setText(String.valueOf((aux)));
-
-                botaoConfirma.setVisibility(View.INVISIBLE);
-
-                if (todosConformeP1 == true && todosConformeP2 == true) {
-                    botaoConfirma.setVisibility(View.VISIBLE);
-                    pulseAnimation(botaoConfirma);
+                    });
                 }
             }
         });
@@ -427,216 +302,69 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
         botaoMediaP2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (atualP2 > 5) todosConformeP2 = true;
-                corrigirP2 = 0;
                 corrigirP1 = 0;
-
-                p2_a1.setClickable(false);
-                p2_a1.setError(null);
-
-                p2_a2.setClickable(false);
-                p2_a2.setError(null);
-
-                p2_a3.setClickable(false);
-                p2_a3.setError(null);
-
-                p2_a4.setClickable(false);
-                p2_a4.setError(null);
-
-                p2_a5.setClickable(false);
-                p2_a5.setError(null);
+                corrigirP2 = 0;
 
 
                 if (atualP2 <= 5) abreDialogoP2();
 
-                if (diferencaPercentual(amostrasP2[0], amostrasP2[1]) > 5.00 || diferencaPercentual(amostrasP2[0], amostrasP2[1]) < -5.00) {
-                    dif1_p2.setTextColor(Color.parseColor("#FF0000"));
-                    if (atualP2 > 5) {
-                        if (amostrasP2[0] > amostrasP2[1]) {
-                            p2_a1.setError("Não Conforme!");
-
-                            p2_a1.setCursorVisible(true);
-                            p2_a1.setClickable(true);
-
-                            p2_a1.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    corrigirP2 = 1;
-                                    abreDialogoP2();
-                                }
-                            });
+                if (atualP2 == 1) {
+                    p2_a1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            corrigirP2 = 1;
+                            abreDialogoP2();
                         }
-                        if (amostrasP2[0] < amostrasP2[1]) {
-                            p2_a2.setError("Não Conforme!");
-
-                            p2_a2.setCursorVisible(true);
-                            p2_a2.setClickable(true);
-
-                            p2_a2.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    corrigirP2 = 2;
-                                    abreDialogoP2();
-                                }
-                            });
-                        }
-                    }
-                    todosConformeP2 = false;
-
-                } else dif1_p2.setTextColor(Color.parseColor("#32CD32"));
-                if (String.valueOf((diferencaPercentual(amostrasP2[0], amostrasP2[1]))) == "NaN")
-                    dif1_p2.setText("");
-                else
-                    dif1_p2.setText(String.valueOf(((diferencaPercentual(amostrasP2[0], amostrasP2[1])))));
-
-
-                if (diferencaPercentual(amostrasP2[1], amostrasP2[2]) > 5.00 || diferencaPercentual(amostrasP2[1], amostrasP2[2]) < -5.00) {
-                    dif2_p2.setTextColor(Color.parseColor("#FF0000"));
-                    if (atualP2 > 5) {
-                        if (amostrasP2[1] > amostrasP2[2]) {
-                            p2_a2.setError("Não Conforme!");
-
-                            p2_a2.setCursorVisible(true);
-                            p2_a2.setClickable(true);
-
-                            p2_a2.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    corrigirP2 = 2;
-                                    abreDialogoP2();
-                                }
-                            });
-                        }
-                        if (amostrasP2[1] < amostrasP2[2]) {
-                            p2_a3.setError("Não Conforme!");
-
-                            p2_a3.setCursorVisible(true);
-                            p2_a3.setClickable(true);
-
-                            p2_a3.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    corrigirP2 = 3;
-                                    abreDialogoP2();
-                                }
-                            });
-                        }
-                    }
-                    todosConformeP2 = false;
-
-                } else dif2_p2.setTextColor(Color.parseColor("#32CD32"));
-                if (String.valueOf((diferencaPercentual(amostrasP2[1], amostrasP2[2]))) == "NaN")
-                    dif2_p2.setText("");
-                else
-                    dif2_p2.setText(String.valueOf(((diferencaPercentual(amostrasP2[1], amostrasP2[2])))));
-
-
-                if (diferencaPercentual(amostrasP2[2], amostrasP2[3]) > 5.00 || diferencaPercentual(amostrasP2[2], amostrasP2[3]) < -5.00) {
-                    dif3_p2.setTextColor(Color.parseColor("#FF0000"));
-                    if (atualP2 > 5) {
-                        if (amostrasP2[2] > amostrasP2[3]) {
-                            p2_a2.setError("Não Conforme!");
-
-                            p2_a3.setCursorVisible(true);
-                            p2_a3.setClickable(true);
-
-                            p2_a3.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    corrigirP2 = 3;
-                                    abreDialogoP2();
-                                }
-                            });
-                        }
-                        if (amostrasP2[2] < amostrasP2[3]) {
-
-                            p2_a4.setCursorVisible(true);
-                            p2_a4.setClickable(true);
-
-                            p2_a4.setError("Não Conforme!");
-
-                            p2_a4.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    corrigirP2 = 4;
-                                    abreDialogoP2();
-                                }
-                            });
-                        }
-                    }
-                    todosConformeP2 = false;
-
-                } else dif3_p2.setTextColor(Color.parseColor("#32CD32"));
-                if (String.valueOf((diferencaPercentual(amostrasP2[2], amostrasP2[3]))) == "NaN")
-                    dif3_p2.setText("");
-                else
-                    dif3_p2.setText(String.valueOf(((diferencaPercentual(amostrasP2[2], amostrasP2[3])))));
-
-
-                if (diferencaPercentual(amostrasP2[3], amostrasP2[4]) > 5.00 || diferencaPercentual(amostrasP2[3], amostrasP2[4]) < -5.00) {
-                    dif4_p2.setTextColor(Color.parseColor("#FF0000"));
-                    if (atualP2 > 5) {
-                        if (amostrasP2[3] > amostrasP2[4]) {
-                            p2_a4.setCursorVisible(true);
-                            p2_a4.setClickable(true);
-
-                            p2_a4.setError("Não Conforme!");
-
-                            p2_a4.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    corrigirP2 = 4;
-                                    abreDialogoP2();
-                                }
-                            });
-                        }
-                        if (amostrasP2[3] < amostrasP2[4]) {
-                            p2_a5.setError("Não Conforme!");
-
-                            p2_a5.setClickable(true);
-
-                            p2_a5.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    corrigirP2 = 5;
-                                    abreDialogoP2();
-                                }
-                            });
-                        }
-                    }
-                    todosConformeP2 = false;
-
-                } else dif4_p2.setTextColor(Color.parseColor("#32CD32"));
-                if (String.valueOf((diferencaPercentual(amostrasP2[3], amostrasP2[4]))) == "NaN")
-                    dif4_p2.setText("");
-                else
-                    dif4_p2.setText(String.valueOf(((diferencaPercentual(amostrasP2[3], amostrasP2[4])))));
-
-
-                mediaPercentualp2 = (
-                        diferencaPercentual(amostrasP2[0], amostrasP2[1]) +
-                                diferencaPercentual(amostrasP2[1], amostrasP2[2]) +
-                                diferencaPercentual(amostrasP2[2], amostrasP2[3]) +
-                                diferencaPercentual(amostrasP2[3], amostrasP2[4])) / 4;
-
-                mediaGeralp2 = (amostrasP2[0] + amostrasP2[1] + amostrasP2[2] + amostrasP2[3] + amostrasP2[4]) / 5;
-                mediaGeralp2 = arredonda3Casas(mediaGeralp2);
-
-                if (String.valueOf((mediaPercentualp2)) == "NaN") mediaDifP2.setText("");
-                else mediaDifP2.setText(String.valueOf(arredonda1Casa(mediaPercentualp2)));
-
-                p2Media.setText(String.valueOf((mediaGeralp2)));
-                mediaProduto2.setText(String.valueOf((mediaGeralp2)));
-                Double aux = arredonda2Casas(desvioPadrao(amostrasP2));
-                desvioProduto2.setText(String.valueOf((aux)));
-
-                botaoConfirma.setVisibility(View.INVISIBLE);
-
-                if (todosConformeP1 == true && todosConformeP2 == true) {
-                    botaoConfirma.setVisibility(View.VISIBLE);
-                    pulseAnimation(botaoConfirma);
+                    });
                 }
 
+                if (atualP2 == 2) {
+                    p2_a2.setCursorVisible(true);
+                    p2_a2.setClickable(true);
+                    p2_a2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            corrigirP2 = 2;
+                            abreDialogoP2();
+                        }
+                    });
+                }
+
+                if (atualP2 == 3) {
+                    p2_a3.setCursorVisible(true);
+                    p2_a3.setClickable(true);
+                    p2_a3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            corrigirP2 = 3;
+                            abreDialogoP2();
+                        }
+                    });
+                }
+
+                if (atualP2 == 4) {
+                    p2_a4.setCursorVisible(true);
+                    p2_a4.setClickable(true);
+                    p2_a4.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            corrigirP2 = 4;
+                            abreDialogoP2();
+                        }
+                    });
+                }
+
+                if (atualP2 == 5) {
+                    p2_a5.setCursorVisible(true);
+                    p2_a5.setClickable(true);
+                    p2_a5.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            corrigirP2 = 5;
+                            abreDialogoP2();
+                        }
+                    });
+                }
             }
         });
 
@@ -650,7 +378,7 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
 
         ArrayList<MAQUINAS> maquinas = new ArrayList<>(repositorioMaquinas.listaMaquinas());
 
-        ArrayList<OPERADORES> usuarios = new ArrayList<>(repositorioOperadores.listaOperadores());
+        ArrayList<OPERADORES> operadores = new ArrayList<>(repositorioOperadores.listaOperadores());
 
         ArrayList<IMPLEMENTOS> implementos = new ArrayList<>(repositorioImplementos.listaImplementos());
 
@@ -662,7 +390,7 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
 
 
         ArrayAdapter<OPERADORES> adapterUsuarios = new ArrayAdapter<OPERADORES>(this,
-                android.R.layout.simple_spinner_item, usuarios);
+                android.R.layout.simple_spinner_item, operadores);
         adapterUsuarios.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerOperador.setAdapter(adapterUsuarios);
 
@@ -791,6 +519,457 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
         });
     }
 
+    public void abreDialogoP1() {
+        todosConformeP1 = true;
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+        View mView = getLayoutInflater().inflate(R.layout.dialogo_calibragem, null);
+        final EditText valor = mView.findViewById(R.id.valor_dialogo_calibragem);
+        Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_calbragem);
+
+        p1_a1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+        p1_a2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+        p1_a3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+        p1_a4.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+        p1_a5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+        botaoOk.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View view) {
+                String[] s = new String[2];
+                String aux;
+                aux = String.valueOf(valor.getText());
+
+                int cont = 0;
+
+                if (aux.isEmpty()) valor.setError("Digite 3 Casas Decimais!");
+                if (!aux.isEmpty() && aux.length() < 5) valor.setError("Digite 3 Casas Decimais!");
+                //else if (!aux.isEmpty() && aux.length() > 5) valor.setError("Digite 3 Casas Decimais!");
+                if (!aux.isEmpty() && aux.length() >= 5) {
+                    for (int i = 0; i < aux.length(); i++) {
+                        char[] c = aux.toCharArray();
+                        if (c[i] == ',') cont++;
+                    }
+                }
+                if (!aux.isEmpty() && aux.length() >= 5 && aux.contains(",") && cont == 1) {
+                    s = aux.split("\\,");
+                    if (s[1].length() < 3 || s[1].length() > 3) {
+                        valor.setError("Digite 3 Casas Decimais!");
+                    }
+
+                    if (s[1].length() == 3) {
+                        valorCorreto = valor.getText().toString();
+                        valorCorreto = valorCorreto.replace(',', '.');
+
+                        if (corrigirP1 == 0) {
+                            if (atualP1 == 1) {
+                                amostrasP1[0] = Double.valueOf(valorCorreto);
+                                p1_a1.setText(valorCorreto);
+                            }
+                            if (atualP1 == 2) {
+                                amostrasP1[1] = Double.valueOf(valorCorreto);
+                                p1_a2.setText(valorCorreto);
+                            }
+                            if (atualP1 == 3) {
+                                amostrasP1[2] = Double.valueOf(valorCorreto);
+                                p1_a3.setText(valorCorreto);
+                            }
+                            if (atualP1 == 4) {
+                                amostrasP1[3] = Double.valueOf(valorCorreto);
+                                p1_a4.setText(valorCorreto);
+                            }
+                            if (atualP1 == 5) {
+                                amostrasP1[4] = Double.valueOf(valorCorreto);
+                                p1_a5.setText(valorCorreto);
+                            }
+                            atualP1++;
+                        }
+
+                        if (s[1].length() == 3 && corrigirP1 != 0) {
+                            valorCorreto = valor.getText().toString();
+                            valorCorreto = valorCorreto.replace(',', '.');
+
+
+                            if (corrigirP1 == 1) {
+                                amostrasP1[0] = Double.valueOf(valorCorreto);
+                                p1_a1.setText(valorCorreto);
+                            }
+                            if (corrigirP1 == 2) {
+                                amostrasP1[1] = Double.valueOf(valorCorreto);
+                                p1_a2.setText(valorCorreto);
+                            }
+                            if (corrigirP1 == 3) {
+                                amostrasP1[2] = Double.valueOf(valorCorreto);
+                                p1_a3.setText(valorCorreto);
+                            }
+                            if (corrigirP1 == 4) {
+                                amostrasP1[3] = Double.valueOf(valorCorreto);
+                                p1_a4.setText(valorCorreto);
+                            }
+                            if (corrigirP1 == 5) {
+                                amostrasP1[4] = Double.valueOf(valorCorreto);
+                                p1_a5.setText(valorCorreto);
+                            }
+                        }
+                        dialog.dismiss();
+                    }
+                } else valor.setError("Digite 3 Casas Decimais!");
+
+
+                //testando p1
+
+                    if (diferencaPercentual(amostrasP1[0], amostrasP1[1]) > 5.00 || diferencaPercentual(amostrasP1[0], amostrasP1[1]) < -5.00) {
+                        dif1_p1.setTextColor(Color.parseColor("#FF9800"));
+
+                        todosConformeP1 = false;
+                    } else {
+                        dif1_p1.setTextColor(Color.parseColor("#32CD32"));
+                    }
+                    if (String.valueOf((diferencaPercentual(amostrasP1[0], amostrasP1[1]))) == "NaN")
+                        dif1_p1.setText("");
+                    else
+                        dif1_p1.setText(String.valueOf(((diferencaPercentual(amostrasP1[0], amostrasP1[1])))));
+
+
+                    if (diferencaPercentual(amostrasP1[1], amostrasP1[2]) > 5.00 || diferencaPercentual(amostrasP1[1], amostrasP1[2]) < -5.00) {
+                        dif2_p1.setTextColor(Color.parseColor("#FF9800"));
+
+                        todosConformeP1 = false;
+                    } else {
+                        dif2_p1.setTextColor(Color.parseColor("#32CD32"));
+                    }
+                    if (String.valueOf((diferencaPercentual(amostrasP1[1], amostrasP1[2]))) == "NaN")
+                        dif2_p1.setText("");
+                    else
+                        dif2_p1.setText(String.valueOf(((diferencaPercentual(amostrasP1[1], amostrasP1[2])))));
+
+
+                    if (diferencaPercentual(amostrasP1[2], amostrasP1[3]) > 5.00 || diferencaPercentual(amostrasP1[2], amostrasP1[3]) < -5.00) {
+                        dif3_p1.setTextColor(Color.parseColor("#FF9800"));
+
+                        todosConformeP1 = false;
+
+                    } else {
+                        dif3_p1.setTextColor(Color.parseColor("#32CD32"));
+                    }
+                    if (String.valueOf((diferencaPercentual(amostrasP1[2], amostrasP1[3]))) == "NaN")
+                        dif3_p1.setText("");
+                    else
+                        dif3_p1.setText(String.valueOf(((diferencaPercentual(amostrasP1[2], amostrasP1[3])))));
+
+
+                    if (diferencaPercentual(amostrasP1[3], amostrasP1[4]) > 5.00 || diferencaPercentual(amostrasP1[3], amostrasP1[4]) < -5.00) {
+                        dif4_p1.setTextColor(Color.parseColor("#FF9800"));
+
+                        todosConformeP1 = false;
+
+                    } else {
+                        dif4_p1.setTextColor(Color.parseColor("#32CD32"));
+                    }
+                    if (String.valueOf((diferencaPercentual(amostrasP1[3], amostrasP1[4]))) == "NaN")
+                        dif4_p1.setText("");
+                    else
+                        dif4_p1.setText(String.valueOf(((diferencaPercentual(amostrasP1[3], amostrasP1[4])))));
+
+
+
+                //testando p2
+                if (diferencaPercentual(amostrasP2[0], amostrasP2[1]) > 5.00 || diferencaPercentual(amostrasP2[0], amostrasP2[1]) < -5.00) {
+                    todosConformeP2 = false;
+                }
+                if (diferencaPercentual(amostrasP2[1], amostrasP2[2]) > 5.00 || diferencaPercentual(amostrasP2[1], amostrasP2[2]) < -5.00) {
+                    todosConformeP2 = false;
+                }
+                if (diferencaPercentual(amostrasP2[2], amostrasP2[3]) > 5.00 || diferencaPercentual(amostrasP2[2], amostrasP2[3]) < -5.00) {
+                    todosConformeP2 = false;
+                }
+                if (diferencaPercentual(amostrasP2[3], amostrasP2[4]) > 5.00 || diferencaPercentual(amostrasP2[3], amostrasP2[4]) < -5.00) {
+                    todosConformeP2 = false;
+                }
+
+
+                mediaPercentualp1 = (
+                        diferencaPercentual(amostrasP1[0], amostrasP1[1]) +
+                                diferencaPercentual(amostrasP1[1], amostrasP1[2]) +
+                                diferencaPercentual(amostrasP1[2], amostrasP1[3]) +
+                                diferencaPercentual(amostrasP1[3], amostrasP1[4])) / 4;
+
+                Double maiorDif = 0.0;
+                int posicaoMaiorDif = 0;
+
+                if (atualP1 > 5) {
+                    for (int i = 0; i < 4; i++) {
+                        if (Math.abs(diferencaPercentual(amostrasP1[i], amostrasP1[i + 1])) > maiorDif) {
+                            maiorDif = Math.abs(diferencaPercentual(amostrasP1[i], amostrasP1[i + 1]));
+                            posicaoMaiorDif = i + 1;
+                        }
+                    }
+
+                    if (maiorDif > 5.0) {
+                        if (posicaoMaiorDif == 1) {
+                            p1_a2.setBackgroundColor(Color.parseColor("#FF0000"));
+                            dif1_p1.setTextColor(Color.parseColor("#FF0000"));
+                        }else if (posicaoMaiorDif == 2) {
+                            p1_a3.setBackgroundColor(Color.parseColor("#FF0000"));
+                            dif2_p1.setTextColor(Color.parseColor("#FF0000"));
+                        }else if (posicaoMaiorDif == 3){
+                            p1_a4.setBackgroundColor(Color.parseColor("#FF0000"));
+                            dif3_p1.setTextColor(Color.parseColor("#FF0000"));
+                        }else if (posicaoMaiorDif == 4) {
+                            p1_a5.setBackgroundColor(Color.parseColor("#FF0000"));
+                            dif4_p1.setTextColor(Color.parseColor("#FF0000"));
+                        }
+                    }
+                }
+
+                mediaGeralp1 = (amostrasP1[0] + amostrasP1[1] + amostrasP1[2] + amostrasP1[3] + amostrasP1[4]) / 5;
+                mediaGeralp1 = arredonda3Casas(mediaGeralp1);
+
+                if (String.valueOf((mediaPercentualp1)) == "NaN") mediaDifP1.setText("");
+                else mediaDifP1.setText(String.valueOf(arredonda1Casa(mediaPercentualp1)));
+
+                p1Media.setText(String.valueOf((mediaGeralp1)));
+                mediaProduto1.setText(String.valueOf((mediaGeralp1)));
+                Double aux1 = arredonda2Casas(desvioPadrao(amostrasP1));
+                desvioProduto1.setText(String.valueOf((aux1)));
+
+                botaoConfirma.setVisibility(View.INVISIBLE);
+
+                if(atualP1>5 && atualP2>5 && todosConformeP1 == true && todosConformeP2 == true) {
+                    botaoConfirma.setVisibility(View.VISIBLE);
+                    pulseAnimation(botaoConfirma);
+                }
+            }
+        });
+    }
+
+
+    public void abreDialogoP2() {
+        todosConformeP2 = true;
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+        View mView = getLayoutInflater().inflate(R.layout.dialogo_calibragem, null);
+        final EditText valor = mView.findViewById(R.id.valor_dialogo_calibragem);
+        Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_calbragem);
+
+        p2_a1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+        p2_a2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+        p2_a3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+        p2_a4.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+        p2_a5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+        botaoOk.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View view) {
+                String[] s = new String[2];
+                String aux;
+                aux = String.valueOf(valor.getText());
+
+                int cont = 0;
+
+                if (aux.isEmpty()) valor.setError("Digite 3 Casas Decimais!");
+                if (!aux.isEmpty() && aux.length() < 5) valor.setError("Digite 3 Casas Decimais!");
+                //else if (!aux.isEmpty() && aux.length() > 5) valor.setError("Digite 3 Casas Decimais!");
+                if (!aux.isEmpty() && aux.length() >= 5) {
+                    for (int i = 0; i < aux.length(); i++) {
+                        char[] c = aux.toCharArray();
+                        if (c[i] == ',') cont++;
+                    }
+                }
+                if (!aux.isEmpty() && aux.length() >= 5 && aux.contains(",") && cont == 1) {
+                    s = aux.split("\\,");
+                    if (s[1].length() < 3 || s[1].length() > 3) {
+                        valor.setError("Digite 3 Casas Decimais!");
+                    }
+
+                    if (s[1].length() == 3) {
+                        valorCorreto = valor.getText().toString();
+                        valorCorreto = valorCorreto.replace(',', '.');
+
+                        if (corrigirP2 == 0) {
+                            if (atualP2 == 1) {
+                                amostrasP2[0] = Double.valueOf(valorCorreto);
+                                p2_a1.setText(valorCorreto);
+                            }
+                            if (atualP2 == 2) {
+                                amostrasP2[1] = Double.valueOf(valorCorreto);
+                                p2_a2.setText(valorCorreto);
+                            }
+                            if (atualP2 == 3) {
+                                amostrasP2[2] = Double.valueOf(valorCorreto);
+                                p2_a3.setText(valorCorreto);
+                            }
+                            if (atualP2 == 4) {
+                                amostrasP2[3] = Double.valueOf(valorCorreto);
+                                p2_a4.setText(valorCorreto);
+                            }
+                            if (atualP2 == 5) {
+                                amostrasP2[4] = Double.valueOf(valorCorreto);
+                                p2_a5.setText(valorCorreto);
+                            }
+                            atualP2++;
+                        }
+
+                        if (s[1].length() == 3 && corrigirP2 != 0) {
+                            valorCorreto = valor.getText().toString();
+                            valorCorreto = valorCorreto.replace(',', '.');
+
+
+                            if (corrigirP2 == 1) {
+                                amostrasP2[0] = Double.valueOf(valorCorreto);
+                                p2_a1.setText(valorCorreto);
+                            }
+                            if (corrigirP2 == 2) {
+                                amostrasP2[1] = Double.valueOf(valorCorreto);
+                                p2_a2.setText(valorCorreto);
+                            }
+                            if (corrigirP2 == 3) {
+                                amostrasP2[2] = Double.valueOf(valorCorreto);
+                                p2_a3.setText(valorCorreto);
+                            }
+                            if (corrigirP2 == 4) {
+                                amostrasP2[3] = Double.valueOf(valorCorreto);
+                                p2_a4.setText(valorCorreto);
+                            }
+                            if (corrigirP2 == 5) {
+                                amostrasP2[4] = Double.valueOf(valorCorreto);
+                                p2_a5.setText(valorCorreto);
+                            }
+                        }
+                        dialog.dismiss();
+                    }
+                } else valor.setError("Digite 3 Casas Decimais!");
+
+
+                    if (diferencaPercentual(amostrasP2[0], amostrasP2[1]) > 5.00 || diferencaPercentual(amostrasP2[0], amostrasP2[1]) < -5.00) {
+                        dif1_p2.setTextColor(Color.parseColor("#FF9800"));
+                        todosConformeP2 = false;
+                    } else {
+                        dif1_p2.setTextColor(Color.parseColor("#32CD32"));
+                    }
+                    if (String.valueOf((diferencaPercentual(amostrasP2[0], amostrasP2[1]))) == "NaN")
+                        dif1_p2.setText("");
+                    else
+                        dif1_p2.setText(String.valueOf(((diferencaPercentual(amostrasP2[0], amostrasP2[1])))));
+
+
+                    if (diferencaPercentual(amostrasP2[1], amostrasP2[2]) > 5.00 || diferencaPercentual(amostrasP2[1], amostrasP2[2]) < -5.00) {
+                        dif2_p2.setTextColor(Color.parseColor("#FF9800"));
+                        todosConformeP2 = false;
+
+                    } else {
+                        dif2_p2.setTextColor(Color.parseColor("#32CD32"));
+                    }
+                    if (String.valueOf((diferencaPercentual(amostrasP2[1], amostrasP2[2]))) == "NaN")
+                        dif2_p2.setText("");
+                    else
+                        dif2_p2.setText(String.valueOf(((diferencaPercentual(amostrasP2[1], amostrasP2[2])))));
+
+
+                    if (diferencaPercentual(amostrasP2[2], amostrasP2[3]) > 5.00 || diferencaPercentual(amostrasP2[2], amostrasP2[3]) < -5.00) {
+                        dif3_p2.setTextColor(Color.parseColor("#FF9800"));
+                        todosConformeP2 = false;
+
+                    } else {
+                        dif3_p2.setTextColor(Color.parseColor("#32CD32"));
+                    }
+                    if (String.valueOf((diferencaPercentual(amostrasP2[2], amostrasP2[3]))) == "NaN")
+                        dif3_p2.setText("");
+                    else
+                        dif3_p2.setText(String.valueOf(((diferencaPercentual(amostrasP2[2], amostrasP2[3])))));
+
+
+                    if (diferencaPercentual(amostrasP2[3], amostrasP2[4]) > 5.00 || diferencaPercentual(amostrasP2[3], amostrasP2[4]) < -5.00) {
+                        dif4_p2.setTextColor(Color.parseColor("#FF9800"));
+                        todosConformeP2 = false;
+
+                    } else {
+                        dif4_p2.setTextColor(Color.parseColor("#32CD32"));
+                    }
+                    if (String.valueOf((diferencaPercentual(amostrasP2[3], amostrasP2[4]))) == "NaN")
+                        dif4_p2.setText("");
+                    else
+                        dif4_p2.setText(String.valueOf(((diferencaPercentual(amostrasP2[3], amostrasP2[4])))));
+
+                //testando p1
+
+                if (diferencaPercentual(amostrasP1[0], amostrasP1[1]) > 5.00 || diferencaPercentual(amostrasP1[0], amostrasP1[1]) < -5.00) {
+                    todosConformeP1 = false;
+                }
+
+                if (diferencaPercentual(amostrasP1[1], amostrasP1[2]) > 5.00 || diferencaPercentual(amostrasP1[1], amostrasP1[2]) < -5.00) {
+                    todosConformeP1 = false;
+                }
+
+                if (diferencaPercentual(amostrasP1[2], amostrasP1[3]) > 5.00 || diferencaPercentual(amostrasP1[2], amostrasP1[3]) < -5.00) {
+                    todosConformeP1 = false;
+                }
+
+                if (diferencaPercentual(amostrasP1[3], amostrasP1[4]) > 5.00 || diferencaPercentual(amostrasP1[3], amostrasP1[4]) < -5.00) {
+                    todosConformeP1 = false;
+                }
+
+                mediaPercentualp2 = (
+                        diferencaPercentual(amostrasP2[0], amostrasP2[1]) +
+                                diferencaPercentual(amostrasP2[1], amostrasP2[2]) +
+                                diferencaPercentual(amostrasP2[2], amostrasP2[3]) +
+                                diferencaPercentual(amostrasP2[3], amostrasP2[4])) / 4;
+
+                Double maiorDif = 0.0;
+                int posicaoMaiorDif = 0;
+
+                if (atualP2 > 5) {
+                    for (int i = 0; i < 4; i++) {
+                        if (Math.abs(diferencaPercentual(amostrasP2[i], amostrasP2[i + 1])) > maiorDif) {
+                            maiorDif = Math.abs(diferencaPercentual(amostrasP2[i], amostrasP2[i + 1]));
+                            posicaoMaiorDif = i + 1;
+                        }
+                    }
+
+                    if (maiorDif > 5.0) {
+                        if (posicaoMaiorDif == 1) {
+                            p2_a2.setBackgroundColor(Color.parseColor("#FF0000"));
+                            dif1_p2.setTextColor(Color.parseColor("#FF0000"));
+                        }else if (posicaoMaiorDif == 2) {
+                            p2_a3.setBackgroundColor(Color.parseColor("#FF0000"));
+                            dif2_p2.setTextColor(Color.parseColor("#FF0000"));
+                        }else if (posicaoMaiorDif == 3){
+                            p2_a4.setBackgroundColor(Color.parseColor("#FF0000"));
+                            dif3_p2.setTextColor(Color.parseColor("#FF0000"));
+                        }else if (posicaoMaiorDif == 4) {
+                            p2_a5.setBackgroundColor(Color.parseColor("#FF0000"));
+                            dif4_p2.setTextColor(Color.parseColor("#FF0000"));
+                        }
+                    }
+                }
+
+                mediaGeralp2 = (amostrasP2[0] + amostrasP2[1] + amostrasP2[2] + amostrasP2[3] + amostrasP2[4]) / 5;
+                mediaGeralp2 = arredonda3Casas(mediaGeralp2);
+
+                if (String.valueOf((mediaPercentualp2)) == "NaN") mediaDifP2.setText("");
+                else mediaDifP2.setText(String.valueOf(arredonda1Casa(mediaPercentualp2)));
+
+                p2Media.setText(String.valueOf((mediaGeralp2)));
+                mediaProduto2.setText(String.valueOf((mediaGeralp2)));
+                Double aux1 = arredonda2Casas(desvioPadrao(amostrasP2));
+                desvioProduto2.setText(String.valueOf((aux1)));
+
+                botaoConfirma.setVisibility(View.INVISIBLE);
+
+                if (atualP1>5 && atualP2>5 &&todosConformeP1 == true && todosConformeP2 == true) {
+                    botaoConfirma.setVisibility(View.VISIBLE);
+                    pulseAnimation(botaoConfirma);
+                }
+            }
+        });
+    }
+
     public void pulseAnimation(ImageButton btnObj) {
         objAnim = ObjectAnimator.ofPropertyValuesHolder(btnObj, PropertyValuesHolder.ofFloat("scaleX", 1.5f), PropertyValuesHolder.ofFloat("scaleY", 1.5f));
         objAnim.setDuration(300);
@@ -885,191 +1064,6 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
         return result;
     }
 
-    public void abreDialogoP1() {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_calibragem, null);
-        final EditText valor = mView.findViewById(R.id.valor_dialogo_calibragem);
-        Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_calbragem);
-
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-        botaoOk.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onClick(View view) {
-                String[] s = new String[2];
-                String aux;
-                aux = String.valueOf(valor.getText());
-
-                int cont = 0;
-
-                if (aux.isEmpty()) valor.setError("Digite 3 Casas Decimais!");
-                if (!aux.isEmpty() && aux.length() < 5) valor.setError("Digite 3 Casas Decimais!");
-                //else if (!aux.isEmpty() && aux.length() > 5) valor.setError("Digite 3 Casas Decimais!");
-                if (!aux.isEmpty() && aux.length() >=5){
-                    for(int i = 0; i<aux.length(); i++){
-                        char[] c = aux.toCharArray();
-                        if(c[i]==',') cont++;
-                    }
-                }
-                if (!aux.isEmpty() && aux.length() >= 5 && aux.contains(",") && cont==1) {
-                    s = aux.split("\\,");
-                    if (s[1].length() < 3 || s[1].length() > 3) {
-                        valor.setError("Digite 3 Casas Decimais!");
-                    }
-
-                    if (s[1].length() == 3) {
-                        valorCorreto = valor.getText().toString();
-                        valorCorreto = valorCorreto.replace(',', '.');
-
-
-                        if (atualP1 == 1) {
-                            amostrasP1[0] = Double.valueOf(valorCorreto);
-                            p1_a1.setText(valorCorreto);
-                        }
-                        if (atualP1 == 2) {
-                            amostrasP1[1] = Double.valueOf(valorCorreto);
-                            p1_a2.setText(valorCorreto);
-                        }
-                        if (atualP1 == 3) {
-                            amostrasP1[2] = Double.valueOf(valorCorreto);
-                            p1_a3.setText(valorCorreto);
-                        }
-                        if (atualP1 == 4) {
-                            amostrasP1[3] = Double.valueOf(valorCorreto);
-                            p1_a4.setText(valorCorreto);
-                        }
-                        if (atualP1 == 5) {
-                            amostrasP1[4] = Double.valueOf(valorCorreto);
-                            p1_a5.setText(valorCorreto);
-                        }
-
-                        if (s[1].length() == 3 && atualP1 > 5) {
-                            valorCorreto = valor.getText().toString();
-                            valorCorreto = valorCorreto.replace(',', '.');
-
-
-                            if (corrigirP1 == 1) {
-                                amostrasP1[0] = Double.valueOf(valorCorreto);
-                                p1_a1.setText(valorCorreto);
-                            }
-                            if (corrigirP1 == 2) {
-                                amostrasP1[1] = Double.valueOf(valorCorreto);
-                                p1_a2.setText(valorCorreto);
-                            }
-                            if (corrigirP1 == 3) {
-                                amostrasP1[2] = Double.valueOf(valorCorreto);
-                                p1_a3.setText(valorCorreto);
-                            }
-                            if (corrigirP1 == 4) {
-                                amostrasP1[3] = Double.valueOf(valorCorreto);
-                                p1_a4.setText(valorCorreto);
-                            }
-                            if (corrigirP1 == 5) {
-                                amostrasP1[4] = Double.valueOf(valorCorreto);
-                                p1_a5.setText(valorCorreto);
-                            }
-                        }
-                        atualP1++;
-                        dialog.dismiss();
-                    }
-                }else valor.setError("Digite 3 Casas Decimais!");
-            }
-        });
-    }
-
-
-    public void abreDialogoP2() {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_calibragem, null);
-        final EditText valor = mView.findViewById(R.id.valor_dialogo_calibragem);
-        Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_calbragem);
-
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-        botaoOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String[] s = new String[2];
-                String aux;
-                aux = String.valueOf(valor.getText());
-
-                int cont = 0;
-
-                if (aux.isEmpty()) valor.setError("Digite 3 Casas Decimais!");
-                if (!aux.isEmpty() && aux.length() < 5) valor.setError("Digite 3 Casas Decimais!");
-                //else if (!aux.isEmpty() && aux.length() > 5) valor.setError("Digite 3 Casas Decimais!");
-                if (!aux.isEmpty() && aux.length() >=5){
-                    for(int i = 0; i<aux.length(); i++){
-                        char[] c = aux.toCharArray();
-                        if(c[i]==',') cont++;
-                    }
-                }
-                if (!aux.isEmpty() && aux.length() >= 5 && aux.contains(",") && cont==1) {
-                    s = aux.split("\\,");
-                    if (s[1].length() < 3 || s[1].length() > 3) {
-                        valor.setError("Digite 3 Casas Decimais!");
-                    }
-
-                    if (s[1].length() == 3) {
-                        valorCorreto = valor.getText().toString();
-                        valorCorreto = valorCorreto.replace(',', '.');
-                        if (atualP2 == 1) {
-                            amostrasP2[0] = Double.valueOf(valorCorreto);
-                            p2_a1.setText(valorCorreto);
-                        }
-                        if (atualP2 == 2) {
-                            amostrasP2[1] = Double.valueOf(valorCorreto);
-                            p2_a2.setText(valorCorreto);
-                        }
-                        if (atualP2 == 3) {
-                            amostrasP2[2] = Double.valueOf(valorCorreto);
-                            p2_a3.setText(valorCorreto);
-                        }
-                        if (atualP2 == 4) {
-                            amostrasP2[3] = Double.valueOf(valorCorreto);
-                            p2_a4.setText(valorCorreto);
-                        }
-                        if (atualP2 == 5) {
-                            amostrasP2[4] = Double.valueOf(valorCorreto);
-                            p2_a5.setText(valorCorreto);
-                        }
-
-                        if (s[1].length() == 3 && atualP2 > 5) {
-                            valorCorreto = valor.getText().toString();
-                            valorCorreto = valorCorreto.replace(',', '.');
-
-
-                            if (corrigirP2 == 1) {
-                                amostrasP2[0] = Double.valueOf(valorCorreto);
-                                p2_a1.setText(valorCorreto);
-                            }
-                            if (corrigirP2 == 2) {
-                                amostrasP2[1] = Double.valueOf(valorCorreto);
-                                p2_a2.setText(valorCorreto);
-                            }
-                            if (corrigirP2 == 3) {
-                                amostrasP2[2] = Double.valueOf(valorCorreto);
-                                p2_a3.setText(valorCorreto);
-                            }
-                            if (corrigirP2 == 4) {
-                                amostrasP2[3] = Double.valueOf(valorCorreto);
-                                p2_a4.setText(valorCorreto);
-                            }
-                            if (corrigirP2 == 5) {
-                                amostrasP2[4] = Double.valueOf(valorCorreto);
-                                p2_a5.setText(valorCorreto);
-                            }
-                        }
-                        atualP2++;
-                        dialog.dismiss();
-                    }
-                }
-            }
-        });
-    }
 
     public static String checaTurno() {
 
@@ -1094,6 +1088,7 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
 
     @Override
     public void onBackPressed() {
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }

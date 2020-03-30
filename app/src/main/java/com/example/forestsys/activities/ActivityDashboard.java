@@ -33,7 +33,7 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_dash);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setSubtitle(usuarioLogado.getValue().getEMAIL());
+        getSupportActionBar().setSubtitle("a"/*usuarioLogado.getValue().getEMAIL()*/);
 
         drawer = findViewById(R.id.drawer_layout_dash);
         NavigationView navigationView = findViewById(R.id.nav_view_dash);
@@ -93,8 +93,6 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
         }
     }
 }

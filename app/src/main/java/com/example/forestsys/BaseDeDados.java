@@ -95,12 +95,12 @@ public abstract class BaseDeDados extends RoomDatabase {
 
             auxDao.insert(new O_S_ATIVIDADES(1, 1,1,"Talhao1",1,1,1,
                     1,null,1, 1, 1, 1,"",
-                    (DateFormat.format("dd-MM-yyyy", new Date()).toString()),null,1));
+                    (DateFormat.format("dd/MM/yyyy", new Date()).toString()),null,1));
 
 
             auxDao.insert(new O_S_ATIVIDADES(2, 2,2,"Talhao2",2, 2,2,
                     1,null,2, 2,2,2," ",
-                    (DateFormat.format("dd-MM-yyyy", new Date()).toString()), null, 2));
+                    (DateFormat.format("dd/MM/yyyy", new Date()).toString()), null, 2));
 
 
             auxDao.insert(new MAQUINAS(1, "Maquina 1", 1));

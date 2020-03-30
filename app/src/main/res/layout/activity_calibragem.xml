@@ -516,8 +516,8 @@
             android:editable="false"
             android:focusable="false"
             android:inputType="number"
+
             android:maxLength="6"
-            
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/p1_amostra_2"
@@ -547,8 +547,8 @@
             android:editable="false"
             android:focusable="false"
             android:inputType="number|numberDecimal"
-            android:maxLength="6"
 
+            android:maxLength="6"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/p1_amostra_3"
@@ -605,8 +605,9 @@
             android:id="@+id/p1_media"
             android:layout_width="72dp"
             android:layout_height="40dp"
-            android:maxLength="5"
+            android:background="#FFFFFF"
 
+            android:maxLength="5"
             android:textAlignment="textStart"
             android:textSize="18sp"
             android:textStyle="bold"
