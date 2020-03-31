@@ -29,7 +29,7 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
 
     public static String nomeEmpresaPref;
     public static String preferenceLogo;
-
+    private ImageButton botaoVoltar;
     public static LiveData<GGF_USUARIOS> usuarioLogado = null;
 
 
@@ -56,6 +56,7 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
         final EditText passwordEditText = findViewById(R.id.password);
         final Button loginButton = findViewById(R.id.botao_login);
         final ImageButton configButton = findViewById(R.id.botao_config);
+        botaoVoltar = findViewById(R.id.botao_login_voltar);
         checarPermissaodeLocalizacao();
         imageView = findViewById(R.id.imagem_login);
 
@@ -63,17 +64,13 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
 
 
         nomeEmpresaPref = getSharedPreferences("nomeEmpresa", MODE_PRIVATE)
-                .getString("nomeEmpresaPref", "Plantar Siderurgica S/A");
+                .getString("nomeEmpresaPref", "GELF");
 
         preferenceLogo = getSharedPreferences("imagemLogo", MODE_PRIVATE)
                 .getString("preferenceLogo", null);
 
         if(preferenceLogo == null) imageView.setImageResource(R.mipmap.logo_gelf_completo);
         else imageView.setImageURI(Uri.parse(preferenceLogo));
-
-
-
-
 
         configButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +98,30 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
                     return;
                 }
             }});
+
+        botaoVoltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(ActivityLogin.this)
+                        .setTitle("SAIR")
+                        .setMessage("Deseja fechar o aplicativo ?")
+                        .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent it = new Intent(ActivityLogin.this, ActivityLogin.class);
+                                boolean fechou = true;
+                                it.putExtra("fechar", fechou);
+                                startActivity(it);
+                            }
+                        })
+                        .setNegativeButton("NÃO",  new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {}
+                        })
+                        .create()
+                        .show();
+            }
+        });
     }
 
     //checa as permissões de localização
@@ -140,24 +161,6 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
 
     @Override
     public void onBackPressed() {
-            new AlertDialog.Builder(this)
-                    .setTitle("SAIR")
-                    .setMessage("Deseja fechar o aplicativo ?")
-                    .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent it = new Intent(ActivityLogin.this, ActivityLogin.class);
-                            boolean fechou = true;
-                            it.putExtra("fechar", fechou);
-                            startActivity(it);
-                        }
-                    })
-                    .setNegativeButton("NÃO",  new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {}
-                    })
-                    .create()
-                    .show();
         }
 
 /*

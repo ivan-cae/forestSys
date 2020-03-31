@@ -24,7 +24,7 @@ public class AActivityTesteRelogio extends AppCompatActivity {
         //String date = dataHoraAtual.dataHora().toString();
         TextView text = findViewById(R.id.data);
 
-        String date = DateFormat.format("dd-MM-yyyy 'Ás' hh:mm", new Date()).toString();
+        String date = DateFormat.format("dd/MM/yyyy 'Ás' hh:mm", new Date()).toString();
         text.setText(date);
     }
 }

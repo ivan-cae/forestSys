@@ -197,8 +197,6 @@ public class ActivityContinuarOs extends AppCompatActivity implements Navigation
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
         }
     }
 }

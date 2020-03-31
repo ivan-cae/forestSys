@@ -17,7 +17,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ImageButton;
 import android.widget.SearchView;
 import com.example.forestsys.AdaptadorOs;
 import com.example.forestsys.R;
@@ -40,6 +42,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
     private RecyclerView recyclerView;
     private DrawerLayout drawer;
     private AdaptadorOs adaptador;
+    private ImageButton botaoMainVoltar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
 
         osSelecionada = null;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        botaoMainVoltar = findViewById(R.id.botao_main_voltar);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setSubtitle(/*usuarioLogado.getValue().getEMAIL()*/"a");
@@ -91,6 +95,13 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        botaoMainVoltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogoVoltar();
+            }
+        });
+
         SearchView sv=(SearchView) findViewById(R.id.searchview);
 
         sv.setImeOptions(EditorInfo.IME_ACTION_DONE);
@@ -106,6 +117,27 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                 return false;
             }
         });
+    }
+
+    public void dialogoVoltar(){
+        new AlertDialog.Builder(this)
+                .setTitle("SAIR")
+                .setMessage("Deseja fechar o aplicativo ?")
+                .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent it = new Intent(ActivityMain.this, ActivityLogin.class);
+                        boolean fechou = true;
+                        it.putExtra("fechar", fechou);
+                        startActivity(it);
+                    }
+                })
+                .setNegativeButton("NÃO",  new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {}
+                })
+                .create()
+                .show();
     }
 
     @Override
@@ -174,25 +206,6 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            new AlertDialog.Builder(this)
-                    .setTitle("SAIR")
-                    .setMessage("Deseja fechar o aplicativo ?")
-                    .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent it = new Intent(ActivityMain.this, ActivityLogin.class);
-                            boolean fechou = true;
-                            it.putExtra("fechar", fechou);
-                            startActivity(it);
-                        }
-                    })
-                    .setNegativeButton("NÃO",  new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {}
-                    })
-                    .create()
-                    .show();
         }
     }
 }
