@@ -3,7 +3,6 @@ package com.example.forestsys.classes;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(
@@ -20,7 +19,6 @@ import androidx.room.PrimaryKey;
                         onUpdate = ForeignKey.NO_ACTION)})
 
 public class MAQUINA_IMPLEMENTO {
-
     @PrimaryKey
     private int ID_MAQUINA_IMPLEMENTO;
 
@@ -30,15 +28,8 @@ public class MAQUINA_IMPLEMENTO {
     @ColumnInfo (name = "ID_IMPLEMENTO")
 	private int ID_IMPLEMENTO;
 
-
     public MAQUINA_IMPLEMENTO(int ID_MAQUINA_IMPLEMENTO, int ID_MAQUINA, int ID_IMPLEMENTO) {
         this.ID_MAQUINA_IMPLEMENTO = ID_MAQUINA_IMPLEMENTO;
-        this.ID_MAQUINA = ID_MAQUINA;
-        this.ID_IMPLEMENTO = ID_IMPLEMENTO;
-    }
-
-    @Ignore
-    public MAQUINA_IMPLEMENTO(int ID_MAQUINA, int ID_IMPLEMENTO) {
         this.ID_MAQUINA = ID_MAQUINA;
         this.ID_IMPLEMENTO = ID_IMPLEMENTO;
     }

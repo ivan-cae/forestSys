@@ -17,6 +17,8 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,10 +30,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.forestsys.BaseDeDados;
+import com.example.forestsys.DAO;
 import com.example.forestsys.R;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
 
 import com.example.forestsys.classes.CALIBRAGEM_SUBSOLAGEM;
+import com.example.forestsys.classes.LOG;
+import com.example.forestsys.classes.MAQUINA_IMPLEMENTO;
 import com.example.forestsys.classes.OPERADORES;
 import com.example.forestsys.classes.IMPLEMENTOS;
 import com.example.forestsys.classes.MAQUINAS;
@@ -39,17 +45,20 @@ import com.example.forestsys.repositorios.RepositorioImplementos;
 import com.example.forestsys.repositorios.RepositorioMaquinas;
 import com.example.forestsys.repositorios.RepositorioOPERADORES;
 import com.example.forestsys.viewModels.ViewModelCALIBRAGEM_SUBSOLAGEM;
+import com.example.forestsys.viewModels.ViewModelMAQUINA_IMPLEMENTO;
 import com.google.android.material.navigation.NavigationView;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
 
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
 import static com.example.forestsys.activities.ActivityMain.osSelecionada;
+import static java.lang.StrictMath.toIntExact;
+import static java.sql.Types.NULL;
 
 public class ActivityCalibragem extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
@@ -133,12 +142,23 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
 
     private int corrigirP2 = 0;
 
+    BaseDeDados baseDeDados;
+    DAO dao;
+
+    RepositorioMaquinas repositorioMaquinas;
+
+    RepositorioOPERADORES repositorioOperadores;
+
+    RepositorioImplementos repositorioImplementos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calibragem);
         setTitle(nomeEmpresaPref);
+
+        baseDeDados = BaseDeDados.getInstance(getApplicationContext());
+        dao = baseDeDados.dao();
 
         spinnerOperador = findViewById(R.id.spinner_operador_calibragem);
         spinnerMaquina = findViewById(R.id.spinner_maquina_calibragem);
@@ -196,11 +216,85 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
 
         botaoMediaP2 = findViewById(R.id.botao_calibragem_media_p2);
 
-        osData.setText(DateFormat.format("dd-MM-yyyy", new Date()).toString());
+        osData.setText(DateFormat.format("dd/MM/yyyy", new Date()).toString());
 
         osTurno.setText(checaTurno());
 
         p1_a1.setFocusable(false);
+
+
+        repositorioMaquinas = new RepositorioMaquinas(getApplication());
+
+        repositorioOperadores = new RepositorioOPERADORES(getApplication());
+
+        repositorioImplementos = new RepositorioImplementos(getApplication());
+
+        ArrayList<MAQUINAS> maquinas = new ArrayList<>(repositorioMaquinas.listaMaquinas());
+
+        ArrayList<OPERADORES> operadores = new ArrayList<>(repositorioOperadores.listaOperadores());
+
+        ArrayList<IMPLEMENTOS> implementos = new ArrayList<>(repositorioImplementos.listaImplementos());
+
+        ArrayAdapter<MAQUINAS> adapterMaquinas = new ArrayAdapter<MAQUINAS>(this,
+                android.R.layout.simple_spinner_item, maquinas);
+        adapterMaquinas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerMaquina.setAdapter(adapterMaquinas);
+
+        ArrayAdapter<OPERADORES> adapterUsuarios = new ArrayAdapter<OPERADORES>(this,
+                android.R.layout.simple_spinner_item, operadores);
+        adapterUsuarios.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerOperador.setAdapter(adapterUsuarios);
+
+
+        ArrayAdapter<IMPLEMENTOS> adapterImplementos = new ArrayAdapter<IMPLEMENTOS>(this,
+                android.R.layout.simple_spinner_item, implementos);
+        adapterImplementos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerImplemento.setAdapter(adapterImplementos);
+
+        spinnerImplemento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) position = 1;
+                else position += 1;
+                posicaoImplemento = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                posicaoImplemento = 1;
+            }
+        });
+
+        spinnerMaquina.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) position = 1;
+                else position += 1;
+                posicaoMaquina = position;
+                if(checaMaquinaCalibracao(posicaoMaquina) == true) caixaAlertaMaquina();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                posicaoMaquina = 1;
+            }
+        });
+
+        spinnerOperador.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) position = 1;
+                else position += 1;
+                posicaoOperador = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                posicaoOperador = 1;
+            }
+        });
+
+
 
         for (int i = 0; i < 5; i++) {
             amostrasP1[i] = 0.0;
@@ -369,36 +463,7 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
         });
 
 
-        RepositorioMaquinas repositorioMaquinas = new RepositorioMaquinas(getApplication());
 
-        RepositorioOPERADORES repositorioOperadores = new RepositorioOPERADORES(getApplication());
-
-        RepositorioImplementos repositorioImplementos = new RepositorioImplementos(getApplication());
-
-
-        ArrayList<MAQUINAS> maquinas = new ArrayList<>(repositorioMaquinas.listaMaquinas());
-
-        ArrayList<OPERADORES> operadores = new ArrayList<>(repositorioOperadores.listaOperadores());
-
-        ArrayList<IMPLEMENTOS> implementos = new ArrayList<>(repositorioImplementos.listaImplementos());
-
-
-        ArrayAdapter<MAQUINAS> adapterMaquinas = new ArrayAdapter<MAQUINAS>(this,
-                android.R.layout.simple_spinner_item, maquinas);
-        adapterMaquinas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerMaquina.setAdapter(adapterMaquinas);
-
-
-        ArrayAdapter<OPERADORES> adapterUsuarios = new ArrayAdapter<OPERADORES>(this,
-                android.R.layout.simple_spinner_item, operadores);
-        adapterUsuarios.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerOperador.setAdapter(adapterUsuarios);
-
-
-        ArrayAdapter<IMPLEMENTOS> adapterImplementos = new ArrayAdapter<IMPLEMENTOS>(this,
-                android.R.layout.simple_spinner_item, implementos);
-        adapterImplementos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerImplemento.setAdapter(adapterImplementos);
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_calibragem);
@@ -417,6 +482,8 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+
 
         botaoVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -443,82 +510,110 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
         botaoConfirma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog dialog = new AlertDialog.Builder(ActivityCalibragem.this)
-                        .setTitle("Concluir")
-                        .setMessage("Deseja Concluir a Calibragem?")
-                        .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                if (checaMaquinaCalibracao(posicaoMaquina) == true) caixaAlertaMaquina();
+                else {
+                    AlertDialog dialog = new AlertDialog.Builder(ActivityCalibragem.this)
+                            .setTitle("Concluir")
+                            .setMessage("Deseja Concluir a Calibragem?")
+                            .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
 
-                                spinnerImplemento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                    @Override
-                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                        if (position == 0) position = 1;
-                                        else position += 1;
-                                        posicaoImplemento = position;
-                                    }
+                                    if (posicaoImplemento == 0) posicaoImplemento++;
+                                    if (posicaoMaquina == 0) posicaoMaquina++;
+                                    if (posicaoOperador == 0) posicaoOperador++;
 
-                                    @Override
-                                    public void onNothingSelected(AdapterView<?> parent) {
-                                        posicaoImplemento = 1;
-                                    }
-                                });
+                                    ViewModelCALIBRAGEM_SUBSOLAGEM viewModelCALIBRAGEM_subsolagem = new ViewModelCALIBRAGEM_SUBSOLAGEM(getApplication());
 
-                                spinnerMaquina.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                    @Override
-                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                        if (position == 0) position = 1;
-                                        else position += 1;
-                                        posicaoMaquina = position;
-                                    }
 
-                                    @Override
-                                    public void onNothingSelected(AdapterView<?> parent) {
-                                        posicaoMaquina = 1;
-                                    }
-                                });
+                                    List<MAQUINA_IMPLEMENTO> listaMI = dao.listaMaquinaImplemento();
+                                    int id = listaMI.size();
+                                    id++;
 
-                                spinnerOperador.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                    @Override
-                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                        if (position == 0) position = 1;
-                                        else position += 1;
-                                        posicaoOperador = position;
-                                    }
+                                    MAQUINA_IMPLEMENTO maquinaImplemento = new MAQUINA_IMPLEMENTO(id, posicaoMaquina, posicaoImplemento);
+                                    dao.insert(maquinaImplemento);
 
-                                    @Override
-                                    public void onNothingSelected(AdapterView<?> parent) {
-                                        posicaoOperador = 1;
-                                    }
-                                });
+                                    Double mediaP1;
+                                    Double mediaP2;
+                                    Double desvioP1;
+                                    Double desvioP2;
 
-                                if (posicaoImplemento == 0) posicaoImplemento++;
-                                if (posicaoMaquina == 0) posicaoMaquina++;
-                                if (posicaoOperador == 0) posicaoOperador++;
+                                    mediaP1 = Double.valueOf(p1Media.getText().toString());
+                                    mediaP2 = Double.valueOf(p2Media.getText().toString());
+                                    desvioP1 = Double.valueOf(desvioProduto1.getText().toString());
+                                    desvioP2 = Double.valueOf(desvioProduto2.getText().toString());
 
-                                ViewModelCALIBRAGEM_SUBSOLAGEM viewModelCALIBRAGEM_subsolagem = new ViewModelCALIBRAGEM_SUBSOLAGEM(getApplication());
+                                    CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem = new CALIBRAGEM_SUBSOLAGEM(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
+                                            DateFormat.format("dd/MM/yyyy", new Date()).toString(), checaTurno(), id,
+                                            posicaoOperador, mediaP1, desvioP1, mediaP2, desvioP2);
 
-                                CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem = new CALIBRAGEM_SUBSOLAGEM(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
-                                        DateFormat.format("dd-MM-yyyy", new Date()).toString(), checaTurno(), 1,
-                                        posicaoOperador, mediaGeralp1, desvioPadrao(amostrasP1), mediaGeralp2, desvioPadrao(amostrasP2));
+                                    viewModelCALIBRAGEM_subsolagem.insert(calibragem_subsolagem);
 
-                                viewModelCALIBRAGEM_subsolagem.insert(calibragem_subsolagem);
+                                    Intent it = new Intent(ActivityCalibragem.this, ActivityContinuarOs.class);
+                                    startActivity(it);
+                                }
+                            }).
 
-                                Intent it = new Intent(ActivityCalibragem.this, ActivityContinuarOs.class);
-                                startActivity(it);
-                            }
-                        }).
-
-                                setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                    }
-                                }).create();
-                dialog.show();
+                                    setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                        }
+                                    }).create();
+                    dialog.show();
+                }
             }
         });
     }
 
+
+    //Adiciona o botão de atualização a barra de ação
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater i = getMenuInflater();
+        i.inflate(R.menu.menu_action_bar, menu);
+        return true;
+    }
+
+
+    //Trata a seleção do botão de atualização
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.atualizar:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    //Sobreescrita do método de seleção de item do menu de navegação localizado na lateral da tela
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.dash:
+                Intent it1 = new Intent(this, ActivityDashboard.class);
+                startActivity(it1);
+                break;
+
+            case R.id.cadastrar_conta:
+                Intent it2 = new Intent(this, ActivityMain.class);
+                startActivity(it2);
+                break;
+
+            case R.id.config_login:
+                Intent it3 = new Intent(this, CalculadoraMain.class);
+                startActivity(it3);
+                break;
+        }
+
+        drawer.closeDrawer(GravityCompat.START);
+
+        return true;
+    }
+
+
+    //Abre caixa de diálogo para preencher amostras do produto 1
     public void abreDialogoP1() {
         todosConformeP1 = true;
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
@@ -628,7 +723,7 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
                     } else {
                         dif1_p1.setTextColor(Color.parseColor("#32CD32"));
                     }
-                    if (String.valueOf((diferencaPercentual(amostrasP1[0], amostrasP1[1]))) == "NaN")
+                    if (((diferencaPercentual(amostrasP1[0], amostrasP1[1]).isInfinite()) || diferencaPercentual(amostrasP1[0], amostrasP1[1]).isNaN()) )
                         dif1_p1.setText("");
                     else
                         dif1_p1.setText(String.valueOf(((diferencaPercentual(amostrasP1[0], amostrasP1[1])))));
@@ -641,13 +736,13 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
                     } else {
                         dif2_p1.setTextColor(Color.parseColor("#32CD32"));
                     }
-                    if (String.valueOf((diferencaPercentual(amostrasP1[1], amostrasP1[2]))) == "NaN")
+                    if (((diferencaPercentual(amostrasP1[1], amostrasP1[2]).isNaN() || diferencaPercentual(amostrasP1[1], amostrasP1[2]).isInfinite())) )
                         dif2_p1.setText("");
                     else
                         dif2_p1.setText(String.valueOf(((diferencaPercentual(amostrasP1[1], amostrasP1[2])))));
 
 
-                    if (diferencaPercentual(amostrasP1[2], amostrasP1[3]) > 5.00 || diferencaPercentual(amostrasP1[2], amostrasP1[3]) < -5.00) {
+                    if (diferencaPercentual(amostrasP1[2], amostrasP1[3]) >  5.00 || diferencaPercentual(amostrasP1[2], amostrasP1[3]) < -5.00) {
                         dif3_p1.setTextColor(Color.parseColor("#FF9800"));
 
                         todosConformeP1 = false;
@@ -655,7 +750,7 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
                     } else {
                         dif3_p1.setTextColor(Color.parseColor("#32CD32"));
                     }
-                    if (String.valueOf((diferencaPercentual(amostrasP1[2], amostrasP1[3]))) == "NaN")
+                    if (((diferencaPercentual(amostrasP1[2], amostrasP1[3]).isInfinite() || diferencaPercentual(amostrasP1[2], amostrasP1[3]).isNaN())))
                         dif3_p1.setText("");
                     else
                         dif3_p1.setText(String.valueOf(((diferencaPercentual(amostrasP1[2], amostrasP1[3])))));
@@ -669,7 +764,7 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
                     } else {
                         dif4_p1.setTextColor(Color.parseColor("#32CD32"));
                     }
-                    if (String.valueOf((diferencaPercentual(amostrasP1[3], amostrasP1[4]))) == "NaN")
+                    if (((diferencaPercentual(amostrasP1[3], amostrasP1[4]).isInfinite() || diferencaPercentual(amostrasP1[3], amostrasP1[4]).isNaN())))
                         dif4_p1.setText("");
                     else
                         dif4_p1.setText(String.valueOf(((diferencaPercentual(amostrasP1[3], amostrasP1[4])))));
@@ -728,8 +823,10 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
                 mediaGeralp1 = (amostrasP1[0] + amostrasP1[1] + amostrasP1[2] + amostrasP1[3] + amostrasP1[4]) / 5;
                 mediaGeralp1 = arredonda3Casas(mediaGeralp1);
 
-                if (String.valueOf((mediaPercentualp1)) == "NaN") mediaDifP1.setText("");
-                else mediaDifP1.setText(String.valueOf(arredonda1Casa(mediaPercentualp1)));
+                if (mediaPercentualp1.isInfinite() || mediaPercentualp1.isNaN()) mediaDifP1.setText("");
+                else {
+                    mediaDifP1.setText(String.valueOf((arredonda2Casas(mediaPercentualp1))));
+                }
 
                 p1Media.setText(String.valueOf((mediaGeralp1)));
                 mediaProduto1.setText(String.valueOf((mediaGeralp1)));
@@ -747,6 +844,7 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
     }
 
 
+    //Abre caixa de diálogo para preencher amostras do produto
     public void abreDialogoP2() {
         todosConformeP2 = true;
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
@@ -853,7 +951,7 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
                     } else {
                         dif1_p2.setTextColor(Color.parseColor("#32CD32"));
                     }
-                    if (String.valueOf((diferencaPercentual(amostrasP2[0], amostrasP2[1]))) == "NaN")
+                    if (((diferencaPercentual(amostrasP2[0], amostrasP2[1]).isInfinite() || diferencaPercentual(amostrasP2[0], amostrasP2[1]).isNaN())))
                         dif1_p2.setText("");
                     else
                         dif1_p2.setText(String.valueOf(((diferencaPercentual(amostrasP2[0], amostrasP2[1])))));
@@ -866,7 +964,7 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
                     } else {
                         dif2_p2.setTextColor(Color.parseColor("#32CD32"));
                     }
-                    if (String.valueOf((diferencaPercentual(amostrasP2[1], amostrasP2[2]))) == "NaN")
+                    if (((diferencaPercentual(amostrasP2[1], amostrasP2[2]).isInfinite() || diferencaPercentual(amostrasP2[1], amostrasP2[2]).isNaN())))
                         dif2_p2.setText("");
                     else
                         dif2_p2.setText(String.valueOf(((diferencaPercentual(amostrasP2[1], amostrasP2[2])))));
@@ -879,7 +977,7 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
                     } else {
                         dif3_p2.setTextColor(Color.parseColor("#32CD32"));
                     }
-                    if (String.valueOf((diferencaPercentual(amostrasP2[2], amostrasP2[3]))) == "NaN")
+                    if (((diferencaPercentual(amostrasP2[2], amostrasP2[3]).isNaN() || diferencaPercentual(amostrasP2[2], amostrasP2[3]).isInfinite())))
                         dif3_p2.setText("");
                     else
                         dif3_p2.setText(String.valueOf(((diferencaPercentual(amostrasP2[2], amostrasP2[3])))));
@@ -892,7 +990,7 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
                     } else {
                         dif4_p2.setTextColor(Color.parseColor("#32CD32"));
                     }
-                    if (String.valueOf((diferencaPercentual(amostrasP2[3], amostrasP2[4]))) == "NaN")
+                    if (((diferencaPercentual(amostrasP2[3], amostrasP2[4]).isNaN() || diferencaPercentual(amostrasP2[3], amostrasP2[4]).isInfinite())))
                         dif4_p2.setText("");
                     else
                         dif4_p2.setText(String.valueOf(((diferencaPercentual(amostrasP2[3], amostrasP2[4])))));
@@ -952,8 +1050,11 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
                 mediaGeralp2 = (amostrasP2[0] + amostrasP2[1] + amostrasP2[2] + amostrasP2[3] + amostrasP2[4]) / 5;
                 mediaGeralp2 = arredonda3Casas(mediaGeralp2);
 
-                if (String.valueOf((mediaPercentualp2)) == "NaN") mediaDifP2.setText("");
-                else mediaDifP2.setText(String.valueOf(arredonda1Casa(mediaPercentualp2)));
+                if ((mediaPercentualp2).isNaN() || mediaPercentualp2.isInfinite()) mediaDifP2.setText("");
+                else {
+
+                    mediaDifP2.setText(String.valueOf((arredonda2Casas(mediaPercentualp2))));
+                }
 
                 p2Media.setText(String.valueOf((mediaGeralp2)));
                 mediaProduto2.setText(String.valueOf((mediaGeralp2)));
@@ -970,6 +1071,16 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
         });
     }
 
+    //Checa se há uma calibração para a máquina selecionada na data e turno atuais
+    //Parâmetro de entrada: Descrição da máquina selecionada
+    public boolean checaMaquinaCalibracao(int s){
+        int checagem = dao.joinCalibragemMaquinaImplemento(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
+                DateFormat.format("dd/MM/yyyy", new Date()).toString(), checaTurno(),s);
+        if(checagem != NULL) return true;
+        return false;
+    }
+
+    //Cria uma animação pulsante no botão de conclusão da calibragem
     public void pulseAnimation(ImageButton btnObj) {
         objAnim = ObjectAnimator.ofPropertyValuesHolder(btnObj, PropertyValuesHolder.ofFloat("scaleX", 1.5f), PropertyValuesHolder.ofFloat("scaleY", 1.5f));
         objAnim.setDuration(300);
@@ -978,51 +1089,42 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
         objAnim.start();
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.dash:
-                Intent it1 = new Intent(this, ActivityDashboard.class);
-                startActivity(it1);
-                break;
 
-            case R.id.cadastrar_conta:
-                Intent it2 = new Intent(this, ActivityMain.class);
-                startActivity(it2);
-                break;
-
-            case R.id.config_login:
-                Intent it3 = new Intent(this, CalculadoraMain.class);
-                startActivity(it3);
-                break;
-        }
-
-        drawer.closeDrawer(GravityCompat.START);
-
-        return true;
-    }
-
+    //Arredonda um número do tipo double para que tenha 1 casa decimal
+    //Parâmetro de entrada: um Double
     private static Double arredonda1Casa(Double media) {
-        if (media < 0) return Math.ceil(media * -10) / -10;
-        return Math.ceil(media * 10) / 10;
+        DecimalFormat df = new DecimalFormat(".0");
+        return Double.valueOf(df.format(media));
     }
 
+
+    //Arredonda um número do tipo double para que tenha  casas decimais
+    //Parâmetro de entrada: um Double
     private static Double arredonda2Casas(Double media) {
-        if (media < 0) return Math.ceil(media * -100) / -100;
-        return Math.ceil(media * 100) / 100;
+        DecimalFormat df = new DecimalFormat(".00");
+        return Double.valueOf(df.format(media));
     }
 
+
+    //Arredonda um número do tipo double para que tenha 3 casas decimais
+    //Parâmetro de entrada: um Double
     private static Double arredonda3Casas(Double media) {
-        if (media < 0) return Math.ceil(media * -1000) / -1000;
-        return Math.ceil(media * 1000) / 1000;
+        DecimalFormat df = new DecimalFormat(".000");
+        return Double.valueOf(df.format(media));
+    }
+
+    //formula= (1-(amostra atual/amostra anterior))/100
+    //Calcula a diferença percentual entre dois números do tipo Double
+    //Parâmetro de entrada: um Double
+    private static Double diferencaPercentual(Double anterior, Double atual) {
+        Double calculo =  ((anterior - atual) / anterior) * 100.0;//(1-(atual/anterior))/100;
+        DecimalFormat df = new DecimalFormat(".00");
+        return Double.valueOf(df.format(calculo));
     }
 
 
-    private static Double diferencaPercentual(Double v1, Double v2) {
-        Double calculo = ((v2 - v1) / v1) * 100.0;
-        return arredonda1Casa((arredonda1Casa(calculo)));
-    }
-
+    //Calcula o desvio padrão de um array do tipo Double
+    //Parâmetro de entrada: um array do tipo Double
     public static Double desvioPadrao(Double[] data) {
         if (data == null) {
             throw new IllegalArgumentException("Null 'data' array.");
@@ -1030,7 +1132,7 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
         if (data.length == 0) {
             throw new IllegalArgumentException("Zero length 'data' array.");
         }
-        Double avg = calculateMean(data, false);
+        Double avg = calculaMedia(data, false);
         Double sum = 0.0;
 
         for (int counter = 0; counter < data.length; counter++) {
@@ -1040,8 +1142,9 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
         return Math.sqrt(sum / (data.length - 1));
     }
 
-    public static Double calculateMean(Double[] values,
-                                       boolean includeNullAndNaN) {
+    //Calcula a média entre os números em um array do tipo Double
+    //Parâmetro de entrada: um array do tipo Double
+    public static Double calculaMedia(Double[] values, boolean includeNullAndNaN) {
 
         if (values == null) {
             throw new IllegalArgumentException("Null 'values' argument.");
@@ -1064,9 +1167,8 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
         return result;
     }
 
-
+    //Checa se o turno atual é manhã ou tarde baseado na hora atual
     public static String checaTurno() {
-
         String pattern = "HH:mm";
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         String horaAtual = DateFormat.format("HH:mm", new Date()).toString();
@@ -1086,9 +1188,22 @@ public class ActivityCalibragem extends AppCompatActivity implements NavigationV
         return "Erro";
     }
 
+    //Mostra uma caixa de alerta caso a máquina selecionada já foi calibrada no turno atual
+    public void caixaAlertaMaquina(){
+        AlertDialog dialog = new AlertDialog.Builder(ActivityCalibragem.this)
+                .setTitle("ERRO")
+                .setMessage(repositorioMaquinas.selecionaMaquina(posicaoMaquina).toString()+" JÁ CALIBRADA NO TURNO ATUAL!")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                }).create();
+        dialog.show();
+    }
+
+    //SObrescrita do método onBackPressed nativo do Android para que feche o menu de navegação lateral
     @Override
     public void onBackPressed() {
-
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }

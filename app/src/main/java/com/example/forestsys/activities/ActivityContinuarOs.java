@@ -78,7 +78,7 @@ public class ActivityContinuarOs extends AppCompatActivity implements Navigation
         madeiraOs.setText(String.valueOf(osSelecionada.getMADEIRA_NO_TALHAO()));
 
 
-        botaoApontamento = findViewById(R.id.botao_apontamento);
+        botaoApontamento = findViewById(R.id.botao_detalhes_apontamento);
         botaoAvaliacao = findViewById(R.id.botao_avalicao);
         voltar = findViewById(R.id.botao_continuar_voltar);
         botaoSalvar = findViewById(R.id.botao_prosseguir_continuar);
@@ -150,25 +150,28 @@ public class ActivityContinuarOs extends AppCompatActivity implements Navigation
         });
     }
 
+    //Adiciona o botão de atualização a barra de ação
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater i = getMenuInflater();
         i.inflate(R.menu.menu_action_bar, menu);
-
         return true;
     }
 
+
+    //Trata a seleção do botão de atualização
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.atualizar:
-
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+
+    //Sobreescrita do método de seleção de item do menu de navegação localizado na lateral da tela
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {

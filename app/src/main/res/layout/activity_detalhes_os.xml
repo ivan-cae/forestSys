@@ -15,6 +15,204 @@
         android:layout_height="match_parent"
         tools:showIn="map_view">
 
+        <TextView
+            android:id="@+id/textView120"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="16dp"
+            android:background="#BDB8B8"
+            android:text="S"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textView116"
+            app:layout_constraintTop_toBottomOf="@+id/os_detalhes_obs" />
+
+        <TextView
+            android:id="@+id/textView119"
+            android:layout_width="75dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="16dp"
+            android:background="#BDB8B8"
+            android:text="Descrição"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/os_detalhes_obs" />
+
+        <TextView
+            android:id="@+id/textView118"
+            android:layout_width="40dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="16dp"
+            android:background="#BDB8B8"
+            android:text="K20"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textView111"
+            app:layout_constraintTop_toBottomOf="@+id/os_detalhes_obs" />
+
+        <TextView
+            android:id="@+id/textView110"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="16dp"
+            android:background="#BDB8B8"
+            android:text="B"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textView106"
+            app:layout_constraintTop_toBottomOf="@+id/os_detalhes_obs" />
+
+        <TextView
+            android:id="@+id/textView112"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="16dp"
+            android:background="#BDB8B8"
+            android:text="MN"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textView108"
+            app:layout_constraintTop_toBottomOf="@+id/os_detalhes_obs" />
+
+        <TextView
+            android:id="@+id/textView116"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="16dp"
+            android:background="#BDB8B8"
+            android:text="ZN"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textView110"
+            app:layout_constraintTop_toBottomOf="@+id/os_detalhes_obs" />
+
+        <TextView
+            android:id="@+id/textView108"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="16dp"
+            android:background="#BDB8B8"
+            android:text="AF"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textView115"
+            app:layout_constraintTop_toBottomOf="@+id/os_detalhes_obs" />
+
+        <TextView
+            android:id="@+id/textView106"
+            android:layout_width="40dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="16dp"
+            android:background="#BDB8B8"
+            android:text="MGO"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textView117"
+            app:layout_constraintTop_toBottomOf="@+id/os_detalhes_obs" />
+
+        <TextView
+            android:id="@+id/textView115"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="16dp"
+            android:background="#BDB8B8"
+            android:text="CU"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textView120"
+            app:layout_constraintTop_toBottomOf="@+id/os_detalhes_obs" />
+
+        <TextView
+            android:id="@+id/textView117"
+            android:layout_width="40dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="16dp"
+            android:background="#BDB8B8"
+            android:text="CAO"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textView118"
+            app:layout_constraintTop_toBottomOf="@+id/os_detalhes_obs" />
+
+        <TextView
+            android:id="@+id/textView114"
+            android:layout_width="45dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="16dp"
+            android:background="#BDB8B8"
+            android:text="Dose"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textView112"
+            app:layout_constraintTop_toBottomOf="@+id/os_detalhes_obs" />
+
+        <TextView
+            android:id="@+id/textView113"
+            android:layout_width="70dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="16dp"
+            android:background="#BDB8B8"
+            android:text="QTD Apl."
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textView114"
+            app:layout_constraintTop_toBottomOf="@+id/os_detalhes_obs" />
+
+        <TextView
+            android:id="@+id/textView111"
+            android:layout_width="40dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="16dp"
+            android:background="#BDB8B8"
+            android:text="P205"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textView109"
+            app:layout_constraintTop_toBottomOf="@+id/os_detalhes_obs" />
+
+        <TextView
+            android:id="@+id/textView109"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="16dp"
+            android:background="#BDB8B8"
+            android:text="N"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textView119"
+            app:layout_constraintTop_toBottomOf="@+id/os_detalhes_obs" />
+
+        <TextView
+            android:id="@+id/textView107"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="5dp"
+            android:background="#BDB8B8"
+            android:text="Un"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView113"
+            app:layout_constraintTop_toBottomOf="@+id/os_detalhes_obs" />
+
         <ImageButton
             android:id="@+id/botao_detalhes_voltar"
             android:layout_width="70dp"
@@ -25,19 +223,51 @@
             app:srcCompat="@drawable/ic_voltar_24dp" />
 
         <Button
-            android:id="@+id/botao_iniciar_coleta"
-            android:layout_width="225dp"
+            android:id="@+id/botao_detalhes_qualidade"
+            android:layout_width="150dp"
             android:layout_height="35dp"
             android:layout_gravity="start"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="115dp"
             android:background="#75A9EB"
             android:enabled="true"
-            android:text="Iniciar Coleta"
+            android:text="Qualidade"
+            android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/map"
+            app:layout_constraintTop_toBottomOf="@+id/botao_detalhes_calibracao" />
+
+        <Button
+            android:id="@+id/botao_detalhes_calibracao"
+            android:layout_width="150dp"
+            android:layout_height="35dp"
+            android:layout_gravity="start"
+            android:layout_marginStart="32dp"
+            android:background="#75A9EB"
+            android:enabled="true"
+            android:text="Calibração"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/map"
+            app:layout_constraintTop_toTopOf="@+id/map" />
+
+        <Button
+            android:id="@+id/botao_detalhes_apontamento"
+            android:layout_width="150dp"
+            android:layout_height="35dp"
+            android:layout_gravity="start"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="115dp"
+            android:background="#75A9EB"
+            android:enabled="true"
+            android:text="Apontamento"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/map"
+            app:layout_constraintTop_toBottomOf="@+id/botao_detalhes_qualidade" />
 
         <fragment
             android:id="@+id/map"
@@ -45,8 +275,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="320dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginTop="500dp"
+            android:layout_marginEnd="200dp"
             android:layout_marginBottom="80dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -54,7 +284,7 @@
             app:layout_constraintTop_toTopOf="parent"></fragment>
 
         <TextView
-            android:id="@+id/id_os_detalhes"
+            android:id="@+id/os_detalhes_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
@@ -63,7 +293,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView18" />
 
         <TextView
-            android:id="@+id/status_os_detalhes"
+            android:id="@+id/os_detalhes_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
@@ -73,7 +303,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView42" />
 
         <TextView
-            android:id="@+id/area_os_detalhes"
+            android:id="@+id/os_detalhes_area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
@@ -82,7 +312,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView46" />
 
         <TextView
-            android:id="@+id/manejo_os_detalhes"
+            android:id="@+id/os_detalhes_manejo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
@@ -91,7 +321,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView56" />
 
         <TextView
-            android:id="@+id/madeira_os_detalhes"
+            android:id="@+id/os_detalhes_madeira"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
@@ -100,7 +330,16 @@
             app:layout_constraintTop_toTopOf="@+id/textView59" />
 
         <TextView
-            android:id="@+id/talhao_os_detalhes"
+            android:id="@+id/os_detalhes_recomendacao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textView41"
+            app:layout_constraintTop_toTopOf="@+id/textView41" />
+
+        <TextView
+            android:id="@+id/os_detalhes_talhao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
@@ -109,7 +348,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView20" />
 
         <TextView
-            android:id="@+id/ciclo_os_detalhes"
+            android:id="@+id/os_detalhes_ciclo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
@@ -118,7 +357,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView21" />
 
         <TextView
-            android:id="@+id/setor_os_detalhes"
+            android:id="@+id/os_detalhes_setor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
@@ -127,20 +366,17 @@
             app:layout_constraintTop_toTopOf="@+id/textView40" />
 
         <TextView
-            android:id="@+id/obs_os_detalhes"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:id="@+id/os_detalhes_obs"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/map"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView41"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/textView41" />
 
         <TextView
             android:id="@+id/textView18"
@@ -163,43 +399,40 @@
             android:text="Status:"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/id_os_detalhes"
+            app:layout_constraintStart_toEndOf="@+id/os_detalhes_id"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView46"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
             android:layout_marginTop="16dp"
             android:text="Área:"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/id_os_detalhes"
+            app:layout_constraintStart_toStartOf="@+id/textView42"
             app:layout_constraintTop_toBottomOf="@+id/textView42" />
 
         <TextView
             android:id="@+id/textView56"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
             android:layout_marginTop="16dp"
             android:text="Manejo:"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/id_os_detalhes"
+            app:layout_constraintStart_toStartOf="@+id/textView46"
             app:layout_constraintTop_toBottomOf="@+id/textView46" />
 
         <TextView
             android:id="@+id/textView59"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
             android:layout_marginTop="16dp"
             android:text="Madeira?"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/id_os_detalhes"
+            app:layout_constraintStart_toStartOf="@+id/textView56"
             app:layout_constraintTop_toBottomOf="@+id/textView56" />
 
         <TextView
@@ -242,6 +475,17 @@
             android:id="@+id/textView41"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Recomendação?"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/textView59"
+            app:layout_constraintTop_toBottomOf="@+id/os_detalhes_madeira" />
+
+        <TextView
+            android:id="@+id/textView91"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:text="Observação"
@@ -249,6 +493,17 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView40" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/os_detalhes_recycler_insumos"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/map"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView110"
+            tools:listitem="@layout/item_lista_insumos" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

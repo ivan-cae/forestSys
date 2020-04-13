@@ -48,11 +48,18 @@ public class GGF_USUARIOS implements Serializable {
     @ColumnInfo(name = "DESCRICAO")
     private String DESCRICAO;
 
-
+    @Ignore
     public GGF_USUARIOS(int ID_USUARIO, String EMAIL, String SENHA) {
         this.ID_USUARIO = ID_USUARIO;
         this.SENHA = SENHA;
         this.EMAIL = EMAIL;
+    }
+
+    public GGF_USUARIOS(int ID_USUARIO,  String EMAIL, String SENHA, String DESCRICAO) {
+        this.ID_USUARIO = ID_USUARIO;
+        this.EMAIL = EMAIL;
+        this.SENHA = SENHA;
+        this.DESCRICAO = DESCRICAO;
     }
 
     public int getID_USUARIO() {

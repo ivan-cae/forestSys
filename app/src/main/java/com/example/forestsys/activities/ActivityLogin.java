@@ -38,6 +38,11 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
     private String senhaUsuario;
     private ViewModelUsers viewModelUsers;
 
+    private EditText usernameEditText;
+    private EditText passwordEditText;
+    private Button loginButton;
+    private ImageButton configButton;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_login);
@@ -52,10 +57,10 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
             usuarioLogado=null;
         }
 
-        final EditText usernameEditText = findViewById(R.id.username);
-        final EditText passwordEditText = findViewById(R.id.password);
-        final Button loginButton = findViewById(R.id.botao_login);
-        final ImageButton configButton = findViewById(R.id.botao_config);
+        usernameEditText = findViewById(R.id.username);
+        passwordEditText = findViewById(R.id.password);
+        loginButton = findViewById(R.id.botao_login);
+        configButton = findViewById(R.id.botao_config);
         botaoVoltar = findViewById(R.id.botao_login_voltar);
         checarPermissaodeLocalizacao();
         imageView = findViewById(R.id.imagem_login);
@@ -124,9 +129,10 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
         });
     }
 
+
     //checa as permissões de localização
     //retorna true se a permissão for concedida e false se não for
-    public boolean checarPermissaodeLocalizacao() {
+    public boolean checarPermissaodeLocalizacao(){
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -158,6 +164,7 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
             return true;
         }
     }
+
 
     @Override
     public void onBackPressed() {

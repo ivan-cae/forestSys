@@ -15,7 +15,6 @@ import java.util.List;
 public class RepositorioO_S_ATIVIDADES {
     private DAO dao;
     private LiveData<List<O_S_ATIVIDADES>> os;
-    private List <O_S_ATIVIDADES> listaOs;
 
     public RepositorioO_S_ATIVIDADES(Application application) {
         BaseDeDados baseDeDados = BaseDeDados.getInstance(application);

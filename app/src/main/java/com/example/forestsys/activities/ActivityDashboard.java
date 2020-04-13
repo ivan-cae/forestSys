@@ -46,25 +46,28 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
         toggle.syncState();
     }
 
+    //Adiciona o botão de atualização a barra de ação
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater i = getMenuInflater();
         i.inflate(R.menu.menu_action_bar, menu);
-
         return true;
     }
 
+
+    //Trata a seleção do botão de atualização
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.atualizar:
-
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+
+    //Sobreescrita do método de seleção de item do menu de navegação localizado na lateral da tela
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -89,6 +92,8 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
         return true;
     }
 
+
+    //SObrescrita do método onBackPressed nativo do Android para que feche o menu de navegação lateral
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {

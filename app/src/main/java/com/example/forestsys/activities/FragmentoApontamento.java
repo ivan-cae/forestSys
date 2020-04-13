@@ -225,11 +225,13 @@ public class FragmentoApontamento extends Fragment {
             @Override
             public void onClick(View v) {
                 DialogFragment datePicker = new FragmentoDatePicker();
-                datePicker.show(getFragmentManager(), "date picker");
+                datePicker.show(getParentFragmentManager(), "date picker");
             }
         });
     }
 
+
+    //Mostra as informações do apontamento nos seus respectivos campos
     public void populaInfo(){
         posicaoPrestador = oSAtividadesDiaAtual.getID_PRESTADOR();
         posicaoResponsavel = oSAtividadesDiaAtual.getID_RESPONSAVEL();
@@ -261,7 +263,10 @@ public class FragmentoApontamento extends Fragment {
             obsApontamento.setText(oSAtividadesDiaAtual.getOBSERVACAO());
     }
 
+
+    //Classe responsável pela criação do calendário
     public static class FragmentoDatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+        //Sobrescrita do método onCreateDialog, nele são definidos os parâmetros do calendário quando aberto
         @NonNull
         @Override
         public DatePickerDialog onCreateDialog(Bundle savedInstanceState) {
@@ -270,15 +275,17 @@ public class FragmentoApontamento extends Fragment {
             int dia = c.get(Calendar.DAY_OF_MONTH);
             int mes = c.get(Calendar.MONTH);
             int ano = c.get(Calendar.YEAR);
+            int m = mes;
             mes += 1;
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, dia, mes, ano);
 
-            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            datePickerDialog.getDatePicker().init(ano,m, dia, null); //System.currentTimeMillis() - 1000);
             return datePickerDialog;
         }
 
 
+        //Sobrescrita do método onDateSet, nele é setada a data selecionada no respectivo textview
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             Calendar c = Calendar.getInstance();
@@ -302,6 +309,8 @@ public class FragmentoApontamento extends Fragment {
             setarData(auxDia, auxMes, auxAno);
         }
 
+
+        //Método auxiliar para setar a data no textview
         public void setarData(String dia, String mes, String ano) {
             dataApontamento.setText(dia + "/" + mes + "/" + ano);
         }

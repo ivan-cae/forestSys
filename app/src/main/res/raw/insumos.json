@@ -1,0 +1,61 @@
+{
+  "INSUMOS":[
+    {
+      "ID_INSUMO": 1,
+      "ID_INSUMO_RM": "a",
+      "CLASSE": "a",
+      "DESCRICAO": "Insumo 1",
+      "NUTRIENTE_N": 1,
+      "NUTRIENTE_P2O5": 2,
+      "NUTRIENTE_K2O": 3,
+      "NUTRIENTE_CAO": 4,
+      "NUTRIENTE_MGO": 5,
+      "NUTRIENTE_B": 6,
+      "NUTRIENTE_ZN": 7,
+      "NUTRIENTE_S": 8,
+      "NUTRIENTE_CU": 9,
+      "NUTRIENTE_AF": 10,
+      "NUTRIENTE_MN":  11,
+      "ATIVO": 1,
+      "UND_MEDIDA": "Kg"
+    },
+    {
+      "ID_INSUMO": 2,
+      "ID_INSUMO_RM": "a2",
+      "CLASSE": "a",
+      "DESCRICAO": "Insumo 2",
+      "NUTRIENTE_N": 1,
+      "NUTRIENTE_P2O5": 2,
+      "NUTRIENTE_K2O": 3,
+      "NUTRIENTE_CAO": 4,
+      "NUTRIENTE_MGO": 5,
+      "NUTRIENTE_B": 6,
+      "NUTRIENTE_ZN": 7,
+      "NUTRIENTE_S": 8,
+      "NUTRIENTE_CU": 9,
+      "NUTRIENTE_AF": 10,
+      "NUTRIENTE_MN":  11,
+      "ATIVO": 1,
+      "UND_MEDIDA": "Kg"
+    },
+    {
+      "ID_INSUMO": 3,
+      "ID_INSUMO_RM": "a3",
+      "CLASSE": "a",
+      "DESCRICAO": "Insumo 3",
+      "NUTRIENTE_N": 1,
+      "NUTRIENTE_P2O5": 2,
+      "NUTRIENTE_K2O": 3,
+      "NUTRIENTE_CAO": 4,
+      "NUTRIENTE_MGO": 5,
+      "NUTRIENTE_B": 6,
+      "NUTRIENTE_ZN": 7,
+      "NUTRIENTE_S": 8,
+      "NUTRIENTE_CU": 9,
+      "NUTRIENTE_AF": 10,
+      "NUTRIENTE_MN":  11,
+      "ATIVO": 1,
+      "UND_MEDIDA": "Kg"
+    }
+]
+}

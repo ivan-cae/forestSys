@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -132,5 +133,10 @@ public class ActivityConfiguracoes extends AppCompatActivity {
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
             return;
         }
+    }
+
+    //SObrescrita do método onBackPressed nativo do Android para que não execute nenhuma função
+    @Override
+    public void onBackPressed() {
     }
 }

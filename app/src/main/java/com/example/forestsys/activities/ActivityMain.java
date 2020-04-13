@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -90,7 +91,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
             public void onItemClick(O_S_ATIVIDADES classeOs) {
                     osSelecionada = classeOs;
                     Intent it = new Intent(ActivityMain.this, ActivityDetalhesOS.class);
-               // Intent it = new Intent(ActivityMain.this, ActivityContinuarOs.class);
+                //Intent it = new Intent(ActivityMain.this, ActivityContinuarOs.class);
                 startActivity(it);
             }
         });

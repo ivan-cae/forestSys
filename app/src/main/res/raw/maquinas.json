@@ -1,0 +1,19 @@
+{
+  "MAQUINAS": [
+    {
+      "ID_MAQUINA": 1,
+      "DESCRICAO": "Maquina 1",
+      "ATIVO": 1
+    },
+    {
+      "ID_MAQUINA": 2,
+      "DESCRICAO": "Maquina 2",
+      "ATIVO": 1
+    },
+    {
+      "ID_MAQUINA": 3,
+      "DESCRICAO": "Maquina 3",
+      "ATIVO": 1
+    }
+  ]
+}

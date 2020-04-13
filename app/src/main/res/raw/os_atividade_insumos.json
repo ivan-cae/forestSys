@@ -1,0 +1,25 @@
+{
+  "O_S_ATIVIDADE_INSUMOS":[
+  {
+    "ID_INSUMO": 1,
+    "ID_PROGRAMACAO_ATIVIDADE": 1,
+    "RECOMENDACAO": 1,
+    "QTD_HA_RECOMENDADO":  1,
+    "QTD_HA_APLICADO": 1
+  },
+    {
+      "ID_INSUMO": 2,
+      "ID_PROGRAMACAO_ATIVIDADE": 1,
+      "RECOMENDACAO": 1,
+      "QTD_HA_RECOMENDADO":  1,
+      "QTD_HA_APLICADO": 1
+    },
+    {
+      "ID_INSUMO": 3,
+      "ID_PROGRAMACAO_ATIVIDADE": 1,
+      "RECOMENDACAO": 1,
+      "QTD_HA_RECOMENDADO":  1,
+      "QTD_HA_APLICADO": 1
+    }
+]
+}

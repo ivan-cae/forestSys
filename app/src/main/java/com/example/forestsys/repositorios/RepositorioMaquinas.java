@@ -24,7 +24,7 @@ public class RepositorioMaquinas {
 
     //retorna uma instância da MAQUINAS
 //parâmetro de entrada: id inteiro para busca na tabela MAQUINAS
-    public LiveData<MAQUINAS> selecionaMaquina(int id) {
+    public MAQUINAS selecionaMaquina(int id) {
         return dao.selecionaMaquina(id);
     }
 

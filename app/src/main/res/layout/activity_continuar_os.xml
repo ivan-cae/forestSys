@@ -118,7 +118,7 @@
             android:layout_marginEnd="8dp"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/botao_apontamento"
+            app:layout_constraintBottom_toTopOf="@+id/botao_detalhes_apontamento"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -233,7 +233,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView40" />
 
         <Button
-            android:id="@+id/botao_apontamento"
+            android:id="@+id/botao_detalhes_apontamento"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="320dp"

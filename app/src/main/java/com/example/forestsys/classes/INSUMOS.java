@@ -17,7 +17,7 @@ public class INSUMOS {
 
 	private String CLASSE;
 	private String DESCRICAO;
-	private int NUTRIENTE_N;
+	private double NUTRIENTE_N;
 	private double NUTRIENTE_P2O5;
     private double NUTRIENTE_K2O;
     private double NUTRIENTE_CAO;
@@ -31,7 +31,7 @@ public class INSUMOS {
 	private int ATIVO;
 	private String UND_MEDIDA;
 
-    public INSUMOS(int ID_INSUMO, String ID_INSUMO_RM, String CLASSE, String DESCRICAO, int NUTRIENTE_N,
+    public INSUMOS(int ID_INSUMO, String ID_INSUMO_RM, String CLASSE, String DESCRICAO, double NUTRIENTE_N,
                    double NUTRIENTE_P2O5, double NUTRIENTE_K2O, double NUTRIENTE_CAO, double NUTRIENTE_MGO,
                    double NUTRIENTE_B, double NUTRIENTE_ZN, double NUTRIENTE_S, double NUTRIENTE_CU,
                    double NUTRIENTE_AF, double NUTRIENTE_MN, int ATIVO, String UND_MEDIDA) {
@@ -86,7 +86,7 @@ public class INSUMOS {
         this.DESCRICAO = DESCRICAO;
     }
 
-    public int getNUTRIENTE_N() {
+    public double getNUTRIENTE_N() {
         return NUTRIENTE_N;
     }
 

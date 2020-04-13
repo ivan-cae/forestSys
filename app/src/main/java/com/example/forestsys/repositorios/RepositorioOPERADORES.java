@@ -23,7 +23,7 @@ public class RepositorioOPERADORES {
 
     //retorna uma instância da OPERADORES
 //parâmetro de entrada: id inteiro para busca na tabela OPERADORES
-    public LiveData<OPERADORES> selecionaOperador(int id) {
+    public OPERADORES selecionaOperador(int id) {
         return dao.selecionaOperador(id);
     }
 

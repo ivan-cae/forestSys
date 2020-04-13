@@ -1,8 +1,5 @@
 package com.example.forestsys.activities;
-import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.Menu;
@@ -10,27 +7,26 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.LiveData;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.forestsys.AdaptadorInsumos;
 import com.example.forestsys.ApplicationTodos;
+import com.example.forestsys.BaseDeDados;
 import com.example.forestsys.DAO;
 import com.example.forestsys.R;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
 import com.example.forestsys.classes.CALIBRAGEM_SUBSOLAGEM;
+import com.example.forestsys.classes.join.Join_OS_INSUMOS;
 import com.example.forestsys.viewModels.ViewModelCALIBRAGEM_SUBSOLAGEM;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -43,6 +39,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Date;
+import java.util.List;
 
 import static com.example.forestsys.activities.ActivityCalibragem.checaTurno;
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
@@ -54,7 +51,9 @@ public class ActivityDetalhesOS extends AppCompatActivity
 
     private final int PERMISSAO_LOCALIZACAO = 99;
     private DrawerLayout drawer;
-    private Button iniciarColeta;
+    private Button botaoCalibracao;
+    private Button botaoQualidade;
+    private Button botaoApontamento;
 
     private TextView idOs;
     private TextView talhaoOs;
@@ -67,8 +66,11 @@ public class ActivityDetalhesOS extends AppCompatActivity
     private TextView madeiraOs;
 
     private GoogleMap mMap;
-    ImageButton voltar;
+    private ImageButton voltar;
+    private RecyclerView recyclerView;
+    private AdaptadorInsumos adaptador;
 
+    List<Join_OS_INSUMOS> joinOsInsumos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,17 +83,27 @@ public class ActivityDetalhesOS extends AppCompatActivity
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        BaseDeDados baseDeDados = BaseDeDados.getInstance(getApplicationContext());
+        DAO dao = baseDeDados.dao();
+        joinOsInsumos = dao.joinInsumoAtividade(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
+        recyclerView = findViewById(R.id.os_detalhes_recycler_insumos);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+        adaptador = new AdaptadorInsumos();
+        recyclerView.setAdapter(adaptador);
 
-        idOs = findViewById(R.id.id_os_detalhes);
-        talhaoOs = findViewById(R.id.talhao_os_detalhes);
-        cicloOs = findViewById(R.id.ciclo_os_detalhes);
-        setorOs = findViewById(R.id.setor_os_detalhes);
-        obsOs = findViewById(R.id.obs_os_detalhes);
-        statusOs = findViewById(R.id.status_os_detalhes);
-        areaOs = findViewById(R.id.area_os_detalhes);
-        manejoOs = findViewById(R.id.manejo_os_detalhes);
-        madeiraOs = findViewById(R.id.madeira_os_detalhes);
+        adaptador.setInsumos(joinOsInsumos);
+
+        idOs = findViewById(R.id.os_detalhes_id);
+        talhaoOs = findViewById(R.id.os_detalhes_talhao);
+        cicloOs = findViewById(R.id.os_detalhes_ciclo);
+        setorOs = findViewById(R.id.os_detalhes_setor);
+        obsOs = findViewById(R.id.os_detalhes_obs);
+        statusOs = findViewById(R.id.os_detalhes_status);
+        areaOs = findViewById(R.id.os_detalhes_area);
+        manejoOs = findViewById(R.id.os_detalhes_manejo);
+        madeiraOs = findViewById(R.id.os_detalhes_madeira);
 
         idOs.setText(String.valueOf(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()));
         talhaoOs.setText(String.valueOf(osSelecionada.getTALHAO()));
@@ -103,10 +115,15 @@ public class ActivityDetalhesOS extends AppCompatActivity
         manejoOs.setText(String.valueOf(osSelecionada.getID_MANEJO()));
         madeiraOs.setText(String.valueOf(osSelecionada.getMADEIRA_NO_TALHAO()));
 
+
         voltar = findViewById(R.id.botao_detalhes_voltar);
 
 
-        iniciarColeta = findViewById(R.id.botao_iniciar_coleta);
+        botaoCalibracao = findViewById(R.id.botao_detalhes_calibracao);
+        botaoQualidade = findViewById(R.id.botao_detalhes_qualidade);
+        botaoApontamento = findViewById(R.id.botao_detalhes_apontamento);
+
+        checaCalibracao();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detalhes);
 
@@ -125,26 +142,20 @@ public class ActivityDetalhesOS extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        iniciarColeta.setOnClickListener(new View.OnClickListener() {
+        botaoCalibracao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ViewModelCALIBRAGEM_SUBSOLAGEM viewModelCALIBRAGEM_subsolagem = new ViewModelCALIBRAGEM_SUBSOLAGEM(getApplication());
 
-                CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem = viewModelCALIBRAGEM_subsolagem.checaCalibragem(osSelecionada.getID_ATIVIDADE(),
-                                DateFormat.format("dd-MM-yyyy", new Date()).toString(), checaTurno());
-
-                if(calibragem_subsolagem == null){
-                    Intent it = new Intent(ActivityDetalhesOS.this, ActivityCalibragem.class);
-                    startActivity(it);
+                Intent it = new Intent(ActivityDetalhesOS.this, ActivityListagemCalibracao.class);
+                startActivity(it);
                 }
+        });
 
-                if(calibragem_subsolagem != null) {
-                    Intent it = new Intent(ActivityDetalhesOS.this, ActivityContinuarOs.class);
-                    startActivity(it);
-                }
-
-
-
+        botaoApontamento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(ActivityDetalhesOS.this, ActivityContinuarOs.class);
+                startActivity(it);
             }
         });
 
@@ -157,6 +168,29 @@ public class ActivityDetalhesOS extends AppCompatActivity
         });
     }
 
+
+    //Adiciona o botão de atualização a barra de ação
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater i = getMenuInflater();
+        i.inflate(R.menu.menu_action_bar, menu);
+        return true;
+    }
+
+
+    //Trata a seleção do botão de atualização
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.atualizar:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    //Sobreescrita do método de seleção de item do menu de navegação localizado na lateral da tela
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -181,25 +215,7 @@ public class ActivityDetalhesOS extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater i = getMenuInflater();
-        i.inflate(R.menu.menu_action_bar, menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.atualizar:
-
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
+    //Método que define os parâmetros do mapa e marcadores
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -230,53 +246,30 @@ public class ActivityDetalhesOS extends AppCompatActivity
         mMap.addMarker(markerOptions.title("Talhao 1"));
     }
 
-    //checa as permissões de localização
-    //retorna true se a permissão for concedida e false se não for
-    public boolean checarPermissaodeLocalizacao() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+    //Checa se há uma calibração naquela data e turno
+    private void checaCalibracao(){
+        ViewModelCALIBRAGEM_SUBSOLAGEM viewModelCALIBRAGEM_subsolagem = new ViewModelCALIBRAGEM_SUBSOLAGEM(getApplication());
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+        CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem = viewModelCALIBRAGEM_subsolagem.checaCalibragem(osSelecionada.getID_ATIVIDADE(),
+                DateFormat.format("dd/MM/yyyy", new Date()).toString(), checaTurno());
 
+        if(calibragem_subsolagem == null){
+            botaoApontamento.setEnabled(false);
+            botaoApontamento.setVisibility(View.GONE);
 
-                new AlertDialog.Builder(this)
-                        .setTitle("Fornecer permissão")
-                        .setMessage("Fornecer permissão para localizar dispositivo")
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                ActivityCompat.requestPermissions(ActivityDetalhesOS.this,
-                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        PERMISSAO_LOCALIZACAO);
-                            }
-                        })
-                        .create()
-                        .show();
+            botaoQualidade.setEnabled(false);
+            botaoQualidade.setVisibility(View.GONE);
+        }
 
+        if(calibragem_subsolagem != null) {
+            botaoApontamento.setEnabled(true);
+            botaoApontamento.setVisibility(View.VISIBLE);
 
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        PERMISSAO_LOCALIZACAO);
-            }
-            return false;
-        } else {
-            return true;
+            botaoQualidade.setEnabled(true);
+            botaoQualidade.setVisibility(View.VISIBLE);
         }
     }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-        }
-    }
-
+    //SObrescrita do método onBackPressed nativo do Android para que feche o menu de navegação lateral
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
