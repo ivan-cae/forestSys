@@ -25,6 +25,7 @@ import com.example.forestsys.classes.OPERADORES;
 import com.example.forestsys.classes.O_S_ATIVIDADES;
 import com.example.forestsys.classes.O_S_ATIVIDADES_DIA;
 import com.example.forestsys.classes.O_S_ATIVIDADE_INSUMOS;
+import com.example.forestsys.classes.O_S_ATIVIDADE_INSUMOS_DIA;
 import com.example.forestsys.classes.PRESTADORES;
 import com.example.forestsys.classes.join.Join_OS_INSUMOS;
 
@@ -69,6 +70,8 @@ public interface DAO {
     void insert(INSUMOS insumos);
     @Insert(onConflict  = OnConflictStrategy.IGNORE)
     void insert(O_S_ATIVIDADE_INSUMOS o_s_atividade_insumos);
+    @Insert(onConflict  = OnConflictStrategy.REPLACE)
+    void insert(O_S_ATIVIDADE_INSUMOS_DIA o_s_atividade_insumos_dia);
 
 
     @Update
@@ -101,6 +104,8 @@ public interface DAO {
     void update(INSUMOS insumos);
     @Update
     void update(O_S_ATIVIDADE_INSUMOS o_s_atividade_insumos);
+    @Update
+    void update(O_S_ATIVIDADE_INSUMOS_DIA o_s_atividade_insumos_dia);
 
 
     @Delete
@@ -133,23 +138,24 @@ public interface DAO {
     void delete(INSUMOS insumos);
     @Delete
     void delete(O_S_ATIVIDADE_INSUMOS o_s_atividade_insumos);
+    @Delete
+    void delete(O_S_ATIVIDADE_INSUMOS_DIA o_s_atividade_insumos_dia);
 
     //Scripts GGF_USUARIOS
     @Query("SELECT * FROM GGF_USUARIOS ORDER BY ID_USUARIO asc")
     LiveData<List<GGF_USUARIOS>> todosUsers();
 
     @Query("SELECT * FROM GGF_USUARIOS WHERE ID_USUARIO=:taskId")
-    LiveData<GGF_USUARIOS> selecionaUser(int taskId);
+    GGF_USUARIOS selecionaUser(int taskId);
 
     @Query("SELECT * FROM GGF_USUARIOS WHERE EMAIL=:taskLogin AND senha=:taskSenha")
-    LiveData<GGF_USUARIOS> valida(String taskLogin, String taskSenha);
+    GGF_USUARIOS valida(String taskLogin, String taskSenha);
 
     @Query("SELECT * FROM GGF_USUARIOS WHERE EMAIL=:taskLogin")
     LiveData<GGF_USUARIOS> validaLogin(String taskLogin);
 
     @Query("SELECT * FROM GGF_USUARIOS ORDER BY ID_USUARIO asc")
     List<GGF_USUARIOS> listaUsuarios();
-
 
 
     //Scripts GEO_SETORES
@@ -229,7 +235,7 @@ public interface DAO {
 
     //Scripts PRESTADORES
     @Query("SELECT * FROM PRESTADORES WHERE ID_PRESTADOR=:id")
-    LiveData<PRESTADORES> selecionaPrestador(int id);
+    PRESTADORES selecionaPrestador(int id);
 
     @Query("SELECT * FROM PRESTADORES")
     List<PRESTADORES> listaPrestadores();
@@ -274,6 +280,9 @@ public interface DAO {
     @Query("SELECT * FROM O_S_ATIVIDADES_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND DATA=:data")
     O_S_ATIVIDADES_DIA selecionaOsAtividadesDia(int idProg, String data);
 
+    @Query("SELECT * FROM O_S_ATIVIDADES_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg")
+    List<O_S_ATIVIDADES_DIA> listaAtividadesDia(int idProg);
+
 
     //Scritps INSUMOS
     @Query("SELECT * FROM INSUMOS WHERE ID_INSUMO=:id")
@@ -282,6 +291,8 @@ public interface DAO {
     @Query("SELECT * FROM INSUMOS")
     LiveData<List<INSUMOS>> todosInsumos();
 
+    @Query("SELECT ID_INSUMO FROM INSUMOS WHERE DESCRICAO=:desc")
+    int consultaDesc(String desc);
 
     //Scritps O_S_ATIVIDADE_INSUMOS
     @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_INSUMO=:idInsumo")
@@ -290,11 +301,28 @@ public interface DAO {
     @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS")
     LiveData<List<O_S_ATIVIDADE_INSUMOS>> todosOsAtividadeInsumos();
 
+    //Scripts O_S_ATIVIDADE_INSUMOS_DIA
+    @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND DATA=:data")
+    List<O_S_ATIVIDADE_INSUMOS_DIA> listaOsAtividadeInsumosDia(int idProg, String data);
 
     //JOINS
-    @Query("SELECT * FROM INSUMOS LEFT JOIN O_S_ATIVIDADE_INSUMOS" +
-            " ON INSUMOS.ID_INSUMO = O_S_ATIVIDADE_INSUMOS.ID_INSUMO WHERE O_S_ATIVIDADE_INSUMOS.ID_PROGRAMACAO_ATIVIDADE=:idProg")
-    List<Join_OS_INSUMOS> joinInsumoAtividade(int idProg);
+    @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS LEFT JOIN INSUMOS ON INSUMOS.ID_INSUMO = O_S_ATIVIDADE_INSUMOS.ID_INSUMO " +
+            "LEFT JOIN O_S_ATIVIDADE_INSUMOS_DIA ON O_S_ATIVIDADE_INSUMOS.ID_INSUMO = O_S_ATIVIDADE_INSUMOS_DIA.ID_INSUMO" +
+            " WHERE O_S_ATIVIDADE_INSUMOS.ID_PROGRAMACAO_ATIVIDADE=:idProg")
+    List<Join_OS_INSUMOS> listaJoinInsumoAtividades(int idProg);
+
+    @Query("SELECT * FROM INSUMOS LEFT JOIN O_S_ATIVIDADE_INSUMOS_DIA ON O_S_ATIVIDADE_INSUMOS_DIA.ID_INSUMO = INSUMOS.ID_INSUMO " +
+            "LEFT JOIN O_S_ATIVIDADE_INSUMOS" +
+            " ON INSUMOS.ID_INSUMO = O_S_ATIVIDADE_INSUMOS.ID_INSUMO " +
+            "WHERE O_S_ATIVIDADE_INSUMOS_DIA.ID_PROGRAMACAO_ATIVIDADE=:idProg AND O_S_ATIVIDADE_INSUMOS_DIA.DATA=:data")
+    List<Join_OS_INSUMOS> listaJoinInsumoAtividadesdia(int idProg, String data);
+
+    @Query("SELECT QTD_APLICADO FROM INSUMOS LEFT JOIN O_S_ATIVIDADE_INSUMOS_DIA" +
+            " ON INSUMOS.ID_INSUMO = O_S_ATIVIDADE_INSUMOS_DIA.ID_INSUMO " +
+            "WHERE O_S_ATIVIDADE_INSUMOS_DIA.ID_PROGRAMACAO_ATIVIDADE=:idProg " +
+            "AND O_S_ATIVIDADE_INSUMOS_DIA.DATA=:data " +
+            "AND O_S_ATIVIDADE_INSUMOS_DIA.ID_INSUMO=:idInsumo")
+    double retornaQtdApl(int idProg, String data, int idInsumo);
 
     @Query("SELECT ID_MAQUINA FROM CALIBRAGEM_SUBSOLAGEM LEFT JOIN MAQUINA_IMPLEMENTO ON " +
             "CALIBRAGEM_SUBSOLAGEM.ID_MAQUINA_IMPLEMENTO = MAQUINA_IMPLEMENTO.ID_MAQUINA_IMPLEMENTO " +

@@ -23,7 +23,7 @@ public class RepositorioUsers {
 
     //retorna uma instância da GGF_USUARIOS
 //parâmetro de entrada: id inteiro para busca na tabela GGF_USUARIOS
-    public LiveData<GGF_USUARIOS> getUser(int id) {
+    public GGF_USUARIOS getUser(int id) {
         return dao.selecionaUser(id);
     }
 
@@ -35,7 +35,7 @@ public class RepositorioUsers {
 
     //Verifica se há um User cadastrado com um determinado login e senha e o retorna
     //parâmetros de entrada: login e senha para validação
-    public LiveData<GGF_USUARIOS> valida(String login, String senha){
+    public GGF_USUARIOS valida(String login, String senha){
         return dao.valida(login, senha);
     }
 

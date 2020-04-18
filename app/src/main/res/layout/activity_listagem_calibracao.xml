@@ -223,7 +223,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView72"
-        tools:listitem="@layout/item_lista_calibragem" />
+        tools:listitem="@layout/item_lista_calibracao" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 <LinearLayout

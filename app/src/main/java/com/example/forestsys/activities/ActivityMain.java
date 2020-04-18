@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,7 +21,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ImageButton;
 import android.widget.SearchView;
-import com.example.forestsys.AdaptadorOs;
+import com.example.forestsys.Adapters.AdaptadorOs;
 import com.example.forestsys.R;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
 import com.google.android.material.navigation.NavigationView;
@@ -33,6 +32,7 @@ import com.example.forestsys.viewModels.ViewModelO_S_ATIVIDADES;
 
 
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
+import static com.example.forestsys.activities.ActivityLogin.usuarioLogado;
 
 
 public class ActivityMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -56,7 +56,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         botaoMainVoltar = findViewById(R.id.botao_main_voltar);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setSubtitle(/*usuarioLogado.getValue().getEMAIL()*/"a");
+        getSupportActionBar().setSubtitle(usuarioLogado.getDESCRICAO());
 
         drawer = findViewById(R.id.drawer_layout_main);
         NavigationView navigationView = findViewById(R.id.nav_view_main);
@@ -90,8 +90,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
             @Override
             public void onItemClick(O_S_ATIVIDADES classeOs) {
                     osSelecionada = classeOs;
-                    Intent it = new Intent(ActivityMain.this, ActivityDetalhesOS.class);
-                //Intent it = new Intent(ActivityMain.this, ActivityContinuarOs.class);
+                    Intent it = new Intent(ActivityMain.this, ActivityAtividades.class);
                 startActivity(it);
             }
         });

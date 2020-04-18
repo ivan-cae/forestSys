@@ -1,8 +1,13 @@
 package com.example.forestsys.classes.join;
 
+import androidx.annotation.Nullable;
+import androidx.room.ColumnInfo;
+import androidx.room.Ignore;
+
 public class Join_OS_INSUMOS {
+    int ID_INSUMO;
     private String DESCRICAO;
-    private int NUTRIENTE_N;
+    private double NUTRIENTE_N;
     private double NUTRIENTE_P2O5;
     private double NUTRIENTE_K2O;
     private double NUTRIENTE_CAO;
@@ -15,27 +20,20 @@ public class Join_OS_INSUMOS {
     private double NUTRIENTE_MN;
     private String UND_MEDIDA;
 
+
     private int RECOMENDACAO;
     private double QTD_HA_RECOMENDADO;
     private double QTD_HA_APLICADO;
 
-    public Join_OS_INSUMOS(String DESCRICAO, int NUTRIENTE_N, double NUTRIENTE_P2O5, double NUTRIENTE_K2O, double NUTRIENTE_CAO, double NUTRIENTE_MGO, double NUTRIENTE_B, double NUTRIENTE_ZN, double NUTRIENTE_S, double NUTRIENTE_CU, double NUTRIENTE_AF, double NUTRIENTE_MN, String UND_MEDIDA, int RECOMENDACAO, double QTD_HA_RECOMENDADO, double QTD_HA_APLICADO) {
-        this.DESCRICAO = DESCRICAO;
-        this.NUTRIENTE_N = NUTRIENTE_N;
-        this.NUTRIENTE_P2O5 = NUTRIENTE_P2O5;
-        this.NUTRIENTE_K2O = NUTRIENTE_K2O;
-        this.NUTRIENTE_CAO = NUTRIENTE_CAO;
-        this.NUTRIENTE_MGO = NUTRIENTE_MGO;
-        this.NUTRIENTE_B = NUTRIENTE_B;
-        this.NUTRIENTE_ZN = NUTRIENTE_ZN;
-        this.NUTRIENTE_S = NUTRIENTE_S;
-        this.NUTRIENTE_CU = NUTRIENTE_CU;
-        this.NUTRIENTE_AF = NUTRIENTE_AF;
-        this.NUTRIENTE_MN = NUTRIENTE_MN;
-        this.UND_MEDIDA = UND_MEDIDA;
-        this.RECOMENDACAO = RECOMENDACAO;
-        this.QTD_HA_RECOMENDADO = QTD_HA_RECOMENDADO;
-        this.QTD_HA_APLICADO = QTD_HA_APLICADO;
+    public Join_OS_INSUMOS() {
+    }
+
+    public int getID_INSUMO() {
+        return ID_INSUMO;
+    }
+
+    public void setID_INSUMO(int ID_INSUMO) {
+        this.ID_INSUMO = ID_INSUMO;
     }
 
     public String getDESCRICAO() {
@@ -46,11 +44,11 @@ public class Join_OS_INSUMOS {
         this.DESCRICAO = DESCRICAO;
     }
 
-    public int getNUTRIENTE_N() {
+    public double getNUTRIENTE_N() {
         return NUTRIENTE_N;
     }
 
-    public void setNUTRIENTE_N(int NUTRIENTE_N) {
+    public void setNUTRIENTE_N(double NUTRIENTE_N) {
         this.NUTRIENTE_N = NUTRIENTE_N;
     }
 
@@ -142,6 +140,8 @@ public class Join_OS_INSUMOS {
         this.UND_MEDIDA = UND_MEDIDA;
     }
 
+
+
     public int getRECOMENDACAO() {
         return RECOMENDACAO;
     }
@@ -150,6 +150,24 @@ public class Join_OS_INSUMOS {
         this.RECOMENDACAO = RECOMENDACAO;
     }
 
+    private double QTD_APLICADO;
+    private String DATA;
+
+    public double getQTD_APLICADO() {
+        return QTD_APLICADO;
+    }
+
+    public void setQTD_APLICADO(double QTD_APLICADO) {
+        this.QTD_APLICADO = QTD_APLICADO;
+    }
+
+    public String getDATA() {
+        return DATA;
+    }
+
+    public void setDATA(String DATA) {
+        this.DATA = DATA;
+    }
     public double getQTD_HA_RECOMENDADO() {
         return QTD_HA_RECOMENDADO;
     }
@@ -165,4 +183,9 @@ public class Join_OS_INSUMOS {
     public void setQTD_HA_APLICADO(double QTD_HA_APLICADO) {
         this.QTD_HA_APLICADO = QTD_HA_APLICADO;
     }
+
+
+
+    @Override
+    public String toString(){return DESCRICAO;}
 }

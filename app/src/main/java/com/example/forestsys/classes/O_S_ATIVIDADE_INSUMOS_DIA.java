@@ -13,8 +13,6 @@ import com.example.forestsys.TimestampConverter;
 import java.sql.Date;
 
 @Entity(
-        indices = {@Index(value = "ID_PROGRAMACAO_ATIVIDADE", unique = true)},
-
         foreignKeys = {@ForeignKey(entity = INSUMOS.class,
                 parentColumns = "ID_INSUMO",
                 childColumns = "ID_INSUMO",
@@ -34,10 +32,8 @@ public class O_S_ATIVIDADE_INSUMOS_DIA {
     @NonNull
     private int ID_PROGRAMACAO_ATIVIDADE;
 
-    @TypeConverters({TimestampConverter.class})
-    @ColumnInfo(name = "DATA")
     @NonNull
-    private Date DATA;
+    private String DATA;
 
     @ColumnInfo(name = "ID_INSUMO")
     @NonNull
@@ -45,7 +41,7 @@ public class O_S_ATIVIDADE_INSUMOS_DIA {
 
     private double QTD_APLICADO;
 
-    public O_S_ATIVIDADE_INSUMOS_DIA(int ID_PROGRAMACAO_ATIVIDADE, Date DATA, int ID_INSUMO, double QTD_APLICADO) {
+    public O_S_ATIVIDADE_INSUMOS_DIA(int ID_PROGRAMACAO_ATIVIDADE, String DATA, int ID_INSUMO, double QTD_APLICADO) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.DATA = DATA;
         this.ID_INSUMO = ID_INSUMO;
@@ -60,11 +56,11 @@ public class O_S_ATIVIDADE_INSUMOS_DIA {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
     }
 
-    public Date getDATA() {
+    public String getDATA() {
         return DATA;
     }
 
-    public void setDATA(Date DATA) {
+    public void setDATA(String DATA) {
         this.DATA = DATA;
     }
 

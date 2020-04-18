@@ -12,6 +12,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
+
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +21,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.forestsys.BaseDeDados;
+import com.example.forestsys.DAO;
 import com.example.forestsys.R;
 import com.example.forestsys.viewModels.ViewModelUsers;
 import com.example.forestsys.classes.GGF_USUARIOS;
@@ -30,13 +34,12 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
     public static String nomeEmpresaPref;
     public static String preferenceLogo;
     private ImageButton botaoVoltar;
-    public static LiveData<GGF_USUARIOS> usuarioLogado = null;
+    public static GGF_USUARIOS usuarioLogado = null;
 
 
     private ImageView imageView;
     private String nomeUsuario;
     private String senhaUsuario;
-    private ViewModelUsers viewModelUsers;
 
     private EditText usernameEditText;
     private EditText passwordEditText;
@@ -65,8 +68,8 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
         checarPermissaodeLocalizacao();
         imageView = findViewById(R.id.imagem_login);
 
-        viewModelUsers = ViewModelProviders.of(this).get(ViewModelUsers.class);
-
+        BaseDeDados baseDeDados = BaseDeDados.getInstance(getApplicationContext());
+        DAO dao = baseDeDados.dao();
 
         nomeEmpresaPref = getSharedPreferences("nomeEmpresa", MODE_PRIVATE)
                 .getString("nomeEmpresaPref", "GELF");
@@ -94,10 +97,11 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
             public void onClick(View v) {
                 nomeUsuario = usernameEditText.getText().toString();
                 senhaUsuario = passwordEditText.getText().toString();
-                usuarioLogado = viewModelUsers.consulta(nomeUsuario, senhaUsuario);
+                usuarioLogado = dao.valida(nomeUsuario, senhaUsuario);
                 if(usuarioLogado!= null) {
                     Intent it = new Intent(ActivityLogin.this, ActivityMain.class);
                     startActivity(it);
+                    Log.e("Teste Usuario: ", String.valueOf(usuarioLogado.getDESCRICAO()));
                 }else if(usuarioLogado == null){
                     Toast.makeText(ActivityLogin.this, "Credenciais Inválidas", Toast.LENGTH_SHORT).show();
                     return;

@@ -48,7 +48,7 @@ public class O_S_ATIVIDADES_DIA {
     private Integer ID_RESPONSAVEL;
 
     private char STATUS;
-    private Double AREA_REALIZADA;
+    private String AREA_REALIZADA;
     private String HH;
     private String HM;
     private String HO;
@@ -102,11 +102,11 @@ public class O_S_ATIVIDADES_DIA {
         this.STATUS = STATUS;
     }
 
-    public Double getAREA_REALIZADA() {
+    public String getAREA_REALIZADA() {
         return AREA_REALIZADA;
     }
 
-    public void setAREA_REALIZADA(Double AREA_REALIZADA) {
+    public void setAREA_REALIZADA(String AREA_REALIZADA) {
         this.AREA_REALIZADA = AREA_REALIZADA;
     }
 

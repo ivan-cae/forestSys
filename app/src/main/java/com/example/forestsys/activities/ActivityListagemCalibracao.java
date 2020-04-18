@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
+import static com.example.forestsys.activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.activities.ActivityMain.osSelecionada;
 
 
@@ -21,8 +22,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.forestsys.AdaptadorCalibragem;
-import com.example.forestsys.AdaptadorInsumos;
+import com.example.forestsys.Adapters.AdaptadorCalibracao;
 import com.example.forestsys.BaseDeDados;
 import com.example.forestsys.DAO;
 import com.example.forestsys.R;
@@ -43,7 +43,7 @@ public class ActivityListagemCalibracao extends AppCompatActivity implements Nav
     private TextView descricao;
     private TextView area;
     private RecyclerView recyclerView;
-    private AdaptadorCalibragem adaptador;
+    private AdaptadorCalibracao adaptador;
     private List<CALIBRAGEM_SUBSOLAGEM> calibragens;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class ActivityListagemCalibracao extends AppCompatActivity implements Nav
 
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setSubtitle(/*usuarioLogado.getValue().getEMAIL()*/"a");
+        getSupportActionBar().setSubtitle(usuarioLogado.getDESCRICAO());
 
         drawer = findViewById(R.id.drawer_layout_listagem_calibracao);
 
@@ -86,7 +86,7 @@ public class ActivityListagemCalibracao extends AppCompatActivity implements Nav
         recyclerView = findViewById(R.id.recycler_calibracao);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        adaptador = new AdaptadorCalibragem();
+        adaptador = new AdaptadorCalibracao();
         recyclerView.setAdapter(adaptador);
 
         adaptador.setCalibragem(calibragens);
@@ -95,7 +95,7 @@ public class ActivityListagemCalibracao extends AppCompatActivity implements Nav
         adicionarCalibracao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent(ActivityListagemCalibracao.this, ActivityCalibragem.class);
+                Intent it = new Intent(ActivityListagemCalibracao.this, ActivityCalibracao.class);
                 startActivity(it);
             }
         });
@@ -103,7 +103,7 @@ public class ActivityListagemCalibracao extends AppCompatActivity implements Nav
         botaoVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent(ActivityListagemCalibracao.this, ActivityDetalhesOS.class);
+                Intent it = new Intent(ActivityListagemCalibracao.this, ActivityAtividades.class);
                 startActivity(it);
             }
         });

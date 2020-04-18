@@ -41,7 +41,7 @@ public class ViewModelUsers extends AndroidViewModel {
 
     //retorna uma instância da GGF_USUARIOS
 //parâmetro de entrada: id e senha para busca na tabela GGF_USUARIOS
-    public LiveData<GGF_USUARIOS> consulta(String login, String senha){
+    public GGF_USUARIOS consulta(String login, String senha){
         return repositorioUsers.valida(login, senha);
     }
 

@@ -52,7 +52,7 @@ import java.io.InputStreamReader;
         O_S_ATIVIDADE_INSUMOS.class, ATIVIDADE_INDICADORES.class, ATIVIDADES.class, CADASTRO_FLORESTAL.class, ClasseUpdate.class, ESPACAMENTOS.class, GEO_REGIONAIS.class,
         GEO_SETORES.class, GGF_DEPARTAMENTOS.class, GGF_FUNCOES.class, GGF_USUARIOS.class,  INSUMO_ATIVIDADES.class,
          LOG.class,  MATERIAL_GENETICO.class, O_S_ATIVIDADE_INSUMOS_DIA.class, O_S_ATIVIDADES.class, O_S_ATIVIDADES_DIA.class,
-        PRESTADORES.class}, version = 1, exportSchema = false)
+        PRESTADORES.class}, version = 2, exportSchema = false)
 
 
 public abstract class BaseDeDados extends RoomDatabase {
@@ -117,8 +117,9 @@ public abstract class BaseDeDados extends RoomDatabase {
                 int ID_USUARIO = obj.getInt("ID_USUARIO");
                 String EMAIL = obj.getString("EMAIL");
                 String SENHA = obj.getString("SENHA");
+                String DESCRICAO = obj.getString("DESCRICAO");
 
-                daoInsere.insert(new GGF_USUARIOS(ID_USUARIO, EMAIL, SENHA));
+                daoInsere.insert(new GGF_USUARIOS(ID_USUARIO, EMAIL, SENHA, DESCRICAO));
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -1,0 +1,206 @@
+package com.example.forestsys.activities;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.DialogInterface;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.example.forestsys.Adapters.AdaptadorFragmentoInsumos;
+import com.example.forestsys.BaseDeDados;
+import com.example.forestsys.DAO;
+import com.example.forestsys.DataHoraAtual;
+import com.example.forestsys.NDSpinner;
+import com.example.forestsys.R;
+import com.example.forestsys.classes.O_S_ATIVIDADE_INSUMOS_DIA;
+import com.example.forestsys.classes.join.Join_OS_INSUMOS;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.example.forestsys.activities.ActivityMain.osSelecionada;
+
+public class FragmentoInsumos extends Fragment {
+    private Button botaoSalvar;
+    private NDSpinner spinnerInsumos;
+    private RecyclerView recyclerView;
+    private TextView data;
+    private List<Join_OS_INSUMOS> listaJoinOsInsumos;
+    private List<Join_OS_INSUMOS> listaJoinOsInsumosSelecionados;
+    private DataHoraAtual dataHoraAtual;
+    private BaseDeDados baseDeDados;
+    private DAO dao;
+    private int cont;
+    private AdaptadorFragmentoInsumos adaptador;
+    private ArrayAdapter<Join_OS_INSUMOS> adapterInsumos;
+
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragmento_insumos, container, false);
+
+        recyclerView = root.findViewById(R.id.recycler_lista_insumos);
+
+        adaptador = new AdaptadorFragmentoInsumos();
+        recyclerView.setAdapter(adaptador);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        dataHoraAtual = new DataHoraAtual();
+        baseDeDados = BaseDeDados.getInstance(getContext());
+        dao = baseDeDados.dao();
+        data = getView().findViewById(R.id.data_fragmento_insumos);
+        spinnerInsumos = getView().findViewById(R.id.spinner_fragmento_insumos);
+        botaoSalvar = getView().findViewById(R.id.botao_salvar_fragmento_insumos);
+
+        data.setText(dataHoraAtual.dataAtual());
+
+        listaJoinOsInsumos = dao.listaJoinInsumoAtividades(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+
+        listaJoinOsInsumosSelecionados = dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.dataAtual());
+
+        if(listaJoinOsInsumosSelecionados.isEmpty()) listaJoinOsInsumosSelecionados = new ArrayList<Join_OS_INSUMOS>();
+
+        adaptador.setInsumos(listaJoinOsInsumosSelecionados);
+        cont = 0;
+
+        adapterInsumos = new ArrayAdapter<Join_OS_INSUMOS>(getActivity(),
+                android.R.layout.simple_spinner_item, listaJoinOsInsumos);
+        adapterInsumos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+        spinnerInsumos.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(cont==0)spinnerInsumos.setAdapter(adapterInsumos);
+                return false;
+            }
+        });
+
+        spinnerInsumos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        if(cont>0){
+                            position++;
+                            Join_OS_INSUMOS aux = (Join_OS_INSUMOS) parent.getSelectedItem();
+                            if(aux.getID_INSUMO() == 0) aux.setID_INSUMO(dao.consultaDesc(aux.getDESCRICAO()));
+                            Log.e("Teste Insumo", String.valueOf(aux.getID_INSUMO()));
+                            boolean jaTem = false;
+                            for(int i = 0; i<listaJoinOsInsumosSelecionados.size(); i++){
+                                    if(listaJoinOsInsumosSelecionados.get(i).getID_INSUMO() == aux.getID_INSUMO()) jaTem = true;
+                            }
+                                if(jaTem==true){
+                                    AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                                            .setTitle("Erro!")
+                                            .setMessage("Insumo Já Aplicado.")
+                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                }
+                                            }).create();
+                                    dialog.show();
+                                }
+                                else{
+                                    abreDialogoQtdAlicada(aux);
+                                }
+                            }
+                        cont++;
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                    }
+                });
+
+        adaptador.setOnItemClickListener(new AdaptadorFragmentoInsumos.OnItemClickListener() {
+            @Override
+            public void onItemClick(Join_OS_INSUMOS joinOsInsumos) {
+                AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                        .setTitle("Editar")
+                        .setMessage("Deseja Editar a Quantidade Aplicada?")
+                        .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                abreDialogoQtdAlicada(joinOsInsumos);
+                            }
+                        }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                            }
+                        }).create();
+                dialog.show();
+            }
+        });
+
+        botaoSalvar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Join_OS_INSUMOS persiste;
+                for(int i = 0; i<listaJoinOsInsumosSelecionados.size(); i++){
+                    persiste = listaJoinOsInsumosSelecionados.get(i);
+                    Log.e("Os", osSelecionada.getID_PROGRAMACAO_ATIVIDADE().toString());
+                    Log.e("Data", dataHoraAtual.dataAtual());
+                    Log.e("Insumo", String.valueOf(persiste.getID_INSUMO()));
+                    Log.e("Qtd Aplicado", String.valueOf(persiste.getQTD_APLICADO()));
+                    dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.dataAtual(),
+                            persiste.getID_INSUMO(), persiste.getQTD_APLICADO()));
+                }
+            }
+        });
+    }
+
+
+
+    public void abreDialogoQtdAlicada(Join_OS_INSUMOS insere) {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+        View mView = getLayoutInflater().inflate(R.layout.dialogo_registros_insumos, null);
+        final EditText valor = mView.findViewById(R.id.valor_dialogo_insumos);
+        Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_insumos);
+
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+        botaoOk.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View view) {
+                char[] s = valor.getText().toString().toCharArray();
+                int contador = 0;
+                for(int i = 0; i<s.length; i++){
+                    if(s[i] =='.') contador++;
+                }
+                if(contador>1 || s[s.length-1]=='.' || s[0]=='.') valor.setError("Valor inválido");
+                else{
+                insere.setQTD_APLICADO(Double.valueOf(valor.getText().toString()));
+                if(!listaJoinOsInsumosSelecionados.contains(insere)) listaJoinOsInsumosSelecionados.add(insere);
+                else{
+                    int id = listaJoinOsInsumosSelecionados.indexOf(insere);
+                    listaJoinOsInsumosSelecionados.set(id, insere);
+                }
+                adaptador.setInsumos(listaJoinOsInsumosSelecionados);
+                dialog.dismiss();
+            }
+            }
+        });
+    }
+}
