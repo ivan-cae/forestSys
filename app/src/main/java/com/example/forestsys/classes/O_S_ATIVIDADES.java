@@ -2,11 +2,18 @@ package com.example.forestsys.classes;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-@Entity/*(
-        foreignKeys = {@ForeignKey(entity = CADASTRO_FLORESTAL.class,
+@Entity(
+        foreignKeys = {
+        @ForeignKey(entity = GGF_USUARIOS.class,
+                        parentColumns = "ID_USUARIO",
+                        childColumns = "ID_RESPONSAVEL",
+                        onDelete = ForeignKey.NO_ACTION,
+                        onUpdate = ForeignKey.NO_ACTION)})/*,
+        @ForeignKey(entity = CADASTRO_FLORESTAL.class,
                 parentColumns = {"ID_REGIONAL", "ID_SETOR", "TALHAO", "CICLO", "ID_MANEJO"},
                 childColumns = {"ID_REGIONAL", "ID_SETOR", "TALHAO", "CICLO", "ID_MANEJO"},
                 onDelete = ForeignKey.NO_ACTION,
@@ -16,13 +23,9 @@ import androidx.room.TypeConverters;
                         parentColumns = "ID_ATIVIDADE",
                         childColumns = "ID_ATIVIDADE",
                         onDelete = ForeignKey.NO_ACTION,
-                        onUpdate = ForeignKey.NO_ACTION),
-                @ForeignKey(entity = GGF_USUARIOS.class,
-                        parentColumns = "ID_USUARIO",
-                        childColumns = "ID_RESPONSAVEL",
-                        onDelete = ForeignKey.NO_ACTION,
-                        onUpdate = ForeignKey.NO_ACTION)})
-*/
+                        onUpdate = ForeignKey.NO_ACTION)
+                */
+
 public class O_S_ATIVIDADES {
 
     @PrimaryKey

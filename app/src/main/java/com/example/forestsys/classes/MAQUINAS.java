@@ -6,7 +6,7 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 @Entity(
-        indices = {@Index(value = "DESCRICAO", unique = true)}
+        indices = {@Index(value = "DESCRICAO_MAQUINA", unique = true)}
 )
 
 public class MAQUINAS {
@@ -14,7 +14,7 @@ public class MAQUINAS {
     @PrimaryKey
     private int ID_MAQUINA;
 
-    @ColumnInfo(name = "DESCRICAO")
+    @ColumnInfo(name = "DESCRICAO_MAQUINA")
     private String DESCRICAO;
 
     private int ATIVO;

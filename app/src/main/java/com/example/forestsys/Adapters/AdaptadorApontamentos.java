@@ -25,6 +25,7 @@ public class AdaptadorApontamentos extends RecyclerView.Adapter<AdaptadorApontam
 
     private List<O_S_ATIVIDADES_DIA> apontamentos = new ArrayList<>();
     private DAO dao;
+    private OnItemClickListener listener;
     Context context = ApplicationTodos.getAppContext();
 
     @NonNull
@@ -46,16 +47,14 @@ public class AdaptadorApontamentos extends RecyclerView.Adapter<AdaptadorApontam
 
         GGF_USUARIOS ggf_usuarios = dao.selecionaUser(oSAtividadesDia.getID_RESPONSAVEL());
         PRESTADORES prestadores = dao.selecionaPrestador(oSAtividadesDia.getID_PRESTADOR());
-        Log.e("Teste:", ggf_usuarios.getDESCRICAO() +" "+ prestadores.getDESCRICAO());
         holder.data.setText((oSAtividadesDia.getDATA()));
         holder.responsavel.setText((ggf_usuarios.getDESCRICAO()));
         holder.prestador.setText(prestadores.getDESCRICAO());
-        holder.ho.setText(oSAtividadesDia.getHO().toString());
-        holder.hm.setText(oSAtividadesDia.getHM().toString());
-        holder.hh.setText(oSAtividadesDia.getHH().toString());
-        holder.hoe.setText(oSAtividadesDia.getHO_ESCAVADEIRA().toString());
-        holder.hme.setText(oSAtividadesDia.getHM_ESCAVADEIRA().toString());
-        //TEREI QUE FAZER SELECT NAS TABELAS OPERADOR E RESPONSAVEL
+        holder.ho.setText(oSAtividadesDia.getHO());
+        holder.hm.setText(oSAtividadesDia.getHM());
+        holder.hh.setText(oSAtividadesDia.getHH());
+        holder.hoe.setText(oSAtividadesDia.getHO_ESCAVADEIRA());
+        holder.hme.setText(oSAtividadesDia.getHM_ESCAVADEIRA());
     }
 
     @Override
@@ -89,6 +88,24 @@ public class AdaptadorApontamentos extends RecyclerView.Adapter<AdaptadorApontam
             hm = itemView.findViewById(R.id.item_apontamento_hm);
             hoe = itemView.findViewById(R.id.item_apontamento_hoe);
             hme = itemView.findViewById(R.id.item_apontamento_hme);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(apontamentos.get(position));
+                    }
+                }
+            });
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(O_S_ATIVIDADES_DIA oSAtividadesDia);
+    }
+
+    public void setOnItemClickListener(AdaptadorApontamentos.OnItemClickListener listener) {
+        this.listener = listener;
     }
 }

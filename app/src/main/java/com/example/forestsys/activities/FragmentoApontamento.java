@@ -2,42 +2,35 @@ package com.example.forestsys.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.DialogFragment;
+
 import androidx.fragment.app.Fragment;
 
-import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.forestsys.DataHoraAtual;
 import com.example.forestsys.R;
 import com.example.forestsys.classes.GGF_USUARIOS;
-import com.example.forestsys.classes.O_S_ATIVIDADES_DIA;
 import com.example.forestsys.classes.PRESTADORES;
 import com.example.forestsys.repositorios.RepositorioPrestadores;
 import com.example.forestsys.repositorios.RepositorioUsers;
 import com.example.forestsys.viewModels.ViewModelO_S_ATIVIDADES_DIA;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
-import static com.example.forestsys.activities.ActivityMain.osSelecionada;
+import static com.example.forestsys.activities.ActivityApontamentos.dataDoApontamento;
+import static com.example.forestsys.activities.ActivityApontamentos.oSAtividadesDiaAtual;
+import static com.example.forestsys.activities.ActivityApontamentos.viewModelOSAtividadesDia;
 
 public class FragmentoApontamento extends Fragment {
-    private ImageButton botaoDatePicker;
-    private Button botaoSalvarAponamento;
     private static TextView dataApontamento;
     private Spinner spinnerResponsavel;
     private Spinner spinnerPrestador;
@@ -49,13 +42,17 @@ public class FragmentoApontamento extends Fragment {
     private EditText obsApontamento;
     private EditText HMEscavadeiraApontamento;
 
+    public static int posicaoResponsavel;
+    public static int posicaoPrestador;
 
-    private ViewModelO_S_ATIVIDADES_DIA viewModelO_s_atividades_dia;
+    public static String area;
+    public static String ho;
+    public static String hm;
+    public static String hh;
+    public static String hoe;
+    public static String hme;
+    public static String obs;
 
-    public static O_S_ATIVIDADES_DIA oSAtividadesDiaAtual;
-    private int posicaoResponsavel;
-    private int posicaoPrestador;
-    private DataHoraAtual dataHoraAtual;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragmento_apontamento, container, false);
@@ -64,10 +61,7 @@ public class FragmentoApontamento extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        dataHoraAtual = new DataHoraAtual();
-        //botaoDatePicker = getView().findViewById(R.id.botao_date_picker);
-        botaoSalvarAponamento = getView().findViewById(R.id.botao_salvar_fragmento_apontamento);
-        dataApontamento = getView().findViewById(R.id.data_apontamento);
+        dataApontamento = getView().findViewById(R.id.data_fragmento_apontamento);
         spinnerResponsavel = getView().findViewById(R.id.spinner_responsavel_apontamento);
         spinnerPrestador = getView().findViewById(R.id.spinner_prestador_apontamento);
         areaRealizadaApontamento = getView().findViewById(R.id.area_realizada_apontamento);
@@ -82,7 +76,7 @@ public class FragmentoApontamento extends Fragment {
 
         RepositorioPrestadores repositorioPrestadores = new RepositorioPrestadores(getActivity().getApplication());
 
-
+        viewModelOSAtividadesDia = new ViewModelO_S_ATIVIDADES_DIA(getActivity().getApplication());
         ArrayList<PRESTADORES> prestadores = new ArrayList<>(repositorioPrestadores.listaPrestadores());
 
         ArrayList<GGF_USUARIOS> usuarios = new ArrayList<>(repositorioUsers.listaUsuarios());
@@ -98,6 +92,124 @@ public class FragmentoApontamento extends Fragment {
                 android.R.layout.simple_spinner_item, usuarios);
         adapterUsuarios.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerResponsavel.setAdapter(adapterUsuarios);
+
+        obsApontamento.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                obs=s.toString();
+            }
+        });
+
+         areaRealizadaApontamento.addTextChangedListener(new TextWatcher() {
+             @Override
+             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+             }
+
+             @Override
+             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+             }
+
+             @Override
+             public void afterTextChanged(Editable s) {
+                 area = s.toString();
+             }
+         });
+
+        HOEscavadeiraApontamento.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                hoe = s.toString();
+            }
+        });
+
+        HOApontamento.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                ho=s.toString();
+            }
+        });
+
+        HMApontamento.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                hm = s.toString();
+
+            }
+        });
+
+        HHApontamento.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                hh = s.toString();
+
+            }
+        });
+
+        HMEscavadeiraApontamento.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                hme = s.toString();
+
+            }
+        });
+
 
         spinnerPrestador.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -126,94 +238,9 @@ public class FragmentoApontamento extends Fragment {
         });
 
 
-        viewModelO_s_atividades_dia = new ViewModelO_S_ATIVIDADES_DIA(getActivity().getApplication());
-
-        oSAtividadesDiaAtual = viewModelO_s_atividades_dia.selecionaOsAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
-                dataHoraAtual.dataAtual());
-
         if (oSAtividadesDiaAtual == null) {
-            Calendar c = Calendar.getInstance();
-            int ano = c.get(Calendar.YEAR);
-            int mes = c.get(Calendar.MONTH);
-            int dia = c.get(Calendar.DAY_OF_MONTH);
-            mes += 1;
-
-            String a = String.valueOf(ano);
-            String m = String.valueOf(mes);
-            String d = String.valueOf(dia);
-
-            if (mes < 10) m = "0" + m;
-
-            if (dia < 10) d = "0" + d;
-
-            dataApontamento.setText(dataHoraAtual.dataAtual());
+            dataApontamento.setText(dataDoApontamento);
         } else populaInfo();
-
-        botaoSalvarAponamento.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /*if(checaTextView(areaRealizadaApontamento) == false ||checaTextView( HOEscavadeiraApontamento)==false
-                    || checaTextView( HOApontamento)==false || checaTextView(HMApontamento)==false || checaTextView(HHApontamento)==false
-                ||checaTextView(HMEscavadeiraApontamento)==false){
-                    AlertDialog dialog = new AlertDialog.Builder(getActivity())
-                            .setTitle("Erro!")
-                            .setMessage("Um ou mais valores incorretos localizados, seus campos serão zerados!")
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                }
-                            }).create();
-                    dialog.show();
-                }
-                else{*/
-                if (posicaoPrestador == 0) posicaoPrestador++;
-                if (posicaoResponsavel == 0) posicaoResponsavel++;
-
-                if (oSAtividadesDiaAtual == null) {
-                    oSAtividadesDiaAtual = new O_S_ATIVIDADES_DIA();
-                    String s;
-
-                    oSAtividadesDiaAtual.setID_PROGRAMACAO_ATIVIDADE(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
-                    oSAtividadesDiaAtual.setDATA(dataApontamento.getText().toString().trim());
-                    oSAtividadesDiaAtual.setID_PRESTADOR(posicaoPrestador);
-                    oSAtividadesDiaAtual.setID_RESPONSAVEL(posicaoResponsavel);
-                    s = areaRealizadaApontamento.getText().toString();
-                    if (!s.trim().isEmpty())
-                        oSAtividadesDiaAtual.setAREA_REALIZADA((s));
-                    else oSAtividadesDiaAtual.setAREA_REALIZADA(null);
-                    oSAtividadesDiaAtual.setHO_ESCAVADEIRA((HOEscavadeiraApontamento.getText().toString()));
-                    oSAtividadesDiaAtual.setHO((HOApontamento.getText().toString()));
-                    oSAtividadesDiaAtual.setHM((HMApontamento.getText().toString()));
-                    oSAtividadesDiaAtual.setHH((HHApontamento.getText().toString()));
-                    oSAtividadesDiaAtual.setHM_ESCAVADEIRA((HMEscavadeiraApontamento.getText().toString()));
-                    oSAtividadesDiaAtual.setOBSERVACAO(obsApontamento.getText().toString());
-                    viewModelO_s_atividades_dia.insert(oSAtividadesDiaAtual);
-                } else if (oSAtividadesDiaAtual != null && oSAtividadesDiaAtual.getDATA().trim() == dataApontamento.getText().toString().trim()) {
-                    String s;
-                    oSAtividadesDiaAtual.setDATA(dataApontamento.getText().toString());
-                    oSAtividadesDiaAtual.setID_PRESTADOR(posicaoPrestador);
-                    oSAtividadesDiaAtual.setID_RESPONSAVEL(posicaoResponsavel);
-                    s = areaRealizadaApontamento.getText().toString();
-                    if (!s.trim().isEmpty())
-                        oSAtividadesDiaAtual.setAREA_REALIZADA((s));
-                    else oSAtividadesDiaAtual.setAREA_REALIZADA(null);
-                    oSAtividadesDiaAtual.setHO_ESCAVADEIRA((HOEscavadeiraApontamento.getText().toString()));
-                    oSAtividadesDiaAtual.setHO((HOApontamento.getText().toString()));
-                    oSAtividadesDiaAtual.setHM((HMApontamento.getText().toString()));
-                    oSAtividadesDiaAtual.setHH((HHApontamento.getText().toString()));
-                    oSAtividadesDiaAtual.setHM_ESCAVADEIRA((HMEscavadeiraApontamento.getText().toString()));
-                    oSAtividadesDiaAtual.setOBSERVACAO(obsApontamento.getText().toString());
-                    viewModelO_s_atividades_dia.update(oSAtividadesDiaAtual);
-            }}
-        });
-
-        /*botaoDatePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment datePicker = new FragmentoDatePicker();
-                datePicker.show(getParentFragmentManager(), "date picker");
-            }
-        });*/
     }
 
     public boolean checaTextView(TextView textView){
@@ -241,77 +268,24 @@ public class FragmentoApontamento extends Fragment {
         spinnerPrestador.setSelection(oSAtividadesDiaAtual.getID_PRESTADOR() - 1, true);
 
         if (oSAtividadesDiaAtual.getAREA_REALIZADA() != null)
-            areaRealizadaApontamento.setText(String.valueOf(oSAtividadesDiaAtual.getAREA_REALIZADA()));
+            areaRealizadaApontamento.setText(oSAtividadesDiaAtual.getAREA_REALIZADA());
 
-        if (!oSAtividadesDiaAtual.getHO().toString().trim().isEmpty())
-            HOApontamento.setText(String.valueOf(oSAtividadesDiaAtual.getHO()));
+        if (oSAtividadesDiaAtual.getHO()!=null)
+            HOApontamento.setText((oSAtividadesDiaAtual.getHO()));
 
-        if (!oSAtividadesDiaAtual.getHH().toString().trim().isEmpty())
-            HHApontamento.setText(String.valueOf(oSAtividadesDiaAtual.getHH()));
+        if (oSAtividadesDiaAtual.getHH()!=null)
+            HHApontamento.setText((oSAtividadesDiaAtual.getHH()));
 
-        if (!oSAtividadesDiaAtual.getHM().toString().trim().isEmpty())
-            HMApontamento.setText(String.valueOf(oSAtividadesDiaAtual.getHM()));
+        if (oSAtividadesDiaAtual.getHM()!=null)
+            HMApontamento.setText((oSAtividadesDiaAtual.getHM()));
 
-        if (!oSAtividadesDiaAtual.getHM_ESCAVADEIRA().toString().trim().isEmpty())
-            HMEscavadeiraApontamento.setText(String.valueOf(oSAtividadesDiaAtual.getHM_ESCAVADEIRA()));
+        if (oSAtividadesDiaAtual.getHM_ESCAVADEIRA()!=null)
+            HMEscavadeiraApontamento.setText((oSAtividadesDiaAtual.getHM_ESCAVADEIRA()));
 
-        if (!oSAtividadesDiaAtual.getHO_ESCAVADEIRA().toString().trim().isEmpty())
-            HOEscavadeiraApontamento.setText(String.valueOf(oSAtividadesDiaAtual.getHO_ESCAVADEIRA()));
+        if (oSAtividadesDiaAtual.getHO_ESCAVADEIRA()!=null)
+            HOEscavadeiraApontamento.setText((oSAtividadesDiaAtual.getHO_ESCAVADEIRA()));
 
-        if (!oSAtividadesDiaAtual.getOBSERVACAO().trim().isEmpty())
+        if (oSAtividadesDiaAtual.getOBSERVACAO()!=null)
             obsApontamento.setText(oSAtividadesDiaAtual.getOBSERVACAO());
-    }
-
-
-    //Classe responsável pela criação do calendário
-    public static class FragmentoDatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
-        //Sobrescrita do método onCreateDialog, nele são definidos os parâmetros do calendário quando aberto
-        @NonNull
-        @Override
-        public DatePickerDialog onCreateDialog(Bundle savedInstanceState) {
-
-            Calendar c = Calendar.getInstance();
-            int dia = c.get(Calendar.DAY_OF_MONTH);
-            int mes = c.get(Calendar.MONTH);
-            int ano = c.get(Calendar.YEAR);
-            int m = mes;
-            mes += 1;
-
-            DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, dia, mes, ano);
-
-            datePickerDialog.getDatePicker().init(ano, m, dia, null); //System.currentTimeMillis() - 1000);
-            return datePickerDialog;
-        }
-
-
-        //Sobrescrita do método onDateSet, nele é setada a data selecionada no respectivo textview
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            Calendar c = Calendar.getInstance();
-            c.set(Calendar.YEAR, year);
-            c.set(Calendar.MONTH, monthOfYear);
-            c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            monthOfYear += 1;
-
-            String a = String.valueOf(year);
-            String m = String.valueOf(monthOfYear);
-            String d = String.valueOf(dayOfMonth);
-
-            if (monthOfYear < 10) m = "0" + m;
-
-            if (dayOfMonth < 10) d = "0" + d;
-
-            String auxDia = String.valueOf(d);
-            String auxMes = String.valueOf(m);
-            String auxAno = String.valueOf(year);
-
-            setarData(auxDia, auxMes, auxAno);
-        }
-
-
-        //Método auxiliar para setar a data no textview
-        public void setarData(String dia, String mes, String ano) {
-            dataApontamento.setText(dia + "/" + mes + "/" + ano);
-        }
     }
 }

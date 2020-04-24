@@ -27,6 +27,8 @@ import com.example.forestsys.R;
 import com.example.forestsys.viewModels.ViewModelUsers;
 import com.example.forestsys.classes.GGF_USUARIOS;
 
+import java.util.List;
+
 public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnMenuItemClickListener{
 
     private final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
@@ -37,7 +39,8 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
     public static GGF_USUARIOS usuarioLogado = null;
 
 
-    private ImageView imageView;
+    private ImageView imageViewLogo;
+    private ImageView imageViewRodape;
     private String nomeUsuario;
     private String senhaUsuario;
 
@@ -64,12 +67,9 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
         passwordEditText = findViewById(R.id.password);
         loginButton = findViewById(R.id.botao_login);
         configButton = findViewById(R.id.botao_config);
-        botaoVoltar = findViewById(R.id.botao_login_voltar);
+       // botaoVoltar = findViewById(R.id.botao_login_voltar);
         checarPermissaodeLocalizacao();
-        imageView = findViewById(R.id.imagem_login);
-
-        BaseDeDados baseDeDados = BaseDeDados.getInstance(getApplicationContext());
-        DAO dao = baseDeDados.dao();
+        imageViewLogo = findViewById(R.id.imagem_login);
 
         nomeEmpresaPref = getSharedPreferences("nomeEmpresa", MODE_PRIVATE)
                 .getString("nomeEmpresaPref", "GELF");
@@ -77,8 +77,8 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
         preferenceLogo = getSharedPreferences("imagemLogo", MODE_PRIVATE)
                 .getString("preferenceLogo", null);
 
-        if(preferenceLogo == null) imageView.setImageResource(R.mipmap.logo_gelf_completo);
-        else imageView.setImageURI(Uri.parse(preferenceLogo));
+        if(preferenceLogo == null) imageViewLogo.setImageResource(R.mipmap.logo_gelf_completo);
+        else imageViewLogo.setImageURI(Uri.parse(preferenceLogo));
 
         configButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,23 +92,26 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
             }
         });
 
+        BaseDeDados baseDeDados = BaseDeDados.getInstance(getApplicationContext());
+        DAO dao = baseDeDados.dao();
+        List<GGF_USUARIOS> listaUsers = dao.todosUsers();
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean tem = false;
                 nomeUsuario = usernameEditText.getText().toString();
                 senhaUsuario = passwordEditText.getText().toString();
                 usuarioLogado = dao.valida(nomeUsuario, senhaUsuario);
-                if(usuarioLogado!= null) {
+                if(usuarioLogado!=null) tem=true;
+                if(tem==false){
+                    Toast.makeText(ActivityLogin.this, "Credenciais Inválidas", Toast.LENGTH_SHORT).show();
+                }else{
                     Intent it = new Intent(ActivityLogin.this, ActivityMain.class);
                     startActivity(it);
-                    Log.e("Teste Usuario: ", String.valueOf(usuarioLogado.getDESCRICAO()));
-                }else if(usuarioLogado == null){
-                    Toast.makeText(ActivityLogin.this, "Credenciais Inválidas", Toast.LENGTH_SHORT).show();
-                    return;
                 }
             }});
 
-        botaoVoltar.setOnClickListener(new View.OnClickListener() {
+        /*botaoVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(ActivityLogin.this)
@@ -130,7 +133,7 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
                         .create()
                         .show();
             }
-        });
+        });*/
     }
 
 
@@ -172,6 +175,24 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
 
     @Override
     public void onBackPressed() {
+        new AlertDialog.Builder(ActivityLogin.this)
+                .setTitle("SAIR")
+                .setMessage("Deseja fechar o aplicativo ?")
+                .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent it = new Intent(ActivityLogin.this, ActivityLogin.class);
+                        boolean fechou = true;
+                        it.putExtra("fechar", fechou);
+                        startActivity(it);
+                    }
+                })
+                .setNegativeButton("NÃO",  new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {}
+                })
+                .create()
+                .show();
         }
 
 /*

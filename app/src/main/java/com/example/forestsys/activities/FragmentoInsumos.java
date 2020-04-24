@@ -34,15 +34,15 @@ import com.example.forestsys.classes.join.Join_OS_INSUMOS;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.forestsys.activities.ActivityApontamentos.dataDoApontamento;
+import static com.example.forestsys.activities.ActivityApontamentos.listaJoinOsInsumosSelecionados;
 import static com.example.forestsys.activities.ActivityMain.osSelecionada;
 
 public class FragmentoInsumos extends Fragment {
-    private Button botaoSalvar;
     private NDSpinner spinnerInsumos;
     private RecyclerView recyclerView;
-    private TextView data;
+    private TextView dataInsumos;
     private List<Join_OS_INSUMOS> listaJoinOsInsumos;
-    private List<Join_OS_INSUMOS> listaJoinOsInsumosSelecionados;
     private DataHoraAtual dataHoraAtual;
     private BaseDeDados baseDeDados;
     private DAO dao;
@@ -69,11 +69,10 @@ public class FragmentoInsumos extends Fragment {
         dataHoraAtual = new DataHoraAtual();
         baseDeDados = BaseDeDados.getInstance(getContext());
         dao = baseDeDados.dao();
-        data = getView().findViewById(R.id.data_fragmento_insumos);
+        dataInsumos = getView().findViewById(R.id.data_fragmento_insumos);
         spinnerInsumos = getView().findViewById(R.id.spinner_fragmento_insumos);
-        botaoSalvar = getView().findViewById(R.id.botao_salvar_fragmento_insumos);
 
-        data.setText(dataHoraAtual.dataAtual());
+        dataInsumos.setText(dataDoApontamento);
 
         listaJoinOsInsumos = dao.listaJoinInsumoAtividades(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
@@ -149,22 +148,6 @@ public class FragmentoInsumos extends Fragment {
                             }
                         }).create();
                 dialog.show();
-            }
-        });
-
-        botaoSalvar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Join_OS_INSUMOS persiste;
-                for(int i = 0; i<listaJoinOsInsumosSelecionados.size(); i++){
-                    persiste = listaJoinOsInsumosSelecionados.get(i);
-                    Log.e("Os", osSelecionada.getID_PROGRAMACAO_ATIVIDADE().toString());
-                    Log.e("Data", dataHoraAtual.dataAtual());
-                    Log.e("Insumo", String.valueOf(persiste.getID_INSUMO()));
-                    Log.e("Qtd Aplicado", String.valueOf(persiste.getQTD_APLICADO()));
-                    dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.dataAtual(),
-                            persiste.getID_INSUMO(), persiste.getQTD_APLICADO()));
-                }
             }
         });
     }

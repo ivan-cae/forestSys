@@ -106,7 +106,7 @@
             app:layout_constraintStart_toEndOf="@+id/textView19"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Spinner
+        <com.example.forestsys.NDSpinner
             android:id="@+id/spinner_operador_calibragem"
             android:layout_width="0dp"
             android:layout_height="30dp"
@@ -117,27 +117,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
-        <Spinner
-            android:id="@+id/spinner_maquina_calibragem"
+        <com.example.forestsys.NDSpinner
+            android:id="@+id/spinner_maquina_implemento_calibragem"
             android:layout_width="0dp"
             android:layout_height="20sp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="350dp"
+            android:layout_marginEnd="200dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView17" />
-
-        <Spinner
-            android:id="@+id/spinner_implemento_calibragem"
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="260dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
         <TextView
             android:id="@+id/textView16"
@@ -153,29 +142,17 @@
 
         <TextView
             android:id="@+id/textView17"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="70dp"
-            android:text="Selecione a Máquina"
+            android:text="Selecione Máquina e Implemento"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+            app:layout_constraintTop_toBottomOf="@+id/textView16" /><![CDATA[
 
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="260dp"
-            android:layout_marginTop="70dp"
-            android:text="  Selecione o Implemento"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView16" />
-
-            android:layout_width="176dp"
+        android:layout_width="176dp"
             android:layout_height="171dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
@@ -185,6 +162,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinner_projeto_calibragem">
+
+        ]]>
 
         <TextView
             android:id="@+id/textView30"
@@ -888,7 +867,7 @@
             android:id="@+id/fragment_container_calibragem"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -914,7 +893,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
     </LinearLayout>
 
@@ -924,7 +903,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:maxWidth="230dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:menu="@menu/menu_main_lateral" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

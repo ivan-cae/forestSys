@@ -14,7 +14,6 @@ import com.example.forestsys.classes.AVAL_PONTO_SUBSOLAGEM;
 import com.example.forestsys.classes.AVAL_SUBSOLAGEM;
 import com.example.forestsys.classes.CADASTRO_FLORESTAL;
 import com.example.forestsys.classes.CALIBRAGEM_SUBSOLAGEM;
-import com.example.forestsys.classes.ClasseUpdate;
 import com.example.forestsys.classes.ESPACAMENTOS;
 import com.example.forestsys.classes.GEO_REGIONAIS;
 import com.example.forestsys.classes.GEO_SETORES;
@@ -25,7 +24,6 @@ import com.example.forestsys.classes.IMPLEMENTOS;
 import com.example.forestsys.classes.INDICADORES_SUBSOLAGEM;
 import com.example.forestsys.classes.INSUMOS;
 import com.example.forestsys.classes.INSUMO_ATIVIDADES;
-import com.example.forestsys.classes.LOG;
 import com.example.forestsys.classes.MANEJO;
 import com.example.forestsys.classes.MAQUINAS;
 import com.example.forestsys.classes.MAQUINA_IMPLEMENTO;
@@ -49,10 +47,9 @@ import java.io.InputStreamReader;
 
 @Database(entities = {MANEJO.class, MAQUINAS.class,IMPLEMENTOS.class, INSUMOS.class,INDICADORES_SUBSOLAGEM.class, AVAL_PONTO_SUBSOLAGEM.class,
         AVAL_SUBSOLAGEM.class, OPERADORES.class, CALIBRAGEM_SUBSOLAGEM.class, MAQUINA_IMPLEMENTO.class,
-        O_S_ATIVIDADE_INSUMOS.class, ATIVIDADE_INDICADORES.class, ATIVIDADES.class, CADASTRO_FLORESTAL.class, ClasseUpdate.class, ESPACAMENTOS.class, GEO_REGIONAIS.class,
-        GEO_SETORES.class, GGF_DEPARTAMENTOS.class, GGF_FUNCOES.class, GGF_USUARIOS.class,  INSUMO_ATIVIDADES.class,
-         LOG.class,  MATERIAL_GENETICO.class, O_S_ATIVIDADE_INSUMOS_DIA.class, O_S_ATIVIDADES.class, O_S_ATIVIDADES_DIA.class,
-        PRESTADORES.class}, version = 2, exportSchema = false)
+        O_S_ATIVIDADE_INSUMOS.class, ATIVIDADE_INDICADORES.class, ATIVIDADES.class, CADASTRO_FLORESTAL.class, ESPACAMENTOS.class, GEO_REGIONAIS.class,
+        GEO_SETORES.class, GGF_DEPARTAMENTOS.class, GGF_FUNCOES.class, GGF_USUARIOS.class,  INSUMO_ATIVIDADES.class,  MATERIAL_GENETICO.class, O_S_ATIVIDADE_INSUMOS_DIA.class, O_S_ATIVIDADES.class, O_S_ATIVIDADES_DIA.class,
+        PRESTADORES.class}, version = 1, exportSchema = false)
 
 
 public abstract class BaseDeDados extends RoomDatabase {
@@ -261,6 +258,20 @@ public abstract class BaseDeDados extends RoomDatabase {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        dados = carregaJsonMaquinaImplemento(context);
+        try {
+            for (int i = 0; i < dados.length(); i++) {
+                JSONObject obj = dados.getJSONObject(i);
+                int ID_MAQUINA_IMPLEMENTO = obj.getInt("ID_MAQUINA_IMPLEMENTO");
+                int ID_MAQUINA = obj.getInt("ID_MAQUINA");
+                int ID_IMPLEMENTO = obj.getInt("ID_IMPLEMENTO");
+
+                daoInsere.insert(new MAQUINA_IMPLEMENTO(ID_MAQUINA_IMPLEMENTO, ID_MAQUINA, ID_IMPLEMENTO));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -409,6 +420,25 @@ public abstract class BaseDeDados extends RoomDatabase {
             }
             JSONObject json = new JSONObject(builder.toString());
             return json.getJSONArray("O_S_ATIVIDADE_INSUMOS");
+
+        } catch (IOException | JSONException exception) {
+            exception.printStackTrace();
+        }
+        return null;
+    }
+
+    private static JSONArray carregaJsonMaquinaImplemento(Context context) {
+        StringBuilder builder = new StringBuilder();
+        InputStream in = context.getResources().openRawResource(R.raw.maquina_implemento);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        String linha;
+
+        try {
+            while ((linha = reader.readLine()) != null) {
+                builder.append(linha);
+            }
+            JSONObject json = new JSONObject(builder.toString());
+            return json.getJSONArray("MAQUINA_IMPLEMENTO");
 
         } catch (IOException | JSONException exception) {
             exception.printStackTrace();

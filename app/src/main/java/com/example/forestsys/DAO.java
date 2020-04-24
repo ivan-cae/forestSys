@@ -13,7 +13,6 @@ import com.example.forestsys.classes.CALIBRAGEM_SUBSOLAGEM;
 import com.example.forestsys.classes.ESPACAMENTOS;
 import com.example.forestsys.classes.GEO_REGIONAIS;
 import com.example.forestsys.classes.GEO_SETORES;
-import com.example.forestsys.classes.ClasseUpdate;
 import com.example.forestsys.classes.GGF_USUARIOS;
 import com.example.forestsys.classes.IMPLEMENTOS;
 import com.example.forestsys.classes.INSUMOS;
@@ -27,6 +26,7 @@ import com.example.forestsys.classes.O_S_ATIVIDADES_DIA;
 import com.example.forestsys.classes.O_S_ATIVIDADE_INSUMOS;
 import com.example.forestsys.classes.O_S_ATIVIDADE_INSUMOS_DIA;
 import com.example.forestsys.classes.PRESTADORES;
+import com.example.forestsys.classes.join.Join_MAQUINA_IMPLEMENTO;
 import com.example.forestsys.classes.join.Join_OS_INSUMOS;
 
 import java.util.List;
@@ -40,8 +40,6 @@ public interface DAO {
     void insert(GEO_SETORES GEOSETORES);
     @Insert(onConflict  = OnConflictStrategy.IGNORE)
     void insert(GEO_REGIONAIS GEOREGIONAIS);
-    @Insert(onConflict  = OnConflictStrategy.IGNORE)
-    void insert(ClasseUpdate classeUpdate);
     @Insert(onConflict  = OnConflictStrategy.IGNORE)
     void insert(ESPACAMENTOS espacamentos);
     @Insert(onConflict  = OnConflictStrategy.IGNORE)
@@ -81,8 +79,6 @@ public interface DAO {
     @Update
     void update(GEO_REGIONAIS GEOREGIONAIS);
     @Update
-    void update(ClasseUpdate classeUpdate);
-    @Update
     void update(O_S_ATIVIDADES o_s_atividades);
     @Update
     void update(CADASTRO_FLORESTAL cadastro_florestal);
@@ -115,8 +111,6 @@ public interface DAO {
     @Delete
     void delete(GEO_REGIONAIS GEOREGIONAIS);
     @Delete
-    void delete(ClasseUpdate classeUpdate);
-    @Delete
     void delete(O_S_ATIVIDADES o_s_atividades);
     @Delete
     void delete(CADASTRO_FLORESTAL cadastro_florestal);
@@ -143,7 +137,7 @@ public interface DAO {
 
     //Scripts GGF_USUARIOS
     @Query("SELECT * FROM GGF_USUARIOS ORDER BY ID_USUARIO asc")
-    LiveData<List<GGF_USUARIOS>> todosUsers();
+    List<GGF_USUARIOS> todosUsers();
 
     @Query("SELECT * FROM GGF_USUARIOS WHERE ID_USUARIO=:taskId")
     GGF_USUARIOS selecionaUser(int taskId);
@@ -172,17 +166,6 @@ public interface DAO {
 
     @Query("SELECT * FROM GEO_REGIONAIS WHERE ID_REGIONAL=:taskId")
     LiveData <GEO_REGIONAIS> selecionaRegional(int taskId);
-
-
-    //Scripts ClasseUpdate
-    @Query("SELECT * FROM ClasseUpdate ORDER BY id asc")
-    LiveData<List<ClasseUpdate>> todosUpdates();
-
-    @Query("SELECT * FROM ClasseUpdate WHERE id=:taskId")
-    LiveData<ClasseUpdate> selecionaUpdate(int taskId);
-
-    @Query("SELECT * FROM ClasseUpdate WHERE id_os=:osId")
-    LiveData<List<ClasseUpdate>> selecionaOsUpdate(int osId);
 
 
     //Scripts ClasseOs
@@ -229,7 +212,7 @@ public interface DAO {
     @Query("SELECT * FROM MAQUINAS")
     LiveData<List<MAQUINAS>> todasMaquinas();
 
-    @Query("SELECT ID_MAQUINA FROM MAQUINAS WHERE DESCRICAO=:desc")
+    @Query("SELECT ID_MAQUINA FROM MAQUINAS WHERE DESCRICAO_MAQUINA=:desc")
     int selecionaIdMaquina(String desc);
 
 
@@ -267,6 +250,11 @@ public interface DAO {
     @Query("SELECT * FROM MAQUINA_IMPLEMENTO")
     List<MAQUINA_IMPLEMENTO> listaMaquinaImplemento();
 
+    @Query("SELECT ID_MAQUINA_IMPLEMENTO FROM CALIBRAGEM_SUBSOLAGEM " +
+            "WHERE CALIBRAGEM_SUBSOLAGEM.ID_PROGRAMACAO_ATIVIDADE=:idProg AND " +
+            "CALIBRAGEM_SUBSOLAGEM.DATA=:data AND CALIBRAGEM_SUBSOLAGEM.TURNO=:turno AND ID_MAQUINA_IMPLEMENTO=:idMaqImpl ")
+    int checaMaquinaImplemento(int idProg, String data, String turno, int idMaqImpl);
+
 
     //Scripts OPERADORES
     @Query("SELECT * FROM OPERADORES")
@@ -294,6 +282,7 @@ public interface DAO {
     @Query("SELECT ID_INSUMO FROM INSUMOS WHERE DESCRICAO=:desc")
     int consultaDesc(String desc);
 
+
     //Scritps O_S_ATIVIDADE_INSUMOS
     @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_INSUMO=:idInsumo")
     List<O_S_ATIVIDADE_INSUMOS> selecionaOsAtividadeInsumo(int idProg, int idInsumo);
@@ -301,9 +290,14 @@ public interface DAO {
     @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS")
     LiveData<List<O_S_ATIVIDADE_INSUMOS>> todosOsAtividadeInsumos();
 
+
     //Scripts O_S_ATIVIDADE_INSUMOS_DIA
     @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND DATA=:data")
     List<O_S_ATIVIDADE_INSUMOS_DIA> listaOsAtividadeInsumosDia(int idProg, String data);
+
+    @Query("DELETE FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND DATA=:data")
+    void apagaOsAtividadeInsumosDia(int idProg, String data);
+
 
     //JOINS
     @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS LEFT JOIN INSUMOS ON INSUMOS.ID_INSUMO = O_S_ATIVIDADE_INSUMOS.ID_INSUMO " +
@@ -324,9 +318,10 @@ public interface DAO {
             "AND O_S_ATIVIDADE_INSUMOS_DIA.ID_INSUMO=:idInsumo")
     double retornaQtdApl(int idProg, String data, int idInsumo);
 
-    @Query("SELECT ID_MAQUINA FROM CALIBRAGEM_SUBSOLAGEM LEFT JOIN MAQUINA_IMPLEMENTO ON " +
-            "CALIBRAGEM_SUBSOLAGEM.ID_MAQUINA_IMPLEMENTO = MAQUINA_IMPLEMENTO.ID_MAQUINA_IMPLEMENTO " +
-            "WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND CALIBRAGEM_SUBSOLAGEM.DATA=:data AND CALIBRAGEM_SUBSOLAGEM.TURNO=:turno " +
-            "AND MAQUINA_IMPLEMENTO.ID_MAQUINA=:idMaq")
-    int joinCalibragemMaquinaImplemento(int idProg, String data, String turno, int idMaq);
+    @Query("SELECT * FROM MAQUINA_IMPLEMENTO JOIN MAQUINAS " +
+            "ON MAQUINA_IMPLEMENTO.ID_MAQUINA = MAQUINAS.ID_MAQUINA " +
+            "JOIN IMPLEMENTOS ON MAQUINA_IMPLEMENTO.ID_IMPLEMENTO = IMPLEMENTOS.ID_IMPLEMENTO " +
+            "ORDER BY ID_MAQUINA_IMPLEMENTO")
+    List<Join_MAQUINA_IMPLEMENTO> listaJoinMaquinaImplemento();
+
 }

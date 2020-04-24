@@ -13,7 +13,7 @@ import java.util.List;
 public class RepositorioUsers {
 
     private DAO dao;
-    private LiveData<List<GGF_USUARIOS>> users;
+    private List<GGF_USUARIOS> users;
 
     public RepositorioUsers(Application application) {
         BaseDeDados baseDeDados = BaseDeDados.getInstance(application);
@@ -29,7 +29,7 @@ public class RepositorioUsers {
 
 
     //retorna uma lista com todos os itens cadastrados na tabela GGF_USUARIOS
-    public LiveData<List<GGF_USUARIOS>>getTodosUsers() {
+    public List<GGF_USUARIOS>getTodosUsers() {
         return users;
     }
 

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ViewModelUsers extends AndroidViewModel {
     private RepositorioUsers repositorioUsers;
-    private LiveData<List<GGF_USUARIOS>> listaUsers;
+    private List<GGF_USUARIOS> listaUsers;
 
     public ViewModelUsers(@NonNull Application application) {
         super(application);

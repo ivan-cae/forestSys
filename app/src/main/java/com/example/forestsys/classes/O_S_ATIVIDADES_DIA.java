@@ -57,15 +57,15 @@ public class O_S_ATIVIDADES_DIA {
     private String OBSERVACAO;
     private char REGISTRO_DESCARREGADO;
 
-
     public O_S_ATIVIDADES_DIA() {
     }
 
+    @NonNull
     public Integer getID_PROGRAMACAO_ATIVIDADE() {
         return ID_PROGRAMACAO_ATIVIDADE;
     }
 
-    public void setID_PROGRAMACAO_ATIVIDADE(Integer ID_PROGRAMACAO_ATIVIDADE) {
+    public void setID_PROGRAMACAO_ATIVIDADE(@NonNull Integer ID_PROGRAMACAO_ATIVIDADE) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
     }
 

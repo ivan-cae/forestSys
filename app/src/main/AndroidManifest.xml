@@ -15,10 +15,14 @@
         android:icon="@mipmap/icone_gelf"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.FragmentoInsumos"></activity>
-        <activity android:name=".activities.ActivityListagemApontamentos" />
-        <activity android:name=".activities.ActivityListagemCalibracao" />
-        <activity android:name=".activities.FragmentoApontamento" />
+        <activity android:name=".activities.FragmentoInsumos"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.ActivityListagemApontamentos"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.ActivityListagemCalibracao"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.FragmentoApontamento"
+            android:screenOrientation="portrait"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -31,9 +35,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity
-            android:name=".activities.AActivityTesteRelogio"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.ActivityMain"
             android:screenOrientation="portrait" />
@@ -56,10 +57,10 @@
             android:name=".calculadora.i.CalculadoraMain"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.ActivityInicializacao"
+            android:name=".activities.ActivityLogin"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.ActivityLogin"
+            android:name=".activities.ActivityInicializacao"
             android:label="@string/apk_name"
             android:screenOrientation="portrait">
             <intent-filter>

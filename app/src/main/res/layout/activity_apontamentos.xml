@@ -15,8 +15,17 @@
         tools:context=".activities.ActivityApontamentos">
 
         <TextView
+            android:id="@+id/data_apontamento"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textView81"
+            app:layout_constraintTop_toTopOf="@+id/textView81" />
+
+        <TextView
             android:id="@+id/recomendacao_os_continuar"
-            android:layout_width="180dp"
+            android:layout_width="175dp"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -73,7 +82,7 @@
             android:layout_marginBottom="16dp"
             android:background="#75A9EB"
             android:enabled="true"
-            android:text="Prosseguir"
+            android:text="Salvar"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -177,16 +186,27 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView42"
+            android:id="@+id/textView81"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="70dp"
-            android:text="Status:"
+            android:text="Data Apontamento:"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/id_os_continuar"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView42"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Status:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/textView81"
+            app:layout_constraintTop_toBottomOf="@+id/textView81" />
 
         <TextView
             android:id="@+id/textView46"
@@ -303,6 +323,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/botao_apontamentos_insumos" />
 
+        <ImageButton
+            android:id="@+id/botao_date_picker"
+            android:layout_width="41dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="64dp"
+            android:scaleType="center"
+            app:layout_constraintStart_toEndOf="@+id/data_apontamento"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_my_calendar" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
@@ -310,7 +341,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <FrameLayout
             android:id="@+id/fragment_container_continuar"
@@ -337,7 +368,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:maxWidth="230dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:menu="@menu/menu_main_lateral" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

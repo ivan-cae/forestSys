@@ -2,6 +2,7 @@ package com.example.forestsys.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -9,7 +10,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -17,8 +20,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.forestsys.Adapters.AdaptadorApontamentos;
 import com.example.forestsys.Adapters.AdaptadorApontamentos;
 import com.example.forestsys.BaseDeDados;
 import com.example.forestsys.DAO;
@@ -28,9 +31,9 @@ import com.example.forestsys.calculadora.i.CalculadoraMain;
 import com.example.forestsys.classes.O_S_ATIVIDADES_DIA;
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.forestsys.activities.ActivityApontamentos.oSAtividadesDiaAtual;
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
 import static com.example.forestsys.activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.activities.ActivityMain.osSelecionada;
@@ -62,6 +65,7 @@ public class ActivityListagemApontamentos extends AppCompatActivity implements N
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listagem_apontamentos);
 
+        oSAtividadesDiaAtual = null;
         dataHoraAtual = new DataHoraAtual();
         setTitle(nomeEmpresaPref);
 
@@ -76,6 +80,7 @@ public class ActivityListagemApontamentos extends AppCompatActivity implements N
         NavigationView navigationView = findViewById(R.id.nav_view_listagem_apontamentos);
         navigationView.setNavigationItemSelectedListener(this);
 
+        Toast.makeText(this, "Toque o apontamento para edita-lo", Toast.LENGTH_LONG).show();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -109,18 +114,18 @@ public class ActivityListagemApontamentos extends AppCompatActivity implements N
         recyclerView.setAdapter(adaptador);
 
         adaptador.setApontamentos(apontamentos);
-        double ho=0;
-        double hh=0;
-        double hm =0;
-        double hoe=0;
-        double hme=0;
+        double ho = 0;
+        double hh = 0;
+        double hm = 0;
+        double hoe = 0;
+        double hme = 0;
 
-        for(int i = 0; i<apontamentos.size(); i++){
-            ho+=checaConversao(apontamentos.get(i).getHO());
-            hh+=checaConversao(apontamentos.get(i).getHH());
-            hm+=checaConversao(apontamentos.get(i).getHM());
-            hoe+=checaConversao(apontamentos.get(i).getHO_ESCAVADEIRA());
-            hme+=checaConversao(apontamentos.get(i).getHM_ESCAVADEIRA());
+        for (int i = 0; i < apontamentos.size(); i++) {
+            ho += checaConversao(apontamentos.get(i).getHO());
+            hh += checaConversao(apontamentos.get(i).getHH());
+            hm += checaConversao(apontamentos.get(i).getHM());
+            hoe += checaConversao(apontamentos.get(i).getHO_ESCAVADEIRA());
+            hme += checaConversao(apontamentos.get(i).getHM_ESCAVADEIRA());
         }
 
         totalHh.setText(String.valueOf(hh));
@@ -133,17 +138,15 @@ public class ActivityListagemApontamentos extends AppCompatActivity implements N
         realizarApontamento = findViewById(R.id.botao_realizar_apontamento);
         boolean temApontamento = false;
 
-        for(int i = 0; i<apontamentos.size(); i++){
-            if(apontamentos.get(i).getDATA().trim().equals(dataHoraAtual.dataAtual().trim())){
+        for (int i = 0; i < apontamentos.size(); i++) {
+            if (apontamentos.get(i).getDATA().trim().equals(dataHoraAtual.dataAtual().trim())) {
                 temApontamento = true;
             }
-            Log.e("Teste Data", apontamentos.get(i).getDATA() + dataHoraAtual.dataAtual()+" "+ String.valueOf(temApontamento));
         }
 
-        if(temApontamento == false){
-            realizarApontamento.setText("Realizar Apontamento");
-        }else{
-            realizarApontamento.setText("Alterar Apontamento");
+        if (temApontamento == false) {
+            realizarApontamento.setEnabled(true);
+            realizarApontamento.setBackgroundColor(Color.parseColor("#75A9EB"));
         }
 
         realizarApontamento.setOnClickListener(new View.OnClickListener() {
@@ -161,8 +164,29 @@ public class ActivityListagemApontamentos extends AppCompatActivity implements N
                 startActivity(it);
             }
         });
-    }
 
+        adaptador.setOnItemClickListener(new AdaptadorApontamentos.OnItemClickListener() {
+            @Override
+            public void onItemClick(O_S_ATIVIDADES_DIA oSAtividadesDia) {
+                new AlertDialog.Builder(ActivityListagemApontamentos.this)
+                        .setTitle("Editar")
+                        .setMessage("Deseja Alterar o Apontamento?")
+                        .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                oSAtividadesDiaAtual = dao.selecionaOsAtividadesDia(oSAtividadesDia.getID_PROGRAMACAO_ATIVIDADE(), oSAtividadesDia.getDATA());
+                                Intent it = new Intent(ActivityListagemApontamentos.this, ActivityApontamentos.class);
+                                startActivity(it);
+                            }
+                        }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                            }
+                        }).create()
+                .show();
+            }
+        });
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -194,7 +218,7 @@ public class ActivityListagemApontamentos extends AppCompatActivity implements N
         {
             teste = Double.parseDouble(numero);
         }
-        catch(NumberFormatException e)
+        catch(NumberFormatException | NullPointerException n)
         {
             teste = 0;
         }

@@ -14,25 +14,20 @@ public class ActivityInicializacao extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicializacao);
-
-
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
 
-                //Intent it = new Intent(ActivityInicializacao.this, CalculadoraMain.class);
 
                 Intent it = new Intent(ActivityInicializacao.this, ActivityLogin.class);
-
-                //Intent it = new Intent(ActivityInicializacao.this, AActivityTesteRelogio.class);
-
-                //Intent it = new Intent(ActivityInicializacao.this, ActivityMaps.class);
-
 
                 startActivity(it);
                 finish();
             }
         }, 10000);
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }

@@ -29,10 +29,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.forestsys.BaseDeDados;
 import com.example.forestsys.DAO;
 import com.example.forestsys.DataHoraAtual;
+import com.example.forestsys.NDSpinner;
 import com.example.forestsys.R;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
 
@@ -41,6 +43,7 @@ import com.example.forestsys.classes.MAQUINA_IMPLEMENTO;
 import com.example.forestsys.classes.OPERADORES;
 import com.example.forestsys.classes.IMPLEMENTOS;
 import com.example.forestsys.classes.MAQUINAS;
+import com.example.forestsys.classes.join.Join_MAQUINA_IMPLEMENTO;
 import com.example.forestsys.repositorios.RepositorioImplementos;
 import com.example.forestsys.repositorios.RepositorioMaquinas;
 import com.example.forestsys.repositorios.RepositorioOPERADORES;
@@ -99,9 +102,8 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     private TextView desvioProduto2;
 
 
-    private Spinner spinnerOperador;
-    private Spinner spinnerMaquina;
-    private Spinner spinnerImplemento;
+    private NDSpinner spinnerOperador;
+    private NDSpinner spinnerMaquinaImplemento;
 
     private TextView osTalhao;
     private TextView osData;
@@ -120,13 +122,9 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     private int atualP2;
     private int atualP1;
 
-    private String texto;
-
     private Double[] amostrasP1 = new Double[5];
     private Double[] amostrasP2 = new Double[5];
 
-    private int posicaoImplemento;
-    private int posicaoMaquina;
     private int posicaoOperador;
 
     private Double mediaPercentualp1;
@@ -144,14 +142,9 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     private BaseDeDados baseDeDados;
     private DAO dao;
 
-    private RepositorioMaquinas repositorioMaquinas;
-
-    private RepositorioOPERADORES repositorioOperadores;
-
-    private RepositorioImplementos repositorioImplementos;
-
     private DataHoraAtual dataHoraAtual;
 
+    private int idMaquinaImplemento;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,8 +157,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         dao = baseDeDados.dao();
 
         spinnerOperador = findViewById(R.id.spinner_operador_calibragem);
-        spinnerMaquina = findViewById(R.id.spinner_maquina_calibragem);
-        spinnerImplemento = findViewById(R.id.spinner_implemento_calibragem);
+        spinnerMaquinaImplemento = findViewById(R.id.spinner_maquina_implemento_calibragem);
 
         osData = findViewById(R.id.data_os_calibragem);
         osTalhao = findViewById(R.id.talhao_os_calibragem);
@@ -226,74 +218,44 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         p1_a1.setFocusable(false);
 
 
-        repositorioMaquinas = new RepositorioMaquinas(getApplication());
+        ArrayList<Join_MAQUINA_IMPLEMENTO> maquinasImplementos = new ArrayList<>(dao.listaJoinMaquinaImplemento());
 
-        repositorioOperadores = new RepositorioOPERADORES(getApplication());
+        ArrayList<OPERADORES> operadores = new ArrayList<>(dao.todosOperadores());
 
-        repositorioImplementos = new RepositorioImplementos(getApplication());
 
-        ArrayList<MAQUINAS> maquinas = new ArrayList<>(repositorioMaquinas.listaMaquinas());
+        ArrayAdapter<Join_MAQUINA_IMPLEMENTO> adapterMaquinaImplementos = new ArrayAdapter<Join_MAQUINA_IMPLEMENTO>(this,
+                android.R.layout.simple_spinner_item, maquinasImplementos);
+        adapterMaquinaImplementos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerMaquinaImplemento.setAdapter(adapterMaquinaImplementos);
 
-        ArrayList<OPERADORES> operadores = new ArrayList<>(repositorioOperadores.listaOperadores());
-
-        ArrayList<IMPLEMENTOS> implementos = new ArrayList<>(repositorioImplementos.listaImplementos());
-
-        ArrayAdapter<MAQUINAS> adapterMaquinas = new ArrayAdapter<MAQUINAS>(this,
-                android.R.layout.simple_spinner_item, maquinas);
-        adapterMaquinas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerMaquina.setAdapter(adapterMaquinas);
-
-        ArrayAdapter<OPERADORES> adapterUsuarios = new ArrayAdapter<OPERADORES>(this,
+        ArrayAdapter<OPERADORES> adapterOperadores = new ArrayAdapter<OPERADORES>(this,
                 android.R.layout.simple_spinner_item, operadores);
-        adapterUsuarios.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerOperador.setAdapter(adapterUsuarios);
+        adapterOperadores.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerOperador.setAdapter(adapterOperadores);
 
 
-        ArrayAdapter<IMPLEMENTOS> adapterImplementos = new ArrayAdapter<IMPLEMENTOS>(this,
-                android.R.layout.simple_spinner_item, implementos);
-        adapterImplementos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerImplemento.setAdapter(adapterImplementos);
-
-        spinnerImplemento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerMaquinaImplemento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) position = 1;
-                else position += 1;
-                posicaoImplemento = position;
+                idMaquinaImplemento = maquinasImplementos.get(position).getID_MAQUINA_IMPLEMENTO();
+                Log.e("teste",  String.valueOf(idMaquinaImplemento));
+                if(checaMaquinaImplementoCalibracao(maquinasImplementos.get(position).getID_MAQUINA_IMPLEMENTO()) == true) caixaAlertaMaquina();
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                posicaoImplemento = 1;
-            }
-        });
-
-        spinnerMaquina.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) position = 1;
-                else position += 1;
-                posicaoMaquina = position;
-                if(checaMaquinaCalibracao(posicaoMaquina) == true) caixaAlertaMaquina();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                posicaoMaquina = 1;
+            public void onNothingSelected(AdapterView<?> parent){
             }
         });
 
         spinnerOperador.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) position = 1;
-                else position += 1;
-                posicaoOperador = position;
+                posicaoOperador = operadores.get(position).getID_OPERADORES();
+                Log.e("Operador", String.valueOf(posicaoOperador));
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                posicaoOperador = 1;
             }
         });
 
@@ -489,13 +451,13 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             @Override
             public void onClick(View v) {
                 AlertDialog dialog = new AlertDialog.Builder(ActivityCalibracao.this)
-                        .setTitle("Voltar Para o Início?")
-                        .setMessage("Caso clique em SIM, você perderá os dados da calibragem!")
+                        .setTitle("Voltar Para a Listagem de calibrações?")
+                        .setMessage("Caso clique em SIM, você perderá os dados da calibração!")
                         .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
 
-                                Intent it = new Intent(ActivityCalibracao.this, ActivityMain.class);
+                                Intent it = new Intent(ActivityCalibracao.this, ActivityListagemCalibracao.class);
                                 startActivity(it);
                             }
                         }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
@@ -510,7 +472,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         botaoConfirma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checaMaquinaCalibracao(posicaoMaquina) == true) caixaAlertaMaquina();
+                if (checaMaquinaImplementoCalibracao(idMaquinaImplemento) == true) caixaAlertaMaquina();
                 else {
                     AlertDialog dialog = new AlertDialog.Builder(ActivityCalibracao.this)
                             .setTitle("Concluir")
@@ -518,20 +480,6 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                             .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-
-                                    if (posicaoImplemento == 0) posicaoImplemento++;
-                                    if (posicaoMaquina == 0) posicaoMaquina++;
-                                    if (posicaoOperador == 0) posicaoOperador++;
-
-                                    ViewModelCALIBRAGEM_SUBSOLAGEM viewModelCALIBRAGEM_subsolagem = new ViewModelCALIBRAGEM_SUBSOLAGEM(getApplication());
-
-
-                                    List<MAQUINA_IMPLEMENTO> listaMI = dao.listaMaquinaImplemento();
-                                    int id = listaMI.size();
-                                    id++;
-
-                                    MAQUINA_IMPLEMENTO maquinaImplemento = new MAQUINA_IMPLEMENTO(id, posicaoMaquina, posicaoImplemento);
-                                    dao.insert(maquinaImplemento);
 
                                     Double mediaP1;
                                     Double mediaP2;
@@ -544,11 +492,11 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                                     desvioP2 = Double.valueOf(desvioProduto2.getText().toString());
 
                                     CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem = new CALIBRAGEM_SUBSOLAGEM(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
-                                            dataHoraAtual.dataAtual(), checaTurno(), id,
+                                            dataHoraAtual.dataAtual(), checaTurno(), idMaquinaImplemento,
                                             posicaoOperador, mediaP1, desvioP1, mediaP2, desvioP2);
 
-                                    viewModelCALIBRAGEM_subsolagem.insert(calibragem_subsolagem);
-
+                                    dao.insert(calibragem_subsolagem);
+                                    Toast.makeText(getApplicationContext(), "Calibração Salva com sucesso!", Toast.LENGTH_LONG).show();
                                     Intent it = new Intent(ActivityCalibracao.this, ActivityListagemCalibracao.class);
                                     startActivity(it);
                                 }
@@ -1073,9 +1021,9 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
     //Checa se há uma calibração para a máquina selecionada na data e turno atuais
     //Parâmetro de entrada: Descrição da máquina selecionada
-    public boolean checaMaquinaCalibracao(int s){
-        int checagem = dao.joinCalibragemMaquinaImplemento(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
-                dataHoraAtual.dataAtual(), checaTurno(),s);
+    public boolean checaMaquinaImplementoCalibracao(int s){
+        int checagem = dao.checaMaquinaImplemento(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
+                dataHoraAtual.dataAtual(), checaTurno(), s);
         if(checagem != NULL) return true;
         return false;
     }
@@ -1192,7 +1140,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     public void caixaAlertaMaquina(){
         AlertDialog dialog = new AlertDialog.Builder(ActivityCalibracao.this)
                 .setTitle("ERRO")
-                .setMessage(repositorioMaquinas.selecionaMaquina(posicaoMaquina).toString()+" JÁ CALIBRADA NO TURNO ATUAL!")
+                .setMessage("MAQUINA JÁ CALIBRADA NO TURNO ATUAL!")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

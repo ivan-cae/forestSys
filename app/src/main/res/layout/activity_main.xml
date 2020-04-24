@@ -64,7 +64,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="400dp"
             android:layout_marginBottom="8dp"
-            android:hint="Numero da OS"
+            android:hint="Código do Responsável"
             android:inputType="number"
             app:layout_constraintBottom_toTopOf="@+id/lista_os"
             app:layout_constraintEnd_toEndOf="parent"

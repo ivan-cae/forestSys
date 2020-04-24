@@ -41,7 +41,7 @@ public class O_S_ATIVIDADE_INSUMOS_DIA {
 
     private double QTD_APLICADO;
 
-    public O_S_ATIVIDADE_INSUMOS_DIA(int ID_PROGRAMACAO_ATIVIDADE, String DATA, int ID_INSUMO, double QTD_APLICADO) {
+    public O_S_ATIVIDADE_INSUMOS_DIA(int ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, int ID_INSUMO, double QTD_APLICADO) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.DATA = DATA;
         this.ID_INSUMO = ID_INSUMO;
@@ -56,11 +56,12 @@ public class O_S_ATIVIDADE_INSUMOS_DIA {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
     }
 
+    @NonNull
     public String getDATA() {
         return DATA;
     }
 
-    public void setDATA(String DATA) {
+    public void setDATA(@NonNull String DATA) {
         this.DATA = DATA;
     }
 

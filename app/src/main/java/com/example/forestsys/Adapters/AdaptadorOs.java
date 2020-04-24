@@ -119,7 +119,7 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
             }else{
                 String filtro = constraint.toString();
                 for(O_S_ATIVIDADES os : ordensFiltradas){
-                    if(String.valueOf(os.getID_PROGRAMACAO_ATIVIDADE()).startsWith(filtro)){
+                    if(String.valueOf(os.getID_RESPONSAVEL()).startsWith(filtro)){
                         listaFiltrada.add(os);
                     }
                 }
