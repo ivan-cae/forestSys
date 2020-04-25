@@ -8,6 +8,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.example.forestsys.classes.ATIVIDADES;
 import com.example.forestsys.classes.CADASTRO_FLORESTAL;
 import com.example.forestsys.classes.CALIBRAGEM_SUBSOLAGEM;
 import com.example.forestsys.classes.ESPACAMENTOS;
@@ -62,14 +63,16 @@ public interface DAO {
     void insert(MAQUINA_IMPLEMENTO maquinaImplemento);
     @Insert(onConflict  = OnConflictStrategy.IGNORE)
     void insert(OPERADORES operadores);
-    @Insert(onConflict  = OnConflictStrategy.IGNORE)
+    @Insert(onConflict  = OnConflictStrategy.REPLACE)
     void insert(O_S_ATIVIDADES_DIA oSAtividadesDia);
     @Insert(onConflict  = OnConflictStrategy.IGNORE)
     void insert(INSUMOS insumos);
     @Insert(onConflict  = OnConflictStrategy.IGNORE)
     void insert(O_S_ATIVIDADE_INSUMOS o_s_atividade_insumos);
-    @Insert(onConflict  = OnConflictStrategy.REPLACE)
+    @Insert(onConflict  = OnConflictStrategy.IGNORE)
     void insert(O_S_ATIVIDADE_INSUMOS_DIA o_s_atividade_insumos_dia);
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insert(ATIVIDADES atividades);
 
 
     @Update
@@ -102,7 +105,8 @@ public interface DAO {
     void update(O_S_ATIVIDADE_INSUMOS o_s_atividade_insumos);
     @Update
     void update(O_S_ATIVIDADE_INSUMOS_DIA o_s_atividade_insumos_dia);
-
+    @Update
+    void update(ATIVIDADES atividades);
 
     @Delete
     void delete(GGF_USUARIOS GGFUSUARIOS);
@@ -134,6 +138,8 @@ public interface DAO {
     void delete(O_S_ATIVIDADE_INSUMOS o_s_atividade_insumos);
     @Delete
     void delete(O_S_ATIVIDADE_INSUMOS_DIA o_s_atividade_insumos_dia);
+    @Delete
+    void delete(ATIVIDADES atividades);
 
     //Scripts GGF_USUARIOS
     @Query("SELECT * FROM GGF_USUARIOS ORDER BY ID_USUARIO asc")
@@ -154,10 +160,13 @@ public interface DAO {
 
     //Scripts GEO_SETORES
     @Query("SELECT * FROM GEO_SETORES ORDER BY ID_SETOR asc")
-    LiveData<List<GEO_SETORES>> todosSetores();
+    List<GEO_SETORES> todosSetores();
 
     @Query("SELECT * FROM GEO_SETORES WHERE ID_SETOR=:taskId")
-    LiveData<GEO_SETORES> selecionaSetor(int taskId);
+    GEO_SETORES selecionaSetor(int taskId);
+
+    @Query("SELECT DESCRICAO FROM GEO_SETORES WHERE ID_SETOR=:taskId")
+    String selecionaDescSetor(int taskId);
 
 
     //Scripts GEO_REGIONAIS
@@ -297,6 +306,15 @@ public interface DAO {
 
     @Query("DELETE FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND DATA=:data")
     void apagaOsAtividadeInsumosDia(int idProg, String data);
+
+
+    //Scripts ATIVIDADES
+    @Query("SELECT * FROM ATIVIDADES WHERE ID_ATIVIDADE=:idAtv")
+    ATIVIDADES selecionaAtividade(int idAtv);
+
+    @Query("SELECT * FROM ATIVIDADES ORDER BY ID_ATIVIDADE")
+    List<ATIVIDADES> todasAtividades();
+
 
 
     //JOINS

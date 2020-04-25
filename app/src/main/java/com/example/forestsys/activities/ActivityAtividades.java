@@ -65,6 +65,7 @@ public class ActivityAtividades extends AppCompatActivity
     private TextView areaOs;
     private TextView manejoOs;
     private TextView madeiraOs;
+    private TextView descricao;
 
     private GoogleMap mMap;
     private ImageButton voltar;
@@ -107,6 +108,8 @@ public class ActivityAtividades extends AppCompatActivity
         areaOs = findViewById(R.id.os_detalhes_area);
         manejoOs = findViewById(R.id.os_detalhes_manejo);
         madeiraOs = findViewById(R.id.os_detalhes_madeira);
+        descricao = findViewById(R.id.os_detalhes_descricao);
+
 
         idOs.setText(String.valueOf(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()));
         talhaoOs.setText(String.valueOf(osSelecionada.getTALHAO()));
@@ -114,10 +117,14 @@ public class ActivityAtividades extends AppCompatActivity
         setorOs.setText(String.valueOf(osSelecionada.getID_SETOR()));
         obsOs.setText(String.valueOf(osSelecionada.getOBSERVACAO()));
         statusOs.setText(String.valueOf("Andamento"));
-        areaOs.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()));
+        areaOs.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace(".", ","));
         manejoOs.setText(String.valueOf(osSelecionada.getID_MANEJO()));
-        madeiraOs.setText(String.valueOf(osSelecionada.getMADEIRA_NO_TALHAO()));
 
+        String temMadeira = "NÃO";
+        if(osSelecionada.getMADEIRA_NO_TALHAO()==1) temMadeira = "SIM";
+        madeiraOs.setText(temMadeira);
+
+        descricao.setText(dao.selecionaAtividade(osSelecionada.getID_ATIVIDADE()).getDESCRICAO());
 
         voltar = findViewById(R.id.botao_detalhes_voltar);
 
@@ -157,7 +164,7 @@ public class ActivityAtividades extends AppCompatActivity
         botaoApontamentos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent(ActivityAtividades.this, ActivityListagemApontamentos.class);
+                Intent it = new Intent(ActivityAtividades.this, ActivityListagemRegistros.class);
                 startActivity(it);
             }
         });

@@ -55,8 +55,8 @@ public class AdaptadorCalibracao extends RecyclerView.Adapter<AdaptadorCalibraca
         holder.maquina.setText(aux2.getDESCRICAO());
         holder.implemento.setText(aux3.getDESCRICAO());
         holder.operador.setText(aux4.getDESCRICAO());
-        holder.p1Desvio.setText(String.valueOf(calibragem.getP1_DESVIO()));
-        holder.p2Desvio.setText(String.valueOf(calibragem.getP2_DESVIO()));
+        holder.p1Desvio.setText(String.valueOf(calibragem.getP1_DESVIO()).replace(".", ","));
+        holder.p2Desvio.setText(String.valueOf(calibragem.getP2_DESVIO()).replace(".", ","));
     }
 
     @Override

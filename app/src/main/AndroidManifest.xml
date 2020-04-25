@@ -17,11 +17,11 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activities.FragmentoInsumos"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activities.ActivityListagemApontamentos"
+        <activity android:name=".activities.ActivityListagemRegistros"
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.ActivityListagemCalibracao"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activities.FragmentoApontamento"
+        <activity android:name=".activities.FragmentoRendimento"
             android:screenOrientation="portrait"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -45,7 +45,7 @@
             android:name=".activities.ActivityCalibracao"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.ActivityApontamentos"
+            android:name=".activities.ActivityRegistros"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.ActivityAtividades"

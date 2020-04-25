@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="70dp"
-            android:text="Ordem de Serviço:"
+            android:text="ID Atividade:"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -867,7 +867,7 @@
             android:id="@+id/fragment_container_calibragem"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -893,7 +893,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
     </LinearLayout>
 
@@ -903,7 +903,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:maxWidth="230dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:menu="@menu/menu_main_lateral" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -77,9 +77,12 @@ public class ActivityListagemCalibracao extends AppCompatActivity implements Nav
         area = findViewById(R.id.listagem_calibracao_area);
 
         os.setText(osSelecionada.getID_PROGRAMACAO_ATIVIDADE().toString());
-
+        status.setText(osSelecionada.getSTATUS());
+        area.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace(".", ","));
         BaseDeDados baseDeDados = BaseDeDados.getInstance(getApplicationContext());
         DAO dao = baseDeDados.dao();
+
+        descricao.setText(dao.selecionaAtividade(osSelecionada.getID_ATIVIDADE()).getDESCRICAO());
 
         calibragens = dao.listaCalibragem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 

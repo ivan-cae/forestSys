@@ -450,22 +450,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         botaoVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog dialog = new AlertDialog.Builder(ActivityCalibracao.this)
-                        .setTitle("Voltar Para a Listagem de calibrações?")
-                        .setMessage("Caso clique em SIM, você perderá os dados da calibração!")
-                        .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                                Intent it = new Intent(ActivityCalibracao.this, ActivityListagemCalibracao.class);
-                                startActivity(it);
-                            }
-                        }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        }).create();
-                dialog.show();
+                dialogoFechar();
             }
         });
 
@@ -497,12 +482,12 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
                                     dao.insert(calibragem_subsolagem);
                                     Toast.makeText(getApplicationContext(), "Calibração Salva com sucesso!", Toast.LENGTH_LONG).show();
+                                    osSelecionada.setSTATUS("Andamento");
+                                    dao.update(osSelecionada);
                                     Intent it = new Intent(ActivityCalibracao.this, ActivityListagemCalibracao.class);
                                     startActivity(it);
                                 }
-                            }).
-
-                                    setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                            }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                         }
@@ -513,6 +498,25 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         });
     }
 
+    //Abre a caixa de diálogo perguntando se o usuário deseja sair da tela e avisando que ele perderá o que não foi salvo
+                public void dialogoFechar(){
+            AlertDialog dialog = new AlertDialog.Builder(ActivityCalibracao.this)
+                    .setTitle("Voltar Para a Listagem de Calibrações?")
+                    .setMessage("Caso clique em SIM, você perderá os dados da calibração!")
+                    .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                            Intent it = new Intent(ActivityCalibracao.this, ActivityListagemCalibracao.class);
+                            startActivity(it);
+                        }
+                    }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    }).create();
+            dialog.show();
+        }
 
     //Adiciona o botão de atualização a barra de ação
     @Override
@@ -540,13 +544,41 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.dash:
-                Intent it1 = new Intent(this, ActivityDashboard.class);
-                startActivity(it1);
+                AlertDialog dialogoDash = new AlertDialog.Builder(ActivityCalibracao.this)
+                        .setTitle("Abrir a Dashboard?")
+                        .setMessage("Caso clique em SIM, você perderá os dados da calibração!")
+                        .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                Intent it = new Intent(ActivityCalibracao.this, ActivityDashboard.class);
+                                startActivity(it);
+                            }
+                        }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                            }
+                        }).create();
+                dialogoDash.show();
                 break;
 
             case R.id.cadastrar_conta:
-                Intent it2 = new Intent(this, ActivityMain.class);
-                startActivity(it2);
+                AlertDialog dialogoAtividades = new AlertDialog.Builder(ActivityCalibracao.this)
+                        .setTitle("Voltar Para a Listagem de Atividades?")
+                        .setMessage("Caso clique em SIM, você perderá os dados da calibração!")
+                        .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                Intent it = new Intent(ActivityCalibracao.this, ActivityMain.class);
+                                startActivity(it);
+                            }
+                        }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                            }
+                        }).create();
+                dialogoAtividades.show();
                 break;
 
             case R.id.config_login:

@@ -1,7 +1,6 @@
 package com.example.forestsys.Adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,7 @@ public class AdaptadorApontamentos extends RecyclerView.Adapter<AdaptadorApontam
     @Override
     public AdaptadorApontamentos.ApontamentosHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_lista_apontamentos, parent, false);
+                .inflate(R.layout.item_lista_registros, parent, false);
 
         return new AdaptadorApontamentos.ApontamentosHolder(itemView);
     }
@@ -50,11 +49,11 @@ public class AdaptadorApontamentos extends RecyclerView.Adapter<AdaptadorApontam
         holder.data.setText((oSAtividadesDia.getDATA()));
         holder.responsavel.setText((ggf_usuarios.getDESCRICAO()));
         holder.prestador.setText(prestadores.getDESCRICAO());
-        holder.ho.setText(oSAtividadesDia.getHO());
-        holder.hm.setText(oSAtividadesDia.getHM());
-        holder.hh.setText(oSAtividadesDia.getHH());
-        holder.hoe.setText(oSAtividadesDia.getHO_ESCAVADEIRA());
-        holder.hme.setText(oSAtividadesDia.getHM_ESCAVADEIRA());
+        if(oSAtividadesDia.getHO()!=null)holder.ho.setText(oSAtividadesDia.getHO().replace('.', ','));
+        if(oSAtividadesDia.getHM()!=null)holder.hm.setText(oSAtividadesDia.getHM().replace('.', ','));
+        if(oSAtividadesDia.getHH()!=null)holder.hh.setText(oSAtividadesDia.getHH().replace('.', ','));
+        if(oSAtividadesDia.getHO_ESCAVADEIRA()!=null)holder.hoe.setText(oSAtividadesDia.getHO_ESCAVADEIRA().replace('.', ','));
+        if(oSAtividadesDia.getHM_ESCAVADEIRA()!=null)holder.hme.setText(oSAtividadesDia.getHM_ESCAVADEIRA().replace('.', ','));
     }
 
     @Override

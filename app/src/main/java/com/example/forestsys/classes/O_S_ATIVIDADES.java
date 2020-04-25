@@ -12,18 +12,17 @@ import androidx.room.TypeConverters;
                         parentColumns = "ID_USUARIO",
                         childColumns = "ID_RESPONSAVEL",
                         onDelete = ForeignKey.NO_ACTION,
-                        onUpdate = ForeignKey.NO_ACTION)})/*,
-        @ForeignKey(entity = CADASTRO_FLORESTAL.class,
-                parentColumns = {"ID_REGIONAL", "ID_SETOR", "TALHAO", "CICLO", "ID_MANEJO"},
-                childColumns = {"ID_REGIONAL", "ID_SETOR", "TALHAO", "CICLO", "ID_MANEJO"},
-                onDelete = ForeignKey.NO_ACTION,
-                onUpdate = ForeignKey.NO_ACTION),
-
+                        onUpdate = ForeignKey.NO_ACTION),
                 @ForeignKey(entity = ATIVIDADES.class,
                         parentColumns = "ID_ATIVIDADE",
                         childColumns = "ID_ATIVIDADE",
                         onDelete = ForeignKey.NO_ACTION,
-                        onUpdate = ForeignKey.NO_ACTION)
+                        onUpdate = ForeignKey.NO_ACTION)})
+/*        @ForeignKey(entity = CADASTRO_FLORESTAL.class,
+                parentColumns = {"ID_REGIONAL", "ID_SETOR", "TALHAO", "CICLO", "ID_MANEJO"},
+                childColumns = {"ID_REGIONAL", "ID_SETOR", "TALHAO", "CICLO", "ID_MANEJO"},
+                onDelete = ForeignKey.NO_ACTION,
+                onUpdate = ForeignKey.NO_ACTION)
                 */
 
 public class O_S_ATIVIDADES {
@@ -36,7 +35,7 @@ public class O_S_ATIVIDADES {
     private Integer ID_REGIONAL;
 
     @ColumnInfo(name = "ID_SETOR")
-    private Integer ID_SETOR;
+    private String ID_SETOR;
 
     @ColumnInfo(name = "TALHAO")
     private String TALHAO;
@@ -45,7 +44,7 @@ public class O_S_ATIVIDADES {
     private Integer CICLO;
 
     @ColumnInfo(name = "ID_MANEJO")
-    private Integer ID_MANEJO;
+    private String ID_MANEJO;
 
     @ColumnInfo(name = "ID_ATIVIDADE")
     private Integer ID_ATIVIDADE;
@@ -67,7 +66,9 @@ public class O_S_ATIVIDADES {
 
     private double AREA_REALIZADA;
 
-    public O_S_ATIVIDADES(Integer ID_PROGRAMACAO_ATIVIDADE, Integer ID_REGIONAL, Integer ID_SETOR, String TALHAO, Integer CICLO, Integer ID_MANEJO, Integer ID_ATIVIDADE, Integer ID_RESPONSAVEL, String DATA_PROGRAMADA, double AREA_PROGRAMADA, Integer PRIORIDADE, Integer EXPERIMENTO, Integer MADEIRA_NO_TALHAO, String OBSERVACAO, String DATA_INICIAL, String DATA_FINAL, double AREA_REALIZADA) {
+    private String STATUS;
+
+    public O_S_ATIVIDADES(Integer ID_PROGRAMACAO_ATIVIDADE, Integer ID_REGIONAL, String ID_SETOR, String TALHAO, Integer CICLO, String ID_MANEJO, Integer ID_ATIVIDADE, Integer ID_RESPONSAVEL, String DATA_PROGRAMADA, double AREA_PROGRAMADA, Integer PRIORIDADE, Integer EXPERIMENTO, Integer MADEIRA_NO_TALHAO, String OBSERVACAO, String DATA_INICIAL, String DATA_FINAL, double AREA_REALIZADA, String STATUS) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.ID_REGIONAL = ID_REGIONAL;
         this.ID_SETOR = ID_SETOR;
@@ -85,6 +86,7 @@ public class O_S_ATIVIDADES {
         this.DATA_INICIAL = DATA_INICIAL;
         this.DATA_FINAL = DATA_FINAL;
         this.AREA_REALIZADA = AREA_REALIZADA;
+        this.STATUS = STATUS;
     }
 
     public Integer getID_PROGRAMACAO_ATIVIDADE() {
@@ -103,11 +105,11 @@ public class O_S_ATIVIDADES {
         this.ID_REGIONAL = ID_REGIONAL;
     }
 
-    public Integer getID_SETOR() {
+    public String getID_SETOR() {
         return ID_SETOR;
     }
 
-    public void setID_SETOR(Integer ID_SETOR) {
+    public void setID_SETOR(String ID_SETOR) {
         this.ID_SETOR = ID_SETOR;
     }
 
@@ -127,11 +129,11 @@ public class O_S_ATIVIDADES {
         this.CICLO = CICLO;
     }
 
-    public Integer getID_MANEJO() {
+    public String getID_MANEJO() {
         return ID_MANEJO;
     }
 
-    public void setID_MANEJO(Integer ID_MANEJO) {
+    public void setID_MANEJO(String ID_MANEJO) {
         this.ID_MANEJO = ID_MANEJO;
     }
 
@@ -221,5 +223,13 @@ public class O_S_ATIVIDADES {
 
     public void setAREA_REALIZADA(double AREA_REALIZADA) {
         this.AREA_REALIZADA = AREA_REALIZADA;
+    }
+
+    public String getSTATUS() {
+        return STATUS;
+    }
+
+    public void setSTATUS(String STATUS) {
+        this.STATUS = STATUS;
     }
 }

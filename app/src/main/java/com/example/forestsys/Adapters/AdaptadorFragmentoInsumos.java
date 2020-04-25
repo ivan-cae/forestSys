@@ -43,19 +43,19 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
         Join_OS_INSUMOS insumo = insumos.get(position);
 
         holder.descricao.setText(String.valueOf(insumo.getDESCRICAO()));
-        holder.N.setText(String.valueOf(insumo.getNUTRIENTE_N()));
-        holder.P205.setText(String.valueOf(insumo.getNUTRIENTE_P2O5()));
-        holder.K20.setText(String.valueOf(insumo.getNUTRIENTE_K2O()));
-        holder.CAO.setText(String.valueOf(insumo.getNUTRIENTE_CAO()));
-        holder.MGO.setText(String.valueOf(insumo.getNUTRIENTE_MGO()));
-        holder.B.setText(String.valueOf(insumo.getNUTRIENTE_B()));
-        holder.ZN.setText(String.valueOf(insumo.getNUTRIENTE_ZN()));
-        holder.S.setText(String.valueOf(insumo.getNUTRIENTE_S()));
-        holder.CU.setText(String.valueOf(insumo.getNUTRIENTE_CU()));
-        holder.AF.setText(String.valueOf(insumo.getNUTRIENTE_AF()));
-        holder.MN.setText(String.valueOf(insumo.getNUTRIENTE_MN()));
-        holder.Un.setText(String.valueOf(insumo.getUND_MEDIDA()));
-        holder.QTDApl.setText(String.valueOf(insumo.getQTD_APLICADO()));
+        holder.N.setText(String.valueOf(insumo.getNUTRIENTE_N()).replace(".", ","));
+        holder.P205.setText(String.valueOf(insumo.getNUTRIENTE_P2O5()).replace(".", ","));
+        holder.K20.setText(String.valueOf(insumo.getNUTRIENTE_K2O()).replace(".", ","));
+        holder.CAO.setText(String.valueOf(insumo.getNUTRIENTE_CAO()).replace(".", ","));
+        holder.MGO.setText(String.valueOf(insumo.getNUTRIENTE_MGO()).replace(".", ","));
+        holder.B.setText(String.valueOf(insumo.getNUTRIENTE_B()).replace(".", ","));
+        holder.ZN.setText(String.valueOf(insumo.getNUTRIENTE_ZN()).replace(".", ","));
+        holder.S.setText(String.valueOf(insumo.getNUTRIENTE_S()).replace(".", ","));
+        holder.CU.setText(String.valueOf(insumo.getNUTRIENTE_CU()).replace(".", ","));
+        holder.AF.setText(String.valueOf(insumo.getNUTRIENTE_AF()).replace(".", ","));
+        holder.MN.setText(String.valueOf(insumo.getNUTRIENTE_MN()).replace(".", ","));
+        holder.Un.setText(String.valueOf(insumo.getUND_MEDIDA()).replace(".", ","));
+        holder.QTDApl.setText(String.valueOf(insumo.getQTD_APLICADO()).replace(".", ","));
     }
 
     @Override

@@ -1,85 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="54dp"
     android:background="@drawable/custom_ripple">
 
     <TextView
         android:id="@+id/atividade_item_lista"
-        android:layout_width="75dp"
+        android:layout_width="100dp"
         android:layout_height="21dp"
+        android:textAlignment="textStart"
+        android:textSize="13sp"
         app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/talhao_item_lista"
-        android:layout_width="75dp"
+        android:layout_width="60dp"
         android:layout_height="21dp"
+        android:textAlignment="textStart"
+        android:textSize="13sp"
         app:layout_constraintStart_toEndOf="@+id/textView22"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/data_item_lista"
-        android:layout_width="75dp"
+        android:layout_width="84dp"
         android:layout_height="21dp"
+        android:textAlignment="textStart"
+        android:textSize="13sp"
         app:layout_constraintStart_toEndOf="@+id/textView26"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/atualizacao_item_lista"
-        android:layout_width="75dp"
+        android:layout_width="84dp"
         android:layout_height="21dp"
-        app:layout_constraintStart_toEndOf="@+id/textView26"
+        android:textAlignment="textStart"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@+id/textView27"
         app:layout_constraintTop_toBottomOf="@+id/data_item_lista" />
 
     <TextView
         android:id="@+id/area_item_lista"
-        android:layout_width="75dp"
+        android:layout_width="60dp"
         android:layout_height="21dp"
-        app:layout_constraintStart_toEndOf="@+id/textView22"
+        android:textAlignment="textStart"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@+id/textView25"
         app:layout_constraintTop_toBottomOf="@+id/talhao_item_lista" />
 
     <TextView
         android:id="@+id/setor_item_lista"
-        android:layout_width="75dp"
+        android:layout_width="100dp"
         android:layout_height="21dp"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
+        android:textAlignment="textStart"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/atividade_item_lista" />
 
     <TextView
         android:id="@+id/numero_item_lista"
-        android:layout_width="75dp"
+        android:layout_width="90dp"
         android:layout_height="21dp"
-        android:text="Encerrado"
+        android:textAlignment="textStart"
+        android:textSize="13sp"
         app:layout_constraintStart_toEndOf="@+id/textView8"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/status_item_lista"
-        android:layout_width="75dp"
+        android:layout_width="90dp"
         android:layout_height="21dp"
-        android:text="Andamento"
+        android:textAlignment="textStart"
+        android:textSize="13sp"
         app:layout_constraintStart_toEndOf="@+id/textView10"
         app:layout_constraintTop_toBottomOf="@+id/numero_item_lista" />
 
     <TextView
         android:id="@+id/textView8"
-        android:layout_width="65dp"
+        android:layout_width="55dp"
         android:layout_height="21dp"
-        android:text="Numero:"
+        android:layout_marginStart="8dp"
+        android:text="ID Atvd:"
+        android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/numero_item_lista"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView10"
-        android:layout_width="65dp"
+        android:layout_width="55dp"
         android:layout_height="21dp"
+        android:layout_marginStart="8dp"
         android:text="Status:"
+        android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/status_item_lista"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
@@ -88,8 +105,9 @@
         android:layout_width="65dp"
         android:layout_height="21dp"
         android:text="Setor:"
+        android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/numero_item_lista"
+        app:layout_constraintStart_toEndOf="@+id/status_item_lista"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
@@ -97,15 +115,17 @@
         android:layout_width="65dp"
         android:layout_height="21dp"
         android:text="Atividade:"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/numero_item_lista"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView22"
-        android:layout_width="65dp"
+        android:layout_width="50dp"
         android:layout_height="21dp"
         android:text="Talhão:"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/atividade_item_lista"
         app:layout_constraintTop_toTopOf="parent" />
@@ -115,6 +135,7 @@
         android:layout_width="80dp"
         android:layout_height="21dp"
         android:text="Data:"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/talhao_item_lista"
         app:layout_constraintTop_toTopOf="parent" />
@@ -124,15 +145,17 @@
         android:layout_width="80dp"
         android:layout_height="21dp"
         android:text="Atualização:"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/area_item_lista"
         app:layout_constraintTop_toBottomOf="@+id/textView26" />
 
     <TextView
         android:id="@+id/textView25"
-        android:layout_width="65dp"
+        android:layout_width="50dp"
         android:layout_height="21dp"
         android:text="Área:"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/setor_item_lista"
         app:layout_constraintTop_toBottomOf="@+id/textView22" />

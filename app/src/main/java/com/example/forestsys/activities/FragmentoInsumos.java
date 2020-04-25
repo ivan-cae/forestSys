@@ -28,14 +28,13 @@ import com.example.forestsys.DAO;
 import com.example.forestsys.DataHoraAtual;
 import com.example.forestsys.NDSpinner;
 import com.example.forestsys.R;
-import com.example.forestsys.classes.O_S_ATIVIDADE_INSUMOS_DIA;
 import com.example.forestsys.classes.join.Join_OS_INSUMOS;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.forestsys.activities.ActivityApontamentos.dataDoApontamento;
-import static com.example.forestsys.activities.ActivityApontamentos.listaJoinOsInsumosSelecionados;
+import static com.example.forestsys.activities.ActivityRegistros.dataDoApontamento;
+import static com.example.forestsys.activities.ActivityRegistros.listaJoinOsInsumosSelecionados;
 import static com.example.forestsys.activities.ActivityMain.osSelecionada;
 
 public class FragmentoInsumos extends Fragment {
@@ -167,14 +166,16 @@ public class FragmentoInsumos extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
-                char[] s = valor.getText().toString().toCharArray();
+                String str = valor.getText().toString();
+                str = str.replace(',', '.');
+                char[] s = str.toCharArray();
                 int contador = 0;
                 for(int i = 0; i<s.length; i++){
                     if(s[i] =='.') contador++;
                 }
                 if(contador>1 || s[s.length-1]=='.' || s[0]=='.') valor.setError("Valor inválido");
                 else{
-                insere.setQTD_APLICADO(Double.valueOf(valor.getText().toString()));
+                insere.setQTD_APLICADO(Double.valueOf(str));
                 if(!listaJoinOsInsumosSelecionados.contains(insere)) listaJoinOsInsumosSelecionados.add(insere);
                 else{
                     int id = listaJoinOsInsumosSelecionados.indexOf(insere);

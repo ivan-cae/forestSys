@@ -182,6 +182,20 @@ public abstract class BaseDeDados extends RoomDatabase {
             e.printStackTrace();
         }
 
+        dados = carregaJsonAtividades(context);
+        try {
+            for (int i = 0; i < dados.length(); i++) {
+                JSONObject obj = dados.getJSONObject(i);
+                int ID_ATIVIDADE = obj.getInt("ID_ATIVIDADE");
+                String DESCRICAO = obj.getString("DESCRICAO");
+                int ATIVO = obj.getInt("ATIVO");
+
+                daoInsere.insert(new ATIVIDADES(ID_ATIVIDADE, DESCRICAO, ATIVO));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         dados = carregaJsonOsAtividades(context);
         try {
             for (int i = 0; i < dados.length(); i++) {
@@ -189,10 +203,10 @@ public abstract class BaseDeDados extends RoomDatabase {
 
                 int ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
                       int ID_REGIONAL = obj.getInt("ID_REGIONAL");
-                        int ID_SETOR = obj.getInt("ID_SETOR");
+                        String ID_SETOR = obj.getString("ID_SETOR");
                         String TALHAO = obj.getString("TALHAO");
                         int CICLO = obj.getInt("CICLO");
-                        int ID_MANEJO = obj.getInt("ID_MANEJO");
+                        String ID_MANEJO = obj.getString("ID_MANEJO");
                        int ID_ATIVIDADE = obj.getInt("ID_ATIVIDADE");
                         int ID_RESPONSAVEL = obj.getInt("ID_RESPONSAVEL");
                         String DATA_PROGRAMADA = obj.getString("DATA_PROGRAMADA");
@@ -205,7 +219,8 @@ public abstract class BaseDeDados extends RoomDatabase {
                         String DATA_FINAL = obj.getString("DATA_FINAL");
                         Double AREA_REALIZADA = obj.getDouble("AREA_REALIZADA");
 
-                daoInsere.insert(new O_S_ATIVIDADES( ID_PROGRAMACAO_ATIVIDADE,  ID_REGIONAL,  ID_SETOR,  TALHAO,  CICLO,  ID_MANEJO,  ID_ATIVIDADE,  ID_RESPONSAVEL,  DATA_PROGRAMADA,  AREA_PROGRAMADA,  PRIORIDADE,  EXPERIMENTO,  MADEIRA_NO_TALHAO,  OBSERVACAO,  DATA_INICIAL,  DATA_FINAL,  AREA_REALIZADA));
+
+                daoInsere.insert(new O_S_ATIVIDADES( ID_PROGRAMACAO_ATIVIDADE,  ID_REGIONAL,  ID_SETOR,  TALHAO,  CICLO,  ID_MANEJO,  ID_ATIVIDADE,  ID_RESPONSAVEL,  DATA_PROGRAMADA,  AREA_PROGRAMADA,  PRIORIDADE,  EXPERIMENTO,  MADEIRA_NO_TALHAO,  OBSERVACAO,  DATA_INICIAL,  DATA_FINAL,  AREA_REALIZADA, "Aberta"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -272,6 +287,8 @@ public abstract class BaseDeDados extends RoomDatabase {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
     }
 
 
@@ -439,6 +456,25 @@ public abstract class BaseDeDados extends RoomDatabase {
             }
             JSONObject json = new JSONObject(builder.toString());
             return json.getJSONArray("MAQUINA_IMPLEMENTO");
+
+        } catch (IOException | JSONException exception) {
+            exception.printStackTrace();
+        }
+        return null;
+    }
+
+    private static JSONArray carregaJsonAtividades(Context context) {
+        StringBuilder builder = new StringBuilder();
+        InputStream in = context.getResources().openRawResource(R.raw.atividades);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        String linha;
+
+        try {
+            while ((linha = reader.readLine()) != null) {
+                builder.append(linha);
+            }
+            JSONObject json = new JSONObject(builder.toString());
+            return json.getJSONArray("ATIVIDADES");
 
         } catch (IOException | JSONException exception) {
             exception.printStackTrace();

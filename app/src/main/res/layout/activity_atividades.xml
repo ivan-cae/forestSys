@@ -329,15 +329,6 @@
             app:layout_constraintTop_toTopOf="@+id/textView59" />
 
         <TextView
-            android:id="@+id/os_detalhes_recomendacao"
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/textView41"
-            app:layout_constraintTop_toTopOf="@+id/textView41" />
-
-        <TextView
             android:id="@+id/os_detalhes_talhao"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
@@ -481,17 +472,6 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView21" />
-
-        <TextView
-            android:id="@+id/textView41"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Recomendação?"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/textView59"
-            app:layout_constraintTop_toBottomOf="@+id/os_detalhes_madeira" />
 
         <TextView
             android:id="@+id/textView91"

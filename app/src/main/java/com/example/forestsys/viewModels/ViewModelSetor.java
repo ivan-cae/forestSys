@@ -13,8 +13,8 @@ import java.util.List;
 
 public class ViewModelSetor extends AndroidViewModel {
     private RepositorioSetor repositorioSetor;
-    private LiveData<List<GEO_SETORES>> listaSetor;
-    private LiveData<GEO_SETORES> Consulta;
+    private List<GEO_SETORES> listaSetor;
+    private GEO_SETORES Consulta;
 
     public ViewModelSetor(@NonNull Application application) {
         super(application);
@@ -24,7 +24,7 @@ public class ViewModelSetor extends AndroidViewModel {
 
     //retorna uma instância da GEO_SETORES
 //parâmetro de entrada: id inteiro para busca na tabela GEO_SETORES
-    public LiveData<GEO_SETORES> consulta (int id){return repositorioSetor.getSetor(id);}
+    public GEO_SETORES consulta (int id){return repositorioSetor.getSetor(id);}
 
     //inclui uma instância da GEO_SETORES no DB
 //parâmetro de entrada: instancia da GEO_SETORES
