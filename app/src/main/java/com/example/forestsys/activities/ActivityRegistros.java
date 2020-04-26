@@ -14,6 +14,7 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -42,6 +43,7 @@ import java.util.List;
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
 import static com.example.forestsys.activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.activities.ActivityMain.osSelecionada;
+import static com.example.forestsys.activities.FragmentoRendimento.auxiliar;
 import static com.example.forestsys.activities.FragmentoRendimento.hh;
 import static com.example.forestsys.activities.FragmentoRendimento.hm;
 import static com.example.forestsys.activities.FragmentoRendimento.hme;
@@ -77,7 +79,11 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     public static O_S_ATIVIDADES_DIA oSAtividadesDiaAtual;
     public static String dataDoApontamento;
     public static List<Join_OS_INSUMOS> listaJoinOsInsumosSelecionados;
+    public static boolean primeiraReg;
+    public static boolean primeiraIns;
 
+    BaseDeDados baseDeDados;
+    DAO dao;
     private int abaSelecionada;
 
     @Override
@@ -94,9 +100,9 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         setSupportActionBar(toolbar);
         getSupportActionBar().setSubtitle(usuarioLogado.getDESCRICAO());
 
-        BaseDeDados baseDeDados = BaseDeDados.getInstance(getApplicationContext());
-        DAO dao = baseDeDados.dao();
 
+       baseDeDados = BaseDeDados.getInstance(getApplicationContext());
+        dao = baseDeDados.dao();
 
         idOs = findViewById(R.id.id_os_continuar);
         dataApontamento = findViewById(R.id.data_apontamento);
@@ -167,8 +173,13 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         toggle.syncState();
 
         abaSelecionada = 1;
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragmento_continuar,
-                new FragmentoRendimento()).commit();
+
+        primeiraReg = true;
+        primeiraIns = true;
+
+
+        abaSelecionada=1;
+
         botaoApontamento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,6 +195,18 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             @Override
             public void onClick(View v) {
                 if (abaSelecionada != 2) {
+                    auxiliar.setAREA_REALIZADA(area);
+                    auxiliar.setHO_ESCAVADEIRA(hoe);
+                    auxiliar.setHO(ho);
+                    auxiliar.setHM_ESCAVADEIRA(hme);
+                    auxiliar.setHM(hm);
+                    auxiliar.setHH(hh);
+                    auxiliar.setDATA(dataDoApontamento);
+                    auxiliar.setID_PRESTADOR(posicaoPrestador);
+                    auxiliar.setID_PROGRAMACAO_ATIVIDADE(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+                    auxiliar.setID_RESPONSAVEL(posicaoResponsavel);
+                    auxiliar.setOBSERVACAO(obs);
+
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragmento_continuar,
                             new FragmentoInsumos()).commit();
                     abaSelecionada = 2;
@@ -196,74 +219,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             @Override
             public void onClick(View v) {
 
-                    if(oSAtividadesDiaAtual!=null && oSAtividadesDiaAtual.getDATA() != dataDoApontamento) {
-                        O_S_ATIVIDADES_DIA aux = oSAtividadesDiaAtual;
-
-                        dao.apagaOsAtividadeInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), aux.getDATA());
-
-                        viewModelOSAtividadesDia.delete(aux);
-                    }
-
-                oSAtividadesDiaAtual = new O_S_ATIVIDADES_DIA();
-
-                    oSAtividadesDiaAtual.setID_PROGRAMACAO_ATIVIDADE(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
-                    oSAtividadesDiaAtual.setDATA(dataDoApontamento.trim());
-                    oSAtividadesDiaAtual.setID_PRESTADOR(posicaoPrestador);
-                    oSAtividadesDiaAtual.setID_RESPONSAVEL(posicaoResponsavel);
-
-
-                    if (area != null){
-                        if(area.contains(","))area = area.replace(',', '.');
-                        oSAtividadesDiaAtual.setAREA_REALIZADA(area);
-                    }
-                    else oSAtividadesDiaAtual.setAREA_REALIZADA(null);
-
-
-                    if(hoe!=null){
-                        if(hoe.contains(","))hoe = hoe.replace(',', '.');
-                        oSAtividadesDiaAtual.setHO_ESCAVADEIRA(hoe);
-                    }
-                    else oSAtividadesDiaAtual.setHO_ESCAVADEIRA(null);
-
-                    if(ho!=null){
-                        if(ho.contains(","))ho = ho.replace(',', '.');
-                        oSAtividadesDiaAtual.setHO(ho);
-                    }
-                    else oSAtividadesDiaAtual.setHO(null);
-
-                    if(hm!=null){
-                        if(hm.contains(","))hm = hm.replace(',', '.');
-                        oSAtividadesDiaAtual.setHM(hm);
-                    }
-                    else oSAtividadesDiaAtual.setHM(null);
-
-                    if(hh!=null){
-                        if(hh.contains(","))hh = hh.replace(',', '.');
-                        oSAtividadesDiaAtual.setHH(hh);
-                    }
-                    else oSAtividadesDiaAtual.setHH(null);
-
-                    if(hme!=null){
-                        if(hme.contains(","))hme = hme.replace(',', '.');
-                        oSAtividadesDiaAtual.setHM_ESCAVADEIRA(hme);
-                    }
-                    else oSAtividadesDiaAtual.setHM_ESCAVADEIRA(null);
-
-                    if(obs!=null)oSAtividadesDiaAtual.setOBSERVACAO(obs);
-                    else oSAtividadesDiaAtual.setOBSERVACAO(null);
-
-                viewModelOSAtividadesDia.insert(oSAtividadesDiaAtual);
-
-
-                    if(!listaJoinOsInsumosSelecionados.isEmpty()) {
-                        Join_OS_INSUMOS persiste;
-
-                        for (int i = 0; i < listaJoinOsInsumosSelecionados.size(); i++) {
-                            persiste = listaJoinOsInsumosSelecionados.get(i);
-                            dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataDoApontamento,
-                                    persiste.getID_INSUMO(), persiste.getQTD_APLICADO()));
-                        }
-                    }
+                salva();
 
                 Intent it = new Intent(ActivityRegistros.this, ActivityListagemRegistros.class);
                 Toast.makeText(getApplicationContext(), "Registro Salvo com sucesso!", Toast.LENGTH_LONG).show();
@@ -282,6 +238,20 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                         .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+
+                                 area="";
+                                 ho="";
+                                 hm="";
+                                 hh="";
+                                 hoe="";
+                                 hme="";
+                                 obs="";
+
+                                auxiliar = null;
+                                oSAtividadesDiaAtual = null;
+                                primeiraReg = true;
+                                primeiraIns = false;
+                                listaJoinOsInsumosSelecionados = null;
                                 Intent it = new Intent(ActivityRegistros.this, ActivityListagemRegistros.class);
                                 startActivity(it);
                             }
@@ -302,6 +272,9 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 datePicker.show(getSupportFragmentManager(), "date picker");
             }
         });
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmento_continuar,
+                new FragmentoRendimento()).commit();
     }
 
     public static class FragmentoDatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
@@ -355,6 +328,78 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             dataApontamento.setText(dataDoApontamento);
         }
     }
+
+    public void salva(){
+        if(oSAtividadesDiaAtual!=null && oSAtividadesDiaAtual.getDATA() != dataDoApontamento) {
+            O_S_ATIVIDADES_DIA aux = oSAtividadesDiaAtual;
+
+            dao.apagaOsAtividadeInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), aux.getDATA());
+
+            viewModelOSAtividadesDia.delete(aux);
+        }
+
+        oSAtividadesDiaAtual = new O_S_ATIVIDADES_DIA();
+
+        oSAtividadesDiaAtual.setID_PROGRAMACAO_ATIVIDADE(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+        oSAtividadesDiaAtual.setDATA(dataDoApontamento.trim());
+        oSAtividadesDiaAtual.setID_PRESTADOR(posicaoPrestador);
+        oSAtividadesDiaAtual.setID_RESPONSAVEL(posicaoResponsavel);
+
+
+        if (area != null){
+            if(area.contains(","))area = area.replace(',', '.');
+            oSAtividadesDiaAtual.setAREA_REALIZADA(area);
+        }
+        else oSAtividadesDiaAtual.setAREA_REALIZADA(null);
+
+
+        if(hoe!=null){
+            if(hoe.contains(","))hoe = hoe.replace(',', '.');
+            oSAtividadesDiaAtual.setHO_ESCAVADEIRA(hoe);
+        }
+        else oSAtividadesDiaAtual.setHO_ESCAVADEIRA(null);
+
+        if(ho!=null){
+            if(ho.contains(","))ho = ho.replace(',', '.');
+            oSAtividadesDiaAtual.setHO(ho);
+        }
+        else oSAtividadesDiaAtual.setHO(null);
+
+        if(hm!=null){
+            if(hm.contains(","))hm = hm.replace(',', '.');
+            oSAtividadesDiaAtual.setHM(hm);
+        }
+        else oSAtividadesDiaAtual.setHM(null);
+
+        if(hh!=null){
+            if(hh.contains(","))hh = hh.replace(',', '.');
+            oSAtividadesDiaAtual.setHH(hh);
+        }
+        else oSAtividadesDiaAtual.setHH(null);
+
+        if(hme!=null){
+            if(hme.contains(","))hme = hme.replace(',', '.');
+            oSAtividadesDiaAtual.setHM_ESCAVADEIRA(hme);
+        }
+        else oSAtividadesDiaAtual.setHM_ESCAVADEIRA(null);
+
+        if(obs!=null)oSAtividadesDiaAtual.setOBSERVACAO(obs);
+        else oSAtividadesDiaAtual.setOBSERVACAO(null);
+
+        viewModelOSAtividadesDia.insert(oSAtividadesDiaAtual);
+
+
+        if(!listaJoinOsInsumosSelecionados.isEmpty()) {
+            Join_OS_INSUMOS persiste;
+
+            for (int i = 0; i < listaJoinOsInsumosSelecionados.size(); i++) {
+                persiste = listaJoinOsInsumosSelecionados.get(i);
+                dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataDoApontamento,
+                        persiste.getID_INSUMO(), persiste.getQTD_APLICADO()));
+            }
+        }
+    }
+
 
     //Adiciona o botão de atualização a barra de ação
     @Override

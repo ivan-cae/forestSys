@@ -84,7 +84,7 @@ public class ActivityListagemRegistros extends AppCompatActivity implements Navi
         NavigationView navigationView = findViewById(R.id.nav_view_listagem_apontamentos);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Toast.makeText(this, "Toque o apontamento para edita-lo", Toast.LENGTH_LONG).show();
+        if(osSelecionada.getSTATUS_NUM()!=2) Toast.makeText(this, "Toque o registro para edita-lo", Toast.LENGTH_LONG).show();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -120,7 +120,7 @@ public class ActivityListagemRegistros extends AppCompatActivity implements Navi
         ciclo.setText(osSelecionada.getCICLO().toString());
 
         String temMadeira = "NÃO";
-        if(osSelecionada.getMADEIRA_NO_TALHAO()==1) temMadeira = "SIM";
+        if (osSelecionada.getMADEIRA_NO_TALHAO() == 1) temMadeira = "SIM";
         madeiraTalhao.setText(temMadeira);
 
         descricao.setText(dao.selecionaAtividade(osSelecionada.getID_ATIVIDADE()).getDESCRICAO());
@@ -165,7 +165,7 @@ public class ActivityListagemRegistros extends AppCompatActivity implements Navi
             }
         }
 
-        if (temApontamento == false) {
+        if (temApontamento == false && osSelecionada.getSTATUS_NUM()!=2) {
             realizarApontamento.setEnabled(true);
             realizarApontamento.setBackgroundColor(Color.parseColor("#75A9EB"));
         }
@@ -189,22 +189,24 @@ public class ActivityListagemRegistros extends AppCompatActivity implements Navi
         adaptador.setOnItemClickListener(new AdaptadorApontamentos.OnItemClickListener() {
             @Override
             public void onItemClick(O_S_ATIVIDADES_DIA oSAtividadesDia) {
-                new AlertDialog.Builder(ActivityListagemRegistros.this)
-                        .setTitle("Editar")
-                        .setMessage("Deseja Alterar o Apontamento?")
-                        .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                oSAtividadesDiaAtual = dao.selecionaOsAtividadesDia(oSAtividadesDia.getID_PROGRAMACAO_ATIVIDADE(), oSAtividadesDia.getDATA());
-                                Intent it = new Intent(ActivityListagemRegistros.this, ActivityRegistros.class);
-                                startActivity(it);
-                            }
-                        }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        }).create()
-                .show();
+                if (osSelecionada.getSTATUS_NUM()!=2) {
+                    new AlertDialog.Builder(ActivityListagemRegistros.this)
+                            .setTitle("Editar")
+                            .setMessage("Deseja Alterar o Registro?")
+                            .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    oSAtividadesDiaAtual = dao.selecionaOsAtividadesDia(oSAtividadesDia.getID_PROGRAMACAO_ATIVIDADE(), oSAtividadesDia.getDATA());
+                                    Intent it = new Intent(ActivityListagemRegistros.this, ActivityRegistros.class);
+                                    startActivity(it);
+                                }
+                            }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    }).create()
+                            .show();
+                }
             }
         });
     }
@@ -233,14 +235,11 @@ public class ActivityListagemRegistros extends AppCompatActivity implements Navi
         return true;
     }
 
-    public double checaConversao(String numero){
+    public double checaConversao(String numero) {
         double teste;
-        try
-        {
+        try {
             teste = Double.parseDouble(numero);
-        }
-        catch(NumberFormatException | NullPointerException n)
-        {
+        } catch (NumberFormatException | NullPointerException n) {
             teste = 0;
         }
         return teste;

@@ -69,7 +69,7 @@ public interface DAO {
     void insert(INSUMOS insumos);
     @Insert(onConflict  = OnConflictStrategy.IGNORE)
     void insert(O_S_ATIVIDADE_INSUMOS o_s_atividade_insumos);
-    @Insert(onConflict  = OnConflictStrategy.IGNORE)
+    @Insert(onConflict  = OnConflictStrategy.REPLACE)
     void insert(O_S_ATIVIDADE_INSUMOS_DIA o_s_atividade_insumos_dia);
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(ATIVIDADES atividades);
@@ -185,7 +185,7 @@ public interface DAO {
     O_S_ATIVIDADES selecionaOs(int taskId);
 
     @Query("SELECT * FROM O_S_ATIVIDADES ORDER BY ID_PROGRAMACAO_ATIVIDADE asc")
-    LiveData<List<O_S_ATIVIDADES>> selecionaListaOs();
+    List<O_S_ATIVIDADES> selecionaListaOs();
 
 
     //Scripts CADASTRO_FLORESTAL
@@ -280,6 +280,9 @@ public interface DAO {
     @Query("SELECT * FROM O_S_ATIVIDADES_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg")
     List<O_S_ATIVIDADES_DIA> listaAtividadesDia(int idProg);
 
+    @Query("SELECT * FROM O_S_ATIVIDADES_DIA")
+    List<O_S_ATIVIDADES_DIA> todasOsAtividadesDia();
+
 
     //Scritps INSUMOS
     @Query("SELECT * FROM INSUMOS WHERE ID_INSUMO=:id")
@@ -307,6 +310,11 @@ public interface DAO {
     @Query("DELETE FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND DATA=:data")
     void apagaOsAtividadeInsumosDia(int idProg, String data);
 
+    @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg")
+    List<O_S_ATIVIDADE_INSUMOS_DIA> checaOsInsumosDia(int idProg);
+
+    @Query("SELECT QTD_APLICADO FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_INSUMO=:idIns")
+        List<Double> todosQTDApl(int idProg, int idIns);
 
     //Scripts ATIVIDADES
     @Query("SELECT * FROM ATIVIDADES WHERE ID_ATIVIDADE=:idAtv")
@@ -318,14 +326,16 @@ public interface DAO {
 
 
     //JOINS
-    @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS LEFT JOIN INSUMOS ON INSUMOS.ID_INSUMO = O_S_ATIVIDADE_INSUMOS.ID_INSUMO " +
+    @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS INNER JOIN INSUMOS ON O_S_ATIVIDADE_INSUMOS.ID_INSUMO = INSUMOS.ID_INSUMO " +
             "LEFT JOIN O_S_ATIVIDADE_INSUMOS_DIA ON O_S_ATIVIDADE_INSUMOS.ID_INSUMO = O_S_ATIVIDADE_INSUMOS_DIA.ID_INSUMO" +
+            " AND O_S_ATIVIDADE_INSUMOS.ID_PROGRAMACAO_ATIVIDADE = O_S_ATIVIDADE_INSUMOS_DIA.ID_PROGRAMACAO_ATIVIDADE" +
             " WHERE O_S_ATIVIDADE_INSUMOS.ID_PROGRAMACAO_ATIVIDADE=:idProg")
     List<Join_OS_INSUMOS> listaJoinInsumoAtividades(int idProg);
 
-    @Query("SELECT * FROM INSUMOS LEFT JOIN O_S_ATIVIDADE_INSUMOS_DIA ON O_S_ATIVIDADE_INSUMOS_DIA.ID_INSUMO = INSUMOS.ID_INSUMO " +
-            "LEFT JOIN O_S_ATIVIDADE_INSUMOS" +
-            " ON INSUMOS.ID_INSUMO = O_S_ATIVIDADE_INSUMOS.ID_INSUMO " +
+    @Query("SELECT * FROM INSUMOS INNER JOIN O_S_ATIVIDADE_INSUMOS_DIA ON INSUMOS.ID_INSUMO = O_S_ATIVIDADE_INSUMOS_DIA.ID_INSUMO " +
+            "INNER JOIN O_S_ATIVIDADE_INSUMOS" +
+            " ON O_S_ATIVIDADE_INSUMOS_DIA.ID_INSUMO = O_S_ATIVIDADE_INSUMOS.ID_INSUMO " +
+            "AND O_S_ATIVIDADE_INSUMOS.ID_PROGRAMACAO_ATIVIDADE = O_S_ATIVIDADE_INSUMOS_DIA.ID_PROGRAMACAO_ATIVIDADE " +
             "WHERE O_S_ATIVIDADE_INSUMOS_DIA.ID_PROGRAMACAO_ATIVIDADE=:idProg AND O_S_ATIVIDADE_INSUMOS_DIA.DATA=:data")
     List<Join_OS_INSUMOS> listaJoinInsumoAtividadesdia(int idProg, String data);
 

@@ -1,6 +1,9 @@
 package com.example.forestsys.Adapters;
 
+import android.content.ClipData;
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +19,12 @@ import com.example.forestsys.DAO;
 import com.example.forestsys.R;
 import com.example.forestsys.classes.join.Join_OS_INSUMOS;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.forestsys.activities.ActivityMain.osSelecionada;
+import static java.sql.Types.NULL;
 
 public class AdaptadorInsumos extends RecyclerView.Adapter<AdaptadorInsumos.InsumosHolder>{
     
@@ -56,8 +63,20 @@ public class AdaptadorInsumos extends RecyclerView.Adapter<AdaptadorInsumos.Insu
             holder.MN.setText(String.valueOf(insumo.getNUTRIENTE_MN()).replace(".", ","));
             holder.Un.setText(String.valueOf(insumo.getUND_MEDIDA()).replace(".", ","));
             holder.Dose.setText(String.valueOf(insumo.getQTD_HA_RECOMENDADO()).replace(".", ","));
-            holder.QTDApl.setText(String.valueOf(insumo.getQTD_HA_APLICADO()).replace(".", ","));
-        }
+
+            double acumulador=0;
+            List <Double> listaDouble = dao.todosQTDApl(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), insumo.getID_INSUMO());
+
+            for(int i = 0; i<listaDouble.size(); i++){
+                    acumulador+=listaDouble.get(i);
+            }
+
+            DecimalFormat df = new DecimalFormat(".000");
+
+            acumulador = acumulador/osSelecionada.getAREA_PROGRAMADA();
+            acumulador = Double.valueOf(df.format(acumulador));
+            holder.QTDApl.setText(String.valueOf(acumulador).replace(".", ","));
+            }
 
         @Override
         public int getItemCount() {

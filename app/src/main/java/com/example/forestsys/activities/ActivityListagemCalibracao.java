@@ -95,6 +95,10 @@ public class ActivityListagemCalibracao extends AppCompatActivity implements Nav
         adaptador.setCalibragem(calibragens);
 
         adicionarCalibracao = findViewById(R.id.botao_adicionar_calibracao);
+        if(osSelecionada.getSTATUS_NUM()==2){
+            adicionarCalibracao.setEnabled(false);
+            adicionarCalibracao.setBackgroundResource(android.R.drawable.btn_default);
+        }
         adicionarCalibracao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

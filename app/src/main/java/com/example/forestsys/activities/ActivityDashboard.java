@@ -2,9 +2,11 @@ package com.example.forestsys.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -13,9 +15,18 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.forestsys.BaseDeDados;
+import com.example.forestsys.DAO;
 import com.example.forestsys.R;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
+import com.example.forestsys.classes.O_S_ATIVIDADES;
+import com.example.forestsys.classes.O_S_ATIVIDADES_DIA;
 import com.google.android.material.navigation.NavigationView;
+
+import org.w3c.dom.Text;
+
+import java.text.DecimalFormat;
+import java.util.List;
 
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
 import static com.example.forestsys.activities.ActivityLogin.usuarioLogado;
@@ -23,6 +34,10 @@ import static com.example.forestsys.activities.ActivityLogin.usuarioLogado;
 public class ActivityDashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout drawer;
+    TextView abertas;
+    TextView andamento;
+    TextView finalizadas;
+    TextView horas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +47,16 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_dash);
 
+        BaseDeDados baseDeDados = BaseDeDados.getInstance(getApplicationContext());
+        DAO dao = baseDeDados.dao();
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setSubtitle(usuarioLogado.getDESCRICAO());
+
+        abertas = findViewById(R.id.dash_abertas);
+        andamento = findViewById(R.id.dash_andamento);
+        finalizadas = findViewById(R.id.dash_finalizadas);
+        horas = findViewById(R.id.dash_tempo_medio);
 
         drawer = findViewById(R.id.drawer_layout_dash);
         NavigationView navigationView = findViewById(R.id.nav_view_dash);
@@ -44,6 +67,44 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+
+        List<O_S_ATIVIDADES> listaTodasOs = dao.selecionaListaOs();
+        List<O_S_ATIVIDADES_DIA> listaReg = dao.todasOsAtividadesDia();
+
+        int contAbertas = 0;
+        int contAndamento = 0;
+        int contfinalizadas = 0;
+
+        for(int i = 0; i<listaTodasOs.size(); i++){
+            if(listaTodasOs.get(i).getSTATUS_NUM() == 0) contAbertas++;
+            if(listaTodasOs.get(i).getSTATUS_NUM() == 1) contAndamento++;
+            if(listaTodasOs.get(i).getSTATUS_NUM() == 2) contfinalizadas++;
+        }
+
+        abertas.setText(String.valueOf(contAbertas));
+        andamento.setText(String.valueOf(contAndamento));
+        finalizadas.setText(String.valueOf(contfinalizadas));
+        int contasValidadas = contAndamento+contfinalizadas;
+
+        Double acumulador = 0.0;
+
+        for(int i = 0; i<listaReg.size(); i++){
+            O_S_ATIVIDADES aux = dao.selecionaOs(listaReg.get(i).getID_PROGRAMACAO_ATIVIDADE());
+            if(aux.getSTATUS_NUM() != 0){
+                if(listaReg.get(i).getHH() == null) listaReg.get(i).setHH("0");
+                if(listaReg.get(i).getHM() == null) listaReg.get(i).setHM("0");
+                acumulador = Double.valueOf(listaReg.get(i).getHH()) + Double.valueOf(listaReg.get(i).getHM());
+            }
+        }
+
+        acumulador= acumulador/contasValidadas;
+        if(acumulador.isNaN() || acumulador.isInfinite() || acumulador==null) acumulador = 0.0;
+
+        DecimalFormat df = new DecimalFormat(".00");
+        acumulador = Double.valueOf(df.format(acumulador));
+
+        horas.setText(String.valueOf(acumulador));
     }
 
     //Adiciona o botão de atualização a barra de ação

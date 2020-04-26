@@ -68,7 +68,9 @@ public class O_S_ATIVIDADES {
 
     private String STATUS;
 
-    public O_S_ATIVIDADES(Integer ID_PROGRAMACAO_ATIVIDADE, Integer ID_REGIONAL, String ID_SETOR, String TALHAO, Integer CICLO, String ID_MANEJO, Integer ID_ATIVIDADE, Integer ID_RESPONSAVEL, String DATA_PROGRAMADA, double AREA_PROGRAMADA, Integer PRIORIDADE, Integer EXPERIMENTO, Integer MADEIRA_NO_TALHAO, String OBSERVACAO, String DATA_INICIAL, String DATA_FINAL, double AREA_REALIZADA, String STATUS) {
+    private int STATUS_NUM;
+
+    public O_S_ATIVIDADES(Integer ID_PROGRAMACAO_ATIVIDADE, Integer ID_REGIONAL, String ID_SETOR, String TALHAO, Integer CICLO, String ID_MANEJO, Integer ID_ATIVIDADE, Integer ID_RESPONSAVEL, String DATA_PROGRAMADA, double AREA_PROGRAMADA, Integer PRIORIDADE, Integer EXPERIMENTO, Integer MADEIRA_NO_TALHAO, String OBSERVACAO, String DATA_INICIAL, String DATA_FINAL, double AREA_REALIZADA, String STATUS, int STATUS_NUM) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.ID_REGIONAL = ID_REGIONAL;
         this.ID_SETOR = ID_SETOR;
@@ -87,6 +89,7 @@ public class O_S_ATIVIDADES {
         this.DATA_FINAL = DATA_FINAL;
         this.AREA_REALIZADA = AREA_REALIZADA;
         this.STATUS = STATUS;
+        this.STATUS_NUM = STATUS_NUM;
     }
 
     public Integer getID_PROGRAMACAO_ATIVIDADE() {
@@ -231,5 +234,13 @@ public class O_S_ATIVIDADES {
 
     public void setSTATUS(String STATUS) {
         this.STATUS = STATUS;
+    }
+
+    public int getSTATUS_NUM() {
+        return STATUS_NUM;
+    }
+
+    public void setSTATUS_NUM(int STATUS_NUM) {
+        this.STATUS_NUM = STATUS_NUM;
     }
 }

@@ -36,13 +36,13 @@ import java.util.List;
 import static com.example.forestsys.activities.ActivityRegistros.dataDoApontamento;
 import static com.example.forestsys.activities.ActivityRegistros.listaJoinOsInsumosSelecionados;
 import static com.example.forestsys.activities.ActivityMain.osSelecionada;
+import static com.example.forestsys.activities.ActivityRegistros.primeiraIns;
 
 public class FragmentoInsumos extends Fragment {
     private NDSpinner spinnerInsumos;
     private RecyclerView recyclerView;
     private TextView dataInsumos;
-    private List<Join_OS_INSUMOS> listaJoinOsInsumos;
-    private DataHoraAtual dataHoraAtual;
+    private static List<Join_OS_INSUMOS> listaJoinOsInsumos;
     private BaseDeDados baseDeDados;
     private DAO dao;
     private int cont;
@@ -65,7 +65,6 @@ public class FragmentoInsumos extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        dataHoraAtual = new DataHoraAtual();
         baseDeDados = BaseDeDados.getInstance(getContext());
         dao = baseDeDados.dao();
         dataInsumos = getView().findViewById(R.id.data_fragmento_insumos);
@@ -75,11 +74,16 @@ public class FragmentoInsumos extends Fragment {
 
         listaJoinOsInsumos = dao.listaJoinInsumoAtividades(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
-        listaJoinOsInsumosSelecionados = dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.dataAtual());
+        if(!dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), listaJoinOsInsumos.get(0).getDATA()).isEmpty())
+            listaJoinOsInsumos = dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), listaJoinOsInsumos.get(0).getDATA());
 
-        if(listaJoinOsInsumosSelecionados.isEmpty()) listaJoinOsInsumosSelecionados = new ArrayList<Join_OS_INSUMOS>();
+        if(primeiraIns == true){
+            listaJoinOsInsumosSelecionados = dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataDoApontamento);
+            primeiraIns = false;
+        }
 
         adaptador.setInsumos(listaJoinOsInsumosSelecionados);
+
         cont = 0;
 
         adapterInsumos = new ArrayAdapter<Join_OS_INSUMOS>(getActivity(),

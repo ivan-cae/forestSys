@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Ignore;
 
 public class Join_OS_INSUMOS {
+    int ID_PROGRAMACAO_ATIVIDADE;
     int ID_INSUMO;
     private String DESCRICAO;
     private double NUTRIENTE_N;
@@ -23,9 +24,18 @@ public class Join_OS_INSUMOS {
 
     private int RECOMENDACAO;
     private double QTD_HA_RECOMENDADO;
-    private double QTD_HA_APLICADO;
+    private  double QTD_APLICADO;
+    private String DATA;
 
     public Join_OS_INSUMOS() {
+    }
+
+    public int getID_PROGRAMACAO_ATIVIDADE() {
+        return ID_PROGRAMACAO_ATIVIDADE;
+    }
+
+    public void setID_PROGRAMACAO_ATIVIDADE(int ID_PROGRAMACAO_ATIVIDADE) {
+        this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
     }
 
     public int getID_INSUMO() {
@@ -140,8 +150,6 @@ public class Join_OS_INSUMOS {
         this.UND_MEDIDA = UND_MEDIDA;
     }
 
-
-
     public int getRECOMENDACAO() {
         return RECOMENDACAO;
     }
@@ -150,8 +158,13 @@ public class Join_OS_INSUMOS {
         this.RECOMENDACAO = RECOMENDACAO;
     }
 
-    private double QTD_APLICADO;
-    private String DATA;
+    public double getQTD_HA_RECOMENDADO() {
+        return QTD_HA_RECOMENDADO;
+    }
+
+    public void setQTD_HA_RECOMENDADO(double QTD_HA_RECOMENDADO) {
+        this.QTD_HA_RECOMENDADO = QTD_HA_RECOMENDADO;
+    }
 
     public double getQTD_APLICADO() {
         return QTD_APLICADO;
@@ -168,23 +181,6 @@ public class Join_OS_INSUMOS {
     public void setDATA(String DATA) {
         this.DATA = DATA;
     }
-    public double getQTD_HA_RECOMENDADO() {
-        return QTD_HA_RECOMENDADO;
-    }
-
-    public void setQTD_HA_RECOMENDADO(double QTD_HA_RECOMENDADO) {
-        this.QTD_HA_RECOMENDADO = QTD_HA_RECOMENDADO;
-    }
-
-    public double getQTD_HA_APLICADO() {
-        return QTD_HA_APLICADO;
-    }
-
-    public void setQTD_HA_APLICADO(double QTD_HA_APLICADO) {
-        this.QTD_HA_APLICADO = QTD_HA_APLICADO;
-    }
-
-
 
     @Override
     public String toString(){return DESCRICAO;}

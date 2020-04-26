@@ -17,7 +17,7 @@
 
         <TextView
             android:id="@+id/textView120"
-            android:layout_width="30dp"
+            android:layout_width="32dp"
             android:layout_height="20dp"
             android:layout_marginTop="16dp"
             android:background="#BDB8B8"
@@ -30,9 +30,9 @@
 
         <TextView
             android:id="@+id/textView119"
-            android:layout_width="75dp"
+            android:layout_width="79dp"
             android:layout_height="20dp"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:background="#BDB8B8"
             android:text="Descrição"
@@ -44,7 +44,7 @@
 
         <TextView
             android:id="@+id/textView118"
-            android:layout_width="40dp"
+            android:layout_width="32dp"
             android:layout_height="20dp"
             android:layout_marginTop="16dp"
             android:background="#BDB8B8"
@@ -57,7 +57,7 @@
 
         <TextView
             android:id="@+id/textView110"
-            android:layout_width="30dp"
+            android:layout_width="32dp"
             android:layout_height="20dp"
             android:layout_marginTop="16dp"
             android:background="#BDB8B8"
@@ -70,7 +70,7 @@
 
         <TextView
             android:id="@+id/textView112"
-            android:layout_width="30dp"
+            android:layout_width="32dp"
             android:layout_height="20dp"
             android:layout_marginTop="16dp"
             android:background="#BDB8B8"
@@ -83,7 +83,7 @@
 
         <TextView
             android:id="@+id/textView116"
-            android:layout_width="30dp"
+            android:layout_width="32dp"
             android:layout_height="20dp"
             android:layout_marginTop="16dp"
             android:background="#BDB8B8"
@@ -96,7 +96,7 @@
 
         <TextView
             android:id="@+id/textView108"
-            android:layout_width="30dp"
+            android:layout_width="32dp"
             android:layout_height="20dp"
             android:layout_marginTop="16dp"
             android:background="#BDB8B8"
@@ -109,7 +109,7 @@
 
         <TextView
             android:id="@+id/textView106"
-            android:layout_width="40dp"
+            android:layout_width="32dp"
             android:layout_height="20dp"
             android:layout_marginTop="16dp"
             android:background="#BDB8B8"
@@ -122,7 +122,7 @@
 
         <TextView
             android:id="@+id/textView115"
-            android:layout_width="30dp"
+            android:layout_width="32dp"
             android:layout_height="20dp"
             android:layout_marginTop="16dp"
             android:background="#BDB8B8"
@@ -135,7 +135,7 @@
 
         <TextView
             android:id="@+id/textView117"
-            android:layout_width="40dp"
+            android:layout_width="35dp"
             android:layout_height="20dp"
             android:layout_marginTop="16dp"
             android:background="#BDB8B8"
@@ -148,7 +148,7 @@
 
         <TextView
             android:id="@+id/textView114"
-            android:layout_width="45dp"
+            android:layout_width="40dp"
             android:layout_height="20dp"
             android:layout_marginTop="16dp"
             android:background="#BDB8B8"
@@ -187,7 +187,7 @@
 
         <TextView
             android:id="@+id/textView109"
-            android:layout_width="30dp"
+            android:layout_width="32dp"
             android:layout_height="20dp"
             android:layout_marginTop="16dp"
             android:background="#BDB8B8"
@@ -200,16 +200,14 @@
 
         <TextView
             android:id="@+id/textView107"
-            android:layout_width="30dp"
+            android:layout_width="32dp"
             android:layout_height="20dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="5dp"
             android:background="#BDB8B8"
             android:text="Un"
             android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView113"
             app:layout_constraintTop_toBottomOf="@+id/os_detalhes_obs" />
 
@@ -235,6 +233,7 @@
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
+            android:visibility="gone"
             app:layout_constraintStart_toEndOf="@+id/map"
             app:layout_constraintTop_toBottomOf="@+id/botao_detalhes_calibracao" />
 
@@ -266,7 +265,7 @@
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@+id/map"
-            app:layout_constraintTop_toBottomOf="@+id/botao_detalhes_qualidade" />
+            app:layout_constraintTop_toBottomOf="@+id/botao_detalhes_calibracao" />
 
         <fragment
             android:id="@+id/map"
@@ -505,6 +504,19 @@
             app:layout_constraintStart_toEndOf="@+id/textView61"
             app:layout_constraintTop_toTopOf="@+id/textView61" />
 
+        <Button
+            android:id="@+id/botao_finalizar_os"
+            android:layout_width="150dp"
+            android:layout_height="45dp"
+            android:layout_marginEnd="18dp"
+            android:layout_marginBottom="32dp"
+            android:enabled="false"
+            android:text="Finalizar"
+            android:textColor="#FFFFFF"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
@@ -539,7 +551,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:maxWidth="230dp"
+        android:maxWidth="232dp"
         android:visibility="visible"
         app:menu="@menu/menu_main_lateral" />
 </androidx.drawerlayout.widget.DrawerLayout>

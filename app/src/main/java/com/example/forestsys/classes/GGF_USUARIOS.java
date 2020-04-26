@@ -115,6 +115,6 @@ public class GGF_USUARIOS implements Serializable {
 
     @Override
     public String toString() {
-        return EMAIL;
+        return DESCRICAO;
     }
 }

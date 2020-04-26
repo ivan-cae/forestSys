@@ -471,19 +471,23 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                                     Double desvioP1;
                                     Double desvioP2;
 
-                                    mediaP1 = Double.valueOf(p1Media.getText().toString());
-                                    mediaP2 = Double.valueOf(p2Media.getText().toString());
-                                    desvioP1 = Double.valueOf(desvioProduto1.getText().toString());
-                                    desvioP2 = Double.valueOf(desvioProduto2.getText().toString());
+                                    mediaP1 = Double.valueOf(p1Media.getText().toString().replace(',','.'));
+                                    mediaP2 = Double.valueOf(p2Media.getText().toString().replace(',','.'));
+                                    desvioP1 = Double.valueOf(desvioProduto1.getText().toString().replace(',','.'));
+                                    desvioP2 = Double.valueOf(desvioProduto2.getText().toString().replace(',','.'));
 
                                     CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem = new CALIBRAGEM_SUBSOLAGEM(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
                                             dataHoraAtual.dataAtual(), checaTurno(), idMaquinaImplemento,
                                             posicaoOperador, mediaP1, desvioP1, mediaP2, desvioP2);
 
                                     dao.insert(calibragem_subsolagem);
-                                    Toast.makeText(getApplicationContext(), "Calibração Salva com sucesso!", Toast.LENGTH_LONG).show();
+
                                     osSelecionada.setSTATUS("Andamento");
+                                    osSelecionada.setSTATUS_NUM(1);
                                     dao.update(osSelecionada);
+
+                                    Toast.makeText(getApplicationContext(), "Calibração Salva com sucesso!", Toast.LENGTH_LONG).show();
+
                                     Intent it = new Intent(ActivityCalibracao.this, ActivityListagemCalibracao.class);
                                     startActivity(it);
                                 }
@@ -642,23 +646,23 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                         if (corrigirP1 == 0) {
                             if (atualP1 == 1) {
                                 amostrasP1[0] = Double.valueOf(valorCorreto);
-                                p1_a1.setText(valorCorreto);
+                                p1_a1.setText(valorCorreto.replace('.', ','));
                             }
                             if (atualP1 == 2) {
                                 amostrasP1[1] = Double.valueOf(valorCorreto);
-                                p1_a2.setText(valorCorreto);
+                                p1_a2.setText(valorCorreto.replace('.', ','));
                             }
                             if (atualP1 == 3) {
                                 amostrasP1[2] = Double.valueOf(valorCorreto);
-                                p1_a3.setText(valorCorreto);
+                                p1_a3.setText(valorCorreto.replace('.', ','));
                             }
                             if (atualP1 == 4) {
                                 amostrasP1[3] = Double.valueOf(valorCorreto);
-                                p1_a4.setText(valorCorreto);
+                                p1_a4.setText(valorCorreto.replace('.', ','));
                             }
                             if (atualP1 == 5) {
                                 amostrasP1[4] = Double.valueOf(valorCorreto);
-                                p1_a5.setText(valorCorreto);
+                                p1_a5.setText(valorCorreto.replace('.', ','));
                             }
                             atualP1++;
                         }
@@ -670,23 +674,23 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
                             if (corrigirP1 == 1) {
                                 amostrasP1[0] = Double.valueOf(valorCorreto);
-                                p1_a1.setText(valorCorreto);
+                                p1_a1.setText(valorCorreto.replace('.', ','));
                             }
                             if (corrigirP1 == 2) {
                                 amostrasP1[1] = Double.valueOf(valorCorreto);
-                                p1_a2.setText(valorCorreto);
+                                p1_a2.setText(valorCorreto.replace('.', ','));
                             }
                             if (corrigirP1 == 3) {
                                 amostrasP1[2] = Double.valueOf(valorCorreto);
-                                p1_a3.setText(valorCorreto);
+                                p1_a3.setText(valorCorreto.replace('.', ','));
                             }
                             if (corrigirP1 == 4) {
                                 amostrasP1[3] = Double.valueOf(valorCorreto);
-                                p1_a4.setText(valorCorreto);
+                                p1_a4.setText(valorCorreto.replace('.', ','));
                             }
                             if (corrigirP1 == 5) {
                                 amostrasP1[4] = Double.valueOf(valorCorreto);
-                                p1_a5.setText(valorCorreto);
+                                p1_a5.setText(valorCorreto.replace('.', ','));
                             }
                         }
                         dialog.dismiss();
@@ -706,7 +710,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                     if (((diferencaPercentual(amostrasP1[0], amostrasP1[1]).isInfinite()) || diferencaPercentual(amostrasP1[0], amostrasP1[1]).isNaN()) )
                         dif1_p1.setText("");
                     else
-                        dif1_p1.setText(String.valueOf(((diferencaPercentual(amostrasP1[0], amostrasP1[1])))));
+                        dif1_p1.setText(String.valueOf(((diferencaPercentual(amostrasP1[0], amostrasP1[1])))).replace('.', ','));
 
 
                     if (diferencaPercentual(amostrasP1[1], amostrasP1[2]) > 5.00 || diferencaPercentual(amostrasP1[1], amostrasP1[2]) < -5.00) {
@@ -719,7 +723,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                     if (((diferencaPercentual(amostrasP1[1], amostrasP1[2]).isNaN() || diferencaPercentual(amostrasP1[1], amostrasP1[2]).isInfinite())) )
                         dif2_p1.setText("");
                     else
-                        dif2_p1.setText(String.valueOf(((diferencaPercentual(amostrasP1[1], amostrasP1[2])))));
+                        dif2_p1.setText(String.valueOf(((diferencaPercentual(amostrasP1[1], amostrasP1[2])))).replace('.', ','));
 
 
                     if (diferencaPercentual(amostrasP1[2], amostrasP1[3]) >  5.00 || diferencaPercentual(amostrasP1[2], amostrasP1[3]) < -5.00) {
@@ -733,7 +737,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                     if (((diferencaPercentual(amostrasP1[2], amostrasP1[3]).isInfinite() || diferencaPercentual(amostrasP1[2], amostrasP1[3]).isNaN())))
                         dif3_p1.setText("");
                     else
-                        dif3_p1.setText(String.valueOf(((diferencaPercentual(amostrasP1[2], amostrasP1[3])))));
+                        dif3_p1.setText(String.valueOf(((diferencaPercentual(amostrasP1[2], amostrasP1[3])))).replace('.', ','));
 
 
                     if (diferencaPercentual(amostrasP1[3], amostrasP1[4]) > 5.00 || diferencaPercentual(amostrasP1[3], amostrasP1[4]) < -5.00) {
@@ -747,7 +751,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                     if (((diferencaPercentual(amostrasP1[3], amostrasP1[4]).isInfinite() || diferencaPercentual(amostrasP1[3], amostrasP1[4]).isNaN())))
                         dif4_p1.setText("");
                     else
-                        dif4_p1.setText(String.valueOf(((diferencaPercentual(amostrasP1[3], amostrasP1[4])))));
+                        dif4_p1.setText(String.valueOf(((diferencaPercentual(amostrasP1[3], amostrasP1[4])))).replace('.', ','));
 
 
 
@@ -805,13 +809,13 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
                 if (mediaPercentualp1.isInfinite() || mediaPercentualp1.isNaN()) mediaDifP1.setText("");
                 else {
-                    mediaDifP1.setText(String.valueOf((arredonda2Casas(mediaPercentualp1))));
+                    mediaDifP1.setText(String.valueOf((arredonda2Casas(mediaPercentualp1))).replace('.', ','));
                 }
 
-                p1Media.setText(String.valueOf((mediaGeralp1)));
-                mediaProduto1.setText(String.valueOf((mediaGeralp1)));
+                p1Media.setText(String.valueOf((mediaGeralp1)).replace('.', ','));
+                mediaProduto1.setText(String.valueOf((mediaGeralp1)).replace('.', ','));
                 Double aux1 = arredonda2Casas(desvioPadrao(amostrasP1));
-                desvioProduto1.setText(String.valueOf((aux1)));
+                desvioProduto1.setText(String.valueOf((aux1)).replace('.', ','));
 
                 botaoConfirma.setVisibility(View.INVISIBLE);
 
@@ -873,23 +877,23 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                         if (corrigirP2 == 0) {
                             if (atualP2 == 1) {
                                 amostrasP2[0] = Double.valueOf(valorCorreto);
-                                p2_a1.setText(valorCorreto);
+                                p2_a1.setText(valorCorreto.replace('.', ','));
                             }
                             if (atualP2 == 2) {
                                 amostrasP2[1] = Double.valueOf(valorCorreto);
-                                p2_a2.setText(valorCorreto);
+                                p2_a2.setText(valorCorreto.replace('.', ','));
                             }
                             if (atualP2 == 3) {
                                 amostrasP2[2] = Double.valueOf(valorCorreto);
-                                p2_a3.setText(valorCorreto);
+                                p2_a3.setText(valorCorreto.replace('.', ','));
                             }
                             if (atualP2 == 4) {
                                 amostrasP2[3] = Double.valueOf(valorCorreto);
-                                p2_a4.setText(valorCorreto);
+                                p2_a4.setText(valorCorreto.replace('.', ','));
                             }
                             if (atualP2 == 5) {
                                 amostrasP2[4] = Double.valueOf(valorCorreto);
-                                p2_a5.setText(valorCorreto);
+                                p2_a5.setText(valorCorreto.replace('.', ','));
                             }
                             atualP2++;
                         }
@@ -901,23 +905,23 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
                             if (corrigirP2 == 1) {
                                 amostrasP2[0] = Double.valueOf(valorCorreto);
-                                p2_a1.setText(valorCorreto);
+                                p2_a1.setText(valorCorreto.replace('.', ','));
                             }
                             if (corrigirP2 == 2) {
                                 amostrasP2[1] = Double.valueOf(valorCorreto);
-                                p2_a2.setText(valorCorreto);
+                                p2_a2.setText(valorCorreto.replace('.', ','));
                             }
                             if (corrigirP2 == 3) {
                                 amostrasP2[2] = Double.valueOf(valorCorreto);
-                                p2_a3.setText(valorCorreto);
+                                p2_a3.setText(valorCorreto.replace('.', ','));
                             }
                             if (corrigirP2 == 4) {
                                 amostrasP2[3] = Double.valueOf(valorCorreto);
-                                p2_a4.setText(valorCorreto);
+                                p2_a4.setText(valorCorreto.replace('.', ','));
                             }
                             if (corrigirP2 == 5) {
                                 amostrasP2[4] = Double.valueOf(valorCorreto);
-                                p2_a5.setText(valorCorreto);
+                                p2_a5.setText(valorCorreto.replace('.', ','));
                             }
                         }
                         dialog.dismiss();
@@ -934,7 +938,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                     if (((diferencaPercentual(amostrasP2[0], amostrasP2[1]).isInfinite() || diferencaPercentual(amostrasP2[0], amostrasP2[1]).isNaN())))
                         dif1_p2.setText("");
                     else
-                        dif1_p2.setText(String.valueOf(((diferencaPercentual(amostrasP2[0], amostrasP2[1])))));
+                        dif1_p2.setText(String.valueOf(((diferencaPercentual(amostrasP2[0], amostrasP2[1])))).replace('.', ','));
 
 
                     if (diferencaPercentual(amostrasP2[1], amostrasP2[2]) > 5.00 || diferencaPercentual(amostrasP2[1], amostrasP2[2]) < -5.00) {
@@ -947,7 +951,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                     if (((diferencaPercentual(amostrasP2[1], amostrasP2[2]).isInfinite() || diferencaPercentual(amostrasP2[1], amostrasP2[2]).isNaN())))
                         dif2_p2.setText("");
                     else
-                        dif2_p2.setText(String.valueOf(((diferencaPercentual(amostrasP2[1], amostrasP2[2])))));
+                        dif2_p2.setText(String.valueOf(((diferencaPercentual(amostrasP2[1], amostrasP2[2])))).replace('.', ','));
 
 
                     if (diferencaPercentual(amostrasP2[2], amostrasP2[3]) > 5.00 || diferencaPercentual(amostrasP2[2], amostrasP2[3]) < -5.00) {
@@ -960,7 +964,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                     if (((diferencaPercentual(amostrasP2[2], amostrasP2[3]).isNaN() || diferencaPercentual(amostrasP2[2], amostrasP2[3]).isInfinite())))
                         dif3_p2.setText("");
                     else
-                        dif3_p2.setText(String.valueOf(((diferencaPercentual(amostrasP2[2], amostrasP2[3])))));
+                        dif3_p2.setText(String.valueOf(((diferencaPercentual(amostrasP2[2], amostrasP2[3])))).replace('.', ','));
 
 
                     if (diferencaPercentual(amostrasP2[3], amostrasP2[4]) > 5.00 || diferencaPercentual(amostrasP2[3], amostrasP2[4]) < -5.00) {
@@ -973,7 +977,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                     if (((diferencaPercentual(amostrasP2[3], amostrasP2[4]).isNaN() || diferencaPercentual(amostrasP2[3], amostrasP2[4]).isInfinite())))
                         dif4_p2.setText("");
                     else
-                        dif4_p2.setText(String.valueOf(((diferencaPercentual(amostrasP2[3], amostrasP2[4])))));
+                        dif4_p2.setText(String.valueOf(((diferencaPercentual(amostrasP2[3], amostrasP2[4])))).replace('.', ','));
 
                 //testando p1
 
@@ -1033,13 +1037,13 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                 if ((mediaPercentualp2).isNaN() || mediaPercentualp2.isInfinite()) mediaDifP2.setText("");
                 else {
 
-                    mediaDifP2.setText(String.valueOf((arredonda2Casas(mediaPercentualp2))));
+                    mediaDifP2.setText(String.valueOf((arredonda2Casas(mediaPercentualp2))).replace('.', ','));
                 }
 
-                p2Media.setText(String.valueOf((mediaGeralp2)));
-                mediaProduto2.setText(String.valueOf((mediaGeralp2)));
+                p2Media.setText(String.valueOf((mediaGeralp2)).replace('.', ','));
+                mediaProduto2.setText(String.valueOf((mediaGeralp2)).replace('.', ','));
                 Double aux1 = arredonda2Casas(desvioPadrao(amostrasP2));
-                desvioProduto2.setText(String.valueOf((aux1)));
+                desvioProduto2.setText(String.valueOf((aux1)).replace('.', ','));
 
                 botaoConfirma.setVisibility(View.GONE);
 

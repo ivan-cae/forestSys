@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.forestsys.R;
 import com.example.forestsys.classes.GGF_USUARIOS;
+import com.example.forestsys.classes.O_S_ATIVIDADES_DIA;
 import com.example.forestsys.classes.PRESTADORES;
 import com.example.forestsys.repositorios.RepositorioPrestadores;
 import com.example.forestsys.repositorios.RepositorioUsers;
@@ -27,8 +28,10 @@ import com.example.forestsys.viewModels.ViewModelO_S_ATIVIDADES_DIA;
 
 import java.util.ArrayList;
 
+import static com.example.forestsys.activities.ActivityMain.osSelecionada;
 import static com.example.forestsys.activities.ActivityRegistros.dataDoApontamento;
 import static com.example.forestsys.activities.ActivityRegistros.oSAtividadesDiaAtual;
+import static com.example.forestsys.activities.ActivityRegistros.primeiraReg;
 import static com.example.forestsys.activities.ActivityRegistros.viewModelOSAtividadesDia;
 
 public class FragmentoRendimento extends Fragment {
@@ -53,6 +56,8 @@ public class FragmentoRendimento extends Fragment {
     public static String hoe;
     public static String hme;
     public static String obs;
+
+    public static O_S_ATIVIDADES_DIA auxiliar;
 
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -237,14 +242,22 @@ public class FragmentoRendimento extends Fragment {
             }
         });
 
+        if(primeiraReg == true){
+            auxiliar = oSAtividadesDiaAtual;
+            primeiraReg = false;
+        }
 
-        if (oSAtividadesDiaAtual == null) {
+        if (auxiliar == null) {
             dataApontamento.setText(dataDoApontamento);
-        } else populaInfo();
+            auxiliar = new O_S_ATIVIDADES_DIA();
+        } else{
+            populaInfo(auxiliar);
+        }
     }
 
     public String checaTextView(TextView t, String str) {
         String s1 = t.getText().toString().trim();
+        if(s1.isEmpty()) return null;
         char []c = s1.toCharArray();
         if (s1.length()>0) {
             if (s1 == "," || c[s1.length() - 1] == ',' || c[0] == ',' || contaVirgula(s1, ',') > 1) {
@@ -255,6 +268,7 @@ public class FragmentoRendimento extends Fragment {
                 t.setError(null);
             }
         }
+
         Log.e("teste", str);
             return str;
 }
@@ -264,33 +278,33 @@ public class FragmentoRendimento extends Fragment {
     }
 
     //Mostra as informações do apontamento nos seus respectivos campos
-    public void populaInfo() {
-        posicaoPrestador = oSAtividadesDiaAtual.getID_PRESTADOR();
-        posicaoResponsavel = oSAtividadesDiaAtual.getID_RESPONSAVEL();
-        dataApontamento.setText(oSAtividadesDiaAtual.getDATA());
+    public void populaInfo(O_S_ATIVIDADES_DIA osAtv) {
+        posicaoPrestador = osAtv.getID_PRESTADOR();
+        posicaoResponsavel = osAtv.getID_RESPONSAVEL();
+        dataApontamento.setText(osAtv.getDATA());
 
-        spinnerResponsavel.setSelection(oSAtividadesDiaAtual.getID_RESPONSAVEL() - 1, true);
-        spinnerPrestador.setSelection(oSAtividadesDiaAtual.getID_PRESTADOR() - 1, true);
+        spinnerResponsavel.setSelection(osAtv.getID_RESPONSAVEL() - 1, true);
+        spinnerPrestador.setSelection(osAtv.getID_PRESTADOR() - 1, true);
 
-        if (oSAtividadesDiaAtual.getAREA_REALIZADA() != null)
-            areaRealizadaApontamento.setText(oSAtividadesDiaAtual.getAREA_REALIZADA().replace(".", ","));
+        if (osAtv.getAREA_REALIZADA() != null)
+            areaRealizadaApontamento.setText(osAtv.getAREA_REALIZADA().replace(".", ","));
 
-        if (oSAtividadesDiaAtual.getHO()!=null)
-            HOApontamento.setText((oSAtividadesDiaAtual.getHO()).replace(".", ","));
+        if (osAtv.getHO()!=null)
+            HOApontamento.setText((osAtv.getHO()).replace(".", ","));
 
-        if (oSAtividadesDiaAtual.getHH()!=null)
-            HHApontamento.setText((oSAtividadesDiaAtual.getHH()).replace(".", ","));
+        if (osAtv.getHH()!=null)
+            HHApontamento.setText((osAtv.getHH()).replace(".", ","));
 
-        if (oSAtividadesDiaAtual.getHM()!=null)
-            HMApontamento.setText((oSAtividadesDiaAtual.getHM()).replace(".", ","));
+        if (osAtv.getHM()!=null)
+            HMApontamento.setText((osAtv.getHM()).replace(".", ","));
 
-        if (oSAtividadesDiaAtual.getHM_ESCAVADEIRA()!=null)
-            HMEscavadeiraApontamento.setText((oSAtividadesDiaAtual.getHM_ESCAVADEIRA()).replace(".", ","));
+        if (osAtv.getHM_ESCAVADEIRA()!=null)
+            HMEscavadeiraApontamento.setText((osAtv.getHM_ESCAVADEIRA()).replace(".", ","));
 
-        if (oSAtividadesDiaAtual.getHO_ESCAVADEIRA()!=null)
-            HOEscavadeiraApontamento.setText((oSAtividadesDiaAtual.getHO_ESCAVADEIRA()).replace(".", ","));
+        if (osAtv.getHO_ESCAVADEIRA()!=null)
+            HOEscavadeiraApontamento.setText((osAtv.getHO_ESCAVADEIRA()).replace(".", ","));
 
-        if (oSAtividadesDiaAtual.getOBSERVACAO()!=null)
-            obsApontamento.setText(oSAtividadesDiaAtual.getOBSERVACAO());
+        if (osAtv.getOBSERVACAO()!=null)
+            obsApontamento.setText(osAtv.getOBSERVACAO());
     }
 }

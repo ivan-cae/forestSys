@@ -30,36 +30,36 @@
 
     <TextView
         android:id="@+id/textView68"
-        android:layout_width="37dp"
+        android:layout_width="30dp"
         android:layout_height="20dp"
         android:background="#BDB8B8"
         android:text="ZN"
         android:textAlignment="center"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView89"
         app:layout_constraintTop_toTopOf="@id/textView79" />
 
     <TextView
         android:id="@+id/textView70"
-        android:layout_width="37dp"
+        android:layout_width="30dp"
         android:layout_height="20dp"
         android:background="#BDB8B8"
         android:text="MN"
         android:textAlignment="center"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView83"
         app:layout_constraintTop_toTopOf="@id/textView79" />
 
     <TextView
         android:id="@+id/textView71"
-        android:layout_width="37dp"
+        android:layout_width="30dp"
         android:layout_height="20dp"
         android:background="#BDB8B8"
         android:text="K20"
         android:textAlignment="center"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView88"
         app:layout_constraintTop_toTopOf="@id/textView79" />
@@ -72,130 +72,153 @@
         android:background="#BDB8B8"
         android:text="Descrição"
         android:textAlignment="center"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView92" />
 
     <TextView
         android:id="@+id/textView80"
-        android:layout_width="37dp"
+        android:layout_width="30dp"
         android:layout_height="20dp"
         android:background="#BDB8B8"
         android:text="CU"
         android:textAlignment="center"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView85"
         app:layout_constraintTop_toTopOf="@id/textView79" />
 
     <TextView
         android:id="@+id/textView82"
-        android:layout_width="37dp"
+        android:layout_width="30dp"
         android:layout_height="20dp"
         android:background="#BDB8B8"
         android:text="N"
         android:textAlignment="center"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView79"
         app:layout_constraintTop_toTopOf="@+id/textView79" />
 
     <TextView
         android:id="@+id/textView83"
-        android:layout_width="37dp"
+        android:layout_width="30dp"
         android:layout_height="20dp"
         android:background="#BDB8B8"
         android:text="AF"
         android:textAlignment="center"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/textView80"
         app:layout_constraintTop_toTopOf="@id/textView79" />
 
     <TextView
         android:id="@+id/textView84"
-        android:layout_width="37dp"
+        android:layout_width="30dp"
         android:layout_height="20dp"
         android:background="#BDB8B8"
         android:text="MGO"
         android:textAlignment="center"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView87"
         app:layout_constraintTop_toTopOf="@id/textView79" />
 
     <TextView
         android:id="@+id/textView85"
-        android:layout_width="37dp"
+        android:layout_width="30dp"
         android:layout_height="20dp"
         android:background="#BDB8B8"
         android:text="S"
         android:textAlignment="center"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView68"
         app:layout_constraintTop_toTopOf="@id/textView79" />
 
     <TextView
         android:id="@+id/textView86"
-        android:layout_width="60dp"
+        android:layout_width="52dp"
         android:layout_height="20dp"
         android:background="#BDB8B8"
-        android:text="Qtd Apl."
+        android:text="Qtd Rec."
         android:textAlignment="center"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView70"
         app:layout_constraintTop_toTopOf="@id/textView79" />
 
     <TextView
+        android:id="@+id/textView66"
+        android:layout_width="50dp"
+        android:layout_height="20dp"
+        android:background="#BDB8B8"
+        android:text="Qtd Apl."
+        android:textAlignment="center"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/textView86"
+        app:layout_constraintTop_toTopOf="@id/textView79" />
+
+    <TextView
         android:id="@+id/textView87"
-        android:layout_width="37dp"
+        android:layout_width="30dp"
         android:layout_height="20dp"
         android:background="#BDB8B8"
         android:text="CAO"
         android:textAlignment="center"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView71"
         app:layout_constraintTop_toTopOf="@id/textView79" />
 
     <TextView
         android:id="@+id/textView88"
-        android:layout_width="37dp"
+        android:layout_width="35dp"
         android:layout_height="20dp"
         android:background="#BDB8B8"
         android:text="P205"
         android:textAlignment="center"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/textView82"
         app:layout_constraintTop_toTopOf="@id/textView79" />
 
     <TextView
         android:id="@+id/textView89"
-        android:layout_width="37dp"
+        android:layout_width="30dp"
         android:layout_height="20dp"
         android:background="#BDB8B8"
         android:text="B"
         android:textAlignment="center"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView84"
         app:layout_constraintTop_toTopOf="@id/textView79" />
 
     <TextView
         android:id="@+id/textView90"
-        android:layout_width="43dp"
+        android:layout_width="30dp"
         android:layout_height="20dp"
         android:background="#BDB8B8"
         android:text="Un"
         android:textAlignment="center"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView86"
+        app:layout_constraintStart_toEndOf="@+id/textView66"
+        app:layout_constraintTop_toTopOf="@id/textView79" />
+
+    <TextView
+        android:id="@+id/textView93"
+        android:layout_width="35dp"
+        android:layout_height="20dp"
+        android:background="#BDB8B8"
+        android:text="Dif%"
+        android:textAlignment="center"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/textView90"
         app:layout_constraintTop_toTopOf="@id/textView79" />
 
     <com.example.forestsys.NDSpinner
@@ -228,4 +251,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView68" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -33,9 +33,6 @@ public class RepositorioO_S_ATIVIDADES {
         return os;
     }
 
-    //retorna uma lista do tipo List com todos os itens cadastrados na tabela ClasseOs
-    public LiveData<List<O_S_ATIVIDADES>> getListaOs(){return dao.selecionaListaOs();}
-
     //inclui uma instância da ClasseOs no DB
 //parâmetro de entrada: instancia da ClasseOs
     public void insert(O_S_ATIVIDADES classeOs) {
