@@ -1,14 +1,11 @@
 package com.example.forestsys.activities;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -44,10 +41,7 @@ import com.example.forestsys.classes.CALIBRAGEM_SUBSOLAGEM;
 import com.example.forestsys.classes.O_S_ATIVIDADES_DIA;
 import com.example.forestsys.classes.O_S_ATIVIDADE_INSUMOS_DIA;
 import com.example.forestsys.classes.join.Join_OS_INSUMOS;
-import com.example.forestsys.viewModels.ViewModelCALIBRAGEM_SUBSOLAGEM;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Circle;
@@ -87,6 +81,8 @@ public class ActivityAtividades extends AppCompatActivity
     private TextView manejoOs;
     private TextView madeiraOs;
     private TextView descricao;
+    private TextView areaRealizada;
+    private TextView dataProgramada;
 
     private GoogleMap mMap;
     private ImageButton voltar;
@@ -138,10 +134,12 @@ public class ActivityAtividades extends AppCompatActivity
         setorOs = findViewById(R.id.os_detalhes_setor);
         obsOs = findViewById(R.id.os_detalhes_obs);
         statusOs = findViewById(R.id.os_detalhes_status);
-        areaOs = findViewById(R.id.os_detalhes_area);
+        areaOs = findViewById(R.id.os_detalhes_area_prog);
         manejoOs = findViewById(R.id.os_detalhes_manejo);
         madeiraOs = findViewById(R.id.os_detalhes_madeira);
         descricao = findViewById(R.id.os_detalhes_descricao);
+        dataProgramada = findViewById(R.id.os_detalhes_data_prog);
+        areaRealizada = findViewById(R.id.os_detalhes_area_realizada);
 
 
         idOs.setText(String.valueOf(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()));
@@ -152,6 +150,8 @@ public class ActivityAtividades extends AppCompatActivity
         statusOs.setText(osSelecionada.getSTATUS());
         areaOs.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace(".", ","));
         manejoOs.setText(String.valueOf(osSelecionada.getID_MANEJO()));
+        dataProgramada.setText(osSelecionada.getDATA_PROGRAMADA());
+        areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()));
 
         String temMadeira = "NÃO";
         if (osSelecionada.getMADEIRA_NO_TALHAO() == 1) temMadeira = "SIM";
@@ -218,11 +218,15 @@ public class ActivityAtividades extends AppCompatActivity
 
                                 boolean temProblema = false;
                                 for (int j = 0; j < listaOsAtiDia.size(); j++) {
-                                    if (listaOsAtiDia.get(j).getHM_ESCAVADEIRA() == null || listaOsAtiDia.get(j).getHM() == null
-                                            || listaOsAtiDia.get(j).getHO_ESCAVADEIRA() == null || listaOsAtiDia.get(j).getHO() == null
+                                    if(listaOsAtiDia.get(j).getHO_ESCAVADEIRA() == null) listaOsAtiDia.get(j).setHO_ESCAVADEIRA("0");
+                                    if(listaOsAtiDia.get(j).getHM_ESCAVADEIRA() == null) listaOsAtiDia.get(j).setHM_ESCAVADEIRA("0");
+
+                                    if (listaOsAtiDia.get(j).getHM() == null || listaOsAtiDia.get(j).getHO() == null
                                             || listaOsAtiDia.get(j).getHH() == null || listaOsAtiDia.get(j).getAREA_REALIZADA() == null) {
                                         temProblema = true;
                                     }
+
+                                    dao.update(listaOsAtiDia.get(j));
                                 }
                                 if (temProblema) {
                                     AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
@@ -238,6 +242,7 @@ public class ActivityAtividades extends AppCompatActivity
                                 } else {
                                     osSelecionada.setSTATUS_NUM(2);
                                     osSelecionada.setSTATUS("Finalizada");
+                                    osSelecionada.setDATA_FINAL(dataHoraAtual.dataAtual());
                                     dao.update(osSelecionada);
                                     Toast.makeText(ActivityAtividades.this, "Atividade Finalizada Com Sucesso!", Toast.LENGTH_LONG).show();
                                     Intent it = new Intent(ActivityAtividades.this, ActivityMain.class);

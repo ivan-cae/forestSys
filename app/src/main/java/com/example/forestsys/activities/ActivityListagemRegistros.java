@@ -52,6 +52,9 @@ public class ActivityListagemRegistros extends AppCompatActivity implements Navi
     private TextView ciclo;
     private TextView setor;
     private TextView manejo;
+    private TextView areaRealizada;
+    private TextView dataProgramada;
+
     private RecyclerView recyclerView;
     private AdaptadorApontamentos adaptador;
     private List<O_S_ATIVIDADES_DIA> apontamentos;
@@ -98,12 +101,14 @@ public class ActivityListagemRegistros extends AppCompatActivity implements Navi
         os = findViewById(R.id.listagem_apontamentos_idos);
         status = findViewById(R.id.listagem_apontamentos_status);
         descricao = findViewById(R.id.listagem_apontamentos_descricao);
-        area = findViewById(R.id.listagem_apontamentos_area);
+        area = findViewById(R.id.listagem_apontamentos_area_prog);
         talhao = findViewById(R.id.listagem_apontamentos_talhao);
         madeiraTalhao = findViewById(R.id.listagem_apontamentos_madeira);
         setor = findViewById(R.id.listagem_apontamentos_setor);
         ciclo = findViewById(R.id.listagem_apontamentos_ciclo);
         manejo = findViewById(R.id.listagem_apontamentos_manejo);
+        dataProgramada = findViewById(R.id.listagem_apontamentos_data_prog);
+        areaRealizada = findViewById(R.id.listagem_apontamentos_area_realizada);
 
 
         totalHo = findViewById(R.id.listagem_apontamentos_total_ho);
@@ -118,6 +123,8 @@ public class ActivityListagemRegistros extends AppCompatActivity implements Navi
         talhao.setText(osSelecionada.getTALHAO());
         setor.setText(osSelecionada.getID_SETOR().toString());
         ciclo.setText(osSelecionada.getCICLO().toString());
+        dataProgramada.setText(osSelecionada.getDATA_PROGRAMADA());
+        areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()));
 
         String temMadeira = "NÃO";
         if (osSelecionada.getMADEIRA_NO_TALHAO() == 1) temMadeira = "SIM";

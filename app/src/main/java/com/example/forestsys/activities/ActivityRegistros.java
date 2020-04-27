@@ -14,7 +14,6 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -53,6 +52,7 @@ import static com.example.forestsys.activities.FragmentoRendimento.obs;
 import static com.example.forestsys.activities.FragmentoRendimento.area;
 import static com.example.forestsys.activities.FragmentoRendimento.posicaoPrestador;
 import static com.example.forestsys.activities.FragmentoRendimento.posicaoResponsavel;
+import static java.sql.Types.NULL;
 
 public class ActivityRegistros extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -67,6 +67,8 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     private TextView manejoOs;
     private TextView madeiraOs;
     private TextView descricao;
+    private TextView areaRealizada;
+    private TextView dataProgramada;
 
     public static TextView dataApontamento;
     private ImageButton voltar;
@@ -111,11 +113,13 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         setorOs = findViewById(R.id.setor_os_continuar);
         obsOs = findViewById(R.id.obs_os_continuar);
         statusOs = findViewById(R.id.status_os_continuar);
-        areaOs = findViewById(R.id.area_os_continuar);
+        areaOs = findViewById(R.id.area_prog_os_continuar);
         manejoOs = findViewById(R.id.manejo_os_continuar);
         madeiraOs = findViewById(R.id.madeira_os_continuar);
         botaoDatePicker = findViewById(R.id.botao_date_picker);
         descricao = findViewById(R.id.descricao_os_continuar);
+        dataProgramada  = findViewById(R.id.data_prog_os_continuar);
+        areaRealizada = findViewById(R.id.area_realizada_os_continuar);
 
         idOs.setText(String.valueOf(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()));
         talhaoOs.setText(String.valueOf(osSelecionada.getTALHAO()));
@@ -125,6 +129,8 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         statusOs.setText(String.valueOf("Andamento"));
         areaOs.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace(".", ","));
         manejoOs.setText(String.valueOf(osSelecionada.getID_MANEJO()));
+        dataProgramada.setText(osSelecionada.getDATA_PROGRAMADA());
+        areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()));
 
         String temMadeira = "NÃO";
         if(osSelecionada.getMADEIRA_NO_TALHAO()==1) temMadeira = "SIM";
@@ -218,12 +224,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         botaoSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 salva();
-
-                Intent it = new Intent(ActivityRegistros.this, ActivityListagemRegistros.class);
-                Toast.makeText(getApplicationContext(), "Registro Salvo com sucesso!", Toast.LENGTH_LONG).show();
-                startActivity(it);
                 }
         });
 
@@ -330,6 +331,39 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     }
 
     public void salva(){
+        boolean converte = true;
+        double testeAreaRealizada;
+        if(area.contains(","))area = area.replace(',', '.');
+        try{
+            testeAreaRealizada = Double.valueOf(area);
+        }catch (NumberFormatException | NullPointerException nf){
+            converte = false;
+            testeAreaRealizada = 0;
+        }
+
+        if(converte = false){
+            AlertDialog dialog = new AlertDialog.Builder(ActivityRegistros.this)
+                    .setTitle("Erro!")
+                    .setMessage("O campo 'Área Realizada' contém um valor inválido.")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    }).create();
+            dialog.show();
+        }
+
+        if((testeAreaRealizada + osSelecionada.getAREA_REALIZADA()) > osSelecionada.getAREA_PROGRAMADA()) {
+            AlertDialog dialog = new AlertDialog.Builder(ActivityRegistros.this)
+                    .setTitle("Erro!")
+                    .setMessage("A área realizada não pode ser maior que a área programada")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    }).create();
+            dialog.show();
+        }else{
         if(oSAtividadesDiaAtual!=null && oSAtividadesDiaAtual.getDATA() != dataDoApontamento) {
             O_S_ATIVIDADES_DIA aux = oSAtividadesDiaAtual;
 
@@ -337,6 +371,10 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
             viewModelOSAtividadesDia.delete(aux);
         }
+        double auxAreaRealizada = osSelecionada.getAREA_REALIZADA();
+        osSelecionada.setAREA_REALIZADA(auxAreaRealizada+testeAreaRealizada);
+        dao.update(osSelecionada);
+
 
         oSAtividadesDiaAtual = new O_S_ATIVIDADES_DIA();
 
@@ -350,7 +388,10 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             if(area.contains(","))area = area.replace(',', '.');
             oSAtividadesDiaAtual.setAREA_REALIZADA(area);
         }
-        else oSAtividadesDiaAtual.setAREA_REALIZADA(null);
+        else{
+            oSAtividadesDiaAtual.setAREA_REALIZADA(null);
+            testeAreaRealizada = 0;
+        }
 
 
         if(hoe!=null){
@@ -397,6 +438,10 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataDoApontamento,
                         persiste.getID_INSUMO(), persiste.getQTD_APLICADO()));
             }
+        }
+            Intent it = new Intent(ActivityRegistros.this, ActivityListagemRegistros.class);
+            Toast.makeText(getApplicationContext(), "Registro Salvo com sucesso!", Toast.LENGTH_LONG).show();
+            startActivity(it);
         }
     }
 

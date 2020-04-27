@@ -301,13 +301,31 @@
             app:layout_constraintTop_toTopOf="@+id/textView42" />
 
         <TextView
-            android:id="@+id/os_detalhes_area"
-            android:layout_width="180dp"
+            android:id="@+id/os_detalhes_area_prog"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/textView46"
             app:layout_constraintTop_toTopOf="@+id/textView46" />
+
+        <TextView
+            android:id="@+id/os_detalhes_area_realizada"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textView97"
+            app:layout_constraintTop_toTopOf="@+id/textView97" />
+
+        <TextView
+            android:id="@+id/os_detalhes_data_prog"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textView96"
+            app:layout_constraintTop_toTopOf="@+id/textView96" />
 
         <TextView
             android:id="@+id/os_detalhes_manejo"
@@ -404,15 +422,37 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView46"
+            android:id="@+id/textView96"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Área:"
+            android:text="Data Programada:"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/textView42"
             app:layout_constraintTop_toBottomOf="@+id/textView42" />
+
+        <TextView
+            android:id="@+id/textView46"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:text="Área Programada:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/textView42"
+            app:layout_constraintTop_toBottomOf="@+id/textView42" />
+
+        <TextView
+            android:id="@+id/textView97"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Área Realizada:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/textView46"
+            app:layout_constraintTop_toBottomOf="@+id/textView46" />
 
         <TextView
             android:id="@+id/textView56"
@@ -423,7 +463,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/textView46"
-            app:layout_constraintTop_toBottomOf="@+id/textView46" />
+            app:layout_constraintTop_toBottomOf="@+id/textView97" />
 
         <TextView
             android:id="@+id/textView59"
@@ -477,7 +517,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="25dp"
             android:text="Observação"
             android:textSize="18sp"
             android:textStyle="bold"

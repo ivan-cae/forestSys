@@ -2,7 +2,6 @@ package com.example.forestsys.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,8 +22,6 @@ import com.example.forestsys.classes.O_S_ATIVIDADES;
 import com.example.forestsys.classes.O_S_ATIVIDADES_DIA;
 import com.google.android.material.navigation.NavigationView;
 
-import org.w3c.dom.Text;
-
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -37,7 +34,8 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
     TextView abertas;
     TextView andamento;
     TextView finalizadas;
-    TextView horas;
+    TextView mediaHH;
+    TextView mediaHM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +54,8 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
         abertas = findViewById(R.id.dash_abertas);
         andamento = findViewById(R.id.dash_andamento);
         finalizadas = findViewById(R.id.dash_finalizadas);
-        horas = findViewById(R.id.dash_tempo_medio);
+        mediaHH = findViewById(R.id.dash_media_hh);
+        mediaHM = findViewById(R.id.dash_media_hm);
 
         drawer = findViewById(R.id.drawer_layout_dash);
         NavigationView navigationView = findViewById(R.id.nav_view_dash);
@@ -87,24 +86,38 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
         finalizadas.setText(String.valueOf(contfinalizadas));
         int contasValidadas = contAndamento+contfinalizadas;
 
-        Double acumulador = 0.0;
+        Double acumuladorHH = 0.0;
+        Double acumuladorHM = 0.0;
 
         for(int i = 0; i<listaReg.size(); i++){
             O_S_ATIVIDADES aux = dao.selecionaOs(listaReg.get(i).getID_PROGRAMACAO_ATIVIDADE());
             if(aux.getSTATUS_NUM() != 0){
-                if(listaReg.get(i).getHH() == null) listaReg.get(i).setHH("0");
-                if(listaReg.get(i).getHM() == null) listaReg.get(i).setHM("0");
-                acumulador = Double.valueOf(listaReg.get(i).getHH()) + Double.valueOf(listaReg.get(i).getHM());
-            }
+                try {
+                    if (listaReg.get(i).getHH() == null || Double.valueOf(listaReg.get(i).getHH()).isNaN())
+                        listaReg.get(i).setHH("0");
+                    if (listaReg.get(i).getHM() == null || Double.valueOf(listaReg.get(i).getHM()).isNaN())
+                        listaReg.get(i).setHM("0");
+                }catch(NumberFormatException n){
+                    listaReg.get(i).setHH("0");
+                    listaReg.get(i).setHM("0");
+                }
+                acumuladorHH += Double.valueOf(listaReg.get(i).getHH());
+                acumuladorHM += Double.valueOf(listaReg.get(i).getHM());
+                }
         }
 
-        acumulador= acumulador/contasValidadas;
-        if(acumulador.isNaN() || acumulador.isInfinite() || acumulador==null) acumulador = 0.0;
-
         DecimalFormat df = new DecimalFormat(".00");
-        acumulador = Double.valueOf(df.format(acumulador));
 
-        horas.setText(String.valueOf(acumulador));
+        acumuladorHH= acumuladorHH/contasValidadas;
+        if(acumuladorHH.isNaN() || acumuladorHH.isInfinite() || acumuladorHH==null) acumuladorHH = 0.0;
+        acumuladorHH = Double.valueOf(df.format(acumuladorHH));
+
+        acumuladorHM= acumuladorHM/contasValidadas;
+        if(acumuladorHM.isNaN() || acumuladorHM.isInfinite() || acumuladorHM==null) acumuladorHM = 0.0;
+        acumuladorHM = Double.valueOf(df.format(acumuladorHM));
+
+        mediaHH.setText(String.valueOf(acumuladorHH));
+        mediaHM.setText(String.valueOf(acumuladorHM));
     }
 
     //Adiciona o botão de atualização a barra de ação

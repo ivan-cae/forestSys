@@ -34,7 +34,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="210dp"
-            android:background="#FFFFFF"
             android:text="Abertas"
             android:textAlignment="center"
             android:textColor="#6CBBB2"
@@ -73,15 +72,29 @@
             android:id="@+id/textView8"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="250dp"
-            android:text="Tempo Médio"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="480dp"
+            android:text="Média  Hora Homem"
+            android:textAlignment="center"
+            android:textColor="#6CBBB2"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView95"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="480dp"
+            android:layout_marginEnd="80dp"
+            android:text="Média  Hora Máquina"
             android:textAlignment="center"
             android:textColor="#6CBBB2"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/dash_andamento"
@@ -93,13 +106,22 @@
             app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
         <TextView
-            android:id="@+id/dash_tempo_medio"
+            android:id="@+id/dash_media_hh"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textSize="36sp"
             app:layout_constraintStart_toStartOf="@+id/textView8"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+        <TextView
+            android:id="@+id/dash_media_hm"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="36sp"
+            app:layout_constraintStart_toStartOf="@+id/textView95"
+            app:layout_constraintTop_toBottomOf="@+id/textView95" />
 
         <TextView
             android:id="@+id/dash_finalizadas"

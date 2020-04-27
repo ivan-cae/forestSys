@@ -213,11 +213,10 @@
             android:id="@+id/listagem_apontamentos_idos"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/textView18"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/textView18" />
 
         <TextView
             android:id="@+id/listagem_apontamentos_status"
@@ -231,64 +230,77 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/listagem_apontamentos_area"
-            android:layout_width="180dp"
+            android:id="@+id/listagem_apontamentos_data_prog"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:background="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textView98"
+            app:layout_constraintTop_toTopOf="@+id/textView98" />
+
+        <TextView
+            android:id="@+id/listagem_apontamentos_area_prog"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/textView46"
-            app:layout_constraintTop_toBottomOf="@+id/listagem_apontamentos_status" />
+            app:layout_constraintTop_toTopOf="@+id/textView46" />
+
+        <TextView
+            android:id="@+id/listagem_apontamentos_area_realizada"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textView99"
+            app:layout_constraintTop_toTopOf="@+id/textView99" />
 
         <TextView
             android:id="@+id/listagem_apontamentos_manejo"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/textView56"
-            app:layout_constraintTop_toBottomOf="@+id/listagem_apontamentos_area" />
+            app:layout_constraintTop_toTopOf="@+id/textView56" />
 
         <TextView
             android:id="@+id/listagem_apontamentos_madeira"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/textView59"
-            app:layout_constraintTop_toBottomOf="@+id/listagem_apontamentos_manejo" />
+            app:layout_constraintTop_toTopOf="@+id/textView59" />
 
         <TextView
             android:id="@+id/listagem_apontamentos_talhao"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/textView20"
-            app:layout_constraintTop_toBottomOf="@+id/textView61" />
+            app:layout_constraintTop_toTopOf="@+id/textView20" />
 
         <TextView
             android:id="@+id/listagem_apontamentos_ciclo"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/textView21"
-            app:layout_constraintTop_toBottomOf="@+id/textView20" />
+            app:layout_constraintTop_toTopOf="@+id/textView21" />
 
         <TextView
             android:id="@+id/listagem_apontamentos_setor"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/textView40"
-            app:layout_constraintTop_toBottomOf="@+id/listagem_apontamentos_ciclo" />
+            app:layout_constraintTop_toTopOf="@+id/textView40" />
 
         <TextView
             android:id="@+id/listagem_apontamentos_obs"
@@ -340,15 +352,37 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView46"
+            android:id="@+id/textView98"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Área:"
+            android:text="Data Programada:"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/textView42"
             app:layout_constraintTop_toBottomOf="@+id/textView42" />
+
+        <TextView
+            android:id="@+id/textView46"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Área Programada:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/textView42"
+            app:layout_constraintTop_toBottomOf="@+id/textView98" />
+
+        <TextView
+            android:id="@+id/textView99"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Área Realizada:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/textView46"
+            app:layout_constraintTop_toBottomOf="@+id/textView46" />
 
         <TextView
             android:id="@+id/textView56"
@@ -358,8 +392,8 @@
             android:text="Manejo:"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/textView46"
-            app:layout_constraintTop_toBottomOf="@+id/textView46" />
+            app:layout_constraintStart_toStartOf="@+id/textView99"
+            app:layout_constraintTop_toBottomOf="@+id/textView99" />
 
         <TextView
             android:id="@+id/textView59"
@@ -413,7 +447,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="25dp"
             android:text="Observação"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -436,11 +470,10 @@
             android:id="@+id/listagem_apontamentos_descricao"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/textView61"
-            app:layout_constraintTop_toBottomOf="@+id/listagem_apontamentos_idos" />
+            app:layout_constraintTop_toTopOf="@+id/textView61" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
