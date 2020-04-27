@@ -461,7 +461,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                 else {
                     AlertDialog dialog = new AlertDialog.Builder(ActivityCalibracao.this)
                             .setTitle("Concluir")
-                            .setMessage("Deseja Concluir a Calibragem?")
+                            .setMessage("Deseja Concluir a Calibração?")
                             .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -485,7 +485,6 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                                     osSelecionada.setSTATUS("Andamento");
                                     osSelecionada.setSTATUS_NUM(1);
                                     dao.update(osSelecionada);
-
                                     Toast.makeText(getApplicationContext(), "Calibração Salva com sucesso!", Toast.LENGTH_LONG).show();
 
                                     Intent it = new Intent(ActivityCalibracao.this, ActivityListagemCalibracao.class);

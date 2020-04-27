@@ -74,8 +74,8 @@ public class FragmentoInsumos extends Fragment {
 
         listaJoinOsInsumos = dao.listaJoinInsumoAtividades(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
-        if(!dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), listaJoinOsInsumos.get(0).getDATA()).isEmpty())
-            listaJoinOsInsumos = dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), listaJoinOsInsumos.get(0).getDATA());
+       // if(!dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), listaJoinOsInsumos.get(0).getDATA()).isEmpty())
+         //   listaJoinOsInsumos = dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), listaJoinOsInsumos.get(0).getDATA());
 
         if(primeiraIns == true){
             listaJoinOsInsumosSelecionados = dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataDoApontamento);

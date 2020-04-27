@@ -1,8 +1,14 @@
 package com.example.forestsys.activities;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -19,6 +25,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,6 +37,7 @@ import com.example.forestsys.ApplicationTodos;
 import com.example.forestsys.BaseDeDados;
 import com.example.forestsys.DAO;
 import com.example.forestsys.DataHoraAtual;
+import com.example.forestsys.PermissionUtils;
 import com.example.forestsys.R;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
 import com.example.forestsys.classes.CALIBRAGEM_SUBSOLAGEM;
@@ -38,6 +47,7 @@ import com.example.forestsys.classes.join.Join_OS_INSUMOS;
 import com.example.forestsys.viewModels.ViewModelCALIBRAGEM_SUBSOLAGEM;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Circle;
@@ -55,7 +65,11 @@ import static com.example.forestsys.activities.ActivityMain.osSelecionada;
 
 
 public class ActivityAtividades extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        GoogleMap.OnMyLocationButtonClickListener,
+        GoogleMap.OnMyLocationClickListener,
+        OnMapReadyCallback,
+        ActivityCompat.OnRequestPermissionsResultCallback{
 
     private DrawerLayout drawer;
     private Button botaoCalibracao;
@@ -85,6 +99,11 @@ public class ActivityAtividades extends AppCompatActivity
     BaseDeDados baseDeDados;
     DAO dao;
 
+    private boolean mPermissionDenied = false;
+
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,8 +121,8 @@ public class ActivityAtividades extends AppCompatActivity
         Log.e("id", String.valueOf(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()));
         joinOsInsumos = dao.listaJoinInsumoAtividades(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
-        if(!dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), joinOsInsumos.get(0).getDATA()).isEmpty())
-            joinOsInsumos = dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), joinOsInsumos.get(0).getDATA());
+        //if(!dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), joinOsInsumos.get(0).getDATA()).isEmpty())
+        //joinOsInsumos = dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), joinOsInsumos.get(0).getDATA());
 
         recyclerView = findViewById(R.id.os_detalhes_recycler_insumos);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -150,7 +169,7 @@ public class ActivityAtividades extends AppCompatActivity
         checaCalibracao();
 
 
-        if (osSelecionada.getSTATUS_NUM()!=2) checaCalibragemRegistro();
+        if (osSelecionada.getSTATUS_NUM() != 2) checaCalibragemRegistro();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detalhes);
 
@@ -290,20 +309,116 @@ public class ActivityAtividades extends AppCompatActivity
         return true;
     }
 
+
     //Método que define os parâmetros do mapa e marcadores
-    @Override
+    /*@Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-       // LatLng talhao1 = new LatLng(-30.662593, -52.8119419);
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        double longitude = location.getLongitude();
+        double latitude = location.getLatitude();
 
+
+         //LatLng talhao1 = new LatLng(-30.662593, -52.8119419);
+        //LatLng minhaLoc = new LatLng(mMap.getMyLocation().getLatitude(), mMap.getMyLocation().getLongitude());
 
         //desenharCirculo(talhao1);
        // mMap.moveCamera(CameraUpdateFactory.newLatLng(talhao1));
+
+
         mMap.setMyLocationEnabled(true);
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(minhaLoc));
+        //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(minhaLoc, 16));
         //mMap.setMinZoomPreference(1.f);
         //mMap.setMaxZoomPreference(14.0f);
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+    }
+*/
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        mMap = map;
+
+        mMap.setOnMyLocationButtonClickListener(this);
+        mMap.setOnMyLocationClickListener(this);
+        enableMyLocation();
+    }
+    private void enableMyLocation() {
+        // [START maps_check_location_permission]
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            if (mMap != null) {
+                mMap.setMyLocationEnabled(true);
+            }
+        } else {
+            // Permission to access the location is missing. Show rationale and request permission
+            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
+                    Manifest.permission.ACCESS_FINE_LOCATION, true);
+        }
+
+        onMyLocationButtonClick();
+        // [END maps_check_location_permission]
+    }
+
+    @Override
+    public boolean onMyLocationButtonClick() {
+        //Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+        // Return false so that we don't consume the event and the default behavior still occurs
+        // (the camera animates to the user's current position).
+        return false;
+    }
+
+    @Override
+    public void onMyLocationClick(@NonNull Location location) {
+        //Toast.makeText(this, "Localização Atual:\n" + location, Toast.LENGTH_LONG).show();
+    }
+
+    // [START maps_check_location_permission_result]
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
+            return;
+        }
+
+        if (PermissionUtils.isPermissionGranted(permissions, grantResults, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            // Enable the my location layer if the permission has been granted.
+            enableMyLocation();
+        } else {
+            // Permission was denied. Display an error message
+            // [START_EXCLUDE]
+            // Display the missing permission error dialog when the fragments resume.
+            mPermissionDenied = true;
+            // [END_EXCLUDE]
+        }
+    }
+    // [END maps_check_location_permission_result]
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        if (mPermissionDenied) {
+            // Permission was not granted, display error dialog.
+            showMissingPermissionError();
+            mPermissionDenied = false;
+        }
+    }
+
+
+    private void showMissingPermissionError() {
+        PermissionUtils.PermissionDeniedDialog
+                .newInstance(true).show(getSupportFragmentManager(), "dialog");
     }
 
     //Desenha um circulo no marcador do mapa
@@ -365,5 +480,10 @@ public class ActivityAtividades extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 }
