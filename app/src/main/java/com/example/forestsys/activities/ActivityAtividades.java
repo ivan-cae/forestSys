@@ -41,6 +41,7 @@ import com.example.forestsys.classes.CALIBRAGEM_SUBSOLAGEM;
 import com.example.forestsys.classes.O_S_ATIVIDADES_DIA;
 import com.example.forestsys.classes.O_S_ATIVIDADE_INSUMOS_DIA;
 import com.example.forestsys.classes.join.Join_OS_INSUMOS;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -59,11 +60,7 @@ import static com.example.forestsys.activities.ActivityMain.osSelecionada;
 
 
 public class ActivityAtividades extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        GoogleMap.OnMyLocationButtonClickListener,
-        GoogleMap.OnMyLocationClickListener,
-        OnMapReadyCallback,
-        ActivityCompat.OnRequestPermissionsResultCallback{
+        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
 
     private DrawerLayout drawer;
     private Button botaoCalibracao;
@@ -315,130 +312,37 @@ public class ActivityAtividades extends AppCompatActivity
     }
 
 
-    //Método que define os parâmetros do mapa e marcadores
-    /*@Override
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();
+         LatLng talhao1 = new LatLng(-16.939556, -43.434917);
 
-
-         //LatLng talhao1 = new LatLng(-30.662593, -52.8119419);
-        //LatLng minhaLoc = new LatLng(mMap.getMyLocation().getLatitude(), mMap.getMyLocation().getLongitude());
-
-        //desenharCirculo(talhao1);
-       // mMap.moveCamera(CameraUpdateFactory.newLatLng(talhao1));
+        desenharCirculo(talhao1);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(talhao1));
 
 
         mMap.setMyLocationEnabled(true);
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(minhaLoc));
-        //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(minhaLoc, 16));
-        //mMap.setMinZoomPreference(1.f);
-        //mMap.setMaxZoomPreference(14.0f);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(talhao1, 16));
+        mMap.setMinZoomPreference(1.f);
+        mMap.setMaxZoomPreference(14.0f);
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
     }
-*/
 
-    @Override
-    public void onMapReady(GoogleMap map) {
-        mMap = map;
-
-        mMap.setOnMyLocationButtonClickListener(this);
-        mMap.setOnMyLocationClickListener(this);
-        enableMyLocation();
-    }
-    private void enableMyLocation() {
-        // [START maps_check_location_permission]
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            if (mMap != null) {
-                mMap.setMyLocationEnabled(true);
-            }
-        } else {
-            // Permission to access the location is missing. Show rationale and request permission
-            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
-                    Manifest.permission.ACCESS_FINE_LOCATION, true);
-        }
-
-        onMyLocationButtonClick();
-        // [END maps_check_location_permission]
-    }
-
-    @Override
-    public boolean onMyLocationButtonClick() {
-        //Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-        // Return false so that we don't consume the event and the default behavior still occurs
-        // (the camera animates to the user's current position).
-        return false;
-    }
-
-    @Override
-    public void onMyLocationClick(@NonNull Location location) {
-        //Toast.makeText(this, "Localização Atual:\n" + location, Toast.LENGTH_LONG).show();
-    }
-
-    // [START maps_check_location_permission_result]
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
-            return;
-        }
-
-        if (PermissionUtils.isPermissionGranted(permissions, grantResults, Manifest.permission.ACCESS_FINE_LOCATION)) {
-            // Enable the my location layer if the permission has been granted.
-            enableMyLocation();
-        } else {
-            // Permission was denied. Display an error message
-            // [START_EXCLUDE]
-            // Display the missing permission error dialog when the fragments resume.
-            mPermissionDenied = true;
-            // [END_EXCLUDE]
-        }
-    }
-    // [END maps_check_location_permission_result]
-
-    @Override
-    protected void onResumeFragments() {
-        super.onResumeFragments();
-        if (mPermissionDenied) {
-            // Permission was not granted, display error dialog.
-            showMissingPermissionError();
-            mPermissionDenied = false;
-        }
-    }
-
-
-    private void showMissingPermissionError() {
-        PermissionUtils.PermissionDeniedDialog
-                .newInstance(true).show(getSupportFragmentManager(), "dialog");
-    }
 
     //Desenha um circulo no marcador do mapa
     //Parâmetro de entrada: variável tipo LatLng indicando a posição do marcador
     private void desenharCirculo(LatLng posicao) {
-        double raio = 100.0;
+        double raio = 150.0;
         int corLinha = 0xffff0000;
         int corShade = 0x44ff0000;
 
         CircleOptions circleOptions = new CircleOptions().center(posicao)
                 .radius(raio).fillColor(corShade).strokeColor(corLinha).strokeWidth(8);
         Circle mCircle = mMap.addCircle(circleOptions);
-
         MarkerOptions markerOptions = new MarkerOptions().position(posicao);
-        //mMap.addMarker(markerOptions.title("Talhao 1"));
+        mMap.addMarker(markerOptions.title("Talhão " + osSelecionada.getTALHAO()));
     }
 
     //Checa se há uma calibração naquela data e turno

@@ -333,8 +333,8 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     public void salva(){
         boolean converte = true;
         double testeAreaRealizada;
-        if(area.contains(","))area = area.replace(',', '.');
         try{
+            area.replace(',', '.');
             testeAreaRealizada = Double.valueOf(area);
         }catch (NumberFormatException | NullPointerException nf){
             converte = false;
