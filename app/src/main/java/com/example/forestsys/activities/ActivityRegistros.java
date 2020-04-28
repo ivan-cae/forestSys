@@ -14,6 +14,7 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -84,8 +85,8 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     public static boolean primeiraReg;
     public static boolean primeiraIns;
 
-    BaseDeDados baseDeDados;
-    DAO dao;
+    private BaseDeDados baseDeDados;
+    private static DAO dao;
     private int abaSelecionada;
 
     @Override
@@ -319,7 +320,22 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             String auxMes = String.valueOf(m);
             String auxAno = String.valueOf(year);
 
-            setarData(auxDia, auxMes, auxAno);
+            String auxTeste = (auxDia + "/" + auxMes + "/" + auxAno).trim();
+            Log.e("teste datas", auxTeste +" "+dataDoApontamento);
+            if(!auxTeste.equals(dataDoApontamento)){
+            if(dao.selecionaOsAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), auxTeste) != null) {
+                AlertDialog dialog = new AlertDialog.Builder(getContext())
+                        .setTitle("Erro!")
+                        .setMessage("A data selecionada já tem um registro cadastrado.")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                            }
+                        }).create();
+                dialog.show();
+             }
+            else setarData(auxDia, auxMes, auxAno);
+            }
         }
 
 
@@ -427,7 +443,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         if(obs!=null)oSAtividadesDiaAtual.setOBSERVACAO(obs);
         else oSAtividadesDiaAtual.setOBSERVACAO(null);
 
-        viewModelOSAtividadesDia.insert(oSAtividadesDiaAtual);
+            viewModelOSAtividadesDia.insert(oSAtividadesDiaAtual);
 
 
         if(!listaJoinOsInsumosSelecionados.isEmpty()) {

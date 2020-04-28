@@ -351,5 +351,4 @@ public interface DAO {
             "JOIN IMPLEMENTOS ON MAQUINA_IMPLEMENTO.ID_IMPLEMENTO = IMPLEMENTOS.ID_IMPLEMENTO " +
             "ORDER BY ID_MAQUINA_IMPLEMENTO")
     List<Join_MAQUINA_IMPLEMENTO> listaJoinMaquinaImplemento();
-
 }
