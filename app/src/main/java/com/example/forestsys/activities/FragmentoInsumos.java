@@ -59,6 +59,7 @@ public class FragmentoInsumos extends Fragment {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
+
         return root;
     }
 
@@ -106,7 +107,6 @@ public class FragmentoInsumos extends Fragment {
                             position++;
                             Join_OS_INSUMOS aux = (Join_OS_INSUMOS) parent.getSelectedItem();
                             if(aux.getID_INSUMO() == 0) aux.setID_INSUMO(dao.consultaDesc(aux.getDESCRICAO()));
-                            Log.e("Teste Insumo", String.valueOf(aux.getID_INSUMO()));
                             boolean jaTem = false;
                             for(int i = 0; i<listaJoinOsInsumosSelecionados.size(); i++){
                                     if(listaJoinOsInsumosSelecionados.get(i).getID_INSUMO() == aux.getID_INSUMO()) jaTem = true;

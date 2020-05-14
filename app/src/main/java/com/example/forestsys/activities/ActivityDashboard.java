@@ -110,11 +110,11 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
 
         acumuladorHH= acumuladorHH/contasValidadas;
         if(acumuladorHH.isNaN() || acumuladorHH.isInfinite() || acumuladorHH==null) acumuladorHH = 0.0;
-        acumuladorHH = Double.valueOf(df.format(acumuladorHH));
+        acumuladorHH = Double.valueOf(df.format(acumuladorHH).replace(',', '.'));
 
         acumuladorHM= acumuladorHM/contasValidadas;
         if(acumuladorHM.isNaN() || acumuladorHM.isInfinite() || acumuladorHM==null) acumuladorHM = 0.0;
-        acumuladorHM = Double.valueOf(df.format(acumuladorHM));
+        acumuladorHM = Double.valueOf(df.format(acumuladorHM).replace(',', '.'));
 
         mediaHH.setText(String.valueOf(acumuladorHH));
         mediaHM.setText(String.valueOf(acumuladorHM));

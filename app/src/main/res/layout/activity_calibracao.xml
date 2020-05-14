@@ -5,6 +5,7 @@
     android:id="@+id/drawer_layout_calibragem"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:fitsSystemWindows="true"
     tools:context=".activities.ActivityAtividades"
     tools:openDrawer="start">
@@ -12,6 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#FFFFFF"
         tools:context=".activities.ActivityCalibracao">
 
         <TextView
@@ -448,7 +450,7 @@
             android:focusable="false"
             android:inputType="number"
             android:maxLength="6"
-            
+
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/textView55"
@@ -464,7 +466,7 @@
             android:focusable="false"
             android:inputType="number"
             android:maxLength="6"
-            
+
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/p1_amostra_1"
@@ -480,7 +482,7 @@
             android:focusable="false"
             android:inputType="number"
             android:maxLength="6"
-            
+
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/p2_amostra_1"
@@ -512,7 +514,7 @@
             android:focusable="false"
             android:inputType="number"
             android:maxLength="6"
-            
+
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/p2_amostra_2"
@@ -543,7 +545,7 @@
             android:focusable="false"
             android:inputType="number"
             android:maxLength="6"
-            
+
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/p2_amostra_3"
@@ -574,7 +576,7 @@
             android:focusable="false"
             android:inputType="number"
             android:maxLength="6"
-            
+
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/p2_amostra_4"
@@ -774,7 +776,7 @@
             android:layout_width="150dp"
             android:layout_height="30dp"
             android:layout_marginEnd="8dp"
-            
+
             android:maxLength="6"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -825,11 +827,11 @@
             android:layout_marginStart="41dp"
             android:layout_marginEnd="41dp"
             android:scaleType="fitCenter"
-            android:src="@android:drawable/ic_input_add"
             app:layout_constraintBottom_toBottomOf="@+id/media_dif_p1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/media_dif_p1"
-            app:layout_constraintTop_toTopOf="@+id/textView43" />
+            app:layout_constraintTop_toTopOf="@+id/textView43"
+            app:srcCompat="@android:drawable/ic_input_add" />
 
         <ImageButton
             android:id="@+id/botao_calibragem_media_p2"
@@ -838,21 +840,21 @@
             android:layout_marginStart="41dp"
             android:layout_marginEnd="41dp"
             android:scaleType="fitCenter"
-            android:src="@android:drawable/ic_input_add"
             app:layout_constraintBottom_toBottomOf="@+id/media_dif_p2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/media_dif_p2"
-            app:layout_constraintTop_toTopOf="@+id/textView54" />
+            app:layout_constraintTop_toTopOf="@+id/textView54"
+            app:srcCompat="@android:drawable/ic_input_add" />
 
         <ImageButton
             android:id="@+id/botao_calibragem_confirma"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:background="#FFFFFF"
-            android:src="@drawable/ic_action_tick"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_action_tick" />
 
         <ImageButton
             android:id="@+id/botao_calibragem_voltar"

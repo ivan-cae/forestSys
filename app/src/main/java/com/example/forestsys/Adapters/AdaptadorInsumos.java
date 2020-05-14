@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.forestsys.activities.ActivityMain.osSelecionada;
-import static java.sql.Types.NULL;
 
 public class AdaptadorInsumos extends RecyclerView.Adapter<AdaptadorInsumos.InsumosHolder>{
     
@@ -73,8 +72,9 @@ public class AdaptadorInsumos extends RecyclerView.Adapter<AdaptadorInsumos.Insu
 
             DecimalFormat df = new DecimalFormat(".000");
 
+
             acumulador = acumulador/osSelecionada.getAREA_PROGRAMADA();
-            acumulador = Double.valueOf(df.format(acumulador));
+            acumulador = Double.valueOf(df.format(acumulador).replace(',', '.'));
             holder.QTDApl.setText(String.valueOf(acumulador).replace(".", ","));
             }
 

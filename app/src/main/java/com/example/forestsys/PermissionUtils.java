@@ -1,18 +1,15 @@
 package com.example.forestsys;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
-import android.widget.Toast;
-
-import com.example.forestsys.R;
 
 /**
  * Utility class for access to runtime permissions.

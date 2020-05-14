@@ -28,7 +28,6 @@ import com.example.forestsys.viewModels.ViewModelO_S_ATIVIDADES_DIA;
 
 import java.util.ArrayList;
 
-import static com.example.forestsys.activities.ActivityMain.osSelecionada;
 import static com.example.forestsys.activities.ActivityRegistros.dataDoApontamento;
 import static com.example.forestsys.activities.ActivityRegistros.oSAtividadesDiaAtual;
 import static com.example.forestsys.activities.ActivityRegistros.primeiraReg;
@@ -242,7 +241,7 @@ public class FragmentoRendimento extends Fragment {
             }
         });
 
-        if(primeiraReg == true){
+        if(primeiraReg == true) {
             auxiliar = oSAtividadesDiaAtual;
             primeiraReg = false;
         }
@@ -261,7 +260,7 @@ public class FragmentoRendimento extends Fragment {
         char []c = s1.toCharArray();
         if (s1.length()>0) {
             if (s1 == "," || c[s1.length() - 1] == ',' || c[0] == ',' || contaVirgula(s1, ',') > 1) {
-                t.setError("Valor incorreto!");
+                t.setError("Valores incorretos serão zerados durante o salvamento");
                 str = "";
             } else {
                 str = s1;
@@ -269,7 +268,6 @@ public class FragmentoRendimento extends Fragment {
             }
         }
 
-        Log.e("teste", str);
             return str;
 }
 

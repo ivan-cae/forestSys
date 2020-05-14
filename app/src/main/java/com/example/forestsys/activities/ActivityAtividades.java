@@ -89,14 +89,14 @@ public class ActivityAtividades extends AppCompatActivity
     private List<Join_OS_INSUMOS> joinOsInsumos;
     private DataHoraAtual dataHoraAtual;
 
-    BaseDeDados baseDeDados;
-    DAO dao;
+    private BaseDeDados baseDeDados;
+    private DAO dao;
 
     private boolean mPermissionDenied = false;
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
-
+    private LatLng talhao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +111,6 @@ public class ActivityAtividades extends AppCompatActivity
 
         baseDeDados = BaseDeDados.getInstance(getApplicationContext());
         dao = baseDeDados.dao();
-        Log.e("id", String.valueOf(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()));
         joinOsInsumos = dao.listaJoinInsumoAtividades(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
         //if(!dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), joinOsInsumos.get(0).getDATA()).isEmpty())
@@ -205,6 +204,9 @@ public class ActivityAtividades extends AppCompatActivity
         botaoFinalizarOs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Thread t1 = new Thread(){
+                    @Override
+                    public void run(){
                 AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
                         .setTitle("Finalizar Atividade")
                         .setMessage("Deseja Finalizar a Atividade Atual?")
@@ -212,18 +214,17 @@ public class ActivityAtividades extends AppCompatActivity
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 List<O_S_ATIVIDADES_DIA> listaOsAtiDia = dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
-
+                                List<O_S_ATIVIDADE_INSUMOS_DIA> listaOsInsDia = dao.checaOsInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
                                 boolean temProblema = false;
                                 for (int j = 0; j < listaOsAtiDia.size(); j++) {
                                     if(listaOsAtiDia.get(j).getHO_ESCAVADEIRA() == null) listaOsAtiDia.get(j).setHO_ESCAVADEIRA("0");
                                     if(listaOsAtiDia.get(j).getHM_ESCAVADEIRA() == null) listaOsAtiDia.get(j).setHM_ESCAVADEIRA("0");
-
                                     if (listaOsAtiDia.get(j).getHM() == null || listaOsAtiDia.get(j).getHO() == null
                                             || listaOsAtiDia.get(j).getHH() == null || listaOsAtiDia.get(j).getAREA_REALIZADA() == null) {
                                         temProblema = true;
                                     }
-
                                     dao.update(listaOsAtiDia.get(j));
+                                    if(listaOsAtiDia.size() != listaOsInsDia.size())  temProblema=true;
                                 }
                                 if (temProblema) {
                                     AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
@@ -232,6 +233,7 @@ public class ActivityAtividades extends AppCompatActivity
                                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialogInterface, int i) {
+
                                                 }
                                             })
                                             .create();
@@ -253,6 +255,9 @@ public class ActivityAtividades extends AppCompatActivity
                         }).create();
                 dialog.show();
             }
+                };
+                t1.run();
+            }
         });
 
         voltar.setOnClickListener(new View.OnClickListener() {
@@ -260,6 +265,13 @@ public class ActivityAtividades extends AppCompatActivity
             public void onClick(View v) {
                 Intent it = new Intent(ActivityAtividades.this, ActivityMain.class);
                 startActivity(it);
+            }
+        });
+
+        talhaoOs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(talhao, 16));
             }
         });
     }
@@ -317,15 +329,15 @@ public class ActivityAtividades extends AppCompatActivity
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-         LatLng talhao1 = new LatLng(-16.939556, -43.434917);
+        talhao = new LatLng(-16.939556, -43.434917);
 
-        desenharCirculo(talhao1);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(talhao1));
+        desenharCirculo(talhao);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(talhao));
 
 
         mMap.setMyLocationEnabled(true);
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(talhao1, 16));
-        mMap.setMinZoomPreference(1.f);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(talhao, 16));
+        //mMap.setMinZoomPreference(1.f);
         mMap.setMaxZoomPreference(14.0f);
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
     }

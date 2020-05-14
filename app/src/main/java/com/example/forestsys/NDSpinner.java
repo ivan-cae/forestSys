@@ -3,11 +3,12 @@ package com.example.forestsys;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.widget.Spinner;
+
+import androidx.appcompat.widget.AppCompatSpinner;
 
 import java.lang.reflect.Field;
 
-public class NDSpinner extends android.widget.Spinner {
+public class NDSpinner extends AppCompatSpinner {
 
     public NDSpinner(Context context)
     { super(context); }

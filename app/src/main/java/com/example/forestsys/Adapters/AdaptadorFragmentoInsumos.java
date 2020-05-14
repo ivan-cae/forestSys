@@ -134,7 +134,7 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
     private static Double diferencaPercentual(Double qtdRec, Double qtdApl) {
         Double calculo =  (1-(qtdApl/qtdRec))*100;
         DecimalFormat df = new DecimalFormat(".00");
-        return Math.abs(Double.valueOf(df.format(calculo)));
+        return Math.abs(Double.valueOf(df.format(calculo).replace(',', '.')));
     }
 }
 

@@ -151,6 +151,9 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         setContentView(R.layout.activity_calibracao);
         setTitle(nomeEmpresaPref);
 
+
+
+
         dataHoraAtual = new DataHoraAtual();
 
         baseDeDados = BaseDeDados.getInstance(getApplicationContext());
@@ -238,7 +241,6 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 idMaquinaImplemento = maquinasImplementos.get(position).getID_MAQUINA_IMPLEMENTO();
-                Log.e("teste",  String.valueOf(idMaquinaImplemento));
                 if(checaMaquinaImplementoCalibracao(maquinasImplementos.get(position).getID_MAQUINA_IMPLEMENTO()) == true) caixaAlertaMaquina();
             }
 
@@ -251,7 +253,6 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 posicaoOperador = operadores.get(position).getID_OPERADORES();
-                Log.e("Operador", String.valueOf(posicaoOperador));
             }
 
             @Override
@@ -1077,7 +1078,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     //Parâmetro de entrada: um Double
     private static Double arredonda1Casa(Double media) {
         DecimalFormat df = new DecimalFormat(".0");
-        return Double.valueOf(df.format(media));
+        return Double.valueOf(df.format(media).replace(',', '.'));
     }
 
 
@@ -1085,7 +1086,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     //Parâmetro de entrada: um Double
     private static Double arredonda2Casas(Double media) {
         DecimalFormat df = new DecimalFormat(".00");
-        return Double.valueOf(df.format(media));
+        return Double.valueOf(df.format(media).replace(',', '.'));
     }
 
 
@@ -1093,7 +1094,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     //Parâmetro de entrada: um Double
     private static Double arredonda3Casas(Double media) {
         DecimalFormat df = new DecimalFormat(".000");
-        return Double.valueOf(df.format(media));
+        return Double.valueOf(df.format(media).replace(',', '.'));
     }
 
     //formula= (1-(amostra atual/amostra anterior))/100
@@ -1102,7 +1103,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     private static Double diferencaPercentual(Double anterior, Double atual) {
         Double calculo =  (1-(atual/anterior))*100;//((anterior - atual) / anterior) * 100.0
         DecimalFormat df = new DecimalFormat(".00");
-        return Double.valueOf(df.format(calculo));
+        return Double.valueOf(df.format(calculo).replace(',', '.'));
     }
 
 

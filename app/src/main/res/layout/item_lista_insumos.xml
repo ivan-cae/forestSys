@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="40dp"
-    android:background="@drawable/custom_ripple">
+    android:background="#FFFFFF">
 
         <TextView
             android:id="@+id/item_insumos_un"
@@ -26,7 +26,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginBottom="20dp"
             android:textAlignment="center"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textStyle="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +38,7 @@
             android:layout_height="20dp"
             android:layout_marginBottom="20dp"
             android:textAlignment="center"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textStyle="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/item_insumos_p205"
@@ -50,7 +50,7 @@
             android:layout_height="20dp"
             android:layout_marginBottom="20dp"
             android:textAlignment="center"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textStyle="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/item_insumos_cao"

@@ -6,10 +6,6 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.TypeConverters;
 
-import com.example.forestsys.TimestampConverter;
-
-import java.sql.Date;
-
 @Entity(
         foreignKeys = {@ForeignKey(entity = GEO_REGIONAIS.class,
                 parentColumns = "ID_REGIONAL",
@@ -74,7 +70,6 @@ public class CADASTRO_FLORESTAL {
 
 	private int ATIVO;
 
-    @TypeConverters({TimestampConverter.class})
 	private String DATA_PROGRAMACAO_REFORMA;
 
 

@@ -66,12 +66,21 @@ public class ActivityListagemRegistros extends AppCompatActivity implements Navi
     private TextView totalHoe;
     private TextView totalHme;
 
+    public static boolean editou;
+    private double ho = 0;
+    private double hh = 0;
+    private double hm = 0;
+    private double hoe = 0;
+    private double hme = 0;
+    private boolean temApontamento = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listagem_registros);
 
+        editou = false;
         oSAtividadesDiaAtual = null;
         dataHoraAtual = new DataHoraAtual();
         setTitle(nomeEmpresaPref);
@@ -109,6 +118,7 @@ public class ActivityListagemRegistros extends AppCompatActivity implements Navi
         manejo = findViewById(R.id.listagem_apontamentos_manejo);
         dataProgramada = findViewById(R.id.listagem_apontamentos_data_prog);
         areaRealizada = findViewById(R.id.listagem_apontamentos_area_realizada);
+        realizarApontamento = findViewById(R.id.botao_realizar_apontamento);
 
 
         totalHo = findViewById(R.id.listagem_apontamentos_total_ho);
@@ -141,36 +151,45 @@ public class ActivityListagemRegistros extends AppCompatActivity implements Navi
         adaptador = new AdaptadorApontamentos();
         recyclerView.setAdapter(adaptador);
 
+        ho = 0;
+         hh = 0;
+         hm = 0;
+         hoe = 0;
+         hme = 0;
+         temApontamento = false;
+
         adaptador.setApontamentos(apontamentos);
-        double ho = 0;
-        double hh = 0;
-        double hm = 0;
-        double hoe = 0;
-        double hme = 0;
+        Thread t = new Thread(){
+            @Override
+            public void run(){
+                for (int i = 0; i < apontamentos.size(); i++) {
+                    ho += checaConversao(apontamentos.get(i).getHO());
+                    hh += checaConversao(apontamentos.get(i).getHH());
+                    hm += checaConversao(apontamentos.get(i).getHM());
+                    hoe += checaConversao(apontamentos.get(i).getHO_ESCAVADEIRA());
+                    hme += checaConversao(apontamentos.get(i).getHM_ESCAVADEIRA());
+                }
 
-        for (int i = 0; i < apontamentos.size(); i++) {
-            ho += checaConversao(apontamentos.get(i).getHO());
-            hh += checaConversao(apontamentos.get(i).getHH());
-            hm += checaConversao(apontamentos.get(i).getHM());
-            hoe += checaConversao(apontamentos.get(i).getHO_ESCAVADEIRA());
-            hme += checaConversao(apontamentos.get(i).getHM_ESCAVADEIRA());
-        }
-
-        totalHh.setText(String.valueOf(hh).replace(".", ","));
-        totalHo.setText(String.valueOf(ho).replace(".", ","));
-        totalHm.setText(String.valueOf(hm).replace(".", ","));
-        totalHoe.setText(String.valueOf(hoe).replace(".", ","));
-        totalHme.setText(String.valueOf(hme).replace(".", ","));
+                totalHh.setText(String.valueOf(hh).replace(".", ","));
+                totalHo.setText(String.valueOf(ho).replace(".", ","));
+                totalHm.setText(String.valueOf(hm).replace(".", ","));
+                totalHoe.setText(String.valueOf(hoe).replace(".", ","));
+                totalHme.setText(String.valueOf(hme).replace(".", ","));
 
 
-        realizarApontamento = findViewById(R.id.botao_realizar_apontamento);
-        boolean temApontamento = false;
 
-        for (int i = 0; i < apontamentos.size(); i++) {
-            if (apontamentos.get(i).getDATA().trim().equals(dataHoraAtual.dataAtual().trim())) {
-                temApontamento = true;
+
+                for (int i = 0; i < apontamentos.size(); i++) {
+                    if (apontamentos.get(i).getDATA().trim().equals(dataHoraAtual.dataAtual().trim())) {
+                        temApontamento = true;
+                    }
+                }
             }
-        }
+        };
+
+        t.run();
+
+
 
         if (temApontamento == false && osSelecionada.getSTATUS_NUM()!=2) {
             realizarApontamento.setEnabled(true);
@@ -203,6 +222,7 @@ public class ActivityListagemRegistros extends AppCompatActivity implements Navi
                             .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                    editou = true;
                                     oSAtividadesDiaAtual = dao.selecionaOsAtividadesDia(oSAtividadesDia.getID_PROGRAMACAO_ATIVIDADE(), oSAtividadesDia.getDATA());
                                     Intent it = new Intent(ActivityListagemRegistros.this, ActivityRegistros.class);
                                     startActivity(it);

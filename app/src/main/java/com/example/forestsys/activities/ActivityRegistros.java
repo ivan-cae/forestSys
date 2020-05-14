@@ -36,10 +36,14 @@ import com.example.forestsys.classes.join.Join_OS_INSUMOS;
 import com.example.forestsys.viewModels.ViewModelO_S_ATIVIDADES_DIA;
 import com.google.android.material.navigation.NavigationView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+import static com.example.forestsys.activities.ActivityListagemRegistros.editou;
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
 import static com.example.forestsys.activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.activities.ActivityMain.osSelecionada;
@@ -89,11 +93,14 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     private static DAO dao;
     private int abaSelecionada;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registros);
         setTitle(nomeEmpresaPref);
+        //MAX_LENGTH_MASCARA = 6;
+        //MAX_DECIMAL_MASCARA = 1;
 
         dataHoraAtual = new DataHoraAtual();
         listaJoinOsInsumosSelecionados = new ArrayList<Join_OS_INSUMOS>();
@@ -104,7 +111,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         getSupportActionBar().setSubtitle(usuarioLogado.getDESCRICAO());
 
 
-       baseDeDados = BaseDeDados.getInstance(getApplicationContext());
+        baseDeDados = BaseDeDados.getInstance(getApplicationContext());
         dao = baseDeDados.dao();
 
         idOs = findViewById(R.id.id_os_continuar);
@@ -119,7 +126,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         madeiraOs = findViewById(R.id.madeira_os_continuar);
         botaoDatePicker = findViewById(R.id.botao_date_picker);
         descricao = findViewById(R.id.descricao_os_continuar);
-        dataProgramada  = findViewById(R.id.data_prog_os_continuar);
+        dataProgramada = findViewById(R.id.data_prog_os_continuar);
         areaRealizada = findViewById(R.id.area_realizada_os_continuar);
 
         idOs.setText(String.valueOf(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()));
@@ -131,10 +138,10 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         areaOs.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace(".", ","));
         manejoOs.setText(String.valueOf(osSelecionada.getID_MANEJO()));
         dataProgramada.setText(osSelecionada.getDATA_PROGRAMADA());
-        areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()));
+        areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()).replace(".", ","));
 
         String temMadeira = "NÃO";
-        if(osSelecionada.getMADEIRA_NO_TALHAO()==1) temMadeira = "SIM";
+        if (osSelecionada.getMADEIRA_NO_TALHAO() == 1) temMadeira = "SIM";
         madeiraOs.setText(String.valueOf(temMadeira));
 
         descricao.setText(dao.selecionaAtividade(osSelecionada.getID_ATIVIDADE()).getDESCRICAO());
@@ -145,7 +152,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         voltar = findViewById(R.id.botao_continuar_voltar);
         botaoSalvar = findViewById(R.id.botao_prosseguir_continuar);
 
-
+        if (editou) botaoDatePicker.setEnabled(false);
         viewModelOSAtividadesDia = new ViewModelO_S_ATIVIDADES_DIA(getApplication());
 
         if (oSAtividadesDiaAtual == null) {
@@ -165,7 +172,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
 
             dataDoApontamento = dataHoraAtual.dataAtual();
-        }else dataDoApontamento = oSAtividadesDiaAtual.getDATA();
+        } else dataDoApontamento = oSAtividadesDiaAtual.getDATA();
 
         dataApontamento.setText(dataDoApontamento);
 
@@ -185,17 +192,17 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         primeiraIns = true;
 
 
-        abaSelecionada=1;
+        abaSelecionada = 1;
 
         botaoApontamento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(abaSelecionada!=1) {
+                if (abaSelecionada != 1) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragmento_continuar,
                             new FragmentoRendimento()).commit();
                     abaSelecionada = 1;
                 }
-                }
+            }
         });
 
         botaoInsumos.setOnClickListener(new View.OnClickListener() {
@@ -225,8 +232,14 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         botaoSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                salva();
-                }
+                Thread t = new Thread() {
+                    @Override
+                    public void run() {
+                        salva();
+                    }
+                };
+                t.run();
+            }
         });
 
 
@@ -241,13 +254,13 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
 
-                                 area="";
-                                 ho="";
-                                 hm="";
-                                 hh="";
-                                 hoe="";
-                                 hme="";
-                                 obs="";
+                                area = "";
+                                ho = "";
+                                hm = "";
+                                hh = "";
+                                hoe = "";
+                                hme = "";
+                                obs = "";
 
                                 auxiliar = null;
                                 oSAtividadesDiaAtual = null;
@@ -320,44 +333,90 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             String auxMes = String.valueOf(m);
             String auxAno = String.valueOf(year);
 
+            boolean temErro = false;
             String auxTeste = (auxDia + "/" + auxMes + "/" + auxAno).trim();
-            Log.e("teste datas", auxTeste +" "+dataDoApontamento);
-            if(!auxTeste.equals(dataDoApontamento)){
-            if(dao.selecionaOsAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), auxTeste) != null) {
-                AlertDialog dialog = new AlertDialog.Builder(getContext())
-                        .setTitle("Erro!")
-                        .setMessage("A data selecionada já tem um registro cadastrado.")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        }).create();
-                dialog.show();
-             }
-            else setarData(auxDia, auxMes, auxAno);
+            String pattern = ("dd/MM/yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+
+            DataHoraAtual dataHoraAtual = new DataHoraAtual();
+            if (!auxTeste.equals(dataDoApontamento)) {
+                if (dao.selecionaOsAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), auxTeste) != null) {
+                    AlertDialog dialog = new AlertDialog.Builder(getContext())
+                            .setTitle("Erro!")
+                            .setMessage("A data selecionada já tem um registro cadastrado.")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                }
+                            }).create();
+                    dialog.show();
+                    temErro = true;
+                }
             }
+
+            try {
+                Date date1 = sdf.parse(auxTeste);
+                Date date2 = sdf.parse(osSelecionada.getDATA_INICIAL());
+                if (date1.before(date2)) {
+                    temErro = true;
+                    AlertDialog dialog = new AlertDialog.Builder(getContext())
+                            .setTitle("Erro!")
+                            .setMessage("A data selecionada não pode ser antes da data inicial da atividade.")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                }
+                            }).create();
+                    dialog.show();
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                Date date1 = sdf.parse(auxTeste);
+                Date date2 = sdf.parse(dataHoraAtual.dataAtual());
+                if (date1.after(date2)) {
+                    AlertDialog dialog = new AlertDialog.Builder(getContext())
+                            .setTitle("Erro!")
+                            .setMessage("A data selecionada não pode ser após a data atual.")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                }
+                            }).create();
+                    dialog.show();
+                    temErro = true;
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if (temErro == false) setarData(auxDia, auxMes, auxAno);
         }
 
 
         //Método auxiliar para setar a data no textview
         public void setarData(String dia, String mes, String ano) {
-            dataDoApontamento=(dia + "/" + mes + "/" + ano).trim();
+            dataDoApontamento = (dia + "/" + mes + "/" + ano).trim();
             dataApontamento.setText(dataDoApontamento);
         }
     }
 
-    public void salva(){
-        boolean converte = true;
-        double testeAreaRealizada;
-        try{
-            area.replace(',', '.');
-            testeAreaRealizada = Double.valueOf(area);
-        }catch (NumberFormatException | NullPointerException nf){
-            converte = false;
-            testeAreaRealizada = 0;
+    public void salva() {
+
+        double testeAreaRealizada = 0;
+        boolean erro = false;
+        if (area != null && !area.isEmpty()) {
+            try {
+                if (area.contains(",")) area = area.replace(',', '.');
+                testeAreaRealizada = Double.valueOf(area);
+            } catch (NumberFormatException | NullPointerException nf) {
+                testeAreaRealizada = NULL;
+                erro = true;
+            }
         }
 
-        if(converte = false){
+        if (erro == true) {
             AlertDialog dialog = new AlertDialog.Builder(ActivityRegistros.this)
                     .setTitle("Erro!")
                     .setMessage("O campo 'Área Realizada' contém um valor inválido.")
@@ -369,7 +428,23 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             dialog.show();
         }
 
-        if((testeAreaRealizada + osSelecionada.getAREA_REALIZADA()) > osSelecionada.getAREA_PROGRAMADA()) {
+        double novaArea = 0;
+        double areaAnterior = 0;
+
+        if (erro == false && oSAtividadesDiaAtual != null && testeAreaRealizada != 0) {
+            if (oSAtividadesDiaAtual.getAREA_REALIZADA() != null) {
+                String auxStr = oSAtividadesDiaAtual.getAREA_REALIZADA();
+                if (auxStr.contains(",")) auxStr = auxStr.replace(',', '.');
+                areaAnterior = Double.valueOf(auxStr);
+            }
+        }
+
+        if (testeAreaRealizada != NULL || testeAreaRealizada != 0) {
+            if (testeAreaRealizada > areaAnterior) novaArea = (testeAreaRealizada - areaAnterior);
+
+            if (testeAreaRealizada < areaAnterior) novaArea = (testeAreaRealizada - areaAnterior);
+        }
+        if (erro == false && (novaArea + osSelecionada.getAREA_REALIZADA()) > osSelecionada.getAREA_PROGRAMADA()) {
             AlertDialog dialog = new AlertDialog.Builder(ActivityRegistros.this)
                     .setTitle("Erro!")
                     .setMessage("A área realizada não pode ser maior que a área programada")
@@ -379,82 +454,89 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                         }
                     }).create();
             dialog.show();
-        }else{
-        if(oSAtividadesDiaAtual!=null && oSAtividadesDiaAtual.getDATA() != dataDoApontamento) {
-            O_S_ATIVIDADES_DIA aux = oSAtividadesDiaAtual;
-
-            dao.apagaOsAtividadeInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), aux.getDATA());
-
-            viewModelOSAtividadesDia.delete(aux);
+            erro = true;
         }
-        double auxAreaRealizada = osSelecionada.getAREA_REALIZADA();
-        osSelecionada.setAREA_REALIZADA(auxAreaRealizada+testeAreaRealizada);
-        dao.update(osSelecionada);
+        if (erro == false) {
+            if (oSAtividadesDiaAtual != null && oSAtividadesDiaAtual.getDATA() != dataDoApontamento) {
+                O_S_ATIVIDADES_DIA aux = oSAtividadesDiaAtual;
+
+                dao.apagaOsAtividadeInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), aux.getDATA());
+
+                viewModelOSAtividadesDia.delete(aux);
+            }
+
+            double auxAreaRealizadaOs = osSelecionada.getAREA_REALIZADA();
+
+            double auxAreaRealizadaDia;
+
+            if (oSAtividadesDiaAtual!=null && oSAtividadesDiaAtual.getAREA_REALIZADA()!=null && testeAreaRealizada == 0 || testeAreaRealizada == NULL) {
+                if (oSAtividadesDiaAtual != null) {
+                    String outraAuxkk = oSAtividadesDiaAtual.getAREA_REALIZADA();
+                    if (outraAuxkk != null && outraAuxkk.contains(","))
+                        outraAuxkk = outraAuxkk.replace(',', '.');
+                    auxAreaRealizadaDia = Double.valueOf(outraAuxkk);
+                    osSelecionada.setAREA_REALIZADA(auxAreaRealizadaOs - auxAreaRealizadaDia);
+                }
+            } else osSelecionada.setAREA_REALIZADA(auxAreaRealizadaOs + novaArea);
+
+            dao.update(osSelecionada);
 
 
-        oSAtividadesDiaAtual = new O_S_ATIVIDADES_DIA();
+            oSAtividadesDiaAtual = new O_S_ATIVIDADES_DIA();
 
-        oSAtividadesDiaAtual.setID_PROGRAMACAO_ATIVIDADE(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
-        oSAtividadesDiaAtual.setDATA(dataDoApontamento.trim());
-        oSAtividadesDiaAtual.setID_PRESTADOR(posicaoPrestador);
-        oSAtividadesDiaAtual.setID_RESPONSAVEL(posicaoResponsavel);
-
-
-        if (area != null){
-            if(area.contains(","))area = area.replace(',', '.');
-            oSAtividadesDiaAtual.setAREA_REALIZADA(area);
-        }
-        else{
-            oSAtividadesDiaAtual.setAREA_REALIZADA(null);
-            testeAreaRealizada = 0;
-        }
+            oSAtividadesDiaAtual.setID_PROGRAMACAO_ATIVIDADE(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+            oSAtividadesDiaAtual.setDATA(dataDoApontamento.trim());
+            oSAtividadesDiaAtual.setID_PRESTADOR(posicaoPrestador);
+            oSAtividadesDiaAtual.setID_RESPONSAVEL(posicaoResponsavel);
 
 
-        if(hoe!=null){
-            if(hoe.contains(","))hoe = hoe.replace(',', '.');
-            oSAtividadesDiaAtual.setHO_ESCAVADEIRA(hoe);
-        }
-        else oSAtividadesDiaAtual.setHO_ESCAVADEIRA(null);
+            if (area != null) {
+                oSAtividadesDiaAtual.setAREA_REALIZADA(String.valueOf(testeAreaRealizada));
+            } else {
+                oSAtividadesDiaAtual.setAREA_REALIZADA(null);
+            }
 
-        if(ho!=null){
-            if(ho.contains(","))ho = ho.replace(',', '.');
-            oSAtividadesDiaAtual.setHO(ho);
-        }
-        else oSAtividadesDiaAtual.setHO(null);
 
-        if(hm!=null){
-            if(hm.contains(","))hm = hm.replace(',', '.');
-            oSAtividadesDiaAtual.setHM(hm);
-        }
-        else oSAtividadesDiaAtual.setHM(null);
+            if (hoe != null) {
+                if (hoe.contains(",")) hoe = hoe.replace(',', '.');
+                oSAtividadesDiaAtual.setHO_ESCAVADEIRA(hoe);
+            } else oSAtividadesDiaAtual.setHO_ESCAVADEIRA(null);
 
-        if(hh!=null){
-            if(hh.contains(","))hh = hh.replace(',', '.');
-            oSAtividadesDiaAtual.setHH(hh);
-        }
-        else oSAtividadesDiaAtual.setHH(null);
+            if (ho != null) {
+                if (ho.contains(",")) ho = ho.replace(',', '.');
+                oSAtividadesDiaAtual.setHO(ho);
+            } else oSAtividadesDiaAtual.setHO(null);
 
-        if(hme!=null){
-            if(hme.contains(","))hme = hme.replace(',', '.');
-            oSAtividadesDiaAtual.setHM_ESCAVADEIRA(hme);
-        }
-        else oSAtividadesDiaAtual.setHM_ESCAVADEIRA(null);
+            if (hm != null) {
+                if (hm.contains(",")) hm = hm.replace(',', '.');
+                oSAtividadesDiaAtual.setHM(hm);
+            } else oSAtividadesDiaAtual.setHM(null);
 
-        if(obs!=null)oSAtividadesDiaAtual.setOBSERVACAO(obs);
-        else oSAtividadesDiaAtual.setOBSERVACAO(null);
+            if (hh != null) {
+                if (hh.contains(",")) hh = hh.replace(',', '.');
+                oSAtividadesDiaAtual.setHH(hh);
+            } else oSAtividadesDiaAtual.setHH(null);
+
+            if (hme != null) {
+                if (hme.contains(",")) hme = hme.replace(',', '.');
+                oSAtividadesDiaAtual.setHM_ESCAVADEIRA(hme);
+            } else oSAtividadesDiaAtual.setHM_ESCAVADEIRA(null);
+
+            if (obs != null) oSAtividadesDiaAtual.setOBSERVACAO(obs);
+            else oSAtividadesDiaAtual.setOBSERVACAO(null);
 
             viewModelOSAtividadesDia.insert(oSAtividadesDiaAtual);
 
 
-        if(!listaJoinOsInsumosSelecionados.isEmpty()) {
-            Join_OS_INSUMOS persiste;
+            if (!listaJoinOsInsumosSelecionados.isEmpty()) {
+                Join_OS_INSUMOS persiste;
 
-            for (int i = 0; i < listaJoinOsInsumosSelecionados.size(); i++) {
-                persiste = listaJoinOsInsumosSelecionados.get(i);
-                dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataDoApontamento,
-                        persiste.getID_INSUMO(), persiste.getQTD_APLICADO()));
+                for (int i = 0; i < listaJoinOsInsumosSelecionados.size(); i++) {
+                    persiste = listaJoinOsInsumosSelecionados.get(i);
+                    dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataDoApontamento,
+                            persiste.getID_INSUMO(), persiste.getQTD_APLICADO()));
+                }
             }
-        }
             Intent it = new Intent(ActivityRegistros.this, ActivityListagemRegistros.class);
             Toast.makeText(getApplicationContext(), "Registro Salvo com sucesso!", Toast.LENGTH_LONG).show();
             startActivity(it);
