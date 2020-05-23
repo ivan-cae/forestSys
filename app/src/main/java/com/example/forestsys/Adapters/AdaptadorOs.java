@@ -1,6 +1,7 @@
 package com.example.forestsys.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +25,8 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
     private List<O_S_ATIVIDADES> ordens = new ArrayList<>();
     private List<O_S_ATIVIDADES> ordensFiltradas;
     private OnItemClickListener listener;
-    private DAO dao;
-    Context context = ApplicationTodos.getAppContext();
+    private int corFundo;
+    private O_S_ATIVIDADES ordem;
 
 
     @NonNull
@@ -39,20 +40,32 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
 
     @Override
     public void onBindViewHolder(@NonNull OsHolder holder, int position) {
+        ordem = ordens.get(position);
 
-        BaseDeDados baseDeDados = BaseDeDados.getInstance(context);
-        dao = baseDeDados.dao();
+        //aberta-verde
+        if(ordem.getSTATUS_NUM()==0) corFundo=(Color.parseColor("#a9d18e"));
+        //andamento-bege
+        if(ordem.getSTATUS_NUM()==1) corFundo=(Color.parseColor("#fff2cc"));
+        //azul-finalizada
+        if(ordem.getSTATUS_NUM()==2) corFundo=(Color.parseColor("#9dc3e6"));
 
-        O_S_ATIVIDADES ordem = ordens.get(position);
+        holder.itemView.setBackgroundColor(corFundo);
 
-        holder.numero.setText(String.valueOf(ordem.getID_PROGRAMACAO_ATIVIDADE()));
         holder.setor.setText(String.valueOf(ordem.getID_SETOR()));
-        holder.setor.setText(ordem.getID_SETOR());
         holder.data.setText(String.valueOf(ordem.getDATA_INICIAL()));
         holder.talhao.setText(String.valueOf(ordem.getTALHAO()));
         holder.status.setText(ordem.getSTATUS());
         holder.area.setText(String.valueOf(ordem.getAREA_PROGRAMADA()).replace(".", ","));
-        holder.atividade.setText(dao.selecionaAtividade(ordem.getID_ATIVIDADE()).getDESCRICAO());
+        holder.manejo.setText(ordem.getID_MANEJO());
+
+        String temMadeira = "NÃO";
+        if (ordem.getMADEIRA_NO_TALHAO() == 1) temMadeira = "SIM";
+        holder.madeira.setText(temMadeira);
+        String prio="Baixa";
+
+        if(ordem.getPRIORIDADE()==2) prio="Normal";
+        if(ordem.getPRIORIDADE()==3) prio="Alta";
+        holder.prioridade.setText(prio);
     }
 
     @Override
@@ -68,25 +81,28 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
 
     class OsHolder extends RecyclerView.ViewHolder {
         private TextView status;
-        private TextView numero;
-        private TextView atividade;
+        private TextView madeira;
         private TextView setor;
         private TextView talhao;
         private TextView area;
         private TextView data;
-        private TextView atualizacao;
+        private TextView prioridade;
+        private TextView manejo;
 
 
         public OsHolder(@NonNull View itemView) {
             super(itemView);
-            numero = itemView.findViewById(R.id.numero_item_lista);
+
+
+
             status = itemView.findViewById(R.id.status_item_lista);
-            atividade = itemView.findViewById(R.id.atividade_item_lista);
             setor = itemView.findViewById(R.id.setor_item_lista);
             talhao = itemView.findViewById(R.id.talhao_item_lista);
             area = itemView.findViewById(R.id.area_item_lista);
             data = itemView.findViewById(R.id.data_item_lista);
-            atualizacao = itemView.findViewById(R.id.atualizacao_item_lista);
+            prioridade = itemView.findViewById(R.id.prioridade_item_lista);
+            madeira = itemView.findViewById(R.id.madeira_item_lista);
+            manejo = itemView.findViewById(R.id.manejo_item_lista);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -122,7 +138,7 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
             }else{
                 String filtro = constraint.toString();
                 for(O_S_ATIVIDADES os : ordensFiltradas){
-                    if(String.valueOf(os.getID_RESPONSAVEL()).startsWith(filtro)){
+                    if(String.valueOf(os.getTALHAO()).startsWith(filtro)){
                         listaFiltrada.add(os);
                     }
                 }

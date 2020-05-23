@@ -13,11 +13,13 @@
     <ImageView
         android:id="@+id/imagem_login"
         android:layout_width="0dp"
-        android:layout_height="300dp"
-        android:layout_marginStart="74dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="100dp"
-        android:layout_marginEnd="74dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="62dp"
         android:adjustViewBounds="false"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -36,15 +38,17 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="450dp"
-        android:layout_height="300dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="74dp"
+        android:layout_marginTop="62dp"
         android:layout_marginEnd="74dp"
         android:layout_marginBottom="200dp"
         android:background="#75A9EB"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagem_login">
 
         <TextView
             android:id="@+id/textView28"
@@ -116,11 +120,13 @@
             android:layout_marginStart="148dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="147dp"
+            android:layout_marginBottom="8dp"
             android:background="#FFFFFF"
             android:enabled="true"
             android:text="Acessar"
             android:textColor="#000000"
             android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/password" />
@@ -128,24 +134,31 @@
 
     <ImageView
         android:id="@+id/logo_rodape"
-        android:layout_width="150dp"
-        android:layout_height="20dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="2dp"
         android:layout_marginTop="159dp"
         android:layout_marginEnd="165dp"
+        android:layout_marginBottom="21dp"
         android:background="@drawable/logo_final"
         android:scaleType="centerInside"
         android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView13"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <TextView
         android:id="@+id/textView13"
-        android:layout_width="120dp"
-        android:layout_height="20dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="165dp"
+        android:layout_marginBottom="21dp"
         android:text="Desenvolvido Por"
+        android:textAlignment="textEnd"
         android:textColor="#000000"
         android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/logo_rodape"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/logo_rodape" />

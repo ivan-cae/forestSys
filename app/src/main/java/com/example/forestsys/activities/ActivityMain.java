@@ -1,14 +1,17 @@
 package com.example.forestsys.activities;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.FocusFinder;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
@@ -122,6 +125,8 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                 return false;
             }
         });
+
+        InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 
     public void dialogoVoltar(){

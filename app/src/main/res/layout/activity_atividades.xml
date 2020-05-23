@@ -228,15 +228,15 @@
             android:layout_height="45dp"
             android:layout_gravity="start"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="115dp"
+            android:layout_marginTop="50dp"
             android:enabled="true"
             android:text="Avaliação"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintStart_toEndOf="@+id/map"
-            app:layout_constraintTop_toBottomOf="@+id/botao_detalhes_calibracao" />
+            app:layout_constraintTop_toBottomOf="@+id/botao_apontamentos_geral" />
 
         <Button
             android:id="@+id/botao_detalhes_calibracao"
@@ -259,7 +259,7 @@
             android:layout_height="45dp"
             android:layout_gravity="start"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="115dp"
+            android:layout_marginTop="50dp"
             android:enabled="true"
             android:text="Registros"
             android:textAllCaps="false"
@@ -551,14 +551,14 @@
             android:id="@+id/botao_finalizar_os"
             android:layout_width="150dp"
             android:layout_height="45dp"
-            android:layout_marginEnd="18dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="50dp"
             android:enabled="false"
             android:text="Finalizar"
             android:textColor="#FFFFFF"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/map"
+            app:layout_constraintTop_toBottomOf="@+id/botao_detalhes_qualidade" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

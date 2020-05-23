@@ -103,6 +103,7 @@ public class FragmentoInsumos extends Fragment {
         spinnerInsumos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        Log.e("selecionado", String.valueOf(position));
                         if(cont>0){
                             position++;
                             Join_OS_INSUMOS aux = (Join_OS_INSUMOS) parent.getSelectedItem();
