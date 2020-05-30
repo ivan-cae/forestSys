@@ -543,6 +543,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="8dp"
+            android:background="#FFFFFF"
             app:layout_constraintBottom_toTopOf="@+id/botao_detalhes_voltar"
             app:layout_constraintEnd_toStartOf="@+id/map"
             app:layout_constraintStart_toStartOf="parent"

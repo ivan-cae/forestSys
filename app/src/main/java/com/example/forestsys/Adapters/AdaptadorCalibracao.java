@@ -1,7 +1,6 @@
 package com.example.forestsys.Adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +57,8 @@ public class AdaptadorCalibracao extends RecyclerView.Adapter<AdaptadorCalibraca
         holder.operador.setText(aux4.getDESCRICAO());
         holder.p1Desvio.setText(String.valueOf(calibragem.getP1_DESVIO()).replace(".", ","));
         holder.p2Desvio.setText(String.valueOf(calibragem.getP2_DESVIO()).replace(".", ","));
+        holder.p1Media.setText(String.valueOf(calibragem.getP1_MEDIA()).replace(".", ","));
+        holder.p2Media.setText(String.valueOf(calibragem.getP2_MEDIA()).replace(".", ","));
     }
 
     @Override
@@ -76,6 +77,8 @@ public class AdaptadorCalibracao extends RecyclerView.Adapter<AdaptadorCalibraca
         TextView maquina;
         TextView implemento;
         TextView operador;
+        TextView p1Media;
+        TextView p2Media;
         TextView p1Desvio;
         TextView p2Desvio;
 
@@ -89,6 +92,8 @@ public class AdaptadorCalibracao extends RecyclerView.Adapter<AdaptadorCalibraca
             operador = itemView.findViewById(R.id.item_calibragem_operador);
             p1Desvio = itemView.findViewById(R.id.item_calibragem_p1_desvio);
             p2Desvio = itemView.findViewById(R.id.item_calibragem_p2_desvio);
+            p1Media = itemView.findViewById(R.id.item_calibragem_p1_media);
+            p2Media = itemView.findViewById(R.id.item_calibragem_p2_media);
         }
     }
 }

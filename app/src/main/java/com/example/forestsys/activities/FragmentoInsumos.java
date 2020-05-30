@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,12 +24,10 @@ import android.widget.TextView;
 import com.example.forestsys.Adapters.AdaptadorFragmentoInsumos;
 import com.example.forestsys.BaseDeDados;
 import com.example.forestsys.DAO;
-import com.example.forestsys.DataHoraAtual;
 import com.example.forestsys.NDSpinner;
 import com.example.forestsys.R;
 import com.example.forestsys.classes.join.Join_OS_INSUMOS;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.forestsys.activities.ActivityRegistros.dataDoApontamento;
@@ -45,7 +42,7 @@ public class FragmentoInsumos extends Fragment {
     private static List<Join_OS_INSUMOS> listaJoinOsInsumos;
     private BaseDeDados baseDeDados;
     private DAO dao;
-    private int cont;
+    private int contSpinnerInsumos;
     private AdaptadorFragmentoInsumos adaptador;
     private ArrayAdapter<Join_OS_INSUMOS> adapterInsumos;
 
@@ -85,7 +82,7 @@ public class FragmentoInsumos extends Fragment {
 
         adaptador.setInsumos(listaJoinOsInsumosSelecionados);
 
-        cont = 0;
+        contSpinnerInsumos = 0;
 
         adapterInsumos = new ArrayAdapter<Join_OS_INSUMOS>(getActivity(),
                 android.R.layout.simple_spinner_item, listaJoinOsInsumos);
@@ -95,7 +92,7 @@ public class FragmentoInsumos extends Fragment {
         spinnerInsumos.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(cont==0)spinnerInsumos.setAdapter(adapterInsumos);
+                if(contSpinnerInsumos ==0)spinnerInsumos.setAdapter(adapterInsumos);
                 return false;
             }
         });
@@ -103,8 +100,7 @@ public class FragmentoInsumos extends Fragment {
         spinnerInsumos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        Log.e("selecionado", String.valueOf(position));
-                        if(cont>0){
+                        if(contSpinnerInsumos >0){
                             position++;
                             Join_OS_INSUMOS aux = (Join_OS_INSUMOS) parent.getSelectedItem();
                             if(aux.getID_INSUMO() == 0) aux.setID_INSUMO(dao.consultaDesc(aux.getDESCRICAO()));
@@ -127,7 +123,7 @@ public class FragmentoInsumos extends Fragment {
                                     abreDialogoQtdAlicada(aux);
                                 }
                             }
-                        cont++;
+                        contSpinnerInsumos++;
                     }
 
                     @Override

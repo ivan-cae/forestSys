@@ -188,7 +188,7 @@ public class ActivityAtividades extends AppCompatActivity
             @Override
             public void onClick(View v) {
 
-                Intent it = new Intent(ActivityAtividades.this, ActivityListagemCalibracao.class);
+                Intent it = new Intent(ActivityAtividades.this, ActivityCalibracao.class);
                 startActivity(it);
             }
         });

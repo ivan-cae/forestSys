@@ -248,6 +248,7 @@
         android:layout_width="599dp"
         android:layout_height="266dp"
         android:layout_marginTop="8dp"
+        android:background="#FFFFFF"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
