@@ -50,7 +50,7 @@ public class ViewModelMAQUINA_IMPLEMENTO extends AndroidViewModel {
 
     //retorna uma instância da MAQUINA_IMPLEMENTO
 //parâmetro de entrada: id inteiro para busca na tabela MAQUINA_IMPLEMENTO
-    public LiveData<MAQUINA_IMPLEMENTO> selecionaMaquina(int i) {
+    public MAQUINA_IMPLEMENTO selecionaMaquina(int i) {
         return repositorioMaquinaImplemento.getMaquinaImplemento(i);
     }
 }

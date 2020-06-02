@@ -4,10 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
-import androidx.room.TypeConverters;
-
-import com.example.forestsys.TimestampConverter;
-import java.sql.Date;
 
 @Entity(
         foreignKeys = {@ForeignKey(entity = O_S_ATIVIDADES.class,
@@ -33,9 +29,8 @@ public class AVAL_PONTO_SUBSOLAGEM {
     private int ID_PROGRAMACAO_ATIVIDADE;
 
     @ColumnInfo(name="DATA")
-    @TypeConverters({TimestampConverter.class})
     @NonNull
-    private Date DATA;
+    private String DATA;
 
     @ColumnInfo(name="PONTO")
     private int PONTO;
@@ -48,7 +43,7 @@ public class AVAL_PONTO_SUBSOLAGEM {
 
     private double VALOR_INDICADOR;
 
-    public AVAL_PONTO_SUBSOLAGEM(int ID_PROGRAMACAO_ATIVIDADE, Date DATA, int PONTO, int ID_ATIVIDADE, int ID_INDICADOR, double VALOR_INDICADOR) {
+    public AVAL_PONTO_SUBSOLAGEM(int ID_PROGRAMACAO_ATIVIDADE, String DATA, int PONTO, int ID_ATIVIDADE, int ID_INDICADOR, double VALOR_INDICADOR) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.DATA = DATA;
         this.PONTO = PONTO;
@@ -65,11 +60,11 @@ public class AVAL_PONTO_SUBSOLAGEM {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
     }
 
-    public Date getDATA() {
+    public String getDATA() {
         return DATA;
     }
 
-    public void setDATA(Date DATA) {
+    public void setDATA(String DATA) {
         this.DATA = DATA;
     }
 
@@ -101,7 +96,6 @@ public class AVAL_PONTO_SUBSOLAGEM {
         return VALOR_INDICADOR;
     }
 
-    public void setVALOR_INDICADOR(double VALOR_INDICADOR) {
-        this.VALOR_INDICADOR = VALOR_INDICADOR;
+    public void setVALOR_INDICADOR(double VALOR_INDICADOR) { this.VALOR_INDICADOR = VALOR_INDICADOR;
     }
 }

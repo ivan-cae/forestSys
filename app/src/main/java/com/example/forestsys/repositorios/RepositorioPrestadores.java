@@ -23,7 +23,7 @@ public class RepositorioPrestadores {
 
     //retorna uma instância da PRESTADORES
 //parâmetro de entrada: id inteiro para busca na tabela PRESTADORES
-    public LiveData<PRESTADORES> selecionaprestador(int id) {
+    public PRESTADORES selecionaprestador(int id) {
         return dao.selecionaPrestador(id);
     }
 

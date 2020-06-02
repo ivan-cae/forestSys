@@ -14,7 +14,7 @@ import java.util.List;
 public class ViewModelImplementos extends AndroidViewModel {
     private RepositorioImplementos repositorioImplementos;
     private LiveData<List<IMPLEMENTOS>> listaImplementos;
-    private LiveData<IMPLEMENTOS> Consulta;
+    private IMPLEMENTOS Consulta;
 
     public ViewModelImplementos(@NonNull Application application) {
         super(application);
@@ -22,7 +22,9 @@ public class ViewModelImplementos extends AndroidViewModel {
         listaImplementos = repositorioImplementos.getImplementos();
     }
 
-
+    public IMPLEMENTOS selecionaImplemento(int id){
+        return repositorioImplementos.getImplemento(id);
+    }
     //inclui uma instância da IMPLEMENTOS no DB
 //parâmetro de entrada: instancia da IMPLEMENTOS
     public void insert(IMPLEMENTOS implementos) {

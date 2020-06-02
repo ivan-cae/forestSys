@@ -15,7 +15,6 @@
     <style name="botaoBranco">
         <item name="android:layout_width">100dp</item>
         <item name="android:layout_height">100dp</item>
-        <item name="android:background">#FFFFFF</item>
         <item name="android:textColor">#000000</item>
         <item name="android:textSize">22sp</item>
         <item name="android:layout_margin">@dimen/default_margin</item>
@@ -24,7 +23,6 @@
     <style name="botaoDestaque">
         <item name="android:layout_width">100dp</item>
         <item name="android:layout_height">100dp</item>
-        <item name="android:background">#FF9100</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textSize">22sp</item>
         <item name="android:layout_margin">@dimen/default_margin</item>
@@ -33,7 +31,6 @@
     <style name="botaoPadrao">
         <item name="android:layout_width">100dp</item>
         <item name="android:layout_height">100dp</item>
-        <item name="android:background">#FFFFFF</item>
         <item name="android:textColor">#000000</item>
         <item name="android:textSize">22sp</item>
         <item name="android:layout_margin">@dimen/default_margin</item>

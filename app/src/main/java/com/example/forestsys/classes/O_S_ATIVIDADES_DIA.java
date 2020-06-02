@@ -4,13 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
-
-import com.example.forestsys.TimestampConverter;
-
-import java.sql.Date;
 
 @Entity(
         foreignKeys = {@ForeignKey(entity = O_S_ATIVIDADES.class,
@@ -48,7 +41,7 @@ public class O_S_ATIVIDADES_DIA {
     private Integer ID_RESPONSAVEL;
 
     private char STATUS;
-    private Double AREA_REALIZADA;
+    private String AREA_REALIZADA;
     private String HH;
     private String HM;
     private String HO;
@@ -57,15 +50,15 @@ public class O_S_ATIVIDADES_DIA {
     private String OBSERVACAO;
     private char REGISTRO_DESCARREGADO;
 
-
     public O_S_ATIVIDADES_DIA() {
     }
 
+    @NonNull
     public Integer getID_PROGRAMACAO_ATIVIDADE() {
         return ID_PROGRAMACAO_ATIVIDADE;
     }
 
-    public void setID_PROGRAMACAO_ATIVIDADE(Integer ID_PROGRAMACAO_ATIVIDADE) {
+    public void setID_PROGRAMACAO_ATIVIDADE(@NonNull Integer ID_PROGRAMACAO_ATIVIDADE) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
     }
 
@@ -102,11 +95,11 @@ public class O_S_ATIVIDADES_DIA {
         this.STATUS = STATUS;
     }
 
-    public Double getAREA_REALIZADA() {
+    public String getAREA_REALIZADA() {
         return AREA_REALIZADA;
     }
 
-    public void setAREA_REALIZADA(Double AREA_REALIZADA) {
+    public void setAREA_REALIZADA(String AREA_REALIZADA) {
         this.AREA_REALIZADA = AREA_REALIZADA;
     }
 

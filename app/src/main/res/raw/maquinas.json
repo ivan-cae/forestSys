@@ -1,0 +1,19 @@
+{
+  "MAQUINAS": [
+    {
+      "ID_MAQUINA": 1,
+      "DESCRICAO": "RTP-40",
+      "ATIVO": 1
+    },
+    {
+      "ID_MAQUINA": 2,
+      "DESCRICAO": "RTP-41",
+      "ATIVO": 1
+    },
+    {
+      "ID_MAQUINA": 3,
+      "DESCRICAO": "TRP-42",
+      "ATIVO": 1
+    }
+  ]
+}

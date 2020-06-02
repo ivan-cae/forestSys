@@ -51,7 +51,7 @@ public class ViewModelMaquinas extends AndroidViewModel {
 
     //retorna uma instância da O_S_ATIVIDADES
 //parâmetro de entrada: id inteiro para busca na tabela O_S_ATIVIDADES
-    public LiveData<MAQUINAS> selecionaMaquina(int i) {
+    public MAQUINAS selecionaMaquina(int i) {
         return repositorioMaquinas.selecionaMaquina(i);
     }
 

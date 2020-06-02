@@ -13,7 +13,7 @@ import java.util.List;
 public class RepositorioUsers {
 
     private DAO dao;
-    private LiveData<List<GGF_USUARIOS>> users;
+    private List<GGF_USUARIOS> users;
 
     public RepositorioUsers(Application application) {
         BaseDeDados baseDeDados = BaseDeDados.getInstance(application);
@@ -23,19 +23,19 @@ public class RepositorioUsers {
 
     //retorna uma instância da GGF_USUARIOS
 //parâmetro de entrada: id inteiro para busca na tabela GGF_USUARIOS
-    public LiveData<GGF_USUARIOS> getUser(int id) {
+    public GGF_USUARIOS getUser(int id) {
         return dao.selecionaUser(id);
     }
 
 
     //retorna uma lista com todos os itens cadastrados na tabela GGF_USUARIOS
-    public LiveData<List<GGF_USUARIOS>>getTodosUsers() {
+    public List<GGF_USUARIOS>getTodosUsers() {
         return users;
     }
 
     //Verifica se há um User cadastrado com um determinado login e senha e o retorna
     //parâmetros de entrada: login e senha para validação
-    public LiveData<GGF_USUARIOS> valida(String login, String senha){
+    public GGF_USUARIOS valida(String login, String senha){
         return dao.valida(login, senha);
     }
 

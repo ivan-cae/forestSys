@@ -1,15 +1,10 @@
 package com.example.forestsys.classes;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
-
-import com.example.forestsys.Enumeraveis;
 
 import java.io.Serializable;
 
@@ -48,11 +43,18 @@ public class GGF_USUARIOS implements Serializable {
     @ColumnInfo(name = "DESCRICAO")
     private String DESCRICAO;
 
-
+    @Ignore
     public GGF_USUARIOS(int ID_USUARIO, String EMAIL, String SENHA) {
         this.ID_USUARIO = ID_USUARIO;
         this.SENHA = SENHA;
         this.EMAIL = EMAIL;
+    }
+
+    public GGF_USUARIOS(int ID_USUARIO,  String EMAIL, String SENHA, String DESCRICAO) {
+        this.ID_USUARIO = ID_USUARIO;
+        this.EMAIL = EMAIL;
+        this.SENHA = SENHA;
+        this.DESCRICAO = DESCRICAO;
     }
 
     public int getID_USUARIO() {
@@ -113,6 +115,6 @@ public class GGF_USUARIOS implements Serializable {
 
     @Override
     public String toString() {
-        return EMAIL;
+        return DESCRICAO;
     }
 }

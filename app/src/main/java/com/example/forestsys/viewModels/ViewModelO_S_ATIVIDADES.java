@@ -16,7 +16,6 @@ public class ViewModelO_S_ATIVIDADES extends AndroidViewModel {
 
     private RepositorioO_S_ATIVIDADES repositorioOs;
     private LiveData<List<O_S_ATIVIDADES>> listaOs;
-    private LiveData<O_S_ATIVIDADES> Consulta;
 
     public ViewModelO_S_ATIVIDADES(@NonNull Application application) {
         super(application);
@@ -54,9 +53,4 @@ public class ViewModelO_S_ATIVIDADES extends AndroidViewModel {
         return repositorioOs.getOs(i);
     }
 
-
-    //retorna uma lista do tipo List com todos os itens cadastrados na tabela O_S_ATIVIDADES
-    public LiveData<List<O_S_ATIVIDADES>> getListaOs() {
-        return repositorioOs.getListaOs();
-    }
 }

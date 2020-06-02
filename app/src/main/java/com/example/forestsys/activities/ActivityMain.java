@@ -1,9 +1,25 @@
 package com.example.forestsys.activities;
+
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.view.FocusFinder;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -11,27 +27,19 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ImageButton;
-import android.widget.SearchView;
-import com.example.forestsys.AdaptadorOs;
+
+import com.example.forestsys.Adapters.AdaptadorOs;
 import com.example.forestsys.R;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
-import com.google.android.material.navigation.NavigationView;
-import java.util.List;
-
 import com.example.forestsys.classes.O_S_ATIVIDADES;
 import com.example.forestsys.viewModels.ViewModelO_S_ATIVIDADES;
+import com.google.android.material.navigation.NavigationView;
 
+import java.util.List;
+import java.util.Locale;
 
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
+import static com.example.forestsys.activities.ActivityLogin.usuarioLogado;
 
 
 public class ActivityMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -47,6 +55,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         setTitle(nomeEmpresaPref);
 
@@ -55,7 +64,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         botaoMainVoltar = findViewById(R.id.botao_main_voltar);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setSubtitle(/*usuarioLogado.getValue().getEMAIL()*/"a");
+        getSupportActionBar().setSubtitle(usuarioLogado.getDESCRICAO());
 
         drawer = findViewById(R.id.drawer_layout_main);
         NavigationView navigationView = findViewById(R.id.nav_view_main);
@@ -89,8 +98,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
             @Override
             public void onItemClick(O_S_ATIVIDADES classeOs) {
                     osSelecionada = classeOs;
-                    Intent it = new Intent(ActivityMain.this, ActivityDetalhesOS.class);
-               // Intent it = new Intent(ActivityMain.this, ActivityContinuarOs.class);
+                    Intent it = new Intent(ActivityMain.this, ActivityAtividades.class);
                 startActivity(it);
             }
         });
@@ -117,6 +125,8 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                 return false;
             }
         });
+
+        InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 
     public void dialogoVoltar(){

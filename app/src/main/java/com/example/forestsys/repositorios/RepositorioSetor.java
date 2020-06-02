@@ -11,7 +11,7 @@ import java.util.List;
 
 public class RepositorioSetor{
     private DAO dao;
-    private LiveData<List<GEO_SETORES>> setores;
+    private List<GEO_SETORES> setores;
 
     public RepositorioSetor(Application application) {
         BaseDeDados baseDeDados = BaseDeDados.getInstance(application);
@@ -21,12 +21,12 @@ public class RepositorioSetor{
 
     //retorna uma instância da GEO_SETORES
 //parâmetro de entrada: id inteiro para busca na tabela GEO_SETORES
-    public LiveData<GEO_SETORES> getSetor(int id) {
+    public GEO_SETORES getSetor(int id) {
         return dao.selecionaSetor(id);
     }
 
     //retorna uma lista com todos os itens cadastrados na tabela GEO_SETORES
-    public LiveData<List<GEO_SETORES>> getTodosSetores() {
+    public List<GEO_SETORES> getTodosSetores() {
         return setores;
     }
 

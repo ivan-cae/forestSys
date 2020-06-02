@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="32dp">
+
+    <TextView
+        android:id="@+id/item_fragmento_insumos_b"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/item_fragmento_insumos_mgo"
+        app:layout_constraintTop_toTopOf="@id/item_fragmento_insumos_descricao" />
+
+    <TextView
+        android:id="@+id/item_fragmento_insumos_mn"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/item_fragmento_insumos_af"
+        app:layout_constraintTop_toTopOf="@id/item_fragmento_insumos_descricao" />
+
+    <TextView
+        android:id="@+id/item_fragmento_insumos_mgo"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/item_fragmento_insumos_cao"
+        app:layout_constraintTop_toTopOf="@id/item_fragmento_insumos_descricao" />
+
+    <TextView
+        android:id="@+id/item_fragmento_insumos_cao"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/item_fragmento_insumos_k20"
+        app:layout_constraintTop_toTopOf="@id/item_fragmento_insumos_descricao" />
+
+    <TextView
+        android:id="@+id/item_fragmento_insumos_cu"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/item_fragmento_insumos_s"
+        app:layout_constraintTop_toTopOf="@id/item_fragmento_insumos_descricao" />
+
+    <TextView
+        android:id="@+id/item_fragmento_insumos_zn"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/item_fragmento_insumos_b"
+        app:layout_constraintTop_toTopOf="@id/item_fragmento_insumos_descricao" />
+
+    <TextView
+        android:id="@+id/item_fragmento_insumos_descricao"
+        android:layout_width="90dp"
+        android:layout_height="20dp"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_fragmento_insumos_n"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/item_fragmento_insumos_descricao"
+        app:layout_constraintTop_toTopOf="@+id/item_fragmento_insumos_descricao" />
+
+    <TextView
+        android:id="@+id/item_fragmento_insumos_s"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/item_fragmento_insumos_zn"
+        app:layout_constraintTop_toTopOf="@id/item_fragmento_insumos_descricao" />
+
+    <TextView
+        android:id="@+id/item_fragmento_insumos_k20"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/item_fragmento_insumos_p205"
+        app:layout_constraintTop_toTopOf="@id/item_fragmento_insumos_descricao" />
+
+    <TextView
+        android:id="@+id/item_fragmento_insumos_af"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@id/item_fragmento_insumos_cu"
+        app:layout_constraintTop_toTopOf="@id/item_fragmento_insumos_descricao" />
+
+    <TextView
+        android:id="@+id/item_fragmento_insumos_p205"
+        android:layout_width="35dp"
+        android:layout_height="20dp"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/item_fragmento_insumos_n"
+        app:layout_constraintTop_toTopOf="@id/item_fragmento_insumos_descricao" />
+
+    <TextView
+        android:id="@+id/item_fragmento_insumos_qtd_rec"
+        android:layout_width="52dp"
+
+        android:layout_height="20dp"
+        android:background="#FFFFFF"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/item_fragmento_insumos_mn"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_fragmento_insumos_qtd_apl"
+        android:layout_width="50dp"
+        android:layout_height="20dp"
+
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/item_fragmento_insumos_qtd_rec"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_fragmento_insumos_un"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/item_fragmento_insumos_qtd_apl"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_fragmento_insumos_dif"
+        android:layout_width="35dp"
+        android:layout_height="20dp"
+
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/item_fragmento_insumos_un"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,7 +24,7 @@ public class RepositorioMAQUINA_IMPLEMENTO {
 
         //retorna uma instância da MAQUINA_IMPLEMENTO
 //parâmetro de entrada: id inteiro para busca na tabela MAQUINA_IMPLEMENTO
-        public LiveData<MAQUINA_IMPLEMENTO> getMaquinaImplemento(int id) {
+        public MAQUINA_IMPLEMENTO getMaquinaImplemento(int id) {
             return dao.selecionaMaquinaImplemento(id);
         }
 

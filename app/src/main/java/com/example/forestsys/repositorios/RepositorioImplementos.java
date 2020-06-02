@@ -23,7 +23,7 @@ public class RepositorioImplementos {
 
     //retorna uma instância da IMPLEMENTOS
 //parâmetro de entrada: id inteiro para busca na tabela IMPLEMENTOS
-    public LiveData<IMPLEMENTOS> getImplemento(int id) {
+    public IMPLEMENTOS getImplemento(int id) {
         return dao.selecionaImplemento(id);
     }
 

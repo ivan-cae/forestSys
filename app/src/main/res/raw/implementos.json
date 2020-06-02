@@ -1,0 +1,19 @@
+{
+  "IMPLEMENTOS": [
+    {
+      "ID_IMPLEMENTO": 1,
+      "DESCRICAO": "Implemento 1",
+      "ATIVO": 1
+    },
+    {
+      "ID_IMPLEMENTO": 2,
+      "DESCRICAO": "Implemento 2",
+      "ATIVO": 1
+    },
+    {
+      "ID_IMPLEMENTO": 3,
+      "DESCRICAO": "Implemento 3",
+      "ATIVO": 1
+    }
+  ]
+}

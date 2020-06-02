@@ -1,0 +1,19 @@
+{
+  "MAQUINA_IMPLEMENTO": [
+    {
+      "ID_MAQUINA_IMPLEMENTO": 1,
+      "ID_MAQUINA": 1,
+      "ID_IMPLEMENTO": 3
+    },
+    {
+      "ID_MAQUINA_IMPLEMENTO": 2,
+      "ID_MAQUINA": 2,
+      "ID_IMPLEMENTO": 2
+    },
+    {
+      "ID_MAQUINA_IMPLEMENTO": 3,
+      "ID_MAQUINA": 3,
+      "ID_IMPLEMENTO": 1
+    }
+  ]
+}

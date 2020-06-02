@@ -6,10 +6,6 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.TypeConverters;
 
-import com.example.forestsys.TimestampConverter;
-
-import java.sql.Date;
-
 @Entity(
         foreignKeys = {@ForeignKey(entity = GEO_REGIONAIS.class,
                 parentColumns = "ID_REGIONAL",
@@ -60,8 +56,7 @@ public class CADASTRO_FLORESTAL {
     @ColumnInfo (name = "ID_MANEJO")
     private int ID_MANEJO;
 
-    @TypeConverters({TimestampConverter.class})
-    private Date DATA_MANEJO;
+    private String DATA_MANEJO;
 
     @NonNull
     @ColumnInfo (name = "ID_MATERIAL_GENETICO")
@@ -75,11 +70,10 @@ public class CADASTRO_FLORESTAL {
 
 	private int ATIVO;
 
-    @TypeConverters({TimestampConverter.class})
-	private Date DATA_PROGRAMACAO_REFORMA;
+	private String DATA_PROGRAMACAO_REFORMA;
 
 
-    public CADASTRO_FLORESTAL(int ID_REGIONAL, int ID_SETOR, @NonNull String TALHAO, int CICLO, int ID_MANEJO, Date DATA_MANEJO, int ID_MATERIAL_GENETICO, int ID_ESPACAMENTO, String OBSERVACAO, int ATIVO, Date DATA_PROGRAMACAO_REFORMA) {
+    public CADASTRO_FLORESTAL(int ID_REGIONAL, int ID_SETOR, @NonNull String TALHAO, int CICLO, int ID_MANEJO, String DATA_MANEJO, int ID_MATERIAL_GENETICO, int ID_ESPACAMENTO, String OBSERVACAO, int ATIVO, String DATA_PROGRAMACAO_REFORMA) {
         this.ID_REGIONAL = ID_REGIONAL;
         this.ID_SETOR = ID_SETOR;
         this.TALHAO = TALHAO;
@@ -134,11 +128,11 @@ public class CADASTRO_FLORESTAL {
         this.ID_MANEJO = ID_MANEJO;
     }
 
-    public Date getDATA_MANEJO() {
+    public String getDATA_MANEJO() {
         return DATA_MANEJO;
     }
 
-    public void setDATA_MANEJO(Date DATA_MANEJO) {
+    public void setDATA_MANEJO(String DATA_MANEJO) {
         this.DATA_MANEJO = DATA_MANEJO;
     }
 
@@ -174,11 +168,11 @@ public class CADASTRO_FLORESTAL {
         this.ATIVO = ATIVO;
     }
 
-    public Date getDATA_PROGRAMACAO_REFORMA() {
+    public String getDATA_PROGRAMACAO_REFORMA() {
         return DATA_PROGRAMACAO_REFORMA;
     }
 
-    public void setDATA_PROGRAMACAO_REFORMA(Date DATA_PROGRAMACAO_REFORMA) {
+    public void setDATA_PROGRAMACAO_REFORMA(String DATA_PROGRAMACAO_REFORMA) {
         this.DATA_PROGRAMACAO_REFORMA = DATA_PROGRAMACAO_REFORMA;
     }
 }

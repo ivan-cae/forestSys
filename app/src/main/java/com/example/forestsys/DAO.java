@@ -4,18 +4,19 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.TypeConverters;
 import androidx.room.Update;
 
+import com.example.forestsys.classes.ATIVIDADES;
 import com.example.forestsys.classes.CADASTRO_FLORESTAL;
 import com.example.forestsys.classes.CALIBRAGEM_SUBSOLAGEM;
 import com.example.forestsys.classes.ESPACAMENTOS;
 import com.example.forestsys.classes.GEO_REGIONAIS;
 import com.example.forestsys.classes.GEO_SETORES;
-import com.example.forestsys.classes.ClasseUpdate;
 import com.example.forestsys.classes.GGF_USUARIOS;
 import com.example.forestsys.classes.IMPLEMENTOS;
+import com.example.forestsys.classes.INSUMOS;
 import com.example.forestsys.classes.MANEJO;
 import com.example.forestsys.classes.MAQUINAS;
 import com.example.forestsys.classes.MAQUINA_IMPLEMENTO;
@@ -23,46 +24,55 @@ import com.example.forestsys.classes.MATERIAL_GENETICO;
 import com.example.forestsys.classes.OPERADORES;
 import com.example.forestsys.classes.O_S_ATIVIDADES;
 import com.example.forestsys.classes.O_S_ATIVIDADES_DIA;
+import com.example.forestsys.classes.O_S_ATIVIDADE_INSUMOS;
+import com.example.forestsys.classes.O_S_ATIVIDADE_INSUMOS_DIA;
 import com.example.forestsys.classes.PRESTADORES;
+import com.example.forestsys.classes.join.Join_MAQUINA_IMPLEMENTO;
+import com.example.forestsys.classes.join.Join_OS_INSUMOS;
 
-import java.sql.Date;
 import java.util.List;
 
 @Dao
 public interface DAO {
 
-    @Insert
+    @Insert(onConflict  = OnConflictStrategy.IGNORE)
     void insert (GGF_USUARIOS GGFUSUARIOS);
-    @Insert
+    @Insert(onConflict  = OnConflictStrategy.IGNORE)
     void insert(GEO_SETORES GEOSETORES);
-    @Insert
+    @Insert(onConflict  = OnConflictStrategy.IGNORE)
     void insert(GEO_REGIONAIS GEOREGIONAIS);
-    @Insert
-    void insert(ClasseUpdate classeUpdate);
-    @Insert
+    @Insert(onConflict  = OnConflictStrategy.IGNORE)
     void insert(ESPACAMENTOS espacamentos);
-    @Insert
+    @Insert(onConflict  = OnConflictStrategy.IGNORE)
     void insert(MANEJO manejo);
-    @Insert
+    @Insert(onConflict  = OnConflictStrategy.IGNORE)
     void insert(MATERIAL_GENETICO material_genetico);
-    @Insert
+    @Insert(onConflict  = OnConflictStrategy.IGNORE)
     void insert(O_S_ATIVIDADES o_s_atividades);
-    @Insert
+    @Insert(onConflict  = OnConflictStrategy.IGNORE)
     void insert(CADASTRO_FLORESTAL cadastro_florestal);
-    @Insert
+    @Insert(onConflict  = OnConflictStrategy.IGNORE)
     void insert(MAQUINAS maquinas);
-    @Insert
+    @Insert(onConflict  = OnConflictStrategy.IGNORE)
     void insert(IMPLEMENTOS implementos);
-    @Insert
+    @Insert(onConflict  = OnConflictStrategy.IGNORE)
     void insert(CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem);
-    @Insert
+    @Insert(onConflict  = OnConflictStrategy.IGNORE)
     void insert(PRESTADORES prestadores);
-    @Insert
+    @Insert(onConflict  = OnConflictStrategy.IGNORE)
     void insert(MAQUINA_IMPLEMENTO maquinaImplemento);
-    @Insert
+    @Insert(onConflict  = OnConflictStrategy.IGNORE)
     void insert(OPERADORES operadores);
-    @Insert
+    @Insert(onConflict  = OnConflictStrategy.REPLACE)
     void insert(O_S_ATIVIDADES_DIA oSAtividadesDia);
+    @Insert(onConflict  = OnConflictStrategy.IGNORE)
+    void insert(INSUMOS insumos);
+    @Insert(onConflict  = OnConflictStrategy.IGNORE)
+    void insert(O_S_ATIVIDADE_INSUMOS o_s_atividade_insumos);
+    @Insert(onConflict  = OnConflictStrategy.REPLACE)
+    void insert(O_S_ATIVIDADE_INSUMOS_DIA o_s_atividade_insumos_dia);
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insert(ATIVIDADES atividades);
 
 
     @Update
@@ -71,8 +81,6 @@ public interface DAO {
     void update(GEO_SETORES GEOSETORES);
     @Update
     void update(GEO_REGIONAIS GEOREGIONAIS);
-    @Update
-    void update(ClasseUpdate classeUpdate);
     @Update
     void update(O_S_ATIVIDADES o_s_atividades);
     @Update
@@ -91,7 +99,14 @@ public interface DAO {
     void update(OPERADORES operadores);
     @Update
     void update(O_S_ATIVIDADES_DIA oSAtividadesDia);
-
+    @Update
+    void update(INSUMOS insumos);
+    @Update
+    void update(O_S_ATIVIDADE_INSUMOS o_s_atividade_insumos);
+    @Update
+    void update(O_S_ATIVIDADE_INSUMOS_DIA o_s_atividade_insumos_dia);
+    @Update
+    void update(ATIVIDADES atividades);
 
     @Delete
     void delete(GGF_USUARIOS GGFUSUARIOS);
@@ -99,8 +114,6 @@ public interface DAO {
     void delete(GEO_SETORES GEOSETORES);
     @Delete
     void delete(GEO_REGIONAIS GEOREGIONAIS);
-    @Delete
-    void delete(ClasseUpdate classeUpdate);
     @Delete
     void delete(O_S_ATIVIDADES o_s_atividades);
     @Delete
@@ -119,16 +132,24 @@ public interface DAO {
     void delete(OPERADORES operadores);
     @Delete
     void delete(O_S_ATIVIDADES_DIA oSAtividadesDia);
+    @Delete
+    void delete(INSUMOS insumos);
+    @Delete
+    void delete(O_S_ATIVIDADE_INSUMOS o_s_atividade_insumos);
+    @Delete
+    void delete(O_S_ATIVIDADE_INSUMOS_DIA o_s_atividade_insumos_dia);
+    @Delete
+    void delete(ATIVIDADES atividades);
 
     //Scripts GGF_USUARIOS
     @Query("SELECT * FROM GGF_USUARIOS ORDER BY ID_USUARIO asc")
-    LiveData<List<GGF_USUARIOS>> todosUsers();
+    List<GGF_USUARIOS> todosUsers();
 
     @Query("SELECT * FROM GGF_USUARIOS WHERE ID_USUARIO=:taskId")
-    LiveData<GGF_USUARIOS> selecionaUser(int taskId);
+    GGF_USUARIOS selecionaUser(int taskId);
 
     @Query("SELECT * FROM GGF_USUARIOS WHERE EMAIL=:taskLogin AND senha=:taskSenha")
-    LiveData<GGF_USUARIOS> valida(String taskLogin, String taskSenha);
+    GGF_USUARIOS valida(String taskLogin, String taskSenha);
 
     @Query("SELECT * FROM GGF_USUARIOS WHERE EMAIL=:taskLogin")
     LiveData<GGF_USUARIOS> validaLogin(String taskLogin);
@@ -137,13 +158,15 @@ public interface DAO {
     List<GGF_USUARIOS> listaUsuarios();
 
 
-
     //Scripts GEO_SETORES
     @Query("SELECT * FROM GEO_SETORES ORDER BY ID_SETOR asc")
-    LiveData<List<GEO_SETORES>> todosSetores();
+    List<GEO_SETORES> todosSetores();
 
     @Query("SELECT * FROM GEO_SETORES WHERE ID_SETOR=:taskId")
-    LiveData<GEO_SETORES> selecionaSetor(int taskId);
+    GEO_SETORES selecionaSetor(int taskId);
+
+    @Query("SELECT DESCRICAO FROM GEO_SETORES WHERE ID_SETOR=:taskId")
+    String selecionaDescSetor(int taskId);
 
 
     //Scripts GEO_REGIONAIS
@@ -154,17 +177,6 @@ public interface DAO {
     LiveData <GEO_REGIONAIS> selecionaRegional(int taskId);
 
 
-    //Scripts ClasseUpdate
-    @Query("SELECT * FROM ClasseUpdate ORDER BY id asc")
-    LiveData<List<ClasseUpdate>> todosUpdates();
-
-    @Query("SELECT * FROM ClasseUpdate WHERE id=:taskId")
-    LiveData<ClasseUpdate> selecionaUpdate(int taskId);
-
-    @Query("SELECT * FROM ClasseUpdate WHERE id_os=:osId")
-    LiveData<List<ClasseUpdate>> selecionaOsUpdate(int osId);
-
-
     //Scripts ClasseOs
     @Query("SELECT * FROM O_S_ATIVIDADES ORDER BY ID_PROGRAMACAO_ATIVIDADE asc")
     LiveData<List<O_S_ATIVIDADES>> todasOs();
@@ -173,7 +185,7 @@ public interface DAO {
     O_S_ATIVIDADES selecionaOs(int taskId);
 
     @Query("SELECT * FROM O_S_ATIVIDADES ORDER BY ID_PROGRAMACAO_ATIVIDADE asc")
-    LiveData<List<O_S_ATIVIDADES>> selecionaListaOs();
+    List<O_S_ATIVIDADES> selecionaListaOs();
 
 
     //Scripts CADASTRO_FLORESTAL
@@ -190,7 +202,7 @@ public interface DAO {
 
     //Scripts IMPLEMENTOS
     @Query("SELECT * FROM IMPLEMENTOS WHERE ID_IMPLEMENTO=:id")
-    LiveData<IMPLEMENTOS> selecionaImplemento(int id);
+    IMPLEMENTOS selecionaImplemento(int id);
 
     @Query("SELECT * FROM IMPLEMENTOS")
     List<IMPLEMENTOS> listaImplementos();
@@ -201,7 +213,7 @@ public interface DAO {
 
     //Scripts MAQUINAS
     @Query("SELECT * FROM MAQUINAS WHERE ID_MAQUINA=:id")
-    LiveData<MAQUINAS> selecionaMaquina(int id);
+    MAQUINAS selecionaMaquina(int id);
 
     @Query("SELECT * FROM MAQUINAS")
     List<MAQUINAS> listaMaquinas();
@@ -209,10 +221,13 @@ public interface DAO {
     @Query("SELECT * FROM MAQUINAS")
     LiveData<List<MAQUINAS>> todasMaquinas();
 
+    @Query("SELECT ID_MAQUINA FROM MAQUINAS WHERE DESCRICAO_MAQUINA=:desc")
+    int selecionaIdMaquina(String desc);
+
 
     //Scripts PRESTADORES
     @Query("SELECT * FROM PRESTADORES WHERE ID_PRESTADOR=:id")
-    LiveData<PRESTADORES> selecionaPrestador(int id);
+    PRESTADORES selecionaPrestador(int id);
 
     @Query("SELECT * FROM PRESTADORES")
     List<PRESTADORES> listaPrestadores();
@@ -230,13 +245,24 @@ public interface DAO {
             "TURNO=:turno")
             CALIBRAGEM_SUBSOLAGEM checaCalibragem(int idProg, String data, String turno);
 
+    @Query("SELECT * FROM CALIBRAGEM_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg")
+    List<CALIBRAGEM_SUBSOLAGEM> listaCalibragem(int idProg);
+
 
     //Scripts MAQUINA_IMPLEMENTO
     @Query("SELECT * FROM MAQUINA_IMPLEMENTO")
     LiveData<List<MAQUINA_IMPLEMENTO>> todosMaquinaImplementos();
 
     @Query("SELECT * FROM MAQUINA_IMPLEMENTO WHERE ID_MAQUINA_IMPLEMENTO=:id")
-    LiveData<MAQUINA_IMPLEMENTO>selecionaMaquinaImplemento(int id);
+    MAQUINA_IMPLEMENTO selecionaMaquinaImplemento(int id);
+
+    @Query("SELECT * FROM MAQUINA_IMPLEMENTO")
+    List<MAQUINA_IMPLEMENTO> listaMaquinaImplemento();
+
+    @Query("SELECT ID_MAQUINA_IMPLEMENTO FROM CALIBRAGEM_SUBSOLAGEM " +
+            "WHERE CALIBRAGEM_SUBSOLAGEM.ID_PROGRAMACAO_ATIVIDADE=:idProg AND " +
+            "CALIBRAGEM_SUBSOLAGEM.DATA=:data AND CALIBRAGEM_SUBSOLAGEM.TURNO=:turno AND ID_MAQUINA_IMPLEMENTO=:idMaqImpl ")
+    int checaMaquinaImplemento(int idProg, String data, String turno, int idMaqImpl);
 
 
     //Scripts OPERADORES
@@ -244,10 +270,85 @@ public interface DAO {
     List<OPERADORES> todosOperadores();
 
     @Query("SELECT * FROM OPERADORES WHERE ID_OPERADORES=:id")
-    LiveData<OPERADORES>selecionaOperador(int id);
+    OPERADORES selecionaOperador(int id);
 
 
     //Scripts O_S_ATIVIDADES_DIA
     @Query("SELECT * FROM O_S_ATIVIDADES_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND DATA=:data")
     O_S_ATIVIDADES_DIA selecionaOsAtividadesDia(int idProg, String data);
+
+    @Query("SELECT * FROM O_S_ATIVIDADES_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg")
+    List<O_S_ATIVIDADES_DIA> listaAtividadesDia(int idProg);
+
+    @Query("SELECT * FROM O_S_ATIVIDADES_DIA")
+    List<O_S_ATIVIDADES_DIA> todasOsAtividadesDia();
+
+
+    //Scritps INSUMOS
+    @Query("SELECT * FROM INSUMOS WHERE ID_INSUMO=:id")
+    INSUMOS selecionaInsumo(int id);
+
+    @Query("SELECT * FROM INSUMOS")
+    LiveData<List<INSUMOS>> todosInsumos();
+
+    @Query("SELECT ID_INSUMO FROM INSUMOS WHERE DESCRICAO=:desc")
+    int consultaDesc(String desc);
+
+
+    //Scritps O_S_ATIVIDADE_INSUMOS
+    @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_INSUMO=:idInsumo")
+    List<O_S_ATIVIDADE_INSUMOS> selecionaOsAtividadeInsumo(int idProg, int idInsumo);
+
+    @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS")
+    LiveData<List<O_S_ATIVIDADE_INSUMOS>> todosOsAtividadeInsumos();
+
+
+    //Scripts O_S_ATIVIDADE_INSUMOS_DIA
+    @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND DATA=:data")
+    List<O_S_ATIVIDADE_INSUMOS_DIA> listaOsAtividadeInsumosDia(int idProg, String data);
+
+    @Query("DELETE FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND DATA=:data")
+    void apagaOsAtividadeInsumosDia(int idProg, String data);
+
+    @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg GROUP BY DATA")
+    List<O_S_ATIVIDADE_INSUMOS_DIA> checaOsInsumosDia(int idProg);
+
+    @Query("SELECT QTD_APLICADO FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_INSUMO=:idIns")
+        List<Double> todosQTDApl(int idProg, int idIns);
+
+    //Scripts ATIVIDADES
+    @Query("SELECT * FROM ATIVIDADES WHERE ID_ATIVIDADE=:idAtv")
+    ATIVIDADES selecionaAtividade(int idAtv);
+
+    @Query("SELECT * FROM ATIVIDADES ORDER BY ID_ATIVIDADE")
+    List<ATIVIDADES> todasAtividades();
+
+
+
+    //JOINS
+    @Query("SELECT DISTINCT * FROM O_S_ATIVIDADE_INSUMOS INNER JOIN INSUMOS ON O_S_ATIVIDADE_INSUMOS.ID_INSUMO = INSUMOS.ID_INSUMO " +
+            "LEFT JOIN O_S_ATIVIDADE_INSUMOS_DIA ON O_S_ATIVIDADE_INSUMOS.ID_INSUMO = O_S_ATIVIDADE_INSUMOS_DIA.ID_INSUMO" +
+            " AND O_S_ATIVIDADE_INSUMOS.ID_PROGRAMACAO_ATIVIDADE = O_S_ATIVIDADE_INSUMOS_DIA.ID_PROGRAMACAO_ATIVIDADE" +
+            " WHERE O_S_ATIVIDADE_INSUMOS.ID_PROGRAMACAO_ATIVIDADE=:idProg GROUP BY INSUMOS.ID_INSUMO ")
+    List<Join_OS_INSUMOS> listaJoinInsumoAtividades(int idProg);
+
+    @Query("SELECT DISTINCT * FROM INSUMOS INNER JOIN O_S_ATIVIDADE_INSUMOS_DIA ON INSUMOS.ID_INSUMO = O_S_ATIVIDADE_INSUMOS_DIA.ID_INSUMO " +
+            "LEFT JOIN O_S_ATIVIDADE_INSUMOS" +
+            " ON O_S_ATIVIDADE_INSUMOS_DIA.ID_INSUMO = O_S_ATIVIDADE_INSUMOS.ID_INSUMO " +
+            "AND O_S_ATIVIDADE_INSUMOS.ID_PROGRAMACAO_ATIVIDADE = O_S_ATIVIDADE_INSUMOS_DIA.ID_PROGRAMACAO_ATIVIDADE " +
+            "WHERE O_S_ATIVIDADE_INSUMOS_DIA.ID_PROGRAMACAO_ATIVIDADE=:idProg AND O_S_ATIVIDADE_INSUMOS_DIA.DATA=:data")
+    List<Join_OS_INSUMOS> listaJoinInsumoAtividadesdia(int idProg, String data);
+
+    @Query("SELECT QTD_APLICADO FROM INSUMOS LEFT JOIN O_S_ATIVIDADE_INSUMOS_DIA" +
+            " ON INSUMOS.ID_INSUMO = O_S_ATIVIDADE_INSUMOS_DIA.ID_INSUMO " +
+            "WHERE O_S_ATIVIDADE_INSUMOS_DIA.ID_PROGRAMACAO_ATIVIDADE=:idProg " +
+            "AND O_S_ATIVIDADE_INSUMOS_DIA.DATA=:data " +
+            "AND O_S_ATIVIDADE_INSUMOS_DIA.ID_INSUMO=:idInsumo")
+    double retornaQtdApl(int idProg, String data, int idInsumo);
+
+    @Query("SELECT * FROM MAQUINA_IMPLEMENTO JOIN MAQUINAS " +
+            "ON MAQUINA_IMPLEMENTO.ID_MAQUINA = MAQUINAS.ID_MAQUINA " +
+            "JOIN IMPLEMENTOS ON MAQUINA_IMPLEMENTO.ID_IMPLEMENTO = IMPLEMENTOS.ID_IMPLEMENTO " +
+            "ORDER BY ID_MAQUINA_IMPLEMENTO")
+    List<Join_MAQUINA_IMPLEMENTO> listaJoinMaquinaImplemento();
 }
