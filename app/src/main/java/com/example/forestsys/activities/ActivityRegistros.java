@@ -137,7 +137,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         statusOs.setText(String.valueOf("Andamento"));
         areaOs.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace(".", ","));
         manejoOs.setText(String.valueOf(osSelecionada.getID_MANEJO()));
-        dataProgramada.setText(osSelecionada.getDATA_PROGRAMADA());
+        dataProgramada.setText(dataHoraAtual.formataDataTextView(osSelecionada.getDATA_PROGRAMADA()));
         areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()).replace(".", ","));
 
         String temMadeira = "NÃO";
@@ -334,8 +334,8 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             String auxAno = String.valueOf(year);
 
             boolean temErro = false;
-            String auxTeste = (auxDia + "/" + auxMes + "/" + auxAno).trim();
-            String pattern = ("dd/MM/yyyy");
+            String auxTeste = (auxDia + "-" + auxMes + "-" + auxAno).trim();
+            String pattern = ("dd-MM-yyyy");
             SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 
             DataHoraAtual dataHoraAtual = new DataHoraAtual();
@@ -397,7 +397,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
         //Método auxiliar para setar a data no textview
         public void setarData(String dia, String mes, String ano) {
-            dataDoApontamento = (dia + "/" + mes + "/" + ano).trim();
+            dataDoApontamento = (dia + "-" + mes + "-" + ano).trim();
             dataApontamento.setText(dataDoApontamento);
         }
     }
@@ -485,7 +485,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             oSAtividadesDiaAtual = new O_S_ATIVIDADES_DIA();
 
             oSAtividadesDiaAtual.setID_PROGRAMACAO_ATIVIDADE(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
-            oSAtividadesDiaAtual.setDATA(dataDoApontamento.trim());
+            oSAtividadesDiaAtual.setDATA(dataHoraAtual.formataDataDb(dataDoApontamento.trim()));
             oSAtividadesDiaAtual.setID_PRESTADOR(posicaoPrestador);
             oSAtividadesDiaAtual.setID_RESPONSAVEL(posicaoResponsavel);
 
@@ -533,7 +533,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
                 for (int i = 0; i < listaJoinOsInsumosSelecionados.size(); i++) {
                     persiste = listaJoinOsInsumosSelecionados.get(i);
-                    dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataDoApontamento,
+                    dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.formataDataDb(dataDoApontamento),
                             persiste.getID_INSUMO(), persiste.getQTD_APLICADO()));
                 }
             }

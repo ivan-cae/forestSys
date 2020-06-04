@@ -245,7 +245,7 @@ public interface DAO {
             "TURNO=:turno")
             CALIBRAGEM_SUBSOLAGEM checaCalibragem(int idProg, String data, String turno);
 
-    @Query("SELECT * FROM CALIBRAGEM_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg")
+    @Query("SELECT * FROM CALIBRAGEM_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg ORDER BY strftime('%d-%m-%Y') DESC")
     List<CALIBRAGEM_SUBSOLAGEM> listaCalibragem(int idProg);
 
 
@@ -261,7 +261,8 @@ public interface DAO {
 
     @Query("SELECT ID_MAQUINA_IMPLEMENTO FROM CALIBRAGEM_SUBSOLAGEM " +
             "WHERE CALIBRAGEM_SUBSOLAGEM.ID_PROGRAMACAO_ATIVIDADE=:idProg AND " +
-            "CALIBRAGEM_SUBSOLAGEM.DATA=:data AND CALIBRAGEM_SUBSOLAGEM.TURNO=:turno AND ID_MAQUINA_IMPLEMENTO=:idMaqImpl ")
+            "CALIBRAGEM_SUBSOLAGEM.DATA=:data AND CALIBRAGEM_SUBSOLAGEM.TURNO=:turno AND" +
+            " CALIBRAGEM_SUBSOLAGEM.ID_MAQUINA_IMPLEMENTO=:idMaqImpl")
     int checaMaquinaImplemento(int idProg, String data, String turno, int idMaqImpl);
 
 
@@ -277,7 +278,7 @@ public interface DAO {
     @Query("SELECT * FROM O_S_ATIVIDADES_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND DATA=:data")
     O_S_ATIVIDADES_DIA selecionaOsAtividadesDia(int idProg, String data);
 
-    @Query("SELECT * FROM O_S_ATIVIDADES_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg")
+    @Query("SELECT * FROM O_S_ATIVIDADES_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg ORDER BY DATE(DATA) DESC")
     List<O_S_ATIVIDADES_DIA> listaAtividadesDia(int idProg);
 
     @Query("SELECT * FROM O_S_ATIVIDADES_DIA")
@@ -351,4 +352,6 @@ public interface DAO {
             "JOIN IMPLEMENTOS ON MAQUINA_IMPLEMENTO.ID_IMPLEMENTO = IMPLEMENTOS.ID_IMPLEMENTO " +
             "ORDER BY ID_MAQUINA_IMPLEMENTO")
     List<Join_MAQUINA_IMPLEMENTO> listaJoinMaquinaImplemento();
+
+
 }

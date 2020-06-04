@@ -133,7 +133,7 @@ public class ActivityListagemRegistros extends AppCompatActivity implements Navi
         talhao.setText(osSelecionada.getTALHAO());
         setor.setText(osSelecionada.getID_SETOR().toString());
         ciclo.setText(osSelecionada.getCICLO().toString());
-        dataProgramada.setText(osSelecionada.getDATA_PROGRAMADA());
+        dataProgramada.setText(dataHoraAtual.formataDataTextView(osSelecionada.getDATA_PROGRAMADA()));
         areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()));
 
         String temMadeira = "NÃO";

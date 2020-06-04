@@ -15,7 +15,6 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,7 +32,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -113,18 +111,18 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     private ImageButton botaoConfirma;
     private ImageButton botaoVoltar;
 
-    boolean todosConformeP1 = false;
-    boolean todosConformeP2 = false;
+    private boolean todosConformeP1;
+    private boolean todosConformeP2;
 
     private ObjectAnimator objAnim;
 
     private int atualP2;
     private int atualP1;
-    private int corrigirP1 = 0;
-    private int corrigirP2 = 0;
+    private int corrigirP1;
+    private int corrigirP2;
 
-    private Double[] amostrasP1 = new Double[5];
-    private Double[] amostrasP2 = new Double[5];
+    private double[] amostrasP1;
+    private double[] amostrasP2;
 
 
     private Double mediaPercentualp1;
@@ -144,27 +142,104 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     private AdaptadorCalibracao adaptador;
     private List<CALIBRAGEM_SUBSOLAGEM> calibragens;
 
-    private int idMaquinaImplemento=-1;
-    private int posicaoOperador=-1;
+    private int idMaquinaImplemento;
+    private int idOperador;
     private int contSpinnerOperador;
     private int contSpinnerMaquinaImplemento;
 
     private List<Join_OS_INSUMOS> joinOsCalibracaoInsumos;
     private TextView nomeProduto1;
     private TextView nomeProduto2;
+
+    private ArrayAdapter<OPERADORES> adapterOperadores;
+    private ArrayAdapter<Join_MAQUINA_IMPLEMENTO> adapterMaquinaImplementos;
+
+    private boolean mudouOrientacao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         inicializacao();
-    }
 
+        if(savedInstanceState!=null) {
+            p1_a1.setText(savedInstanceState.getString("p1_a1"));
+            p1_a2.setText(savedInstanceState.getString("p1_a2"));
+            p1_a3.setText(savedInstanceState.getString("p1_a3"));
+            p1_a4.setText(savedInstanceState.getString("p1_a4"));
+            p1_a5.setText(savedInstanceState.getString("p1_a5"));
+
+            p2_a1.setText(savedInstanceState.getString("p2_a1"));
+            p2_a2.setText(savedInstanceState.getString("p2_a2"));
+            p2_a3.setText(savedInstanceState.getString("p2_a3"));
+            p2_a4.setText(savedInstanceState.getString("p2_a4"));
+            p2_a5.setText(savedInstanceState.getString("p2_a5"));
+
+            dif1_p1.setText(savedInstanceState.getString("dif1_p1"));
+            dif2_p1.setText(savedInstanceState.getString("dif2_p1"));
+            dif3_p1.setText(savedInstanceState.getString("dif3_p1"));
+            dif4_p1.setText(savedInstanceState.getString("dif4_p1"));
+
+            dif1_p2.setText(savedInstanceState.getString("dif1_p2"));
+            dif2_p2.setText(savedInstanceState.getString("dif2_p2"));
+            dif3_p2.setText(savedInstanceState.getString("dif3_p2"));
+            dif4_p2.setText(savedInstanceState.getString("dif4_p2"));
+
+            p1Media.setText(savedInstanceState.getString("p1Media"));
+            p2Media.setText(savedInstanceState.getString("p2Media"));
+
+            mediaDifP1.setText(savedInstanceState.getString("mediaDifP1"));
+            mediaDifP2.setText(savedInstanceState.getString("mediaDifP2"));
+
+            desvioProduto1.setText(savedInstanceState.getString("desvioProduto1"));
+            desvioProduto2.setText(savedInstanceState.getString("desvioProduto2"));
+
+            atualP1 = savedInstanceState.getInt("atualP1");
+            atualP2 = savedInstanceState.getInt("atualP2");
+            corrigirP1 = savedInstanceState.getInt("corrigirP1");
+            corrigirP2 = savedInstanceState.getInt("corrigirP2");
+
+            mediaPercentualp1 = savedInstanceState.getDouble("mediaPercentualp1");
+            mediaPercentualp2 = savedInstanceState.getDouble("mediaPercentualp2");
+            mediaGeralp1 = savedInstanceState.getDouble("mediaGeralp1");
+            mediaGeralp2 = savedInstanceState.getDouble("mediaGeralp2");
+
+            amostrasP1 = savedInstanceState.getDoubleArray("amostrasP1");
+            amostrasP2 = savedInstanceState.getDoubleArray("amostrasP2");
+
+            idOperador = savedInstanceState.getInt("idOperador");
+            idMaquinaImplemento = savedInstanceState.getInt("idMaquinaImplemento");
+
+            if(idMaquinaImplemento!=-1){
+                spinnerMaquinaImplemento.setAdapter(adapterMaquinaImplementos);
+                spinnerMaquinaImplemento.setSelection(idMaquinaImplemento-1);
+            }
+
+            if(idOperador!=-1){
+                spinnerOperador.setAdapter(adapterOperadores);
+                spinnerOperador.setSelection(idOperador-1);
+            }
+            if(idOperador!=-1)
+            mudouOrientacao = true;
+
+            testaCliqueP1();
+            testaCliqueP2();
+
+            if(atualP1>5) testaP1();
+            if(atualP2>5) testaP2();
+        }
+        }
+
+    //Método chamado ao clicar no botão "+" para o produto 1
     public void cliqueP1(){
         corrigirP1 = 0;
         corrigirP2 = 0;
-
+        testaCliqueP1();
         if (atualP1 <= 5) abreDialogoP1();
+    }
 
-        if (atualP1 == 2) {
+    //Libera a edição das amostras no produto 1
+    public void testaCliqueP1(){
+        if (atualP1 >= 2) {
             p1_a1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -174,7 +249,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             });
         }
 
-        if (atualP1 == 3) {
+        if (atualP1 >= 3) {
             p1_a2.setCursorVisible(true);
             p1_a2.setClickable(true);
             p1_a2.setOnClickListener(new View.OnClickListener() {
@@ -186,7 +261,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             });
         }
 
-        if (atualP1 == 4) {
+        if (atualP1 >= 4) {
             p1_a3.setCursorVisible(true);
             p1_a3.setClickable(true);
             p1_a3.setOnClickListener(new View.OnClickListener() {
@@ -198,7 +273,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             });
         }
 
-        if (atualP1 == 5) {
+        if (atualP1 >= 5) {
             p1_a4.setCursorVisible(true);
             p1_a4.setClickable(true);
             p1_a4.setOnClickListener(new View.OnClickListener() {
@@ -223,14 +298,17 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         }
     }
 
+    //Método chamado ao clicar no botão "+" para o produto 2
     public void cliqueP2(){
         corrigirP1 = 0;
         corrigirP2 = 0;
-
-
+        testaCliqueP2();
         if (atualP2 <= 5) abreDialogoP2();
+    }
 
-        if (atualP2 == 2) {
+    //Libera a edição das amostras no produto 2
+    public void testaCliqueP2(){
+        if (atualP2 >= 2) {
             p2_a1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -240,7 +318,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             });
         }
 
-        if (atualP2 == 3) {
+        if (atualP2 >= 3) {
             p2_a2.setCursorVisible(true);
             p2_a2.setClickable(true);
             p2_a2.setOnClickListener(new View.OnClickListener() {
@@ -252,7 +330,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             });
         }
 
-        if (atualP2 == 4) {
+        if (atualP2 >= 4) {
             p2_a3.setCursorVisible(true);
             p2_a3.setClickable(true);
             p2_a3.setOnClickListener(new View.OnClickListener() {
@@ -264,7 +342,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             });
         }
 
-        if (atualP2 == 5) {
+        if (atualP2 >= 5) {
             p2_a4.setCursorVisible(true);
             p2_a4.setClickable(true);
             p2_a4.setOnClickListener(new View.OnClickListener() {
@@ -284,13 +362,14 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                 public void onClick(View v) {
                     corrigirP2 = 5;
                     abreDialogoP2();
+
                 }
             });
         }
     }
 
     //Abre a caixa de diálogo perguntando se o usuário deseja sair da tela e avisando que ele perderá o que não foi salvo
-                public void dialogoFechar(){
+    public void dialogoFechar(){
             AlertDialog dialog = new AlertDialog.Builder(ActivityCalibracao.this)
                     .setTitle("Voltar Para a Tela da Atividade?")
                     .setMessage("Caso clique em SIM, você perderá os dados da calibração!")
@@ -386,7 +465,6 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
     //Abre caixa de diálogo para preencher amostras do produto 1
     public void abreDialogoP1() {
-        todosConformeP1 = true;
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_calibracao, null);
         final EditText valor = mView.findViewById(R.id.valor_dialogo_calibragem);
@@ -423,11 +501,6 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_calbragem);
         if(corrigirP1==0) numAmostra.setText(String.valueOf(atualP1));
         else numAmostra.setText(String.valueOf(corrigirP1));
-        p1_a1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-        p1_a2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-        p1_a3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-        p1_a4.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-        p1_a5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
 
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
@@ -447,7 +520,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                 }
                 if(!aux.isEmpty() && !aux.contains(",")){
                     aux = aux.concat(",000");
-                    Log.e("completa automatico", aux);
+
                 }
 
                     if (!aux.isEmpty() && aux.length() < 5 && aux.contains(","))
@@ -522,140 +595,144 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                             dialog.dismiss();
                         }
                     } if(naoPermiteCentena==true) valor.setError("Valor incorreto: Permitido unidade e dezena.");
-
-
-                //testando p1
-
-                    if (diferencaPercentual(amostrasP1[0], amostrasP1[1]) > 5.00 || diferencaPercentual(amostrasP1[0], amostrasP1[1]) < -5.00) {
-                        dif1_p1.setTextColor(Color.parseColor("#FF9800"));
-
-                        todosConformeP1 = false;
-                    } else {
-                        dif1_p1.setTextColor(Color.parseColor("#32CD32"));
-                    }
-                    if (((diferencaPercentual(amostrasP1[0], amostrasP1[1]).isInfinite()) || diferencaPercentual(amostrasP1[0], amostrasP1[1]).isNaN()) )
-                        dif1_p1.setText("");
-                    else
-                        dif1_p1.setText(String.valueOf(-1*arredonda1Casa((diferencaPercentual(amostrasP1[0], amostrasP1[1])))).replace('.', ','));
-
-
-                    if (diferencaPercentual(amostrasP1[1], amostrasP1[2]) > 5.00 || diferencaPercentual(amostrasP1[1], amostrasP1[2]) < -5.00) {
-                        dif2_p1.setTextColor(Color.parseColor("#FF9800"));
-
-                        todosConformeP1 = false;
-                    } else {
-                        dif2_p1.setTextColor(Color.parseColor("#32CD32"));
-                    }
-                    if (((diferencaPercentual(amostrasP1[1], amostrasP1[2]).isNaN() || diferencaPercentual(amostrasP1[1], amostrasP1[2]).isInfinite())) )
-                        dif2_p1.setText("");
-                    else
-                        dif2_p1.setText(String.valueOf(-1*arredonda1Casa((diferencaPercentual(amostrasP1[1], amostrasP1[2])))).replace('.', ','));
-
-
-                    if (diferencaPercentual(amostrasP1[2], amostrasP1[3]) >  5.00 || diferencaPercentual(amostrasP1[2], amostrasP1[3]) < -5.00) {
-                        dif3_p1.setTextColor(Color.parseColor("#FF9800"));
-
-                        todosConformeP1 = false;
-
-                    } else {
-                        dif3_p1.setTextColor(Color.parseColor("#32CD32"));
-                    }
-                    if (((diferencaPercentual(amostrasP1[2], amostrasP1[3]).isInfinite() || diferencaPercentual(amostrasP1[2], amostrasP1[3]).isNaN())))
-                        dif3_p1.setText("");
-                    else
-                        dif3_p1.setText(String.valueOf(-1*arredonda1Casa((diferencaPercentual(amostrasP1[2], amostrasP1[3])))).replace('.', ','));
-
-
-                    if (diferencaPercentual(amostrasP1[3], amostrasP1[4]) > 5.00 || diferencaPercentual(amostrasP1[3], amostrasP1[4]) < -5.00) {
-                        dif4_p1.setTextColor(Color.parseColor("#FF9800"));
-
-                        todosConformeP1 = false;
-
-                    } else {
-                        dif4_p1.setTextColor(Color.parseColor("#32CD32"));
-                    }
-                    if (((diferencaPercentual(amostrasP1[3], amostrasP1[4]).isInfinite() || diferencaPercentual(amostrasP1[3], amostrasP1[4]).isNaN())))
-                        dif4_p1.setText("");
-                    else
-                        dif4_p1.setText(String.valueOf(-1*arredonda1Casa((diferencaPercentual(amostrasP1[3], amostrasP1[4])))).replace('.', ','));
-
-
-
-                //testando p2
-                if (diferencaPercentual(amostrasP2[0], amostrasP2[1]) > 5.00 || diferencaPercentual(amostrasP2[0], amostrasP2[1]) < -5.00) {
-                    todosConformeP2 = false;
-                }
-                if (diferencaPercentual(amostrasP2[1], amostrasP2[2]) > 5.00 || diferencaPercentual(amostrasP2[1], amostrasP2[2]) < -5.00) {
-                    todosConformeP2 = false;
-                }
-                if (diferencaPercentual(amostrasP2[2], amostrasP2[3]) > 5.00 || diferencaPercentual(amostrasP2[2], amostrasP2[3]) < -5.00) {
-                    todosConformeP2 = false;
-                }
-                if (diferencaPercentual(amostrasP2[3], amostrasP2[4]) > 5.00 || diferencaPercentual(amostrasP2[3], amostrasP2[4]) < -5.00) {
-                    todosConformeP2 = false;
-                }
-
-
-                mediaPercentualp1 = (
-                        diferencaPercentual(amostrasP1[0], amostrasP1[1]) +
-                                diferencaPercentual(amostrasP1[1], amostrasP1[2]) +
-                                diferencaPercentual(amostrasP1[2], amostrasP1[3]) +
-                                diferencaPercentual(amostrasP1[3], amostrasP1[4])) / 4;
-
-                Double maiorDif = 0.0;
-                int posicaoMaiorDif = 0;
-
-                if (atualP1 > 5) {
-                    for (int i = 0; i < 4; i++) {
-                        if (Math.abs(diferencaPercentual(amostrasP1[i], amostrasP1[i + 1])) > maiorDif) {
-                            maiorDif = Math.abs(diferencaPercentual(amostrasP1[i], amostrasP1[i + 1]));
-                            posicaoMaiorDif = i + 1;
-                        }
-                    }
-
-                    if (maiorDif > 5.0) {
-                        if (posicaoMaiorDif == 1) {
-                            p1_a2.setBackgroundColor(Color.parseColor("#FF0000"));
-                            dif1_p1.setTextColor(Color.parseColor("#FF0000"));
-                        }else if (posicaoMaiorDif == 2) {
-                            p1_a3.setBackgroundColor(Color.parseColor("#FF0000"));
-                            dif2_p1.setTextColor(Color.parseColor("#FF0000"));
-                        }else if (posicaoMaiorDif == 3){
-                            p1_a4.setBackgroundColor(Color.parseColor("#FF0000"));
-                            dif3_p1.setTextColor(Color.parseColor("#FF0000"));
-                        }else if (posicaoMaiorDif == 4) {
-                            p1_a5.setBackgroundColor(Color.parseColor("#FF0000"));
-                            dif4_p1.setTextColor(Color.parseColor("#FF0000"));
-                        }
-                    }
-                }
-
-                mediaGeralp1 = (amostrasP1[0] + amostrasP1[1] + amostrasP1[2] + amostrasP1[3] + amostrasP1[4]) / 5;
-                mediaGeralp1 = arredonda3Casas(mediaGeralp1);
-
-                if (mediaPercentualp1.isInfinite() || mediaPercentualp1.isNaN()) mediaDifP1.setText("");
-                else {
-                    mediaDifP1.setText(String.valueOf((-1*arredonda1Casa(mediaPercentualp1))).replace('.', ','));
-                }
-
-                p1Media.setText(String.valueOf((mediaGeralp1)).replace('.', ','));
-                Double aux1 = arredonda2Casas(desvioPadrao(amostrasP1));
-                desvioProduto1.setText(String.valueOf((aux1)).replace('.', ','));
-
-                botaoConfirma.setVisibility(View.INVISIBLE);
-
-                if(atualP1>5 && atualP2>5 && todosConformeP1 == true && todosConformeP2 == true && posicaoOperador!=-1 && idMaquinaImplemento!=-1) {
-                    botaoConfirma.setVisibility(View.VISIBLE);
-                    pulseAnimation(botaoConfirma);
-                }
+                if(atualP1>5)testaP1();
             }
         });
     }
 
+    //Verifica as regras de conformidade para o produto 1
+    public void testaP1(){
+
+        p1_a1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+        p1_a2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+        p1_a3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+        p1_a4.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+        p1_a5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+
+        if (diferencaPercentual(amostrasP1[0], amostrasP1[1]) > 5.00 || diferencaPercentual(amostrasP1[0], amostrasP1[1]) < -5.00) {
+            dif1_p1.setTextColor(Color.parseColor("#FF9800"));
+
+            todosConformeP1 = false;
+        } else {
+            dif1_p1.setTextColor(Color.parseColor("#32CD32"));
+            todosConformeP1 = true;
+        }
+        if (((diferencaPercentual(amostrasP1[0], amostrasP1[1]).isInfinite()) || diferencaPercentual(amostrasP1[0], amostrasP1[1]).isNaN()) )
+            dif1_p1.setText("");
+        else
+            dif1_p1.setText(String.valueOf(-1*arredonda1Casa((diferencaPercentual(amostrasP1[0], amostrasP1[1])))).replace('.', ','));
+
+
+        if (diferencaPercentual(amostrasP1[1], amostrasP1[2]) > 5.00 || diferencaPercentual(amostrasP1[1], amostrasP1[2]) < -5.00) {
+            dif2_p1.setTextColor(Color.parseColor("#FF9800"));
+
+            todosConformeP1 = false;
+        } else {
+            dif2_p1.setTextColor(Color.parseColor("#32CD32"));
+            todosConformeP1 = true;
+        }
+        if (((diferencaPercentual(amostrasP1[1], amostrasP1[2]).isNaN() || diferencaPercentual(amostrasP1[1], amostrasP1[2]).isInfinite())) )
+            dif2_p1.setText("");
+        else
+            dif2_p1.setText(String.valueOf(-1*arredonda1Casa((diferencaPercentual(amostrasP1[1], amostrasP1[2])))).replace('.', ','));
+
+
+        if (diferencaPercentual(amostrasP1[2], amostrasP1[3]) >  5.00 || diferencaPercentual(amostrasP1[2], amostrasP1[3]) < -5.00) {
+            dif3_p1.setTextColor(Color.parseColor("#FF9800"));
+
+            todosConformeP1 = false;
+
+        } else {
+            dif3_p1.setTextColor(Color.parseColor("#32CD32"));
+            todosConformeP1 = true;
+        }
+        if (((diferencaPercentual(amostrasP1[2], amostrasP1[3]).isInfinite() || diferencaPercentual(amostrasP1[2], amostrasP1[3]).isNaN())))
+            dif3_p1.setText("");
+        else
+            dif3_p1.setText(String.valueOf(-1*arredonda1Casa((diferencaPercentual(amostrasP1[2], amostrasP1[3])))).replace('.', ','));
+
+
+        if (diferencaPercentual(amostrasP1[3], amostrasP1[4]) > 5.00 || diferencaPercentual(amostrasP1[3], amostrasP1[4]) < -5.00) {
+            dif4_p1.setTextColor(Color.parseColor("#FF9800"));
+
+            todosConformeP1 = false;
+
+        } else {
+            dif4_p1.setTextColor(Color.parseColor("#32CD32"));
+            todosConformeP1 = true;
+        }
+        if (((diferencaPercentual(amostrasP1[3], amostrasP1[4]).isInfinite() || diferencaPercentual(amostrasP1[3], amostrasP1[4]).isNaN())))
+            dif4_p1.setText("");
+        else
+            dif4_p1.setText(String.valueOf(-1*arredonda1Casa((diferencaPercentual(amostrasP1[3], amostrasP1[4])))).replace('.', ','));
+
+
+
+        //testando p2
+        if (diferencaPercentual(amostrasP2[0], amostrasP2[1]) > 5.00 || diferencaPercentual(amostrasP2[0], amostrasP2[1]) < -5.00) {
+            todosConformeP2 = false;
+        }
+        if (diferencaPercentual(amostrasP2[1], amostrasP2[2]) > 5.00 || diferencaPercentual(amostrasP2[1], amostrasP2[2]) < -5.00) {
+            todosConformeP2 = false;
+        }
+        if (diferencaPercentual(amostrasP2[2], amostrasP2[3]) > 5.00 || diferencaPercentual(amostrasP2[2], amostrasP2[3]) < -5.00) {
+            todosConformeP2 = false;
+        }
+        if (diferencaPercentual(amostrasP2[3], amostrasP2[4]) > 5.00 || diferencaPercentual(amostrasP2[3], amostrasP2[4]) < -5.00) {
+            todosConformeP2 = false;
+        }
+
+
+        mediaPercentualp1 = (
+                diferencaPercentual(amostrasP1[0], amostrasP1[1]) +
+                        diferencaPercentual(amostrasP1[1], amostrasP1[2]) +
+                        diferencaPercentual(amostrasP1[2], amostrasP1[3]) +
+                        diferencaPercentual(amostrasP1[3], amostrasP1[4])) / 4;
+
+        Double maiorDif = 0.0;
+        int posicaoMaiorDif = 0;
+
+        if (atualP1 > 5) {
+            for (int i = 0; i < 4; i++) {
+                if (Math.abs(diferencaPercentual(amostrasP1[i], amostrasP1[i + 1])) > maiorDif) {
+                    maiorDif = Math.abs(diferencaPercentual(amostrasP1[i], amostrasP1[i + 1]));
+                    posicaoMaiorDif = i + 1;
+                }
+            }
+
+            if (maiorDif > 5.0) {
+                if (posicaoMaiorDif == 1) {
+                    p1_a2.setBackgroundColor(Color.parseColor("#FF0000"));
+                    dif1_p1.setTextColor(Color.parseColor("#FF0000"));
+                }else if (posicaoMaiorDif == 2) {
+                    p1_a3.setBackgroundColor(Color.parseColor("#FF0000"));
+                    dif2_p1.setTextColor(Color.parseColor("#FF0000"));
+                }else if (posicaoMaiorDif == 3){
+                    p1_a4.setBackgroundColor(Color.parseColor("#FF0000"));
+                    dif3_p1.setTextColor(Color.parseColor("#FF0000"));
+                }else if (posicaoMaiorDif == 4) {
+                    p1_a5.setBackgroundColor(Color.parseColor("#FF0000"));
+                    dif4_p1.setTextColor(Color.parseColor("#FF0000"));
+                }
+            }
+        }
+
+        mediaGeralp1 = (amostrasP1[0] + amostrasP1[1] + amostrasP1[2] + amostrasP1[3] + amostrasP1[4]) / 5;
+        mediaGeralp1 = arredonda3Casas(mediaGeralp1);
+
+        if (mediaPercentualp1.isInfinite() || mediaPercentualp1.isNaN()) mediaDifP1.setText("");
+        else {
+            mediaDifP1.setText(String.valueOf((-1*arredonda1Casa(mediaPercentualp1))).replace('.', ','));
+        }
+
+        p1Media.setText(String.valueOf((mediaGeralp1)).replace('.', ','));
+        Double aux1 = arredonda2Casas(desvioPadrao(amostrasP1));
+        desvioProduto1.setText(String.valueOf((aux1)).replace('.', ','));
+        testaConfirmacao();
+    }
 
     //Abre caixa de diálogo para preencher amostras do produto
     public void abreDialogoP2() {
-        todosConformeP2 = true;
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_calibracao, null);
         final EditText valor = mView.findViewById(R.id.valor_dialogo_calibragem);
@@ -693,12 +770,6 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
         Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_calbragem);
 
-        p2_a1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-        p2_a2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-        p2_a3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-        p2_a4.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-        p2_a5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
         dialog.show();
@@ -718,7 +789,6 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                 }
                 if(!aux.isEmpty() && !aux.contains(",")){
                     aux = aux.concat(",000");
-                    Log.e("completa automatico", aux);
                 }
 
                 if (!aux.isEmpty() && aux.length() < 5 && aux.contains(","))
@@ -794,139 +864,147 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                         dialog.dismiss();
                     }
                 } if(naoPermiteCentena==true) valor.setError("Valor incorreto: Permitido unidade e dezena.");
-
-
-                    if (diferencaPercentual(amostrasP2[0], amostrasP2[1]) > 5.00 || diferencaPercentual(amostrasP2[0], amostrasP2[1]) < -5.00) {
-                        dif1_p2.setTextColor(Color.parseColor("#FF9800"));
-                        todosConformeP2 = false;
-                    } else {
-                        dif1_p2.setTextColor(Color.parseColor("#32CD32"));
-                    }
-                    if (((diferencaPercentual(amostrasP2[0], amostrasP2[1]).isInfinite() || diferencaPercentual(amostrasP2[0], amostrasP2[1]).isNaN())))
-                        dif1_p2.setText("");
-                    else
-                        dif1_p2.setText(String.valueOf(-1*arredonda1Casa((diferencaPercentual(amostrasP2[0], amostrasP2[1])))).replace('.', ','));
-
-
-                    if (diferencaPercentual(amostrasP2[1], amostrasP2[2]) > 5.00 || diferencaPercentual(amostrasP2[1], amostrasP2[2]) < -5.00) {
-                        dif2_p2.setTextColor(Color.parseColor("#FF9800"));
-                        todosConformeP2 = false;
-
-                    } else {
-                        dif2_p2.setTextColor(Color.parseColor("#32CD32"));
-                    }
-                    if (((diferencaPercentual(amostrasP2[1], amostrasP2[2]).isInfinite() || diferencaPercentual(amostrasP2[1], amostrasP2[2]).isNaN())))
-                        dif2_p2.setText("");
-                    else
-                        dif2_p2.setText(String.valueOf(-1*arredonda1Casa((diferencaPercentual(amostrasP2[1], amostrasP2[2])))).replace('.', ','));
-
-
-                    if (diferencaPercentual(amostrasP2[2], amostrasP2[3]) > 5.00 || diferencaPercentual(amostrasP2[2], amostrasP2[3]) < -5.00) {
-                        dif3_p2.setTextColor(Color.parseColor("#FF9800"));
-                        todosConformeP2 = false;
-
-                    } else {
-                        dif3_p2.setTextColor(Color.parseColor("#32CD32"));
-                    }
-                    if (((diferencaPercentual(amostrasP2[2], amostrasP2[3]).isNaN() || diferencaPercentual(amostrasP2[2], amostrasP2[3]).isInfinite())))
-                        dif3_p2.setText("");
-                    else
-                        dif3_p2.setText(String.valueOf(-1*arredonda1Casa((diferencaPercentual(amostrasP2[2], amostrasP2[3])))).replace('.', ','));
-
-
-                    if (diferencaPercentual(amostrasP2[3], amostrasP2[4]) > 5.00 || diferencaPercentual(amostrasP2[3], amostrasP2[4]) < -5.00) {
-                        dif4_p2.setTextColor(Color.parseColor("#FF9800"));
-                        todosConformeP2 = false;
-
-                    } else {
-                        dif4_p2.setTextColor(Color.parseColor("#32CD32"));
-                    }
-                    if (((diferencaPercentual(amostrasP2[3], amostrasP2[4]).isNaN() || diferencaPercentual(amostrasP2[3], amostrasP2[4]).isInfinite())))
-                        dif4_p2.setText("");
-                    else
-                        dif4_p2.setText(String.valueOf(-1*arredonda1Casa((diferencaPercentual(amostrasP2[3], amostrasP2[4])))).replace('.', ','));
-
-                //testando p1
-
-                if (diferencaPercentual(amostrasP1[0], amostrasP1[1]) > 5.00 || diferencaPercentual(amostrasP1[0], amostrasP1[1]) < -5.00) {
-                    todosConformeP1 = false;
-                }
-
-                if (diferencaPercentual(amostrasP1[1], amostrasP1[2]) > 5.00 || diferencaPercentual(amostrasP1[1], amostrasP1[2]) < -5.00) {
-                    todosConformeP1 = false;
-                }
-
-                if (diferencaPercentual(amostrasP1[2], amostrasP1[3]) > 5.00 || diferencaPercentual(amostrasP1[2], amostrasP1[3]) < -5.00) {
-                    todosConformeP1 = false;
-                }
-
-                if (diferencaPercentual(amostrasP1[3], amostrasP1[4]) > 5.00 || diferencaPercentual(amostrasP1[3], amostrasP1[4]) < -5.00) {
-                    todosConformeP1 = false;
-                }
-
-                mediaPercentualp2 = (
-                        diferencaPercentual(amostrasP2[0], amostrasP2[1]) +
-                                diferencaPercentual(amostrasP2[1], amostrasP2[2]) +
-                                diferencaPercentual(amostrasP2[2], amostrasP2[3]) +
-                                diferencaPercentual(amostrasP2[3], amostrasP2[4])) / 4;
-
-                Double maiorDif = 0.0;
-                int posicaoMaiorDif = 0;
-
-                if (atualP2 > 5) {
-                    for (int i = 0; i < 4; i++) {
-                        if (Math.abs(diferencaPercentual(amostrasP2[i], amostrasP2[i + 1])) > maiorDif) {
-                            maiorDif = Math.abs(diferencaPercentual(amostrasP2[i], amostrasP2[i + 1]));
-                            posicaoMaiorDif = i + 1;
-                        }
-                    }
-
-                    if (maiorDif > 5.0) {
-                        if (posicaoMaiorDif == 1) {
-                            p2_a2.setBackgroundColor(Color.parseColor("#FF0000"));
-                            dif1_p2.setTextColor(Color.parseColor("#FF0000"));
-                        }else if (posicaoMaiorDif == 2) {
-                            p2_a3.setBackgroundColor(Color.parseColor("#FF0000"));
-                            dif2_p2.setTextColor(Color.parseColor("#FF0000"));
-                        }else if (posicaoMaiorDif == 3){
-                            p2_a4.setBackgroundColor(Color.parseColor("#FF0000"));
-                            dif3_p2.setTextColor(Color.parseColor("#FF0000"));
-                        }else if (posicaoMaiorDif == 4) {
-                            p2_a5.setBackgroundColor(Color.parseColor("#FF0000"));
-                            dif4_p2.setTextColor(Color.parseColor("#FF0000"));
-                        }
-                    }
-                }
-
-                mediaGeralp2 = (amostrasP2[0] + amostrasP2[1] + amostrasP2[2] + amostrasP2[3] + amostrasP2[4]) / 5;
-                mediaGeralp2 = arredonda3Casas(mediaGeralp2);
-
-                if ((mediaPercentualp2).isNaN() || mediaPercentualp2.isInfinite()) mediaDifP2.setText("");
-                else {
-
-                    mediaDifP2.setText(String.valueOf((-1*arredonda1Casa(mediaPercentualp2))).replace('.', ','));
-                }
-
-                p2Media.setText(String.valueOf((mediaGeralp2)).replace('.', ','));
-                Double aux1 = arredonda2Casas(desvioPadrao(amostrasP2));
-                desvioProduto2.setText(String.valueOf((aux1)).replace('.', ','));
-
-                botaoConfirma.setVisibility(View.GONE);
-
-                if (atualP1>5 && atualP2>5 &&todosConformeP1 == true && todosConformeP2 == true && posicaoOperador!=-1 && idMaquinaImplemento!=-1) {
-                    botaoConfirma.setVisibility(View.VISIBLE);
-                    pulseAnimation(botaoConfirma);
-                }
+                if(atualP2>5)testaP2();
             }
         });
+    }
+
+    //Verifica as regras de conformidade para o produto 2
+    public void testaP2(){
+
+        p2_a1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+        p2_a2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+        p2_a3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+        p2_a4.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+        p2_a5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+
+        if (diferencaPercentual(amostrasP2[0], amostrasP2[1]) > 5.00 || diferencaPercentual(amostrasP2[0], amostrasP2[1]) < -5.00) {
+            dif1_p2.setTextColor(Color.parseColor("#FF9800"));
+            todosConformeP2 = false;
+        } else {
+            dif1_p2.setTextColor(Color.parseColor("#32CD32"));
+            todosConformeP2 = true;
+        }
+        if (((diferencaPercentual(amostrasP2[0], amostrasP2[1]).isInfinite() || diferencaPercentual(amostrasP2[0], amostrasP2[1]).isNaN())))
+            dif1_p2.setText("");
+        else
+            dif1_p2.setText(String.valueOf(-1*arredonda1Casa((diferencaPercentual(amostrasP2[0], amostrasP2[1])))).replace('.', ','));
+
+
+        if (diferencaPercentual(amostrasP2[1], amostrasP2[2]) > 5.00 || diferencaPercentual(amostrasP2[1], amostrasP2[2]) < -5.00) {
+            dif2_p2.setTextColor(Color.parseColor("#FF9800"));
+            todosConformeP2 = false;
+
+        } else {
+            dif2_p2.setTextColor(Color.parseColor("#32CD32"));
+            todosConformeP2 = true;
+        }
+        if (((diferencaPercentual(amostrasP2[1], amostrasP2[2]).isInfinite() || diferencaPercentual(amostrasP2[1], amostrasP2[2]).isNaN())))
+            dif2_p2.setText("");
+        else
+            dif2_p2.setText(String.valueOf(-1*arredonda1Casa((diferencaPercentual(amostrasP2[1], amostrasP2[2])))).replace('.', ','));
+
+
+        if (diferencaPercentual(amostrasP2[2], amostrasP2[3]) > 5.00 || diferencaPercentual(amostrasP2[2], amostrasP2[3]) < -5.00) {
+            dif3_p2.setTextColor(Color.parseColor("#FF9800"));
+            todosConformeP2 = false;
+
+        } else {
+            dif3_p2.setTextColor(Color.parseColor("#32CD32"));
+            todosConformeP2 = true;
+        }
+        if (((diferencaPercentual(amostrasP2[2], amostrasP2[3]).isNaN() || diferencaPercentual(amostrasP2[2], amostrasP2[3]).isInfinite())))
+            dif3_p2.setText("");
+        else
+            dif3_p2.setText(String.valueOf(-1*arredonda1Casa((diferencaPercentual(amostrasP2[2], amostrasP2[3])))).replace('.', ','));
+
+
+        if (diferencaPercentual(amostrasP2[3], amostrasP2[4]) > 5.00 || diferencaPercentual(amostrasP2[3], amostrasP2[4]) < -5.00) {
+            dif4_p2.setTextColor(Color.parseColor("#FF9800"));
+            todosConformeP2 = false;
+
+        } else {
+            dif4_p2.setTextColor(Color.parseColor("#32CD32"));
+            todosConformeP2 = true;
+        }
+        if (((diferencaPercentual(amostrasP2[3], amostrasP2[4]).isNaN() || diferencaPercentual(amostrasP2[3], amostrasP2[4]).isInfinite())))
+            dif4_p2.setText("");
+        else
+            dif4_p2.setText(String.valueOf(-1*arredonda1Casa((diferencaPercentual(amostrasP2[3], amostrasP2[4])))).replace('.', ','));
+
+
+        if (diferencaPercentual(amostrasP1[0], amostrasP1[1]) > 5.00 || diferencaPercentual(amostrasP1[0], amostrasP1[1]) < -5.00) {
+            todosConformeP1 = false;
+        }
+
+        if (diferencaPercentual(amostrasP1[1], amostrasP1[2]) > 5.00 || diferencaPercentual(amostrasP1[1], amostrasP1[2]) < -5.00) {
+            todosConformeP1 = false;
+        }
+
+        if (diferencaPercentual(amostrasP1[2], amostrasP1[3]) > 5.00 || diferencaPercentual(amostrasP1[2], amostrasP1[3]) < -5.00) {
+            todosConformeP1 = false;
+        }
+
+        if (diferencaPercentual(amostrasP1[3], amostrasP1[4]) > 5.00 || diferencaPercentual(amostrasP1[3], amostrasP1[4]) < -5.00) {
+            todosConformeP1 = false;
+        }
+
+        mediaPercentualp2 = (
+                diferencaPercentual(amostrasP2[0], amostrasP2[1]) +
+                        diferencaPercentual(amostrasP2[1], amostrasP2[2]) +
+                        diferencaPercentual(amostrasP2[2], amostrasP2[3]) +
+                        diferencaPercentual(amostrasP2[3], amostrasP2[4])) / 4;
+
+        Double maiorDif = 0.0;
+        int posicaoMaiorDif = 0;
+
+        if (atualP2 > 5) {
+            for (int i = 0; i < 4; i++) {
+                if (Math.abs(diferencaPercentual(amostrasP2[i], amostrasP2[i + 1])) > maiorDif) {
+                    maiorDif = Math.abs(diferencaPercentual(amostrasP2[i], amostrasP2[i + 1]));
+                    posicaoMaiorDif = i + 1;
+                }
+            }
+
+            if (maiorDif > 5.0) {
+                if (posicaoMaiorDif == 1) {
+                    p2_a2.setBackgroundColor(Color.parseColor("#FF0000"));
+                    dif1_p2.setTextColor(Color.parseColor("#FF0000"));
+                }else if (posicaoMaiorDif == 2) {
+                    p2_a3.setBackgroundColor(Color.parseColor("#FF0000"));
+                    dif2_p2.setTextColor(Color.parseColor("#FF0000"));
+                }else if (posicaoMaiorDif == 3){
+                    p2_a4.setBackgroundColor(Color.parseColor("#FF0000"));
+                    dif3_p2.setTextColor(Color.parseColor("#FF0000"));
+                }else if (posicaoMaiorDif == 4) {
+                    p2_a5.setBackgroundColor(Color.parseColor("#FF0000"));
+                    dif4_p2.setTextColor(Color.parseColor("#FF0000"));
+                }
+            }
+        }
+
+        mediaGeralp2 = (amostrasP2[0] + amostrasP2[1] + amostrasP2[2] + amostrasP2[3] + amostrasP2[4]) / 5;
+        mediaGeralp2 = arredonda3Casas(mediaGeralp2);
+
+        if ((mediaPercentualp2).isNaN() || mediaPercentualp2.isInfinite()) mediaDifP2.setText("");
+        else {
+
+            mediaDifP2.setText(String.valueOf((-1*arredonda1Casa(mediaPercentualp2))).replace('.', ','));
+        }
+
+        p2Media.setText(String.valueOf((mediaGeralp2)).replace('.', ','));
+        Double aux1 = arredonda2Casas(desvioPadrao(amostrasP2));
+        desvioProduto2.setText(String.valueOf((aux1)).replace('.', ','));
+        testaConfirmacao();
     }
 
     //Checa se há uma calibração para a máquina selecionada na data e turno atuais
     //Parâmetro de entrada: Descrição da máquina selecionada
     public boolean checaMaquinaImplementoCalibracao(int s){
         int checagem = dao.checaMaquinaImplemento(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
-                dataHoraAtual.dataAtual(), checaTurno(), s);
-        if(checagem != NULL) return true;
+                dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()), checaTurno(), s);
+        Log.e("ID_MaqImp", String.valueOf(checagem));
+        if(checagem > 0) return true;
         return false;
     }
 
@@ -940,7 +1018,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     }
 
 
-    //Arredonda um número do tipo double para que tenha 1 casa decimal
+    //Arredonda um número do tipo Double para que tenha 1 casa decimal
     //Parâmetro de entrada: um Double
     private static Double arredonda1Casa(Double media) {
         DecimalFormat df = new DecimalFormat(".#");
@@ -948,7 +1026,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     }
 
 
-    //Arredonda um número do tipo double para que tenha  casas decimais
+    //Arredonda um número do tipo Double para que tenha  casas decimais
     //Parâmetro de entrada: um Double
     private static Double arredonda2Casas(Double media) {
         DecimalFormat df = new DecimalFormat("###.##");
@@ -956,7 +1034,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     }
 
 
-    //Arredonda um número do tipo double para que tenha 3 casas decimais
+    //Arredonda um número do tipo Double para que tenha 3 casas decimais
     //Parâmetro de entrada: um Double
     private static Double arredonda3Casas(Double media) {
         DecimalFormat df = new DecimalFormat("###.###");
@@ -969,13 +1047,14 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     private static Double diferencaPercentual(Double anterior, Double atual) {
         Double calculo =  (1-(atual/anterior))*100;//((anterior - atual) / anterior) * 100.0
         DecimalFormat df = new DecimalFormat("###.##");
+        if(Double.valueOf(df.format(calculo).replace(',', '.')) == 0.0) return -0.0;
         return Double.valueOf(df.format(calculo).replace(',', '.'));
     }
 
 
     //Calcula o desvio padrão de um array do tipo Double
     //Parâmetro de entrada: um array do tipo Double
-    public static Double desvioPadrao(Double[] data) {
+    public static Double desvioPadrao(double[] data) {
         if (data == null) {
             throw new IllegalArgumentException("Null 'data' array.");
         }
@@ -994,7 +1073,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
     //Calcula a média entre os números em um array do tipo Double
     //Parâmetro de entrada: um array do tipo Double
-    public static Double calculaMedia(Double[] values, boolean includeNullAndNaN) {
+    public static Double calculaMedia(double[] values, boolean includeNullAndNaN) {
 
         if (values == null) {
             throw new IllegalArgumentException("Null 'values' argument.");
@@ -1003,7 +1082,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         Double current;
         int counter = 0;
         for (int i = 0; i < values.length; i++) {
-            if (values[i] != null) {
+            if (values[i] != NULL) {
                 Double.valueOf(current = values[i]);
             } else {
                 current = Double.NaN;
@@ -1051,6 +1130,16 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         dialog.show();
     }
 
+    //Testa as conformidades para liberar o botão de confirmação
+    public void testaConfirmacao(){
+        botaoConfirma.setVisibility(View.GONE);
+        if (atualP1>=5 && atualP2>=5 && todosConformeP1 == true && todosConformeP2 == true && idOperador !=-1 && idMaquinaImplemento!=-1) {
+            botaoConfirma.setVisibility(View.VISIBLE);
+            pulseAnimation(botaoConfirma);
+        }
+    }
+
+    //Inicializa todos os itens na tela e seta valores de variáveis
     public void inicializacao(){
         setContentView(R.layout.activity_calibracao);
         setTitle(nomeEmpresaPref);
@@ -1060,6 +1149,11 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         baseDeDados = BaseDeDados.getInstance(getApplicationContext());
         dao = baseDeDados.dao();
 
+        amostrasP1 = new double[5];
+        amostrasP2 = new double[5];
+
+        todosConformeP1 = false;
+        todosConformeP2 = false;
         joinOsCalibracaoInsumos = dao.listaJoinInsumoAtividades(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
         nomeProduto1 = findViewById(R.id.calibracao_produto1);
@@ -1116,6 +1210,20 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         atualP1 = 1;
         atualP2 = 1;
 
+        corrigirP1 = 0;
+        corrigirP2 = 0;
+
+        idOperador = -1;
+        idMaquinaImplemento = -1;
+
+        contSpinnerOperador = 0;
+        contSpinnerMaquinaImplemento = 0;
+
+        mediaGeralp1 = 0.0;
+        mediaPercentualp1 = 0.0;
+        mediaGeralp2 = 0.0;
+        mediaPercentualp2 = 0.0;
+
         nomeProduto1.setText(joinOsCalibracaoInsumos.get(0).getDESCRICAO());
         nomeProduto2.setText(joinOsCalibracaoInsumos.get(1).getDESCRICAO());
 
@@ -1139,22 +1247,14 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
         ArrayList<OPERADORES> operadores = new ArrayList<>(dao.todosOperadores());
 
-
-        ArrayAdapter<Join_MAQUINA_IMPLEMENTO> adapterMaquinaImplementos = new ArrayAdapter<Join_MAQUINA_IMPLEMENTO>(this,
-                android.R.layout.simple_spinner_item, maquinasImplementos);
-        adapterMaquinaImplementos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerMaquinaImplemento.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(contSpinnerMaquinaImplemento ==0)spinnerMaquinaImplemento.setAdapter(adapterMaquinaImplementos);
-                return false;
-            }
-        });
-
-
-        ArrayAdapter<OPERADORES> adapterOperadores = new ArrayAdapter<OPERADORES>(this,
+        adapterOperadores = new ArrayAdapter<OPERADORES>(this,
                 android.R.layout.simple_spinner_item, operadores);
         adapterOperadores.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        adapterMaquinaImplementos = new ArrayAdapter<Join_MAQUINA_IMPLEMENTO>(this,
+                android.R.layout.simple_spinner_item, maquinasImplementos);
+        adapterMaquinaImplementos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         spinnerOperador.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -1163,19 +1263,23 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             }
         });
 
-        spinnerMaquinaImplemento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+        spinnerMaquinaImplemento.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(contSpinnerMaquinaImplemento ==0)spinnerMaquinaImplemento.setAdapter(adapterMaquinaImplementos);
+                return false;
+            }
+        });
+
+        spinnerOperador.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (contSpinnerMaquinaImplemento > 0){
-                    idMaquinaImplemento = maquinasImplementos.get(position).getID_MAQUINA_IMPLEMENTO();
-                    if (atualP1>5 && atualP2>5 &&todosConformeP1 == true && todosConformeP2 == true && posicaoOperador!=-1 && idMaquinaImplemento!=-1) {
-                        botaoConfirma.setVisibility(View.VISIBLE);
-                        pulseAnimation(botaoConfirma);
-                    }
-                    if (checaMaquinaImplementoCalibracao(maquinasImplementos.get(position).getID_MAQUINA_IMPLEMENTO()) == true)
-                        caixaAlertaMaquina();
+                if (contSpinnerOperador > 0){
+                    idOperador = operadores.get(position).getID_OPERADORES();
+                    testaConfirmacao();
                 }
-                contSpinnerMaquinaImplemento ++;
+                contSpinnerOperador ++;
             }
 
             @Override
@@ -1183,21 +1287,22 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             }
         });
 
-        spinnerOperador.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerMaquinaImplemento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(contSpinnerOperador>0) {
-                    posicaoOperador = operadores.get(position).getID_OPERADORES();
-                    if (atualP1>5 && atualP2>5 &&todosConformeP1 == true && todosConformeP2 == true && posicaoOperador!=-1 && idMaquinaImplemento!=-1) {
-                        botaoConfirma.setVisibility(View.VISIBLE);
-                        pulseAnimation(botaoConfirma);
+                if (contSpinnerMaquinaImplemento > 0){
+                    idMaquinaImplemento = maquinasImplementos.get(position).getID_MAQUINA_IMPLEMENTO();
+                    testaConfirmacao();
+                    if (checaMaquinaImplementoCalibracao(maquinasImplementos.get(position).getID_MAQUINA_IMPLEMENTO()) == true) {
+                        Log.e("Teste", "Sim");
+                        caixaAlertaMaquina();
                     }
                 }
-                contSpinnerOperador++;
+                contSpinnerMaquinaImplemento ++;
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onNothingSelected(AdapterView<?> parent){
             }
         });
 
@@ -1264,7 +1369,6 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         toggle.syncState();
 
 
-
         botaoVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1295,8 +1399,8 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                                     desvioP2 = Double.valueOf(desvioProduto2.getText().toString().replace(',','.'));
 
                                     CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem = new CALIBRAGEM_SUBSOLAGEM(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
-                                            dataHoraAtual.dataAtual(), checaTurno(), idMaquinaImplemento,
-                                            posicaoOperador, mediaP1, desvioP1, mediaP2, desvioP2);
+                                            dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()), checaTurno(), idMaquinaImplemento,
+                                            idOperador, mediaP1, desvioP1, mediaP2, desvioP2);
 
                                     dao.insert(calibragem_subsolagem);
 
@@ -1316,19 +1420,8 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                 }
             }
         });
-    }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            setContentView(R.layout.activity_calibracao);
-inicializacao();
-        } else {
-            setContentView(R.layout.activity_calibracao);
-            inicializacao();
-        }
+        mudouOrientacao = false;
     }
 
     //SObrescrita do método onBackPressed nativo do Android para que feche o menu de navegação lateral
@@ -1337,5 +1430,58 @@ inicializacao();
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString("p1_a1", p1_a1.getText().toString());
+        outState.putString("p1_a2", p1_a2.getText().toString());
+        outState.putString("p1_a3", p1_a3.getText().toString());
+        outState.putString("p1_a4", p1_a4.getText().toString());
+        outState.putString("p1_a5", p1_a5.getText().toString());
+
+        outState.putString("p2_a1", p2_a1.getText().toString());
+        outState.putString("p2_a2", p2_a2.getText().toString());
+        outState.putString("p2_a3", p2_a3.getText().toString());
+        outState.putString("p2_a4", p2_a4.getText().toString());
+        outState.putString("p2_a5", p2_a5.getText().toString());
+
+        outState.putString("dif1_p1", dif1_p1.getText().toString());
+        outState.putString("dif2_p1", dif2_p1.getText().toString());
+        outState.putString("dif3_p1", dif3_p1.getText().toString());
+        outState.putString("dif4_p1", dif4_p1.getText().toString());
+
+        outState.putString("dif1_p2", dif1_p2.getText().toString());
+        outState.putString("dif2_p2", dif2_p2.getText().toString());
+        outState.putString("dif3_p2", dif3_p2.getText().toString());
+        outState.putString("dif4_p2", dif4_p2.getText().toString());
+
+        outState.putDoubleArray("amostrasP1",amostrasP1);
+        outState.putDoubleArray("amostrasP2",amostrasP2);
+
+        outState.putString("p1Media", p1Media.getText().toString());
+        outState.putString("p2Media", p2Media.getText().toString());
+
+        outState.putString("mediaDifP1", mediaDifP1.getText().toString());
+        outState.putString("mediaDifP2", mediaDifP2.getText().toString());
+
+
+        outState.putString("desvioProduto1", desvioProduto1.getText().toString());
+        outState.putString("desvioProduto2", desvioProduto2.getText().toString());
+
+        outState.putInt("atualP1", atualP1);
+        outState.putInt("atualP2", atualP2);
+        outState.putInt("corrigirP1", corrigirP1);
+        outState.putInt("corrigirP2", corrigirP2);
+
+        outState.putDouble("mediaGeralp1", mediaGeralp1);
+        outState.putDouble("mediaGeralp2", mediaGeralp2);
+        outState.putDouble("mediaPercentualp1", mediaPercentualp1);
+        outState.putDouble("mediaPercentualp2", mediaPercentualp2);
+
+        outState.putInt("idMaquinaImplemento", idMaquinaImplemento);
+        outState.putInt("idOperador", idOperador);
     }
 }

@@ -68,16 +68,12 @@ public class ActivityAtividades extends AppCompatActivity
     private Button botaoRegistros;
     private Button botaoFinalizarOs;
 
-    private TextView idOs;
     private TextView talhaoOs;
-    private TextView cicloOs;
-    private TextView setorOs;
     private TextView obsOs;
     private TextView statusOs;
     private TextView areaOs;
     private TextView manejoOs;
     private TextView madeiraOs;
-    private TextView descricao;
     private TextView areaRealizada;
     private TextView dataProgramada;
 
@@ -97,6 +93,7 @@ public class ActivityAtividades extends AppCompatActivity
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     private LatLng talhao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,9 +110,6 @@ public class ActivityAtividades extends AppCompatActivity
         dao = baseDeDados.dao();
         joinOsInsumos = dao.listaJoinInsumoAtividades(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
-        //if(!dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), joinOsInsumos.get(0).getDATA()).isEmpty())
-        //joinOsInsumos = dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), joinOsInsumos.get(0).getDATA());
-
         recyclerView = findViewById(R.id.os_detalhes_recycler_insumos);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
@@ -124,36 +118,27 @@ public class ActivityAtividades extends AppCompatActivity
 
         adaptador.setInsumos(joinOsInsumos);
 
-        idOs = findViewById(R.id.os_detalhes_id);
         talhaoOs = findViewById(R.id.os_detalhes_talhao);
-        cicloOs = findViewById(R.id.os_detalhes_ciclo);
-        setorOs = findViewById(R.id.os_detalhes_setor);
         obsOs = findViewById(R.id.os_detalhes_obs);
         statusOs = findViewById(R.id.os_detalhes_status);
         areaOs = findViewById(R.id.os_detalhes_area_prog);
         manejoOs = findViewById(R.id.os_detalhes_manejo);
         madeiraOs = findViewById(R.id.os_detalhes_madeira);
-        descricao = findViewById(R.id.os_detalhes_descricao);
         dataProgramada = findViewById(R.id.os_detalhes_data_prog);
         areaRealizada = findViewById(R.id.os_detalhes_area_realizada);
 
 
-        idOs.setText(String.valueOf(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()));
         talhaoOs.setText(String.valueOf(osSelecionada.getTALHAO()));
-        cicloOs.setText(String.valueOf(osSelecionada.getCICLO()));
-        setorOs.setText(String.valueOf(osSelecionada.getID_SETOR()));
         obsOs.setText(String.valueOf(osSelecionada.getOBSERVACAO()));
         statusOs.setText(osSelecionada.getSTATUS());
-        areaOs.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace(".", ","));
+        areaOs.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace(".", ",")+"ha");
         manejoOs.setText(String.valueOf(osSelecionada.getID_MANEJO()));
-        dataProgramada.setText(osSelecionada.getDATA_PROGRAMADA());
-        areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()));
+        dataProgramada.setText(dataHoraAtual.formataDataTextView(osSelecionada.getDATA_PROGRAMADA()));
+        areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA())+"ha");
 
         String temMadeira = "NÃO";
         if (osSelecionada.getMADEIRA_NO_TALHAO() == 1) temMadeira = "SIM";
         madeiraOs.setText(temMadeira);
-
-        descricao.setText(dao.selecionaAtividade(osSelecionada.getID_ATIVIDADE()).getDESCRICAO());
 
         voltar = findViewById(R.id.botao_detalhes_voltar);
 
@@ -204,57 +189,60 @@ public class ActivityAtividades extends AppCompatActivity
         botaoFinalizarOs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Thread t1 = new Thread(){
+                Thread t1 = new Thread() {
                     @Override
-                    public void run(){
-                AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
-                        .setTitle("Finalizar Atividade")
-                        .setMessage("Deseja Finalizar a Atividade Atual?")
-                        .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                List<O_S_ATIVIDADES_DIA> listaOsAtiDia = dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
-                                List<O_S_ATIVIDADE_INSUMOS_DIA> listaOsInsDia = dao.checaOsInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
-                                boolean temProblema = false;
-                                for (int j = 0; j < listaOsAtiDia.size(); j++) {
-                                    if(listaOsAtiDia.get(j).getHO_ESCAVADEIRA() == null) listaOsAtiDia.get(j).setHO_ESCAVADEIRA("0");
-                                    if(listaOsAtiDia.get(j).getHM_ESCAVADEIRA() == null) listaOsAtiDia.get(j).setHM_ESCAVADEIRA("0");
-                                    if (listaOsAtiDia.get(j).getHM() == null || listaOsAtiDia.get(j).getHO() == null
-                                            || listaOsAtiDia.get(j).getHH() == null || listaOsAtiDia.get(j).getAREA_REALIZADA() == null) {
-                                        temProblema = true;
-                                    }
-                                    dao.update(listaOsAtiDia.get(j));
-                                    if(listaOsAtiDia.size() != listaOsInsDia.size())  temProblema=true;
-                                }
-                                if (temProblema) {
-                                    AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
-                                            .setTitle("Erro!")
-                                            .setMessage("Faltam informações nos Registros, favor corrigir")
-                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialogInterface, int i) {
+                    public void run() {
+                        AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
+                                .setTitle("Finalizar Atividade")
+                                .setMessage("Deseja Finalizar a Atividade Atual?")
+                                .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        List<O_S_ATIVIDADES_DIA> listaOsAtiDia = dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+                                        List<O_S_ATIVIDADE_INSUMOS_DIA> listaOsInsDia = dao.checaOsInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+                                        boolean temProblema = false;
+                                        for (int j = 0; j < listaOsAtiDia.size(); j++) {
+                                            if (listaOsAtiDia.get(j).getHO_ESCAVADEIRA() == null)
+                                                listaOsAtiDia.get(j).setHO_ESCAVADEIRA("0");
+                                            if (listaOsAtiDia.get(j).getHM_ESCAVADEIRA() == null)
+                                                listaOsAtiDia.get(j).setHM_ESCAVADEIRA("0");
+                                            if (listaOsAtiDia.get(j).getHM() == null || listaOsAtiDia.get(j).getHO() == null
+                                                    || listaOsAtiDia.get(j).getHH() == null || listaOsAtiDia.get(j).getAREA_REALIZADA() == null) {
+                                                temProblema = true;
+                                            }
+                                            dao.update(listaOsAtiDia.get(j));
+                                            if (listaOsAtiDia.size() != listaOsInsDia.size())
+                                                temProblema = true;
+                                        }
+                                        if (temProblema) {
+                                            AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
+                                                    .setTitle("Erro!")
+                                                    .setMessage("Faltam informações nos Registros, favor corrigir")
+                                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialogInterface, int i) {
 
-                                                }
-                                            })
-                                            .create();
-                                    dialog.show();
-                                } else {
-                                    osSelecionada.setSTATUS_NUM(2);
-                                    osSelecionada.setSTATUS("Finalizada");
-                                    osSelecionada.setDATA_FINAL(dataHoraAtual.dataAtual());
-                                    dao.update(osSelecionada);
-                                    Toast.makeText(ActivityAtividades.this, "Atividade Finalizada Com Sucesso!", Toast.LENGTH_LONG).show();
-                                    Intent it = new Intent(ActivityAtividades.this, ActivityMain.class);
-                                    startActivity(it);
-                                }
-                            }
-                        }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        }).create();
-                dialog.show();
-            }
+                                                        }
+                                                    })
+                                                    .create();
+                                            dialog.show();
+                                        } else {
+                                            osSelecionada.setSTATUS_NUM(2);
+                                            osSelecionada.setSTATUS("Finalizado");
+                                            osSelecionada.setDATA_FINAL(dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()));
+                                            dao.update(osSelecionada);
+                                            Toast.makeText(ActivityAtividades.this, "Atividade Finalizada Com Sucesso!", Toast.LENGTH_LONG).show();
+                                            Intent it = new Intent(ActivityAtividades.this, ActivityMain.class);
+                                            startActivity(it);
+                                        }
+                                    }
+                                }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                }).create();
+                        dialog.show();
+                    }
                 };
                 t1.run();
             }
@@ -324,7 +312,6 @@ public class ActivityAtividades extends AppCompatActivity
     }
 
 
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -335,6 +322,16 @@ public class ActivityAtividades extends AppCompatActivity
         mMap.moveCamera(CameraUpdateFactory.newLatLng(talhao));
 
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         mMap.setMyLocationEnabled(true);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(talhao, 16));
         //mMap.setMinZoomPreference(1.f);
@@ -360,7 +357,7 @@ public class ActivityAtividades extends AppCompatActivity
     //Checa se há uma calibração naquela data e turno
     private void checaCalibracao() {
         CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem = dao.checaCalibragem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
-                dataHoraAtual.dataAtual(), checaTurno());
+                dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()), checaTurno());
 
         if (calibragem_subsolagem == null) {
             botaoRegistros.setEnabled(false);
@@ -388,6 +385,7 @@ public class ActivityAtividades extends AppCompatActivity
         }
 
         if (!listaCalib.isEmpty() && !listaOsAtiDia.isEmpty() && !listaInsDia.isEmpty()) {
+
             botaoFinalizarOs.setVisibility(View.VISIBLE);
             botaoFinalizarOs.setEnabled(true);
             botaoFinalizarOs.setBackgroundColor(Color.parseColor("#32CD32"));

@@ -48,7 +48,7 @@
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activities.ActivityCalibracao"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             />
         <activity
             android:name=".activities.ActivityRegistros"

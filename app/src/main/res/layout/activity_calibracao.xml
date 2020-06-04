@@ -204,7 +204,7 @@
         <com.example.forestsys.NDSpinner
             android:id="@+id/spinner_operador_calibragem"
             android:layout_width="0dp"
-            android:layout_height="20dp"
+            android:layout_height="20sp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="300dp"
@@ -215,7 +215,7 @@
         <com.example.forestsys.NDSpinner
             android:id="@+id/spinner_maquina_implemento_calibragem"
             android:layout_width="0dp"
-            android:layout_height="20sp"
+            android:layout_height="20dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="200dp"

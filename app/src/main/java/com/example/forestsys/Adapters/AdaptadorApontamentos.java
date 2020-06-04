@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.forestsys.ApplicationTodos;
 import com.example.forestsys.BaseDeDados;
 import com.example.forestsys.DAO;
+import com.example.forestsys.DataHoraAtual;
 import com.example.forestsys.R;
 import com.example.forestsys.classes.GGF_USUARIOS;
 import com.example.forestsys.classes.O_S_ATIVIDADES_DIA;
@@ -46,7 +47,10 @@ public class AdaptadorApontamentos extends RecyclerView.Adapter<AdaptadorApontam
 
         GGF_USUARIOS ggf_usuarios = dao.selecionaUser(oSAtividadesDia.getID_RESPONSAVEL());
         PRESTADORES prestadores = dao.selecionaPrestador(oSAtividadesDia.getID_PRESTADOR());
-        holder.data.setText((oSAtividadesDia.getDATA()));
+
+        DataHoraAtual dataHoraAtual = new DataHoraAtual();
+        holder.data.setText((dataHoraAtual.formataDataTextView(oSAtividadesDia.getDATA())));
+
         holder.responsavel.setText((ggf_usuarios.getDESCRICAO()));
         holder.prestador.setText(prestadores.getDESCRICAO());
         if(oSAtividadesDia.getHO()!=null)holder.ho.setText(oSAtividadesDia.getHO().replace('.', ','));

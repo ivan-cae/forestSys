@@ -2,6 +2,7 @@ package com.example.forestsys;
 
 import android.content.Context;
 import android.os.AsyncTask;
+
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -45,10 +46,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 
-@Database(entities = {MANEJO.class, MAQUINAS.class,IMPLEMENTOS.class, INSUMOS.class,INDICADORES_SUBSOLAGEM.class, AVAL_PONTO_SUBSOLAGEM.class,
+@Database(entities = {MANEJO.class, MAQUINAS.class, IMPLEMENTOS.class, INSUMOS.class, INDICADORES_SUBSOLAGEM.class, AVAL_PONTO_SUBSOLAGEM.class,
         AVAL_SUBSOLAGEM.class, OPERADORES.class, CALIBRAGEM_SUBSOLAGEM.class, MAQUINA_IMPLEMENTO.class,
         O_S_ATIVIDADE_INSUMOS.class, ATIVIDADE_INDICADORES.class, ATIVIDADES.class, CADASTRO_FLORESTAL.class, ESPACAMENTOS.class, GEO_REGIONAIS.class,
-        GEO_SETORES.class, GGF_DEPARTAMENTOS.class, GGF_FUNCOES.class, GGF_USUARIOS.class,  INSUMO_ATIVIDADES.class,  MATERIAL_GENETICO.class, O_S_ATIVIDADE_INSUMOS_DIA.class, O_S_ATIVIDADES.class, O_S_ATIVIDADES_DIA.class,
+        GEO_SETORES.class, GGF_DEPARTAMENTOS.class, GGF_FUNCOES.class, GGF_USUARIOS.class, INSUMO_ATIVIDADES.class, MATERIAL_GENETICO.class, O_S_ATIVIDADE_INSUMOS_DIA.class, O_S_ATIVIDADES.class, O_S_ATIVIDADES_DIA.class,
         PRESTADORES.class}, version = 1, exportSchema = false)
 
 
@@ -57,7 +58,10 @@ public abstract class BaseDeDados extends RoomDatabase {
     private static BaseDeDados instance;
 
     private static Context activity;
+
     public abstract DAO dao();
+
+    public static DataHoraAtual dataHoraAtual = new DataHoraAtual();
 
     public static synchronized BaseDeDados getInstance(Context context) {
         activity = context.getApplicationContext();
@@ -86,7 +90,6 @@ public abstract class BaseDeDados extends RoomDatabase {
             new InsereDados1(instance).execute();
         }
     };
-
 
 
     private static class InsereDados1 extends AsyncTask<Void, Void, Void> {
@@ -128,8 +131,8 @@ public abstract class BaseDeDados extends RoomDatabase {
                 JSONObject obj = dados.getJSONObject(i);
 
                 int ID_IMPLEMENTO = obj.getInt("ID_IMPLEMENTO");
-                        String DESCRICAO = obj.getString("DESCRICAO");
-                        int ATIVO = obj.getInt("ATIVO");
+                String DESCRICAO = obj.getString("DESCRICAO");
+                int ATIVO = obj.getInt("ATIVO");
 
                 daoInsere.insert(new IMPLEMENTOS(ID_IMPLEMENTO, DESCRICAO, ATIVO));
             }
@@ -202,25 +205,25 @@ public abstract class BaseDeDados extends RoomDatabase {
                 JSONObject obj = dados.getJSONObject(i);
 
                 int ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
-                      int ID_REGIONAL = obj.getInt("ID_REGIONAL");
-                        String ID_SETOR = obj.getString("ID_SETOR");
-                        String TALHAO = obj.getString("TALHAO");
-                        int CICLO = obj.getInt("CICLO");
-                        String ID_MANEJO = obj.getString("ID_MANEJO");
-                       int ID_ATIVIDADE = obj.getInt("ID_ATIVIDADE");
-                        int ID_RESPONSAVEL = obj.getInt("ID_RESPONSAVEL");
-                        String DATA_PROGRAMADA = obj.getString("DATA_PROGRAMADA");
-                     Double AREA_PROGRAMADA = obj.getDouble("AREA_PROGRAMADA");
-                   int PRIORIDADE = obj.getInt("PRIORIDADE");
-                       int EXPERIMENTO = obj.getInt("EXPERIMENTO");
+                int ID_REGIONAL = obj.getInt("ID_REGIONAL");
+                String ID_SETOR = obj.getString("ID_SETOR");
+                String TALHAO = obj.getString("TALHAO");
+                int CICLO = obj.getInt("CICLO");
+                String ID_MANEJO = obj.getString("ID_MANEJO");
+                int ID_ATIVIDADE = obj.getInt("ID_ATIVIDADE");
+                int ID_RESPONSAVEL = obj.getInt("ID_RESPONSAVEL");
+                String DATA_PROGRAMADA = obj.getString("DATA_PROGRAMADA");
+                Double AREA_PROGRAMADA = obj.getDouble("AREA_PROGRAMADA");
+                int PRIORIDADE = obj.getInt("PRIORIDADE");
+                int EXPERIMENTO = obj.getInt("EXPERIMENTO");
                 int MADEIRA_NO_TALHAO = obj.getInt("MADEIRA_NO_TALHAO");
-                        String OBSERVACAO = obj.getString("OBSERVACAO");
-                        String DATA_INICIAL = obj.getString("DATA_INICIAL");
-                        String DATA_FINAL = obj.getString("DATA_FINAL");
-                        Double AREA_REALIZADA = obj.getDouble("AREA_REALIZADA");
+                String OBSERVACAO = obj.getString("OBSERVACAO");
+                String DATA_INICIAL = obj.getString("DATA_INICIAL");
+                String DATA_FINAL = obj.getString("DATA_FINAL");
+                Double AREA_REALIZADA = obj.getDouble("AREA_REALIZADA");
+                DATA_PROGRAMADA = dataHoraAtual.formataDataDb(DATA_PROGRAMADA);
 
-
-                daoInsere.insert(new O_S_ATIVIDADES( ID_PROGRAMACAO_ATIVIDADE,  ID_REGIONAL,  ID_SETOR,  TALHAO,  CICLO,  ID_MANEJO,  ID_ATIVIDADE,  ID_RESPONSAVEL,  DATA_PROGRAMADA,  AREA_PROGRAMADA,  PRIORIDADE,  EXPERIMENTO,  MADEIRA_NO_TALHAO,  OBSERVACAO,  DATA_INICIAL,  DATA_FINAL,  AREA_REALIZADA, "Aberta", 0));
+                daoInsere.insert(new O_S_ATIVIDADES(ID_PROGRAMACAO_ATIVIDADE, ID_REGIONAL, ID_SETOR, TALHAO, CICLO, ID_MANEJO, ID_ATIVIDADE, ID_RESPONSAVEL, DATA_PROGRAMADA, AREA_PROGRAMADA, PRIORIDADE, EXPERIMENTO, MADEIRA_NO_TALHAO, OBSERVACAO, DATA_INICIAL, DATA_FINAL, AREA_REALIZADA, "Aberto", 0));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -231,27 +234,27 @@ public abstract class BaseDeDados extends RoomDatabase {
             for (int i = 0; i < dados.length(); i++) {
                 JSONObject obj = dados.getJSONObject(i);
 
-                 int ID_INSUMO = obj.getInt("ID_INSUMO");
-                 String ID_INSUMO_RM = obj.getString("ID_INSUMO_RM");
-                 String CLASSE = obj.getString("CLASSE");
-                 String DESCRICAO = obj.getString("DESCRICAO");
-                 double NUTRIENTE_N = obj.getDouble("NUTRIENTE_N");
-                 double NUTRIENTE_P2O5 = obj.getDouble("NUTRIENTE_P2O5");
-                 double NUTRIENTE_K2O = obj.getDouble("NUTRIENTE_K2O");
-                 double NUTRIENTE_CAO = obj.getDouble("NUTRIENTE_CAO");
-                 double NUTRIENTE_MGO = obj.getDouble("NUTRIENTE_MGO");
-                 double NUTRIENTE_B = obj.getDouble("NUTRIENTE_B");
-                 double NUTRIENTE_ZN = obj.getDouble("NUTRIENTE_ZN");
-                 double NUTRIENTE_S = obj.getDouble("NUTRIENTE_S");
-                 double NUTRIENTE_CU = obj.getDouble("NUTRIENTE_CU");
-                 double NUTRIENTE_AF = obj.getDouble("NUTRIENTE_AF");
-                 double NUTRIENTE_MN = obj.getDouble("NUTRIENTE_MN");
-                 int ATIVO= obj.getInt("ATIVO");
-                 String UND_MEDIDA = obj.getString("UND_MEDIDA");
+                int ID_INSUMO = obj.getInt("ID_INSUMO");
+                String ID_INSUMO_RM = obj.getString("ID_INSUMO_RM");
+                String CLASSE = obj.getString("CLASSE");
+                String DESCRICAO = obj.getString("DESCRICAO");
+                double NUTRIENTE_N = obj.getDouble("NUTRIENTE_N");
+                double NUTRIENTE_P2O5 = obj.getDouble("NUTRIENTE_P2O5");
+                double NUTRIENTE_K2O = obj.getDouble("NUTRIENTE_K2O");
+                double NUTRIENTE_CAO = obj.getDouble("NUTRIENTE_CAO");
+                double NUTRIENTE_MGO = obj.getDouble("NUTRIENTE_MGO");
+                double NUTRIENTE_B = obj.getDouble("NUTRIENTE_B");
+                double NUTRIENTE_ZN = obj.getDouble("NUTRIENTE_ZN");
+                double NUTRIENTE_S = obj.getDouble("NUTRIENTE_S");
+                double NUTRIENTE_CU = obj.getDouble("NUTRIENTE_CU");
+                double NUTRIENTE_AF = obj.getDouble("NUTRIENTE_AF");
+                double NUTRIENTE_MN = obj.getDouble("NUTRIENTE_MN");
+                int ATIVO = obj.getInt("ATIVO");
+                String UND_MEDIDA = obj.getString("UND_MEDIDA");
 
-                daoInsere.insert(new INSUMOS( ID_INSUMO,  ID_INSUMO_RM,  CLASSE,  DESCRICAO,  NUTRIENTE_N,
-                 NUTRIENTE_P2O5,  NUTRIENTE_K2O,  NUTRIENTE_CAO,  NUTRIENTE_MGO,  NUTRIENTE_B,  NUTRIENTE_ZN, NUTRIENTE_S, NUTRIENTE_CU,
-                 NUTRIENTE_AF,  NUTRIENTE_MN,  ATIVO,  UND_MEDIDA));
+                daoInsere.insert(new INSUMOS(ID_INSUMO, ID_INSUMO_RM, CLASSE, DESCRICAO, NUTRIENTE_N,
+                        NUTRIENTE_P2O5, NUTRIENTE_K2O, NUTRIENTE_CAO, NUTRIENTE_MGO, NUTRIENTE_B, NUTRIENTE_ZN, NUTRIENTE_S, NUTRIENTE_CU,
+                        NUTRIENTE_AF, NUTRIENTE_MN, ATIVO, UND_MEDIDA));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -268,7 +271,7 @@ public abstract class BaseDeDados extends RoomDatabase {
                 double QTD_HA_RECOMENDADO = obj.getDouble("QTD_HA_RECOMENDADO");
                 double QTD_HA_APLICADO = obj.getDouble("QTD_HA_APLICADO");
 
-                daoInsere.insert(new O_S_ATIVIDADE_INSUMOS( ID_INSUMO,  ID_PROGRAMACAO_ATIVIDADE,  RECOMENDACAO,  QTD_HA_RECOMENDADO,  QTD_HA_APLICADO));
+                daoInsere.insert(new O_S_ATIVIDADE_INSUMOS(ID_INSUMO, ID_PROGRAMACAO_ATIVIDADE, RECOMENDACAO, QTD_HA_RECOMENDADO, QTD_HA_APLICADO));
             }
         } catch (JSONException e) {
             e.printStackTrace();

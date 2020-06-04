@@ -10,7 +10,7 @@
     {
       "ID_INSUMO": 2,
       "ID_PROGRAMACAO_ATIVIDADE": 1,
-      "RECOMENDACAO": 0,
+      "RECOMENDACAO": 1,
       "QTD_HA_RECOMENDADO":  256,
       "QTD_HA_APLICADO": 0
     },
@@ -24,7 +24,7 @@
     {
       "ID_INSUMO": 2,
       "ID_PROGRAMACAO_ATIVIDADE": 2,
-      "RECOMENDACAO": 0,
+      "RECOMENDACAO": 1,
       "QTD_HA_RECOMENDADO":  256,
       "QTD_HA_APLICADO": 0
     },
@@ -38,7 +38,7 @@
     {
       "ID_INSUMO": 2,
       "ID_PROGRAMACAO_ATIVIDADE": 3,
-      "RECOMENDACAO": 0,
+      "RECOMENDACAO": 1,
       "QTD_HA_RECOMENDADO":  256,
       "QTD_HA_APLICADO": 0
     }

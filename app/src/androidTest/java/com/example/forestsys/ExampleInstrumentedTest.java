@@ -5,7 +5,8 @@ import android.content.Context;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.testng.annotations.AfterTest;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
