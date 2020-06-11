@@ -51,6 +51,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.forestsys.activities.ActivityCalibracao.checaTurno;
@@ -94,13 +95,47 @@ public class ActivityAtividades extends AppCompatActivity
 
     private LatLng talhao;
 
+    public static boolean editouRegistro;
+    public static O_S_ATIVIDADES_DIA oSAtividadesDiaAtual;
+
+    public static String area;
+    public static String ho;
+    public static String hm;
+    public static String hh;
+    public static String hoe;
+    public static String hme;
+    public static String obs;
+
+    public static boolean edicaoReg;
+    public static boolean editouInsumo1;
+    public static boolean editouInsumo2;
+
+    public static List<Join_OS_INSUMOS> listaJoinOsInsumosSelecionados;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_atividades);
         setTitle(nomeEmpresaPref);
-        ApplicationTodos applicationTodos = new ApplicationTodos();
+
         dataHoraAtual = new DataHoraAtual();
+        oSAtividadesDiaAtual = null;
+        editouRegistro = false;
+        edicaoReg = false;
+        editouInsumo1 = false;
+        editouInsumo2 = false;
+
+        listaJoinOsInsumosSelecionados = new ArrayList<Join_OS_INSUMOS>();
+
+
+        area="";
+        ho="";
+        hm="";
+        hh="";
+        hoe="";
+        hme="";
+        obs="";
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -181,7 +216,7 @@ public class ActivityAtividades extends AppCompatActivity
         botaoRegistros.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent(ActivityAtividades.this, ActivityListagemRegistros.class);
+                Intent it = new Intent(ActivityAtividades.this, ActivityRegistros.class);
                 startActivity(it);
             }
         });

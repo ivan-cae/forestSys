@@ -35,16 +35,13 @@
             android:id="@+id/textView119"
             android:layout_width="80dp"
             android:layout_height="20dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
             android:background="#BDB8B8"
             android:text="Data"
             android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/textView109"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/listagem_apontamentos_obs" />
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="372dp" />
 
         <TextView
             android:id="@+id/textView118"
@@ -55,8 +52,8 @@
             android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/textView111"
-            app:layout_constraintTop_toTopOf="@+id/textView111" />
+            tools:layout_editor_absoluteX="342dp"
+            tools:layout_editor_absoluteY="372dp" />
 
         <TextView
             android:id="@+id/textView110"
@@ -67,22 +64,20 @@
             android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/textView106"
-            app:layout_constraintTop_toTopOf="@+id/textView106" />
+            tools:layout_editor_absoluteX="492dp"
+            tools:layout_editor_absoluteY="372dp" />
 
         <TextView
             android:id="@+id/textView116"
             android:layout_width="50dp"
             android:layout_height="20dp"
-            android:layout_marginEnd="8dp"
             android:background="#BDB8B8"
             android:text="H.M.E"
             android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView110"
-            app:layout_constraintTop_toTopOf="@+id/textView110" />
+            tools:layout_editor_absoluteX="533dp"
+            tools:layout_editor_absoluteY="372dp" />
 
         <TextView
             android:id="@+id/textView106"
@@ -93,8 +88,8 @@
             android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/textView117"
-            app:layout_constraintTop_toTopOf="@+id/textView117" />
+            tools:layout_editor_absoluteX="442dp"
+            tools:layout_editor_absoluteY="372dp" />
 
         <TextView
             android:id="@+id/textView117"
@@ -105,8 +100,8 @@
             android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/textView118"
-            app:layout_constraintTop_toTopOf="@+id/textView118" />
+            tools:layout_editor_absoluteX="392dp"
+            tools:layout_editor_absoluteY="372dp" />
 
         <TextView
             android:id="@+id/textView111"
@@ -117,8 +112,8 @@
             android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/textView109"
-            app:layout_constraintTop_toTopOf="@+id/textView109" />
+            tools:layout_editor_absoluteX="215dp"
+            tools:layout_editor_absoluteY="372dp" />
 
         <TextView
             android:id="@+id/listagem_apontamentos_total_ho"
@@ -198,8 +193,8 @@
             android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/textView119"
-            app:layout_constraintTop_toTopOf="@+id/textView119" />
+            tools:layout_editor_absoluteX="88dp"
+            tools:layout_editor_absoluteY="372dp" />
 
         <ImageButton
             android:id="@+id/botao_listagem_apontamentos_voltar"
@@ -484,7 +479,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <FrameLayout
             android:id="@+id/fragment_container_listagem_apontamentos"
@@ -512,6 +507,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:maxWidth="230dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:menu="@menu/menu_main_lateral" />
 </androidx.drawerlayout.widget.DrawerLayout>

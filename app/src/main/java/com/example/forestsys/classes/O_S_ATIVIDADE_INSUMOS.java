@@ -36,6 +36,10 @@ public class O_S_ATIVIDADE_INSUMOS {
         this.QTD_HA_APLICADO = QTD_HA_APLICADO;
     }
 
+    public O_S_ATIVIDADE_INSUMOS() {
+
+    }
+
     public int getID_INSUMO() {
         return ID_INSUMO;
     }

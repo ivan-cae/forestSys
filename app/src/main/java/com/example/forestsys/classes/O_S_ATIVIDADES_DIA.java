@@ -49,6 +49,7 @@ public class O_S_ATIVIDADES_DIA {
     private String HO_ESCAVADEIRA;
     private String OBSERVACAO;
     private char REGISTRO_DESCARREGADO;
+    private String ACAO_INATIVO;
 
     public O_S_ATIVIDADES_DIA() {
     }
@@ -157,5 +158,13 @@ public class O_S_ATIVIDADES_DIA {
 
     public void setREGISTRO_DESCARREGADO(char REGISTRO_DESCARREGADO) {
         this.REGISTRO_DESCARREGADO = REGISTRO_DESCARREGADO;
+    }
+
+    public String getACAO_INATIVO() {
+        return ACAO_INATIVO;
+    }
+
+    public void setACAO_INATIVO(String ACAO_INATIVO) {
+        this.ACAO_INATIVO = ACAO_INATIVO;
     }
 }

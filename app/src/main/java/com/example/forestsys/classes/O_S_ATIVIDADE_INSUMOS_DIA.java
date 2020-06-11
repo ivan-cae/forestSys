@@ -33,12 +33,18 @@ public class O_S_ATIVIDADE_INSUMOS_DIA {
     private int ID_INSUMO;
 
     private double QTD_APLICADO;
+    private String ACAO_INATIVO;
+    private char REGISTRO_DESCARREGADO;
+    private String OBSERVACAO;
 
-    public O_S_ATIVIDADE_INSUMOS_DIA(int ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, int ID_INSUMO, double QTD_APLICADO) {
+    public O_S_ATIVIDADE_INSUMOS_DIA(int ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, int ID_INSUMO, double QTD_APLICADO, String ACAO_INATIVO, char REGISTRO_DESCARREGADO, String OBSERVACAO) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.DATA = DATA;
         this.ID_INSUMO = ID_INSUMO;
         this.QTD_APLICADO = QTD_APLICADO;
+        this.ACAO_INATIVO = ACAO_INATIVO;
+        this.REGISTRO_DESCARREGADO = REGISTRO_DESCARREGADO;
+        this.OBSERVACAO = OBSERVACAO;
     }
 
     public int getID_PROGRAMACAO_ATIVIDADE() {
@@ -70,8 +76,34 @@ public class O_S_ATIVIDADE_INSUMOS_DIA {
         return QTD_APLICADO;
     }
 
+    public String getACAO_INATIVO() {
+        return ACAO_INATIVO;
+    }
+
+    public void setACAO_INATIVO(String ACAO_INATIVO) {
+        this.ACAO_INATIVO = ACAO_INATIVO;
+    }
+
+    public char getREGISTRO_DESCARREGADO() {
+        return REGISTRO_DESCARREGADO;
+    }
+
+    public void setREGISTRO_DESCARREGADO(char REGISTRO_DESCARREGADO) {
+        this.REGISTRO_DESCARREGADO = REGISTRO_DESCARREGADO;
+    }
+
+    public String getOBSERVACAO() {
+        return OBSERVACAO;
+    }
+
+    public void setOBSERVACAO(String OBSERVACAO) {
+        this.OBSERVACAO = OBSERVACAO;
+    }
+
     public void setQTD_APLICADO(double QTD_APLICADO) {
         this.QTD_APLICADO = QTD_APLICADO;
     }
+
+
 }
 

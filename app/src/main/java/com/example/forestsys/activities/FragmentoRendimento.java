@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.forestsys.NDSpinner;
 import com.example.forestsys.R;
 import com.example.forestsys.classes.GGF_USUARIOS;
 import com.example.forestsys.classes.O_S_ATIVIDADES_DIA;
@@ -28,36 +29,42 @@ import com.example.forestsys.viewModels.ViewModelO_S_ATIVIDADES_DIA;
 
 import java.util.ArrayList;
 
-import static com.example.forestsys.activities.ActivityRegistros.dataDoApontamento;
-import static com.example.forestsys.activities.ActivityRegistros.oSAtividadesDiaAtual;
-import static com.example.forestsys.activities.ActivityRegistros.primeiraReg;
+import static com.example.forestsys.activities.ActivityAtividades.editouRegistro;
+import static com.example.forestsys.activities.ActivityAtividades.hh;
+import static com.example.forestsys.activities.ActivityAtividades.hm;
+import static com.example.forestsys.activities.ActivityAtividades.hme;
+import static com.example.forestsys.activities.ActivityAtividades.ho;
+import static com.example.forestsys.activities.ActivityAtividades.hoe;
+import static com.example.forestsys.activities.ActivityAtividades.oSAtividadesDiaAtual;
+import static com.example.forestsys.activities.ActivityAtividades.obs;
+import static com.example.forestsys.activities.ActivityAtividades.area;
 import static com.example.forestsys.activities.ActivityRegistros.viewModelOSAtividadesDia;
 
 public class FragmentoRendimento extends Fragment {
-    private static TextView dataApontamento;
-    private Spinner spinnerResponsavel;
-    private Spinner spinnerPrestador;
-    private EditText areaRealizadaApontamento;
-    private EditText HOEscavadeiraApontamento;
-    private EditText HOApontamento;
-    private EditText HMApontamento;
-    private EditText HHApontamento;
-    private EditText obsApontamento;
-    private EditText HMEscavadeiraApontamento;
+    private NDSpinner spinnerResponsavel;
+    private NDSpinner spinnerPrestador;
+    public static EditText areaRealizadaApontamento;
+    public static EditText HOEscavadeiraApontamento;
+    public static EditText HOApontamento;
+    public static EditText HMApontamento;
+    public static EditText HHApontamento;
+    public static EditText HMEscavadeiraApontamento;
+    public static EditText obsApontamento;
 
-    public static int posicaoResponsavel;
-    public static int posicaoPrestador;
 
-    public static String area;
-    public static String ho;
-    public static String hm;
-    public static String hh;
-    public static String hoe;
-    public static String hme;
-    public static String obs;
+    public static int posicaoResponsavel=-1;
+    public static int posicaoPrestador=-1;
 
     public static O_S_ATIVIDADES_DIA auxiliar;
+    private RepositorioUsers repositorioUsers;
+    private RepositorioPrestadores repositorioPrestadores;
+    private ArrayList<PRESTADORES> prestadores;
+    private ArrayList<GGF_USUARIOS> usuarios;
+    ArrayAdapter<PRESTADORES> adapterPrestadores;
+    ArrayAdapter<GGF_USUARIOS> adapterUsuarios;
 
+    int contSpinnerPrestador = 0;
+    int contSpinnerResponsavel = 0;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragmento_rendimento, container, false);
@@ -66,7 +73,44 @@ public class FragmentoRendimento extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        dataApontamento = getView().findViewById(R.id.data_fragmento_apontamento);
+        inicializacao();
+        if(editouRegistro==true){
+            obsApontamento.setFocusable(false);
+
+            int maior = usuarios.size();
+            if(prestadores.size()>maior) maior = prestadores.size();
+            for(int i = 0; i<maior; i++){
+                if(usuarios.get(i).getID_USUARIO()==oSAtividadesDiaAtual.getID_RESPONSAVEL()) posicaoResponsavel = usuarios.get(i).getID_USUARIO();
+                spinnerResponsavel.setSelection(posicaoResponsavel-1);
+
+                if(prestadores.get(i).getID_PRESTADOR()==oSAtividadesDiaAtual.getID_PRESTADOR()) posicaoPrestador = prestadores.get(i).getID_PRESTADOR();
+                spinnerPrestador.setSelection(posicaoPrestador-1);
+            }
+            spinnerPrestador.setAdapter(adapterPrestadores);
+            spinnerPrestador.setSelection(posicaoPrestador-1);
+
+            spinnerResponsavel.setAdapter(adapterUsuarios);
+            spinnerResponsavel.setSelection(posicaoResponsavel-1);
+        }
+        else obsApontamento.setFocusable(true);
+
+
+        if(savedInstanceState!=null){
+            posicaoResponsavel = savedInstanceState.getInt("posicaoResponsavel");
+            posicaoPrestador = savedInstanceState.getInt("posicaoPrestador");
+
+            if(posicaoResponsavel!=-1){
+                spinnerResponsavel.setAdapter(adapterUsuarios);
+                spinnerResponsavel.setSelection(posicaoResponsavel);
+            }
+            if(posicaoPrestador!=-1){
+                spinnerPrestador.setAdapter(adapterPrestadores);
+                spinnerPrestador.setSelection(posicaoPrestador);
+            }
+        }
+    }
+
+    public void inicializacao() {
         spinnerResponsavel = getView().findViewById(R.id.spinner_responsavel_apontamento);
         spinnerPrestador = getView().findViewById(R.id.spinner_prestador_apontamento);
         areaRealizadaApontamento = getView().findViewById(R.id.area_realizada_apontamento);
@@ -77,58 +121,75 @@ public class FragmentoRendimento extends Fragment {
         HMEscavadeiraApontamento = getView().findViewById(R.id.hora_maquina_escavadeira_apontamento);
         obsApontamento = getView().findViewById(R.id.obs_apontamento);
 
-        RepositorioUsers repositorioUsers = new RepositorioUsers(getActivity().getApplication());
 
-        RepositorioPrestadores repositorioPrestadores = new RepositorioPrestadores(getActivity().getApplication());
+        repositorioUsers = new RepositorioUsers(getActivity().getApplication());
+
+        repositorioPrestadores = new RepositorioPrestadores(getActivity().getApplication());
 
         viewModelOSAtividadesDia = new ViewModelO_S_ATIVIDADES_DIA(getActivity().getApplication());
-        ArrayList<PRESTADORES> prestadores = new ArrayList<>(repositorioPrestadores.listaPrestadores());
+        prestadores = new ArrayList<>(repositorioPrestadores.listaPrestadores());
 
-        ArrayList<GGF_USUARIOS> usuarios = new ArrayList<>(repositorioUsers.listaUsuarios());
+        usuarios = new ArrayList<>(repositorioUsers.listaUsuarios());
 
 
-        ArrayAdapter<PRESTADORES> adapterPrestadores = new ArrayAdapter<PRESTADORES>(getActivity(),
+        adapterPrestadores = new ArrayAdapter<PRESTADORES>(getActivity(),
                 android.R.layout.simple_spinner_item, prestadores);
         adapterPrestadores.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPrestador.setAdapter(adapterPrestadores);
 
 
-        ArrayAdapter<GGF_USUARIOS> adapterUsuarios = new ArrayAdapter<GGF_USUARIOS>(getActivity(),
+        adapterUsuarios = new ArrayAdapter<GGF_USUARIOS>(getActivity(),
                 android.R.layout.simple_spinner_item, usuarios);
         adapterUsuarios.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerResponsavel.setAdapter(adapterUsuarios);
+
+        spinnerResponsavel.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(contSpinnerResponsavel ==0) spinnerResponsavel.setAdapter(adapterUsuarios);
+                return false;
+            }
+        });
+
+        spinnerPrestador.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(contSpinnerPrestador ==0) spinnerPrestador.setAdapter(adapterPrestadores);
+                return false;
+            }
+        });
 
         obsApontamento.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start,
                                           int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
             }
+
             @Override
             public void afterTextChanged(Editable s) {
-                obs=s.toString();
+                obs = s.toString();
             }
         });
 
-         areaRealizadaApontamento.addTextChangedListener(new TextWatcher() {
-             @Override
-             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        areaRealizadaApontamento.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-             }
+            }
 
-             @Override
-             public void onTextChanged(CharSequence s, int start, int before, int count) {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-             }
+            }
 
-             @Override
-             public void afterTextChanged(Editable s){
-                 area = checaTextView(areaRealizadaApontamento, area);
-             }
-         });
+            @Override
+            public void afterTextChanged(Editable s) {
+                area = checaTextView(areaRealizadaApontamento, area);
+            }
+        });
 
         HOEscavadeiraApontamento.addTextChangedListener(new TextWatcher() {
             @Override
@@ -218,91 +279,116 @@ public class FragmentoRendimento extends Fragment {
         spinnerPrestador.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (contSpinnerPrestador > 0){
                 position++;
                 posicaoPrestador = position;
+            }
+            contSpinnerPrestador++;
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                posicaoPrestador = 1;
             }
         });
 
         spinnerResponsavel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                position++;
-                posicaoResponsavel = position;
+                if (contSpinnerResponsavel > 0){
+                    position++;
+                    posicaoResponsavel = position;
+                }
+                contSpinnerResponsavel ++;
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                posicaoResponsavel = 1;
             }
         });
-
-        if(primeiraReg == true) {
-            auxiliar = oSAtividadesDiaAtual;
-            primeiraReg = false;
-        }
-
+        auxiliar = oSAtividadesDiaAtual;
         if (auxiliar == null) {
-            dataApontamento.setText(dataDoApontamento);
             auxiliar = new O_S_ATIVIDADES_DIA();
-        } else{
+        } else {
             populaInfo(auxiliar);
         }
     }
 
     public String checaTextView(TextView t, String str) {
         String s1 = t.getText().toString().trim();
-        if(s1.isEmpty()) return null;
-        char []c = s1.toCharArray();
-        if (s1.length()>0) {
+        if (s1.isEmpty()) return null;
+        char[] c = s1.toCharArray();
+        if (s1.length() > 0) {
             if (s1 == "," || c[s1.length() - 1] == ',' || c[0] == ',' || contaVirgula(s1, ',') > 1) {
-                t.setError("Valores incorretos serão zerados durante o salvamento");
+                t.setError("Valor incorreto! O registro não será salvo.");
                 str = "";
             } else {
                 str = s1;
                 t.setError(null);
             }
         }
-
-            return str;
-}
+        return str;
+    }
 
     public int contaVirgula(String s, char c) {
-        return s.length()==0 ? 0 : (s.charAt(0)==c ? 1 : 0) + contaVirgula(s.substring(1),c);
+        return s.length() == 0 ? 0 : (s.charAt(0) == c ? 1 : 0) + contaVirgula(s.substring(1), c);
     }
 
     //Mostra as informações do apontamento nos seus respectivos campos
     public void populaInfo(O_S_ATIVIDADES_DIA osAtv) {
         posicaoPrestador = osAtv.getID_PRESTADOR();
         posicaoResponsavel = osAtv.getID_RESPONSAVEL();
-        dataApontamento.setText(osAtv.getDATA());
 
         spinnerResponsavel.setSelection(osAtv.getID_RESPONSAVEL() - 1, true);
         spinnerPrestador.setSelection(osAtv.getID_PRESTADOR() - 1, true);
 
-        if (osAtv.getAREA_REALIZADA() != null)
+        if (osAtv.getAREA_REALIZADA() != null) {
             areaRealizadaApontamento.setText(osAtv.getAREA_REALIZADA().replace(".", ","));
+            area = areaRealizadaApontamento.getText().toString();
+        } else area = "";
 
-        if (osAtv.getHO()!=null)
+        if (osAtv.getHO() != null) {
             HOApontamento.setText((osAtv.getHO()).replace(".", ","));
+            ho = HOApontamento.getText().toString();
+        } else ho = "";
 
-        if (osAtv.getHH()!=null)
+        if (osAtv.getHH() != null) {
             HHApontamento.setText((osAtv.getHH()).replace(".", ","));
+            hh = HHApontamento.getText().toString();
+        } else hh = "";
 
-        if (osAtv.getHM()!=null)
+        if (osAtv.getHM() != null) {
             HMApontamento.setText((osAtv.getHM()).replace(".", ","));
+            hm = HMApontamento.getText().toString();
+        } else hm = "";
 
-        if (osAtv.getHM_ESCAVADEIRA()!=null)
+        if (osAtv.getHM_ESCAVADEIRA() != null) {
             HMEscavadeiraApontamento.setText((osAtv.getHM_ESCAVADEIRA()).replace(".", ","));
+            hme = HMEscavadeiraApontamento.getText().toString();
+        } else hme = "";
 
-        if (osAtv.getHO_ESCAVADEIRA()!=null)
+        if (osAtv.getHO_ESCAVADEIRA() != null) {
             HOEscavadeiraApontamento.setText((osAtv.getHO_ESCAVADEIRA()).replace(".", ","));
+            hoe = HOEscavadeiraApontamento.getText().toString();
+        } else hoe = "";
 
-        if (osAtv.getOBSERVACAO()!=null)
+        if (osAtv.getOBSERVACAO() != null) {
             obsApontamento.setText(osAtv.getOBSERVACAO());
+            obs = obsApontamento.getText().toString();
+        } else obs = "";
     }
-}
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("area", area);
+        outState.putString("hoe", hoe);
+        outState.putString("ho", ho);
+        outState.putString("hm", hm);
+        outState.putString("hh", hh);
+        outState.putString("hme", hme);
+        outState.putString("obs", obs);
+
+        outState.putInt("posicaoPrestador", posicaoPrestador);
+        outState.putInt("posicaoResponsavel", posicaoResponsavel);
+        }
+    }

@@ -27,6 +27,10 @@ public class Join_OS_INSUMOS {
     private  double QTD_APLICADO;
     private String DATA;
 
+    private String ACAO_INATIVO;
+    private char REGISTRO_DESCARREGADO;
+    private String OBSERVACAO;
+
     public Join_OS_INSUMOS() {
     }
 
@@ -180,6 +184,30 @@ public class Join_OS_INSUMOS {
 
     public void setDATA(String DATA) {
         this.DATA = DATA;
+    }
+
+    public String getACAO_INATIVO() {
+        return ACAO_INATIVO;
+    }
+
+    public void setACAO_INATIVO(String ACAO_INATIVO) {
+        this.ACAO_INATIVO = ACAO_INATIVO;
+    }
+
+    public char getREGISTRO_DESCARREGADO() {
+        return REGISTRO_DESCARREGADO;
+    }
+
+    public void setREGISTRO_DESCARREGADO(char REGISTRO_DESCARREGADO) {
+        this.REGISTRO_DESCARREGADO = REGISTRO_DESCARREGADO;
+    }
+
+    public String getOBSERVACAO() {
+        return OBSERVACAO;
+    }
+
+    public void setOBSERVACAO(String OBSERVACAO) {
+        this.OBSERVACAO = OBSERVACAO;
     }
 
     @Override

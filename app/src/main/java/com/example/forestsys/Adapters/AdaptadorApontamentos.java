@@ -16,17 +16,21 @@ import com.example.forestsys.DataHoraAtual;
 import com.example.forestsys.R;
 import com.example.forestsys.classes.GGF_USUARIOS;
 import com.example.forestsys.classes.O_S_ATIVIDADES_DIA;
+import com.example.forestsys.classes.O_S_ATIVIDADE_INSUMOS;
 import com.example.forestsys.classes.PRESTADORES;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.forestsys.activities.ActivityMain.osSelecionada;
 
 public class AdaptadorApontamentos extends RecyclerView.Adapter<AdaptadorApontamentos.ApontamentosHolder>{
 
     private List<O_S_ATIVIDADES_DIA> apontamentos = new ArrayList<>();
     private DAO dao;
     private OnItemClickListener listener;
-    Context context = ApplicationTodos.getAppContext();
+    private Context context = ApplicationTodos.getAppContext();
+    private DataHoraAtual dataHoraAtual;
 
     @NonNull
     @Override
@@ -43,16 +47,25 @@ public class AdaptadorApontamentos extends RecyclerView.Adapter<AdaptadorApontam
         BaseDeDados baseDeDados = BaseDeDados.getInstance(context);
         dao = baseDeDados.dao();
 
+        List<O_S_ATIVIDADE_INSUMOS> insumos_dia = new ArrayList<O_S_ATIVIDADE_INSUMOS>();
+        insumos_dia = dao.listaInsumosatividade(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+
         O_S_ATIVIDADES_DIA oSAtividadesDia = apontamentos.get(position);
 
         GGF_USUARIOS ggf_usuarios = dao.selecionaUser(oSAtividadesDia.getID_RESPONSAVEL());
         PRESTADORES prestadores = dao.selecionaPrestador(oSAtividadesDia.getID_PRESTADOR());
 
-        DataHoraAtual dataHoraAtual = new DataHoraAtual();
-        holder.data.setText((dataHoraAtual.formataDataTextView(oSAtividadesDia.getDATA())));
-
+        dataHoraAtual = new DataHoraAtual();
+        holder.data.setText((DataHoraAtual.formataDataTextView(oSAtividadesDia.getDATA())));
         holder.responsavel.setText((ggf_usuarios.getDESCRICAO()));
         holder.prestador.setText(prestadores.getDESCRICAO());
+        holder.area.setText(oSAtividadesDia.getAREA_REALIZADA());
+
+        holder.insumo1.setText(String.valueOf(dao.qtdAplInsDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), insumos_dia.get(0).getID_INSUMO(),
+                apontamentos.get(position).getDATA())));
+        holder.insumo2.setText(String.valueOf(dao.qtdAplInsDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), insumos_dia.get(1).getID_INSUMO(),
+                apontamentos.get(position).getDATA())));
+
         if(oSAtividadesDia.getHO()!=null)holder.ho.setText(oSAtividadesDia.getHO().replace('.', ','));
         if(oSAtividadesDia.getHM()!=null)holder.hm.setText(oSAtividadesDia.getHM().replace('.', ','));
         if(oSAtividadesDia.getHH()!=null)holder.hh.setText(oSAtividadesDia.getHH().replace('.', ','));
@@ -79,6 +92,9 @@ public class AdaptadorApontamentos extends RecyclerView.Adapter<AdaptadorApontam
         TextView hm;
         TextView hoe;
         TextView hme;
+        TextView area;
+        TextView insumo1;
+        TextView insumo2;
 
 
         public ApontamentosHolder(@NonNull View itemView) {
@@ -91,6 +107,10 @@ public class AdaptadorApontamentos extends RecyclerView.Adapter<AdaptadorApontam
             hm = itemView.findViewById(R.id.item_apontamento_hm);
             hoe = itemView.findViewById(R.id.item_apontamento_hoe);
             hme = itemView.findViewById(R.id.item_apontamento_hme);
+            area = itemView.findViewById(R.id.item_apontamento_area);
+            insumo1 = itemView.findViewById(R.id.item_apontamento_insumo1);
+            insumo2 = itemView.findViewById(R.id.item_apontamento_insumo2);
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -3,89 +3,117 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_height="30dp"
     android:background="#FFFFFF">
 
     <TextView
-        android:id="@+id/item_apontamento_responsavel"
-        android:layout_width="127dp"
-        android:layout_height="20dp"
-        android:textAlignment="center"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/item_apontamento_data"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
         android:id="@+id/item_apontamento_data"
-        android:layout_width="80dp"
+        android:layout_width="55dp"
         android:layout_height="20dp"
         android:layout_marginStart="8dp"
         android:textAlignment="center"
-        android:textSize="14sp"
-        android:textStyle="bold"
+        android:textSize="10sp"
+        android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/item_apontamento_ho"
-        android:layout_width="50dp"
+        android:id="@+id/item_apontamento_area"
+        android:layout_width="35dp"
         android:layout_height="20dp"
         android:textAlignment="center"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/item_apontamento_prestador"
+        android:textSize="10sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/item_apontamento_data"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_apontamento_ho"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/item_apontamento_hh"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/item_apontamento_hme"
-        android:layout_width="50dp"
+        android:layout_width="35dp"
         android:layout_height="20dp"
-        android:layout_marginEnd="8dp"
         android:textAlignment="center"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="10sp"
+        android:textStyle="normal"
         app:layout_constraintStart_toEndOf="@+id/item_apontamento_hoe"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/item_apontamento_prestador"
-        android:layout_width="127dp"
+        android:layout_width="82dp"
         android:layout_height="20dp"
         android:textAlignment="center"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/item_apontamento_responsavel"
+        android:textSize="10sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/item_apontamento_insumo2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_apontamento_responsavel"
+        android:layout_width="82dp"
+        android:layout_height="20dp"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/item_apontamento_prestador"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_apontamento_insumo2"
+        android:layout_width="85dp"
+        android:layout_height="20dp"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/item_apontamento_insumo1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_apontamento_insumo1"
+        android:layout_width="85dp"
+        android:layout_height="20dp"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/item_apontamento_hme"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/item_apontamento_hm"
-        android:layout_width="50dp"
+        android:layout_width="30dp"
         android:layout_height="20dp"
         android:textAlignment="center"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/item_apontamento_hh"
+        android:textSize="10sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/item_apontamento_ho"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/item_apontamento_hoe"
-        android:layout_width="50dp"
+        android:layout_width="35dp"
         android:layout_height="20dp"
         android:textAlignment="center"
-        android:textSize="14sp"
-        android:textStyle="bold"
+        android:textSize="10sp"
+        android:textStyle="normal"
         app:layout_constraintStart_toEndOf="@+id/item_apontamento_hm"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/item_apontamento_hh"
-        android:layout_width="50dp"
+        android:layout_width="30dp"
         android:layout_height="20dp"
         android:textAlignment="center"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/item_apontamento_ho"
+        android:textSize="10sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/item_apontamento_area"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
