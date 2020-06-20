@@ -5,10 +5,12 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 @Entity(
-        indices = {@Index(value = "DESCRICAO", unique = true)})
+        indices = {@Index(value = "DESCRICAO", unique = true),
+        @Index(value = "ID_ATIVIDADE", unique =true)})
 
 public class ATIVIDADES {
     @PrimaryKey
+    @ColumnInfo (name = "ID_ATIVIDADE")
     private int ID_ATIVIDADE;
 
     @ColumnInfo (name = "DESCRICAO")

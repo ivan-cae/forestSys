@@ -16,18 +16,6 @@ public class RepositorioATIVIDADES {
     public RepositorioATIVIDADES(Application application) {
         BaseDeDados baseDeDados = BaseDeDados.getInstance(application);
         dao = baseDeDados.dao();
-        atividades = dao.todasAtividades();
-    }
-
-    //retorna uma instância da ATIVIDADES
-//parâmetro de entrada: id inteiro para busca na tabela ATIVIDADES
-    public ATIVIDADES getSetor(int id) {
-        return dao.selecionaAtividade(id);
-    }
-
-    //retorna uma lista com todos os itens cadastrados na tabela ATIVIDADES
-    public List<ATIVIDADES> getTodosSetores() {
-        return atividades;
     }
 
     //inclui uma instância da ATIVIDADES no DB

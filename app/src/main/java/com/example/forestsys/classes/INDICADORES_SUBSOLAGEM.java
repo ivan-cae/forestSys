@@ -10,7 +10,7 @@ import androidx.room.ForeignKey;
                 childColumns  = "ID_PROGRAMACAO_ATIVIDADE",
                 onDelete = ForeignKey.NO_ACTION,
                 onUpdate = ForeignKey.NO_ACTION),
-                @ForeignKey(entity = ATIVIDADE_INDICADORES.class,
+                @ForeignKey(entity = ATIVIDADES.class,
                         parentColumns = "ID_ATIVIDADE",
                         childColumns  = "ID_ATIVIDADE",
                         onDelete = ForeignKey.NO_ACTION,

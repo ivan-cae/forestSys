@@ -80,11 +80,16 @@ public class FragmentoRendimento extends Fragment {
             int maior = usuarios.size();
             if(prestadores.size()>maior) maior = prestadores.size();
             for(int i = 0; i<maior; i++){
-                if(usuarios.get(i).getID_USUARIO()==oSAtividadesDiaAtual.getID_RESPONSAVEL()) posicaoResponsavel = usuarios.get(i).getID_USUARIO();
-                spinnerResponsavel.setSelection(posicaoResponsavel-1);
+                if(i<usuarios.size()) {
+                    if (usuarios.get(i).getID_USUARIO() == oSAtividadesDiaAtual.getID_RESPONSAVEL())
+                        posicaoResponsavel = usuarios.get(i).getID_USUARIO();
+                    spinnerResponsavel.setSelection(posicaoResponsavel - 1);
+                }
 
+                if(i<prestadores.size()){
                 if(prestadores.get(i).getID_PRESTADOR()==oSAtividadesDiaAtual.getID_PRESTADOR()) posicaoPrestador = prestadores.get(i).getID_PRESTADOR();
                 spinnerPrestador.setSelection(posicaoPrestador-1);
+            }
             }
             spinnerPrestador.setAdapter(adapterPrestadores);
             spinnerPrestador.setSelection(posicaoPrestador-1);

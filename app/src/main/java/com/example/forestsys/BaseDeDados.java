@@ -2,6 +2,7 @@ package com.example.forestsys;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -291,7 +292,23 @@ public abstract class BaseDeDados extends RoomDatabase {
             e.printStackTrace();
         }
 
-
+        dados = carregaJsonAtividadeIndicadores(context);
+        try {
+            for (int i = 0; i < dados.length(); i++) {
+                JSONObject obj = dados.getJSONObject(i);
+                int ID_ATIVIDADE = obj.getInt("ID_ATIVIDADE");
+                int ID_INDICADOR = obj.getInt("ID_INDICADOR");
+                int ORDEM_INDICADOR = obj.getInt("ORDEM_INDICADOR");
+                String REFERENCIA = obj.getString("REFERENCIA");
+                String DESCRICAO = obj.getString("DESCRICAO");
+                int ATIVO = obj.getInt("ATIVO");
+                String VERION = obj.getString("VERION");
+                Log.e("testa i", String.valueOf(ID_INDICADOR));
+                daoInsere.insert(new ATIVIDADE_INDICADORES(ID_INDICADOR, ID_ATIVIDADE, ORDEM_INDICADOR, REFERENCIA, DESCRICAO, ATIVO, VERION));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -478,6 +495,25 @@ public abstract class BaseDeDados extends RoomDatabase {
             }
             JSONObject json = new JSONObject(builder.toString());
             return json.getJSONArray("ATIVIDADES");
+
+        } catch (IOException | JSONException exception) {
+            exception.printStackTrace();
+        }
+        return null;
+    }
+
+    private static JSONArray carregaJsonAtividadeIndicadores(Context context) {
+        StringBuilder builder = new StringBuilder();
+        InputStream in = context.getResources().openRawResource(R.raw.atividade_indicadores);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        String linha;
+
+        try {
+            while ((linha = reader.readLine()) != null) {
+                builder.append(linha);
+            }
+            JSONObject json = new JSONObject(builder.toString());
+            return json.getJSONArray("ATIVIDADE_INDICADORES");
 
         } catch (IOException | JSONException exception) {
             exception.printStackTrace();

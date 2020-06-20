@@ -9,6 +9,8 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.example.forestsys.classes.ATIVIDADES;
+import com.example.forestsys.classes.ATIVIDADE_INDICADORES;
+import com.example.forestsys.classes.AVAL_PONTO_SUBSOLAGEM;
 import com.example.forestsys.classes.CADASTRO_FLORESTAL;
 import com.example.forestsys.classes.CALIBRAGEM_SUBSOLAGEM;
 import com.example.forestsys.classes.ESPACAMENTOS;
@@ -73,7 +75,10 @@ public interface DAO {
     void insert(O_S_ATIVIDADE_INSUMOS_DIA o_s_atividade_insumos_dia);
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(ATIVIDADES atividades);
-
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(ATIVIDADE_INDICADORES atividade_indicadores);
+    @Insert
+    void insert(AVAL_PONTO_SUBSOLAGEM aval_ponto_subsolagem);
 
     @Update
     void update(GGF_USUARIOS GGFUSUARIOS);
@@ -107,6 +112,10 @@ public interface DAO {
     void update(O_S_ATIVIDADE_INSUMOS_DIA o_s_atividade_insumos_dia);
     @Update
     void update(ATIVIDADES atividades);
+    @Update
+    void update(ATIVIDADE_INDICADORES atividade_indicadores);
+    @Update
+    void update(AVAL_PONTO_SUBSOLAGEM aval_ponto_subsolagem);
 
     @Delete
     void delete(GGF_USUARIOS GGFUSUARIOS);
@@ -140,6 +149,10 @@ public interface DAO {
     void delete(O_S_ATIVIDADE_INSUMOS_DIA o_s_atividade_insumos_dia);
     @Delete
     void delete(ATIVIDADES atividades);
+    @Delete
+    void delete(ATIVIDADE_INDICADORES atividade_indicadores);
+    @Delete
+    void delete(AVAL_PONTO_SUBSOLAGEM aval_ponto_subsolagem);
 
     //Scripts GGF_USUARIOS
     @Query("SELECT * FROM GGF_USUARIOS ORDER BY ID_USUARIO asc")
@@ -335,6 +348,13 @@ public interface DAO {
     List<ATIVIDADES> todasAtividades();
 
 
+    //Scripts ATIVIDADE_INDICADORES
+    @Query(("SELECT * FROM ATIVIDADE_INDICADORES WHERE ID_ATIVIDADE=:idAtv AND VERION=:verion ORDER BY ORDEM_INDICADOR"))
+    List<ATIVIDADE_INDICADORES> listaAtividadeIndicadores(int idAtv, String verion);
+
+    //Scripts AVAL_PONTO_SUBSOLAGEM
+    @Query("SELECT *FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idAtv GROUP BY PONTO ORDER BY PONTO")
+    List<AVAL_PONTO_SUBSOLAGEM> listaAvalSubsolagem(int idAtv);
 
     //JOINS
     @Query("SELECT DISTINCT * FROM O_S_ATIVIDADE_INSUMOS INNER JOIN INSUMOS ON O_S_ATIVIDADE_INSUMOS.ID_INSUMO = INSUMOS.ID_INSUMO " +

@@ -11,7 +11,7 @@ import androidx.room.ForeignKey;
                 childColumns  = "ID_PROGRAMACAO_ATIVIDADE",
                 onDelete = ForeignKey.NO_ACTION,
                 onUpdate = ForeignKey.NO_ACTION),
-                @ForeignKey(entity = ATIVIDADE_INDICADORES.class,
+                @ForeignKey(entity = ATIVIDADES.class,
                         parentColumns = "ID_ATIVIDADE",
                         childColumns  = "ID_ATIVIDADE",
                         onDelete = ForeignKey.NO_ACTION,
@@ -43,13 +43,19 @@ public class AVAL_PONTO_SUBSOLAGEM {
 
     private double VALOR_INDICADOR;
 
-    public AVAL_PONTO_SUBSOLAGEM(int ID_PROGRAMACAO_ATIVIDADE, String DATA, int PONTO, int ID_ATIVIDADE, int ID_INDICADOR, double VALOR_INDICADOR) {
+    private int COORDENADA_X;
+
+    private int COORDENADA_Y;
+
+    public AVAL_PONTO_SUBSOLAGEM(int ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, int PONTO, int ID_ATIVIDADE, int ID_INDICADOR, double VALOR_INDICADOR, int COORDENADA_X, int COORDENADA_Y) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.DATA = DATA;
         this.PONTO = PONTO;
         this.ID_ATIVIDADE = ID_ATIVIDADE;
         this.ID_INDICADOR = ID_INDICADOR;
         this.VALOR_INDICADOR = VALOR_INDICADOR;
+        this.COORDENADA_X = COORDENADA_X;
+        this.COORDENADA_Y = COORDENADA_Y;
     }
 
     public int getID_PROGRAMACAO_ATIVIDADE() {
@@ -60,11 +66,12 @@ public class AVAL_PONTO_SUBSOLAGEM {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
     }
 
+    @NonNull
     public String getDATA() {
         return DATA;
     }
 
-    public void setDATA(String DATA) {
+    public void setDATA(@NonNull String DATA) {
         this.DATA = DATA;
     }
 
@@ -96,6 +103,23 @@ public class AVAL_PONTO_SUBSOLAGEM {
         return VALOR_INDICADOR;
     }
 
-    public void setVALOR_INDICADOR(double VALOR_INDICADOR) { this.VALOR_INDICADOR = VALOR_INDICADOR;
+    public void setVALOR_INDICADOR(double VALOR_INDICADOR) {
+        this.VALOR_INDICADOR = VALOR_INDICADOR;
+    }
+
+    public int getCOORDENADA_X() {
+        return COORDENADA_X;
+    }
+
+    public void setCOORDENADA_X(int COORDENADA_X) {
+        this.COORDENADA_X = COORDENADA_X;
+    }
+
+    public int getCOORDENADA_Y() {
+        return COORDENADA_Y;
+    }
+
+    public void setCOORDENADA_Y(int COORDENADA_Y) {
+        this.COORDENADA_Y = COORDENADA_Y;
     }
 }

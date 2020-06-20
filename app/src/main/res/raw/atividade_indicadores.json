@@ -1,0 +1,143 @@
+{
+  "ATIVIDADE_INDICADORES":[
+    {
+      "ID_ATIVIDADE": 1,
+      "ID_INDICADOR": 1,
+      "ORDEM_INDICADOR":  1,
+      "REFERENCIA": "A",
+      "DESCRICAO": "PROFUNDIDADE DA SUBSOLAGEM",
+      "ATIVO": 1,
+      "VERION": "N"
+    },
+
+    {
+      "ID_ATIVIDADE": 1,
+      "ID_INDICADOR": 2,
+      "ORDEM_INDICADOR":  2,
+      "REFERENCIA": "B",
+      "DESCRICAO": "LARGURA DE ESTRONDAMENTO LATERAL",
+      "ATIVO": 1,
+      "VERION": "N"
+    },
+
+    {
+      "ID_ATIVIDADE": 1,
+      "ID_INDICADOR": 3,
+      "ORDEM_INDICADOR":  3,
+      "REFERENCIA": "C",
+      "DESCRICAO": "FAIXA DE SOLO PREPARADA PELA GRADE",
+      "ATIVO": 1,
+      "VERION": "N"
+    },
+
+    {
+      "ID_ATIVIDADE": 1,
+      "ID_INDICADOR": 4,
+      "ORDEM_INDICADOR":  4,
+      "REFERENCIA": "D",
+      "DESCRICAO": "PROFUNDIDADE DO ADUBO NO SULCO",
+      "ATIVO": 1,
+      "VERION": "N"
+    },
+
+    {
+      "ID_ATIVIDADE": 1,
+      "ID_INDICADOR": 5,
+      "ORDEM_INDICADOR":  5,
+      "REFERENCIA": "E",
+      "DESCRICAO": "PRESENCA DE ADUBO NO SULCO",
+      "ATIVO": 1,
+      "VERION": "N"
+    },
+
+    {
+      "ID_ATIVIDADE": 1,
+      "ID_INDICADOR": 6,
+      "ORDEM_INDICADOR":  6,
+      "REFERENCIA": "F",
+      "DESCRICAO": "ESPACAMENTO",
+      "ATIVO": 1,
+      "VERION": "N"
+    },
+
+    {
+      "ID_ATIVIDADE": 1,
+      "ID_INDICADOR": 7,
+      "ORDEM_INDICADOR": 7,
+      "REFERENCIA": "G",
+      "DESCRICAO": "PRESENCA DE TORROES NA LINHA",
+      "ATIVO": 1,
+      "VERION": "N"
+    },
+
+    {
+      "ID_ATIVIDADE": 1,
+      "ID_INDICADOR": 8,
+      "ORDEM_INDICADOR":  8,
+      "REFERENCIA": "H",
+      "DESCRICAO": "ESPELHAMENTO DO SOLO",
+      "ATIVO": 1,
+      "VERION": "N"
+    },
+
+    {
+      "ID_ATIVIDADE": 1,
+      "ID_INDICADOR": 9,
+      "ORDEM_INDICADOR":  9,
+      "REFERENCIA": "I",
+      "DESCRICAO": "BOLSAO DE AR",
+      "ATIVO": 1,
+      "VERION": "N"
+    },
+
+    {
+      "ID_ATIVIDADE": 1,
+      "ID_INDICADOR": 10,
+      "ORDEM_INDICADOR":  10,
+      "REFERENCIA": "J",
+      "DESCRICAO": "DISTANCIA DO ADUBO SUPERFICIAL",
+      "ATIVO": 1,
+      "VERION": "N"
+    },
+
+    {
+      "ID_ATIVIDADE": 1,
+      "ID_INDICADOR": 11,
+      "ORDEM_INDICADOR":  11,
+      "REFERENCIA": "K",
+      "DESCRICAO": "MEDIA APLICADA PROD.1 (KG/HA)",
+      "ATIVO": 1,
+      "VERION": "S"
+    },
+
+    {
+      "ID_ATIVIDADE": 1,
+      "ID_INDICADOR": 12,
+      "ORDEM_INDICADOR":  12,
+      "REFERENCIA": "L",
+      "DESCRICAO": "DESVIO PADRAO PROD.1 (KG/HA)",
+      "ATIVO": 1,
+      "VERION": "S"
+    },
+
+    {
+      "ID_ATIVIDADE": 1,
+      "ID_INDICADOR": 13,
+      "ORDEM_INDICADOR": 13,
+      "REFERENCIA": "M",
+      "DESCRICAO": "MEDIA APLICADA PROD.2 (KG/HA)",
+      "ATIVO": 1,
+      "VERION": "S"
+    },
+
+    {
+      "ID_ATIVIDADE": 1,
+      "ID_INDICADOR": 14,
+      "ORDEM_INDICADOR":  14,
+      "REFERENCIA": "N",
+      "DESCRICAO": "DESVIO PADRAO PROD.2 (KG/HA)",
+      "ATIVO": 1,
+      "VERION": "S"
+    }
+  ]
+}

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="360dp">
+
+    <TextView
+        android:id="@+id/dialogo_qualidade_verion_nome_media_p2"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/dialogo_qualidade_verion_nome_desvio_padrao_p2"
+        app:layout_constraintStart_toEndOf="@+id/textView142"
+        app:layout_constraintTop_toTopOf="@+id/textView142" />
+
+    <TextView
+        android:id="@+id/dialogo_qualidade_verion_nome_desvio_padrao_p2"
+        android:layout_width="160dp"
+        android:layout_height="20dp"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/textView144"
+        app:layout_constraintTop_toTopOf="@+id/textView144" />
+
+    <TextView
+        android:id="@+id/dialogo_qualidade_verion_letra_item3"
+        android:layout_width="40dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_verion_desvio_padrao_p2"
+        app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_verion_nome_media_p2" />
+
+    <TextView
+        android:id="@+id/textView142"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:text="Média - "
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView132" />
+
+    <EditText
+        android:id="@+id/dialogo_qualidade_verion_media_p2"
+        android:layout_width="220dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:digits="1 2 3 4 5 6 7 8 9 0 ,"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:maxLength="9"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/dialogo_qualidade_verion_nome_media_p2"
+        app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_verion_nome_media_p2"
+        app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_verion_nome_media_p2" />
+
+    <TextView
+        android:id="@+id/dialogo_qualidade_verion_letra_item4"
+        android:layout_width="40dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_verion_desvio_padrao_p2"
+        app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_verion_nome_desvio_padrao_p2" />
+
+    <EditText
+        android:id="@+id/dialogo_qualidade_verion_desvio_padrao_p1"
+        android:layout_width="220dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:digits="1 2 3 4 5 6 7 8 9 0 ,"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:maxLength="9"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/dialogo_qualidade_verion_nome_desvio_padrao_p1"
+        app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_verion_nome_desvio_padrao_p1"
+        app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_verion_nome_desvio_padrao_p1" />
+
+    <TextView
+        android:id="@+id/textView144"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="Desvio Padrão - "
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_verion_nome_media_p2" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Dados Verion"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/dialogo_qualidade_verion_botao_registrar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginBottom="8dp"
+        android:background="#616161"
+        android:text="Registrar"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_verion_desvio_padrao_p2" />
+
+    <TextView
+        android:id="@+id/textView131"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="Média - "
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/dialogo_qualidade_verion_nome_media_p1"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/dialogo_qualidade_verion_nome_desvio_padrao_p1"
+        app:layout_constraintStart_toEndOf="@+id/textView131"
+        app:layout_constraintTop_toTopOf="@+id/textView131" />
+
+    <TextView
+        android:id="@+id/dialogo_qualidade_verion_nome_desvio_padrao_p1"
+        android:layout_width="160dp"
+        android:layout_height="20dp"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/textView132"
+        app:layout_constraintTop_toTopOf="@+id/textView132" />
+
+    <TextView
+        android:id="@+id/textView132"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="Desvio Padrão - "
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView131" />
+
+    <EditText
+        android:id="@+id/dialogo_qualidade_verion_media_p1"
+        android:layout_width="220dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:digits="1 2 3 4 5 6 7 8 9 0 ,"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:maxLength="9"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/dialogo_qualidade_verion_nome_media_p1"
+        app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_verion_nome_media_p1"
+        app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_verion_nome_media_p1" />
+
+    <EditText
+        android:id="@+id/dialogo_qualidade_verion_desvio_padrao_p2"
+        android:layout_width="220dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:digits="1 2 3 4 5 6 7 8 9 0 ,"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:maxLength="9"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/dialogo_qualidade_verion_nome_desvio_padrao_p2"
+        app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_verion_nome_desvio_padrao_p2"
+        app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_verion_nome_desvio_padrao_p2" />
+
+    <TextView
+        android:id="@+id/dialogo_qualidade_verion_letra_item1"
+        android:layout_width="40dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_verion_media_p1"
+        app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_verion_nome_media_p1" />
+
+    <TextView
+        android:id="@+id/dialogo_qualidade_verion_letra_item2"
+        android:layout_width="40dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_verion_media_p2"
+        app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_verion_nome_desvio_padrao_p1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

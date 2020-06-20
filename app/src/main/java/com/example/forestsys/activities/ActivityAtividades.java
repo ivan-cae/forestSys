@@ -221,6 +221,14 @@ public class ActivityAtividades extends AppCompatActivity
             }
         });
 
+        botaoQualidade.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(ActivityAtividades.this, ActivityQualidade.class);
+                startActivity(it);
+            }
+        });
+
         botaoFinalizarOs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

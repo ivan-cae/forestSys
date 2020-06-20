@@ -179,7 +179,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_arrow_back_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/add_circle/baseline_add_circle_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -189,7 +189,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_voltar_24dp" />
+                            <entry key="color" value="1c53ec" />
+                            <entry key="outputName" value="botao_adicionar_circular" />
                             <entry key="sourceFile" value="C:\Users\ivanm" />
                           </map>
                         </option>

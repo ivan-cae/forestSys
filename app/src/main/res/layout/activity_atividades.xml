@@ -349,20 +349,13 @@
             app:layout_constraintStart_toEndOf="@+id/map"
             app:layout_constraintTop_toBottomOf="@+id/botao_detalhes_qualidade" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <LinearLayout
-        android:id="@+id/linear_layout_detalhes"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="visible">
-
         <FrameLayout
             android:id="@+id/fragment_container_detalhes"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible">
+            android:visibility="visible"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="2dp">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar_detalhes"
@@ -375,6 +368,15 @@
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_layout_detalhes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
 
     </LinearLayout>
 
