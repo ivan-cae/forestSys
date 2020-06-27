@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.example.forestsys.NDSpinner
+    <com.example.forestsys.assets.NDSpinner
         android:id="@+id/spinner_prestador_apontamento"
         android:layout_width="150dp"
         android:layout_height="20dp"
@@ -28,7 +28,7 @@
         app:layout_constraintStart_toEndOf="@+id/textView18"
         app:layout_constraintTop_toTopOf="@+id/textView18" />
 
-    <com.example.forestsys.NDSpinner
+    <com.example.forestsys.assets.NDSpinner
         android:id="@+id/spinner_responsavel_apontamento"
         android:layout_width="150dp"
         android:layout_height="20dp"

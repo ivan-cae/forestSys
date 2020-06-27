@@ -1,0 +1,23 @@
+{
+  "SETORES": [
+    {
+      "ID_REGIONAL": 1,
+      "ID_SETOR": 1,
+      "DESCRICAO": "SARACURA",
+      "ATIVO": 1
+    },
+    {
+      "ID_REGIONAL": 2,
+      "ID_SETOR": 2,
+      "DESCRICAO": "PINDAIBAS",
+      "ATIVO": 1
+    },
+    {
+      "ID_REGIONAL": 3,
+      "ID_SETOR": 3,
+      "DESCRICAO": "CASTELO",
+      "ATIVO": 1
+    }
+  ]
+}
+

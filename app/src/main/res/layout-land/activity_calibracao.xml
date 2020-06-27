@@ -147,7 +147,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.example.forestsys.NDSpinner
+        <com.example.forestsys.assets.NDSpinner
             android:id="@+id/spinner_operador_calibragem"
             android:layout_width="300dp"
             android:layout_height="20dp"
@@ -196,7 +196,7 @@
             app:layout_constraintStart_toStartOf="@+id/textView16"
             app:layout_constraintTop_toBottomOf="@+id/spinner_operador_calibragem" />
 
-        <com.example.forestsys.NDSpinner
+        <com.example.forestsys.assets.NDSpinner
             android:id="@+id/spinner_maquina_implemento_calibragem"
             android:layout_width="300dp"
             android:layout_height="20sp"
@@ -888,24 +888,26 @@
         <ImageButton
             android:id="@+id/botao_calibragem_media_p1"
             android:layout_width="60dp"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:layout_marginStart="32dp"
+            android:background="#FFFFFF"
             android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="@+id/media_dif_p1"
             app:layout_constraintStart_toEndOf="@+id/textView4"
             app:layout_constraintTop_toTopOf="@+id/textView43"
-            app:srcCompat="@android:drawable/ic_input_add" />
+            app:srcCompat="@drawable/botao_adicionar_circular" />
 
         <ImageButton
             android:id="@+id/botao_calibragem_media_p2"
             android:layout_width="60dp"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:layout_marginStart="32dp"
+            android:background="#FFFFFF"
             android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="@+id/media_dif_p2"
             app:layout_constraintStart_toEndOf="@+id/desvio_produto2"
             app:layout_constraintTop_toTopOf="@+id/textView54"
-            app:srcCompat="@android:drawable/ic_input_add" />
+            app:srcCompat="@drawable/botao_adicionar_circular" />
 
         <ImageButton
             android:id="@+id/botao_calibragem_confirma"

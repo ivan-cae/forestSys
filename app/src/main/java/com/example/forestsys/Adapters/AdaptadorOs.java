@@ -1,5 +1,6 @@
 package com.example.forestsys.Adapters;
 
+import android.app.Application;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -11,10 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.forestsys.ApplicationTodos;
-import com.example.forestsys.BaseDeDados;
-import com.example.forestsys.DAO;
-import com.example.forestsys.DataHoraAtual;
+import com.example.forestsys.assets.ApplicationTodos;
+import com.example.forestsys.assets.BaseDeDados;
+import com.example.forestsys.assets.DAO;
+import com.example.forestsys.assets.DataHoraAtual;
 import com.example.forestsys.R;
 import com.example.forestsys.classes.O_S_ATIVIDADES;
 
@@ -28,6 +29,9 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
     private OnItemClickListener listener;
     private int corFundo;
     private O_S_ATIVIDADES ordem;
+    private DAO dao;
+    private BaseDeDados baseDeDados;
+    private Context context = ApplicationTodos.getAppContext();
 
 
     @NonNull
@@ -41,6 +45,10 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
 
     @Override
     public void onBindViewHolder(@NonNull OsHolder holder, int position) {
+
+        baseDeDados = BaseDeDados.getInstance(context);
+        dao = baseDeDados.dao();
+
         ordem = ordens.get(position);
 
         //aberta-verde
@@ -52,13 +60,13 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
 
         holder.itemView.setBackgroundColor(corFundo);
 
-        holder.setor.setText(String.valueOf(ordem.getID_SETOR()));
+        holder.setor.setText(String.valueOf(dao.selecionaSetor(ordem.getID_SETOR()).getDESCRICAO()));
         DataHoraAtual dataHoraAtual = new DataHoraAtual();
         holder.data.setText(String.valueOf(dataHoraAtual.formataDataTextView(ordem.getDATA_PROGRAMADA())));
         holder.talhao.setText(String.valueOf(ordem.getTALHAO()));
         holder.status.setText(ordem.getSTATUS());
         holder.area.setText(String.valueOf(ordem.getAREA_PROGRAMADA()).replace(".", ","));
-        holder.manejo.setText(ordem.getID_MANEJO());
+        holder.manejo.setText(dao.selecionaManejo(ordem.getID_MANEJO()).getDESCRICAO());
 
         String temMadeira = "NÃO";
         if (ordem.getMADEIRA_NO_TALHAO() == 1) temMadeira = "SIM";

@@ -5,9 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,18 +21,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.forestsys.Adapters.AdaptadorInsumos;
-import com.example.forestsys.ApplicationTodos;
-import com.example.forestsys.BaseDeDados;
-import com.example.forestsys.DAO;
-import com.example.forestsys.DataHoraAtual;
-import com.example.forestsys.PermissionUtils;
+import com.example.forestsys.assets.BaseDeDados;
+import com.example.forestsys.assets.DAO;
+import com.example.forestsys.assets.DataHoraAtual;
 import com.example.forestsys.R;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
 import com.example.forestsys.classes.CALIBRAGEM_SUBSOLAGEM;
@@ -109,6 +104,7 @@ public class ActivityAtividades extends AppCompatActivity
     public static boolean edicaoReg;
     public static boolean editouInsumo1;
     public static boolean editouInsumo2;
+    public static Join_OS_INSUMOS insumoMudouOrientacao;
 
     public static List<Join_OS_INSUMOS> listaJoinOsInsumosSelecionados;
 
@@ -125,6 +121,7 @@ public class ActivityAtividades extends AppCompatActivity
         edicaoReg = false;
         editouInsumo1 = false;
         editouInsumo2 = false;
+        insumoMudouOrientacao = null;
 
         listaJoinOsInsumosSelecionados = new ArrayList<Join_OS_INSUMOS>();
 
@@ -167,7 +164,7 @@ public class ActivityAtividades extends AppCompatActivity
         obsOs.setText(String.valueOf(osSelecionada.getOBSERVACAO()));
         statusOs.setText(osSelecionada.getSTATUS());
         areaOs.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace(".", ",")+"ha");
-        manejoOs.setText(String.valueOf(osSelecionada.getID_MANEJO()));
+        manejoOs.setText(String.valueOf(dao.selecionaManejo(osSelecionada.getID_MANEJO()).getDESCRICAO()));
         dataProgramada.setText(dataHoraAtual.formataDataTextView(osSelecionada.getDATA_PROGRAMADA()));
         areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA())+"ha");
 

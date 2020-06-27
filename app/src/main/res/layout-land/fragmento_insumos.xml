@@ -94,7 +94,7 @@
         app:layout_constraintStart_toEndOf="@+id/textView86"
         app:layout_constraintTop_toTopOf="@id/textView79" />
 
-    <com.example.forestsys.NDSpinner
+    <com.example.forestsys.assets.NDSpinner
         android:id="@+id/spinner_fragmento_insumos"
         android:layout_width="110dp"
         android:layout_height="20dp"

@@ -10,9 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.example.forestsys.ApplicationTodos;
-import com.example.forestsys.BaseDeDados;
-import com.example.forestsys.DAO;
+import com.example.forestsys.assets.ApplicationTodos;
+import com.example.forestsys.assets.BaseDeDados;
+import com.example.forestsys.assets.DAO;
 import com.example.forestsys.R;
 import com.example.forestsys.classes.join.Join_OS_INSUMOS;
 

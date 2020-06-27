@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,10 +22,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.forestsys.Adapters.AdaptadorFragmentoInsumos;
-import com.example.forestsys.BaseDeDados;
-import com.example.forestsys.DAO;
-import com.example.forestsys.DataHoraAtual;
-import com.example.forestsys.NDSpinner;
+import com.example.forestsys.assets.BaseDeDados;
+import com.example.forestsys.assets.DAO;
+import com.example.forestsys.assets.DataHoraAtual;
+import com.example.forestsys.assets.NDSpinner;
 import com.example.forestsys.R;
 import com.example.forestsys.classes.join.Join_OS_INSUMOS;
 
@@ -37,7 +36,7 @@ import static com.example.forestsys.activities.ActivityRegistros.dataDoApontamen
 import static com.example.forestsys.activities.ActivityAtividades.listaJoinOsInsumosSelecionados;
 import static com.example.forestsys.activities.ActivityMain.osSelecionada;
 import static com.example.forestsys.activities.ActivityRegistros.pegaDescInsumos;
-
+import static com.example.forestsys.activities.ActivityAtividades.insumoMudouOrientacao;
 
 public class FragmentoInsumos extends Fragment {
 
@@ -59,7 +58,18 @@ public class FragmentoInsumos extends Fragment {
     private int editouUm;
     private int contEdicao;
 
+    private  EditText valorDialogoQtd;
+    private EditText valorDialogoEdicao;
+
+    private boolean abriuDialogo;
+    private boolean abriuDialogoEdicao;
+    private Bundle auxSavedInstanceState;
+    private AlertDialog dialogoEdicao;
+    private AlertDialog dialogoQtdAplicada;
+    private int idInsere=0;
+
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        auxSavedInstanceState = savedInstanceState;
         View root = inflater.inflate(R.layout.fragmento_insumos, container, false);
 
         recyclerView = root.findViewById(R.id.recycler_lista_insumos);
@@ -81,6 +91,8 @@ public class FragmentoInsumos extends Fragment {
         editouUm = 0;
         editouAmbos = false;
         contEdicao = 0;
+        abriuDialogo = false;
+        abriuDialogoEdicao = false;
         baseDeDados = BaseDeDados.getInstance(getContext());
         dao = baseDeDados.dao();
         spinnerInsumos = getView().findViewById(R.id.spinner_fragmento_insumos);
@@ -102,6 +114,11 @@ public class FragmentoInsumos extends Fragment {
              obsInsumo1.setText(savedInstanceState.getString("obsInsumo1"));
              obsInsumo2.setText(savedInstanceState.getString("obsInsumo2"));
 
+             abriuDialogo = savedInstanceState.getBoolean("abriuDialogo");
+            abriuDialogoEdicao = savedInstanceState.getBoolean("abriuDialogoEdicao");
+
+            if(abriuDialogo==true) abreDialogoQtdAplicada(insumoMudouOrientacao);
+            if(abriuDialogoEdicao==true) abreDialogoEdicaoIns1(insumoMudouOrientacao);
         }
             listaJoinOsInsumos = dao.listaJoinInsumoAtividades(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
@@ -111,8 +128,8 @@ public class FragmentoInsumos extends Fragment {
         nomeInsumo2.setText("Observação - "+pegaDescInsumos[1]+":");
 
         if(!listaJoinOsInsumosSelecionados.isEmpty()) {
-            obsInsumo1.setText(listaJoinOsInsumosSelecionados.get(0).getOBSERVACAO());
-            obsInsumo2.setText(listaJoinOsInsumosSelecionados.get(1).getOBSERVACAO());
+            if(listaJoinOsInsumosSelecionados.size()>=1) obsInsumo1.setText(listaJoinOsInsumosSelecionados.get(0).getOBSERVACAO());
+            if(listaJoinOsInsumosSelecionados.size()>=2) obsInsumo2.setText(listaJoinOsInsumosSelecionados.get(1).getOBSERVACAO());
         }
         adaptador.setInsumos(listaJoinOsInsumosSelecionados);
 
@@ -155,7 +172,7 @@ public class FragmentoInsumos extends Fragment {
                                 }).create();
                         dialog.show();
                     } else {
-                        abreDialogoQtdAlicada(aux);
+                        abreDialogoQtdAplicada(aux);
                     }
                 }
                 contSpinnerInsumos++;
@@ -175,7 +192,7 @@ public class FragmentoInsumos extends Fragment {
                         .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                abreDialogoQtdAlicada(joinOsInsumos);
+                                abreDialogoQtdAplicada(joinOsInsumos);
                             }
                         }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
                             @Override
@@ -190,20 +207,30 @@ public class FragmentoInsumos extends Fragment {
     }
 
 
-    public void abreDialogoQtdAlicada(Join_OS_INSUMOS insere) {
+    public void abreDialogoQtdAplicada(Join_OS_INSUMOS insere) {
+        abriuDialogo = true;
+        insumoMudouOrientacao = insere;
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
         View mView = getLayoutInflater().inflate(R.layout.dialogo_registros_insumos, null);
-        final EditText valor = mView.findViewById(R.id.valor_dialogo_insumos);
+        valorDialogoQtd = mView.findViewById(R.id.valor_dialogo_insumos);
         Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_insumos);
 
+        if(auxSavedInstanceState!=null){
+            if(auxSavedInstanceState.getString("valorDialogoQtd")!=null){
+                if(!auxSavedInstanceState.getString("valorDialogoQtd").isEmpty()){
+                    valorDialogoQtd.setText(auxSavedInstanceState.getString("valorDialogoQtd"));
+                }
+            }
+        }
+
         mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
+        dialogoQtdAplicada = mBuilder.create();
+        dialogoQtdAplicada.show();
         botaoOk.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
-                String str = valor.getText().toString();
+                String str = valorDialogoQtd.getText().toString();
                 str = str.replace(',', '.');
                 char[] s = str.toCharArray();
                 int contador = 0;
@@ -211,7 +238,7 @@ public class FragmentoInsumos extends Fragment {
                     if (s[i] == '.') contador++;
                 }
                 if (contador > 1 || s[s.length - 1] == '.' || s[0] == '.')
-                    valor.setError("Valor inválido");
+                    valorDialogoQtd.setError("Valor inválido");
                 else {
                     insere.setQTD_APLICADO(Double.valueOf(str));
                     if (!listaJoinOsInsumosSelecionados.contains(insere))
@@ -225,43 +252,74 @@ public class FragmentoInsumos extends Fragment {
                     }
 
                     adaptador.setInsumos(listaJoinOsInsumosSelecionados);
-                    dialog.dismiss();
+                    abriuDialogo = false;
+                    dialogoQtdAplicada.dismiss();
                 }
+            }
+        });
+
+        dialogoQtdAplicada.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                auxSavedInstanceState = null;
+                abriuDialogo = false;
             }
         });
     }
 
     public void abreDialogoEdicaoIns1(Join_OS_INSUMOS insere) {
+        abriuDialogoEdicao=true;
+        insumoMudouOrientacao = insere;
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
         View mView = getLayoutInflater().inflate(R.layout.dialogo_editar_insumos, null);
-        final EditText valor = mView.findViewById(R.id.valor_dialogo_editar_insumos);
+        valorDialogoEdicao = mView.findViewById(R.id.valor_dialogo_editar_insumos);
         Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_editar_insumos);
-
         mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
+        dialogoEdicao = mBuilder.create();
+        dialogoEdicao.show();
+
+        if(auxSavedInstanceState!=null){
+            if(auxSavedInstanceState.getString("valorDialogoEdicao")!=null){
+                if(!auxSavedInstanceState.getString("valorDialogoEdicao").isEmpty()){
+                    valorDialogoQtd.setText(auxSavedInstanceState.getString("valorDialogoEdicao"));
+                    idInsere = auxSavedInstanceState.getInt("idInsere", idInsere);
+                }
+            }
+        }
+        else idInsere = listaJoinOsInsumosSelecionados.indexOf(insere);
+
+
+
+
         botaoOk.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
-                String str = valor.getText().toString();
+                String str = valorDialogoEdicao.getText().toString();
 
                 if (str.trim().length() < 3)
-                    valor.setError("Justificativa deve ter mais de 2 caracteres.");
+                    valorDialogoEdicao.setError("Justificativa deve ter mais de 2 caracteres.");
                 else {
-                    int id = listaJoinOsInsumosSelecionados.indexOf(insere);
 
-                    String obs = listaJoinOsInsumosSelecionados.get(id).getOBSERVACAO();
+                    String obs = listaJoinOsInsumosSelecionados.get(idInsere).getOBSERVACAO();
                     String pegaObs="";
                     if(!obs.isEmpty() || obs!=null) pegaObs = obs+"\n";
-                    obs = pegaObs.concat("Editado em "+ dataHoraAtual.dataAtual()+" ás "+dataHoraAtual.horaAtual()+". Justificativa: "+(valor.getText().toString()));
+                    obs = pegaObs.concat("Editado em "+ dataHoraAtual.dataAtual()+" ás "+dataHoraAtual.horaAtual()+". Justificativa: "+(valorDialogoEdicao.getText().toString()));
                     insere.setOBSERVACAO(obs);
                     insere.setACAO_INATIVO("EDICAO");
-                    listaJoinOsInsumosSelecionados.set(id, insere);
+                    listaJoinOsInsumosSelecionados.set(idInsere, insere);
 
                     adaptador.setInsumos(listaJoinOsInsumosSelecionados);
-                    dialog.dismiss();
+
+                    dialogoEdicao.dismiss();
                 }
+            }
+        });
+        dialogoEdicao.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                auxSavedInstanceState = null;
+                abriuDialogo = false;
             }
         });
     }
@@ -282,5 +340,15 @@ public class FragmentoInsumos extends Fragment {
         outState.putInt("editouUm", editouUm);
         outState.putBoolean("editouAmbos", editouAmbos);
         outState.putInt("contEdicao", contEdicao);
+
+        outState.putBoolean("abriuDialogoEdicao", abriuDialogoEdicao);
+        outState.putBoolean("abriuDialogo", abriuDialogo);
+
+        if(abriuDialogo) outState.putString("valorDialogoQtd", valorDialogoQtd.getText().toString());
+        if(abriuDialogoEdicao){
+            outState.putInt("idInsere", idInsere);
+            outState.putString("valorDialogoEdicao", valorDialogoEdicao.getText().toString());
+        }
+
     }
 }

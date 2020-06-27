@@ -1,0 +1,59 @@
+{
+  "ESPACAMENTOS": [
+    {
+      "ID_ESPACAMENTO": 1,
+      "DESCRICAO": "2,5 X 2,5",
+      "ATIVO": 1
+    },
+    {
+      "ID_ESPACAMENTO": 2,
+      "DESCRICAO": "3 X 2 / 3 X 3",
+      "ATIVO": 1
+    },
+    {
+      "ID_ESPACAMENTO": 3,
+      "DESCRICAO": "3 X 3",
+      "ATIVO": 1
+    },
+    {
+      "ID_ESPACAMENTO": 4,
+      "DESCRICAO": "3 X 3 / 3 X 2",
+      "ATIVO": 1
+    },
+    {
+      "ID_ESPACAMENTO": 5,
+      "DESCRICAO": "3 X 3,5",
+      "ATIVO": 1
+    },
+    {
+      "ID_ESPACAMENTO": 6,
+      "DESCRICAO": "3 X 4",
+      "ATIVO": 1
+    },
+    {
+      "ID_ESPACAMENTO": 7,
+      "DESCRICAO": "3,5 X 2,6",
+      "ATIVO": 1
+    },
+    {
+      "ID_ESPACAMENTO": 8,
+      "DESCRICAO": "3,5 X 3,5",
+      "ATIVO": 1
+    },
+    {
+      "ID_ESPACAMENTO": 9,
+      "DESCRICAO": "4 X 3",
+      "ATIVO": 1
+    },
+    {
+      "ID_ESPACAMENTO": 10,
+      "DESCRICAO": "5 X 1,8",
+      "ATIVO": 1
+    },
+    {
+      "ID_ESPACAMENTO": 11,
+      "DESCRICAO": "VARIOS",
+      "ATIVO": 1
+    }
+  ]
+}

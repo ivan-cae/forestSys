@@ -3,8 +3,8 @@ package com.example.forestsys.repositorios;
 import android.app.Application;
 import android.os.AsyncTask;
 
-import com.example.forestsys.BaseDeDados;
-import com.example.forestsys.DAO;
+import com.example.forestsys.assets.BaseDeDados;
+import com.example.forestsys.assets.DAO;
 import com.example.forestsys.classes.ATIVIDADES;
 
 import java.util.List;

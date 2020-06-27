@@ -1,0 +1,45 @@
+{
+  "CADASTRO_FLORESTAL": [
+    {
+      "ID_REGIONAL": 1,
+      "ID_SETOR": 1,
+      "TALHAO": "383",
+      "CICLO": 1,
+      "ID_MANEJO": 1,
+      "DATA_MANEJO": "10-04-2020",
+      "DATA_PROGRAMACAO_REFORMA": "10-04-2020",
+      "ID_MATERIAL_GENETICO": 1,
+      "ID_ESPACAMENTO": 1,
+      "OBSERVACAO": "",
+      "ATIVO": 1
+    },
+    {
+      "ID_REGIONAL": 2,
+      "ID_SETOR": 2,
+      "TALHAO": "251",
+      "CICLO": 2,
+      "ID_MANEJO": 1,
+      "DATA_MANEJO": "10-04-2020",
+      "DATA_PROGRAMACAO_REFORMA": "10-04-2020",
+      "ID_MATERIAL_GENETICO": 1,
+      "ID_ESPACAMENTO": 2,
+      "OBSERVACAO": "",
+      "ATIVO": 1
+    },
+    {
+      "ID_REGIONAL": 3,
+      "ID_SETOR": 3,
+      "TALHAO": "69",
+      "CICLO": 3,
+      "ID_MANEJO": 1,
+      "DATA_MANEJO": "10-04-2020",
+      "DATA_PROGRAMACAO_REFORMA": "10-04-2020",
+      "ID_MATERIAL_GENETICO": 1,
+      "ID_ESPACAMENTO": 3,
+      "OBSERVACAO": "",
+      "ATIVO": 1
+    }
+  ]
+}
+
+

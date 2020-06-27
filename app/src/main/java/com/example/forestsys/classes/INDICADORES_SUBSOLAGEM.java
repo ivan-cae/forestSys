@@ -31,12 +31,15 @@ public class INDICADORES_SUBSOLAGEM {
     @ColumnInfo(name="ID_INDICADOR")
     private int ID_INDICADOR;
 
+    private String DATA;
+
     private double VALOR_INDICADOR;
 
-    public INDICADORES_SUBSOLAGEM(int ID_PROGRAMACAO_ATIVIDADE, int ID_ATIVIDADE, int ID_INDICADOR, double VALOR_INDICADOR) {
+    public INDICADORES_SUBSOLAGEM(int ID_PROGRAMACAO_ATIVIDADE, int ID_ATIVIDADE, int ID_INDICADOR, String DATA, double VALOR_INDICADOR) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.ID_ATIVIDADE = ID_ATIVIDADE;
         this.ID_INDICADOR = ID_INDICADOR;
+        this.DATA = DATA;
         this.VALOR_INDICADOR = VALOR_INDICADOR;
     }
 
@@ -62,6 +65,14 @@ public class INDICADORES_SUBSOLAGEM {
 
     public void setID_INDICADOR(int ID_INDICADOR) {
         this.ID_INDICADOR = ID_INDICADOR;
+    }
+
+    public String getDATA() {
+        return DATA;
+    }
+
+    public void setDATA(String DATA) {
+        this.DATA = DATA;
     }
 
     public double getVALOR_INDICADOR() {

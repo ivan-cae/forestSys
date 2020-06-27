@@ -58,6 +58,8 @@ public class CADASTRO_FLORESTAL {
 
     private String DATA_MANEJO;
 
+    private String DATA_PROGRAMACAO_REFORMA;
+
     @NonNull
     @ColumnInfo (name = "ID_MATERIAL_GENETICO")
     private int ID_MATERIAL_GENETICO;
@@ -70,21 +72,18 @@ public class CADASTRO_FLORESTAL {
 
 	private int ATIVO;
 
-	private String DATA_PROGRAMACAO_REFORMA;
-
-
-    public CADASTRO_FLORESTAL(int ID_REGIONAL, int ID_SETOR, @NonNull String TALHAO, int CICLO, int ID_MANEJO, String DATA_MANEJO, int ID_MATERIAL_GENETICO, int ID_ESPACAMENTO, String OBSERVACAO, int ATIVO, String DATA_PROGRAMACAO_REFORMA) {
+    public CADASTRO_FLORESTAL(int ID_REGIONAL, int ID_SETOR, @NonNull String TALHAO, int CICLO, int ID_MANEJO, String DATA_MANEJO, String DATA_PROGRAMACAO_REFORMA, int ID_MATERIAL_GENETICO, int ID_ESPACAMENTO, String OBSERVACAO, int ATIVO) {
         this.ID_REGIONAL = ID_REGIONAL;
         this.ID_SETOR = ID_SETOR;
         this.TALHAO = TALHAO;
         this.CICLO = CICLO;
         this.ID_MANEJO = ID_MANEJO;
         this.DATA_MANEJO = DATA_MANEJO;
+        this.DATA_PROGRAMACAO_REFORMA = DATA_PROGRAMACAO_REFORMA;
         this.ID_MATERIAL_GENETICO = ID_MATERIAL_GENETICO;
         this.ID_ESPACAMENTO = ID_ESPACAMENTO;
         this.OBSERVACAO = OBSERVACAO;
         this.ATIVO = ATIVO;
-        this.DATA_PROGRAMACAO_REFORMA = DATA_PROGRAMACAO_REFORMA;
     }
 
     public int getID_REGIONAL() {
@@ -136,6 +135,14 @@ public class CADASTRO_FLORESTAL {
         this.DATA_MANEJO = DATA_MANEJO;
     }
 
+    public String getDATA_PROGRAMACAO_REFORMA() {
+        return DATA_PROGRAMACAO_REFORMA;
+    }
+
+    public void setDATA_PROGRAMACAO_REFORMA(String DATA_PROGRAMACAO_REFORMA) {
+        this.DATA_PROGRAMACAO_REFORMA = DATA_PROGRAMACAO_REFORMA;
+    }
+
     public int getID_MATERIAL_GENETICO() {
         return ID_MATERIAL_GENETICO;
     }
@@ -166,13 +173,5 @@ public class CADASTRO_FLORESTAL {
 
     public void setATIVO(int ATIVO) {
         this.ATIVO = ATIVO;
-    }
-
-    public String getDATA_PROGRAMACAO_REFORMA() {
-        return DATA_PROGRAMACAO_REFORMA;
-    }
-
-    public void setDATA_PROGRAMACAO_REFORMA(String DATA_PROGRAMACAO_REFORMA) {
-        this.DATA_PROGRAMACAO_REFORMA = DATA_PROGRAMACAO_REFORMA;
     }
 }

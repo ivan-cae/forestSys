@@ -11,32 +11,40 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.forestsys.BaseDeDados;
-import com.example.forestsys.DAO;
-import com.example.forestsys.DataHoraAtual;
+import com.example.forestsys.assets.BaseDeDados;
+import com.example.forestsys.assets.DAO;
+import com.example.forestsys.assets.DataHoraAtual;
 import com.example.forestsys.R;
+import com.example.forestsys.assets.Formulas;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
 import com.example.forestsys.classes.ATIVIDADE_INDICADORES;
 import com.example.forestsys.classes.AVAL_PONTO_SUBSOLAGEM;
+import com.example.forestsys.classes.AVAL_SUBSOLAGEM;
+import com.example.forestsys.classes.CADASTRO_FLORESTAL;
+import com.example.forestsys.classes.INDICADORES_SUBSOLAGEM;
 import com.example.forestsys.classes.join.Join_OS_INSUMOS;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
 
+import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
 import static com.example.forestsys.activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.activities.ActivityMain.osSelecionada;
 
-public class ActivityQualidade extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class ActivityQualidade extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
     private TextView talhao;
@@ -51,23 +59,92 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     private ImageButton botaoVerion;
     private ImageButton botaoPonto;
     private List<Join_OS_INSUMOS> joinOsInsumos;
+
     private EditText mediaEditP1;
     private EditText mediaEditP2;
     private EditText desvioEditP1;
     private EditText desvioEditP2;
+
     private TextView pontosRealizados;
+
     private List<AVAL_PONTO_SUBSOLAGEM> listaPonto;
     private ImageButton botaoVoltar;
+    private boolean dialogoVerionAberto;
+    private boolean dialogoPontoAberto;
 
+    private EditText editItem1;
+    private EditText editItem2;
+    private EditText editItem3;
+    private EditText editItem4;
+    private CheckBox editItem5;
+    private EditText editItem6;
+    private CheckBox editItem7;
+    private CheckBox editItem8;
+    private CheckBox editItem9;
+    private EditText editItem10;
+
+    private TextView ncProfundidade;
+    private TextView ncEstrondamento;
+    private TextView ncFaixa;
+    private TextView ncProfundidadeFosfato;
+    private TextView ncPresencaFosfato;
+    private TextView ncLargura;
+    private TextView ncPresencaTorroes;
+    private TextView ncEspelhamento;
+    private TextView ncBolsoes;
+    private TextView ncLocalizacao;
+
+    private TextView ncPercProfundidade;
+    private TextView ncPercEstrondamento;
+    private TextView ncPercFaixa;
+    private TextView ncPercProfundidadeFosfato;
+    private TextView ncPercPresencaFosfato;
+    private TextView ncPercLargura;
+    private TextView ncPercPresencaTorroes;
+    private TextView ncPercEspelhamento;
+    private TextView ncPercBolsoes;
+    private TextView ncPercLocalizacao;
+
+    private TextView listaInsumoP1;
+    private TextView listaInsumoP2;
+    private TextView listaMediaP1;
+    private TextView listaMediaP2;
+    private TextView listaDesvioP1;
+    private TextView listaDesvioP2;
+
+    private Bundle auxSavedInstanceState;
+
+    private int ultimoFocus;
+
+    private AlertDialog dialogoVerion;
+    private AlertDialog dialogoPonto;
+
+    private Formulas formulas;
+
+    private int idProg;
+
+    private boolean jaTemVerion = false;
+
+    private List<INDICADORES_SUBSOLAGEM> listaVerion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setTitle(nomeEmpresaPref);
+
+        auxSavedInstanceState = savedInstanceState;
         setContentView(R.layout.activity_qualidade);
+
+        formulas = new Formulas();
 
         baseDeDados = BaseDeDados.getInstance(getApplicationContext());
         dao = baseDeDados.dao();
         dataHoraAtual = new DataHoraAtual();
+        dialogoPontoAberto = false;
+        dialogoVerionAberto = false;
+
+        idProg = osSelecionada.getID_PROGRAMACAO_ATIVIDADE();
 
         talhao = findViewById(R.id.qualidade_talhao);
         data = findViewById(R.id.qualidade_data);
@@ -80,23 +157,174 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         pontosRealizados = findViewById(R.id.qualidade_pontos_realizados);
         botaoVoltar = findViewById(R.id.botao_qualidade_voltar);
 
+        ncProfundidade = findViewById(R.id.qualidade_nc_profundidade_subsolagem);
+        ncEstrondamento = findViewById(R.id.qualidade_nc_largura_estrondamento);
+        ncFaixa = findViewById(R.id.qualidade_nc_faixa);
+        ncProfundidadeFosfato = findViewById(R.id.qualidade_nc_profundidade_fosfato);
+        ncPresencaFosfato = findViewById(R.id.qualidade_nc_presenca_fosfato);
+        ncLargura = findViewById(R.id.qualidade_nc_largura_linhas);
+        ncPresencaTorroes = findViewById(R.id.qualidade_nc_presenca_torroes);
+        ncEspelhamento = findViewById(R.id.qualidade_nc_espelhamento);
+        ncBolsoes = findViewById(R.id.qualidade_nc_bolsoes);
+        ncLocalizacao = findViewById(R.id.qualidade_nc_local);
+
+        ncPercProfundidade = findViewById(R.id.qualidade_percentual_nc_profundidade_subsolagem);
+        ncPercEstrondamento = findViewById(R.id.qualidade_percentual_nc_largura_estrondamento);
+        ncPercFaixa = findViewById(R.id.qualidade_percentual_nc_faixa);
+        ncPercProfundidadeFosfato = findViewById(R.id.qualidade_percentual_nc_profundidade_fosfato);
+        ncPercPresencaFosfato = findViewById(R.id.qualidade_percentual_nc_presenca_fosfato);
+        ncPercLargura = findViewById(R.id.qualidade_percentual_nc_largura_linhas);
+        ncPercPresencaTorroes = findViewById(R.id.qualidade_percentual_nc_presenca_torroes);
+        ncPercEspelhamento = findViewById(R.id.qualidade_percentual_nc_espelhamento);
+        ncPercBolsoes = findViewById(R.id.qualidade_percentual_nc_bolsoes);
+        ncPercLocalizacao = findViewById(R.id.qualidade_percentual_nc_local);
+
+        listaInsumoP1 = findViewById(R.id.qualidade_insumo_p1);
+        listaInsumoP2 = findViewById(R.id.qualidade_insumo_p2);
+        listaMediaP1 = findViewById(R.id.qualidade_media_p1);
+        listaMediaP2 = findViewById(R.id.qualidade_media_p2);
+        ;
+        listaDesvioP1 = findViewById(R.id.qualidade_desvio_padrao_p1);
+        listaDesvioP2 = findViewById(R.id.qualidade_desvio_padrao_p2);
+
         talhao.setText(osSelecionada.getTALHAO());
         data.setText(dataHoraAtual.dataAtual());
         status.setText(osSelecionada.getSTATUS());
-        area.setText(osSelecionada.getDATA_PROGRAMADA());
+        area.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()));
         areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()));
-        manejo.setText(osSelecionada.getID_MANEJO());
+        manejo.setText(String.valueOf(dao.selecionaManejo(osSelecionada.getID_MANEJO())));
 
-        joinOsInsumos = dao.listaJoinInsumoAtividades(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+        AVAL_SUBSOLAGEM aval_subsolagem = dao.selecionaAvalSubsolagem(idProg);
 
-         listaPonto = dao.listaAvalSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+        listaVerion = dao.listaIndicadoresSubsolagem(idProg, osSelecionada.getID_ATIVIDADE());
+        joinOsInsumos = dao.listaJoinInsumoAtividades(idProg);
 
-         if(listaPonto.isEmpty()) pontosRealizados.setText("0");
-         else pontosRealizados.setText(String.valueOf(listaPonto.get(listaPonto.size()-1).getPONTO()));
+        if(!listaVerion.isEmpty()) {
+            listaInsumoP1.setText(joinOsInsumos.get(0).getDESCRICAO());
+            listaInsumoP2.setText(joinOsInsumos.get(1).getDESCRICAO());
+
+            listaMediaP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
+            listaDesvioP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
+            listaMediaP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
+            listaDesvioP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
+        }
+        listaPonto = dao.listaAvalSubsolagem(idProg);
+
+        if (listaPonto.isEmpty()) pontosRealizados.setText("0");
+        else {
+
+            pontosRealizados.setText(String.valueOf(listaPonto.get(listaPonto.size() - 1).getPONTO()));
+
+            int idReg=osSelecionada.getID_REGIONAL();
+            int idSet=osSelecionada.getID_SETOR();
+            String talhao=osSelecionada.getTALHAO();
+            int ciclo=osSelecionada.getCICLO();
+            int idManejo=osSelecionada.getID_MANEJO();
+
+            CADASTRO_FLORESTAL cadastro_florestal = dao.selecionaCadFlorestal(idReg,idSet, talhao,ciclo,idManejo);
+
+            String pegaEspacamento [] = dao.selecionaEspacamento(cadastro_florestal.getID_ESPACAMENTO()).getDESCRICAO().trim().replace(',', '.').split("X");
+            double teste;
+            try {
+                teste = Double.parseDouble(pegaEspacamento[0]);
+            } catch (NumberFormatException | NullPointerException n) {
+                teste = 3;
+            }
+
+            int nc1 = dao.qtdNaoConformeMenor(idProg, 1, aval_subsolagem.getPROFUNDIDADE());
+            int nc2 = dao.qtdNaoConformeForaDaFaixa(idProg, 2, aval_subsolagem.getESTRONDAMENTO_LATERAL_INFERIOR(), aval_subsolagem.getESTRONDAMENTO_LATERAL_SUPERIOR());
+            int nc3 = dao.qtdNaoConformeMenor(idProg, 3, aval_subsolagem.getFAIXA_SOLO_PREPARADA());
+            int nc4 = dao.qtdNaoConformeForaDaFaixa(idProg, 4, aval_subsolagem.getPROFUNDIDADE_ADUBO_INFERIOR(), aval_subsolagem.getPROFUNDIDADE_ADUBO_SUPERIOR());
+            int nc5 = dao.qtdNaoConformebool(idProg, 5);
+            int nc6 = dao.qtdNaoConformeForaDaFaixa(idProg, 6, teste*0.95, teste*1.05);
+            int nc7 = dao.qtdNaoConformebool(idProg, 7);
+            int nc8 = dao.qtdNaoConformebool(idProg, 8);
+            int nc9 = dao.qtdNaoConformebool(idProg, 9);
+            int nc10 = dao.qtdNaoConformeForaDaFaixa(idProg, 10, aval_subsolagem.getLOCALIZACAO_INSUMO_INFERIOR(), aval_subsolagem.getLOCALIZACAO_INSUMO_SUPERIOR());
+
+            double percNc1 = formulas.subsolagem_profundidade(nc1, dao.qtdIndicador(idProg, 1));
+            double percNc2 = formulas.subsolagem_largura_estrondamento(nc1, dao.qtdIndicador(idProg, 1));
+            double percNc3 = formulas.subsolagem_faixa_solo(nc3, dao.qtdIndicador(idProg, 3));
+            double percNc4 = formulas.subsolagem_profundidade_adubo(nc4, dao.qtdIndicador(idProg, 4));
+            double percNc5 = formulas.subsolagem_presenca_adubo(nc5, dao.qtdIndicador(idProg, 5));
+            double percNc6 = formulas.subsolagem_espacamento(nc6, dao.qtdIndicador(idProg, 6));
+            double percNc7 = formulas.subsolagem_torroes(nc7, dao.qtdIndicador(idProg, 7));
+            double percNc8 = formulas.subsolagem_espelhamento_solo(nc8, dao.qtdIndicador(idProg, 8));
+            double percNc9 = formulas.subsolagem_bolsoes_ar(nc9, dao.qtdIndicador(idProg, 9));
+            double percNc10 = formulas.subsolagem_distancia_insumo(nc10, dao.qtdIndicador(idProg, 10));
+
+            ncProfundidade.setText(String.valueOf(nc1).replace('.', ','));
+            ncPercProfundidade.setText(String.valueOf(percNc1).replace('.', ','));
+            if(percNc1>5.0 || percNc1<5.0) ncPercProfundidade.setTextColor(Color.parseColor("#FF0000"));
+
+            ncEstrondamento.setText(String.valueOf(nc2).replace('.', ','));
+            ncPercEstrondamento.setText(String.valueOf(percNc2).replace('.', ','));
+            if(percNc2>5.0 || percNc2<5.0) ncPercEstrondamento.setTextColor(Color.parseColor("#FF0000"));
+
+            ncFaixa.setText(String.valueOf(nc3).replace('.', ','));
+            ncPercFaixa.setText(String.valueOf(percNc3).replace('.', ','));
+            if(percNc3>5.0 || percNc3<5.0) ncPercFaixa.setTextColor(Color.parseColor("#FF0000"));
+
+            ncProfundidadeFosfato.setText(String.valueOf(nc4).replace('.', ','));
+            ncPercProfundidadeFosfato.setText(String.valueOf(percNc4).replace('.', ','));
+            if(percNc4>5.0 || percNc4<5.0) ncPercProfundidadeFosfato.setTextColor(Color.parseColor("#FF0000"));
+
+            ncPresencaFosfato.setText(String.valueOf(nc5).replace('.', ','));
+            ncPercPresencaFosfato.setText(String.valueOf(percNc5).replace('.', ','));
+            if(percNc5>5.0 || percNc5<5.0) ncPercPresencaFosfato.setTextColor(Color.parseColor("#FF0000"));
+
+            ncLargura.setText(String.valueOf(nc6).replace('.', ','));
+            ncPercLargura.setText(String.valueOf(percNc6).replace('.', ','));
+            if(percNc6>5.0 || percNc6<5.0) ncPercLargura.setTextColor(Color.parseColor("#FF0000"));
+
+            ncPresencaTorroes.setText(String.valueOf(nc7).replace('.', ','));
+            ncPercPresencaTorroes.setText(String.valueOf(percNc7).replace('.', ','));
+            if(percNc7>5.0 || percNc7<5.0) ncPercPresencaTorroes.setTextColor(Color.parseColor("#FF0000"));
+
+            ncEspelhamento.setText(String.valueOf(nc8).replace('.', ','));
+            ncPercEspelhamento.setText(String.valueOf(percNc8).replace('.', ','));
+            if(percNc8>5.0 || percNc8<5.0) ncPercEspelhamento.setTextColor(Color.parseColor("#FF0000"));
+
+            ncBolsoes.setText(String.valueOf(nc9).replace('.', ','));
+            ncPercBolsoes.setText(String.valueOf(percNc9).replace('.', ','));
+            if(percNc9>5.0 || percNc9<5.0) ncPercBolsoes.setTextColor(Color.parseColor("#FF0000"));
+
+            ncLocalizacao.setText(String.valueOf(nc10).replace('.', ','));
+            ncPercLocalizacao.setText(String.valueOf(percNc10).replace('.', ','));
+            if(percNc10>5.0 || percNc10<5.0) ncPercLocalizacao.setTextColor(Color.parseColor("#FF0000"));
+        }
+
+        if (savedInstanceState != null) {
+            dialogoVerionAberto = savedInstanceState.getBoolean("dialogoVerionAberto");
+            dialogoPontoAberto = savedInstanceState.getBoolean("dialogoPontoAberto");
+
+            if (dialogoPontoAberto == true) abreDialogoPonto();
+            if (dialogoVerionAberto == true) abreDialogoVerion();
+        }
+
+
         botaoVerion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                abreDialogoverion();
+                if (!listaVerion.isEmpty()) {
+                    jaTemVerion = true;
+                    AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
+                            .setTitle("Aviso!")
+                            .setMessage("Já existe um cadastro de dados verion, deseja edita-lo?")
+                            .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    abreDialogoVerion();
+                                }
+                            })
+                            .setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                }
+                            })
+                            .create();
+                    dialog.show();
+                } else abreDialogoVerion();
             }
         });
 
@@ -107,27 +335,28 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             }
         });
 
-        botaoVoltar.setOnClickListener(new View.OnClickListener(){
+
+        botaoVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
-                    .setTitle("Voltar")
-                    .setMessage("Deseja Para a Tela da Atividade?")
-                    .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
+                AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
+                        .setTitle("Voltar")
+                        .setMessage("Deseja voltar Para a Tela da Atividade?")
+                        .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
 
-                            Intent it = new Intent(ActivityQualidade.this, ActivityAtividades.class);
-                            startActivity(it);
-                        }
-                    }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                        }
-                    }).create();
-            dialog.show();
+                                Intent it = new Intent(ActivityQualidade.this, ActivityAtividades.class);
+                                startActivity(it);
+                            }
+                        }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                            }
+                        }).create();
+                dialog.show();
             }
-                                       });
+        });
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_qualidade);
@@ -174,7 +403,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     }
 
     //Abre caixa de diálogo para preenchimento dos dados verion
-    public void abreDialogoverion() {
+    public void abreDialogoVerion() {
+        dialogoVerionAberto = true;
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_qualidade_verion, null);
 
@@ -187,8 +417,6 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         TextView letraItem2;
         TextView letraItem3;
         TextView letraItem4;
-
-
 
         mediaP1Nome = mView.findViewById(R.id.dialogo_qualidade_verion_nome_media_p1);
         mediaP2Nome = mView.findViewById(R.id.dialogo_qualidade_verion_nome_media_p2);
@@ -209,10 +437,10 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
         List<ATIVIDADE_INDICADORES> atividadeIndicadores = dao.listaAtividadeIndicadores(osSelecionada.getID_ATIVIDADE(), "S");
 
-        mediaP1Nome.setText(joinOsInsumos.get(0).getDESCRICAO()+ " - P1");
-        mediaP2Nome.setText(joinOsInsumos.get(1).getDESCRICAO()+ " - P2");
-        desvioP1Nome.setText(joinOsInsumos.get(0).getDESCRICAO()+ " - P1");
-        desvioP2Nome.setText(joinOsInsumos.get(1).getDESCRICAO()+ " - P2");
+        mediaP1Nome.setText(joinOsInsumos.get(0).getDESCRICAO() + " - P1");
+        mediaP2Nome.setText(joinOsInsumos.get(1).getDESCRICAO() + " - P2");
+        desvioP1Nome.setText(joinOsInsumos.get(0).getDESCRICAO() + " - P1");
+        desvioP2Nome.setText(joinOsInsumos.get(1).getDESCRICAO() + " - P2");
 
         letraItem1.setText(atividadeIndicadores.get(0).getREFERENCIA());
         letraItem2.setText(atividadeIndicadores.get(1).getREFERENCIA());
@@ -220,20 +448,84 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         letraItem4.setText(atividadeIndicadores.get(3).getREFERENCIA());
 
         mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
+        dialogoVerion = mBuilder.create();
+        dialogoVerion.show();
+
+        if (jaTemVerion == true) {
+            mediaEditP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
+            desvioEditP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
+            mediaEditP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
+            desvioEditP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
+        }
+
+        mediaEditP1.requestFocus();
+        if (dialogoVerionAberto == true && auxSavedInstanceState != null) {
+            ultimoFocus = auxSavedInstanceState.getInt("ultimoFocus");
+            EditText auxEdit = mView.findViewById(ultimoFocus);
+            if (auxEdit != null) auxEdit.requestFocus();
+
+            mediaEditP1 = mView.findViewById(R.id.dialogo_qualidade_verion_media_p1);
+            mediaEditP2 = mView.findViewById(R.id.dialogo_qualidade_verion_media_p2);
+            desvioEditP1 = mView.findViewById(R.id.dialogo_qualidade_verion_desvio_padrao_p1);
+            desvioEditP2 = mView.findViewById(R.id.dialogo_qualidade_verion_desvio_padrao_p2);
+
+            if (auxSavedInstanceState.getString("mediaEditP1") != null)
+                if (!auxSavedInstanceState.getString("mediaEditP1").isEmpty())
+                    mediaEditP1.setText(auxSavedInstanceState.getString("mediaEditP1"));
+
+            if (auxSavedInstanceState.getString("mediaEditP2") != null)
+                if (!auxSavedInstanceState.getString("mediaEditP2").isEmpty())
+                    mediaEditP2.setText(auxSavedInstanceState.getString("mediaEditP2"));
+
+            if (auxSavedInstanceState.getString("desvioEditP1") != null)
+                if (!auxSavedInstanceState.getString("desvioEditP1").isEmpty())
+                    desvioEditP1.setText(auxSavedInstanceState.getString("desvioEditP1"));
+
+            if (auxSavedInstanceState.getString("desvioEditP2") != null)
+                if (!auxSavedInstanceState.getString("desvioEditP2").isEmpty())
+                    desvioEditP2.setText(auxSavedInstanceState.getString("desvioEditP2"));
+        }
+
+        mediaEditP1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) ultimoFocus = v.findFocus().getId();
+            }
+        });
+
+        mediaEditP2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) ultimoFocus = v.findFocus().getId();
+            }
+        });
+
+        desvioEditP1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) ultimoFocus = v.findFocus().getId();
+            }
+        });
+
+        desvioEditP2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) ultimoFocus = v.findFocus().getId();
+            }
+        });
+
         botaoRegistrar.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
                 boolean todosEditCorretos = true;
 
-                if (converteu(mediaEditP1)==false) todosEditCorretos=false;
-                if (converteu(mediaEditP2)==false) todosEditCorretos=false;
-                if (converteu(desvioEditP1)==false) todosEditCorretos=false;
-                if (converteu(desvioEditP2)==false) todosEditCorretos=false;
+                if (converteu(mediaEditP1) == false) todosEditCorretos = false;
+                if (converteu(mediaEditP2) == false) todosEditCorretos = false;
+                if (converteu(desvioEditP1) == false) todosEditCorretos = false;
+                if (converteu(desvioEditP2) == false) todosEditCorretos = false;
 
-                if(todosEditCorretos==false){
+                if (todosEditCorretos == false) {
                     AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
                             .setTitle("Erro!")
                             .setMessage("Um ou mais campos contém valores inválidos, favor corrigir.")
@@ -243,24 +535,46 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                                 }
                             }).create();
                     dialog.show();
+                } else {
+                    dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 11, dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()), Double.valueOf(mediaEditP1.getText().toString().replace(',', '.'))));
+                    dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 12, dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()), Double.valueOf(desvioEditP1.getText().toString().replace(',', '.'))));
+                    dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 13, dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()), Double.valueOf(mediaEditP2.getText().toString().replace(',', '.'))));
+                    dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.'))));
+                    listaVerion = dao.listaIndicadoresSubsolagem(idProg, osSelecionada.getID_ATIVIDADE());
+
+                    listaInsumoP1.setText(joinOsInsumos.get(0).getDESCRICAO());
+                    listaInsumoP2.setText(joinOsInsumos.get(1).getDESCRICAO());
+
+                    listaMediaP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
+                    listaDesvioP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
+                    listaMediaP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
+                    listaDesvioP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
+
+                    dialogoVerionAberto = false;
+                    dialogoVerion.dismiss();
                 }
-                else dialog.dismiss();
+            }
+        });
+
+        dialogoVerion.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                dialogoVerionAberto = false;
+                auxSavedInstanceState = null;
             }
         });
     }
 
     //Abre caixa de diálogo para preenchimento dos dados do ponto
     public void abreDialogoPonto() {
-
-
+        dialogoPontoAberto = true;
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_qualidade_ponto, null);
         mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
+        dialogoPonto = mBuilder.create();
+        dialogoPonto.show();
 
         TextView numeroPonto = mView.findViewById(R.id.dialogo_qualidade_ponto_numero);
-        numeroPonto.setText(String.valueOf(listaPonto.size()+1));
 
         TextView textItem1 = mView.findViewById(R.id.dialogo_qualidade_ponto_item1);
         TextView textItem2 = mView.findViewById(R.id.dialogo_qualidade_ponto_item2);
@@ -284,17 +598,18 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         TextView textLetra9 = mView.findViewById(R.id.dialogo_qualidade_ponto_letra_item9);
         TextView textLetra10 = mView.findViewById(R.id.dialogo_qualidade_ponto_letra_item10);
 
-        EditText editItem1 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item1);
-        EditText editItem2 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item2);
-        EditText editItem3 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item3);
-        EditText editItem4 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item4);
-        CheckBox editItem5 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item5);
-        EditText editItem6 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item6);
-        CheckBox editItem7 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item7);
-        CheckBox editItem8 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item8);
-        CheckBox editItem9 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item9);
-        EditText editItem10 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item10);
+        editItem1 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item1);
+        editItem2 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item2);
+        editItem3 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item3);
+        editItem4 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item4);
+        editItem5 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item5);
+        editItem6 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item6);
+        editItem7 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item7);
+        editItem8 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item8);
+        editItem9 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item9);
+        editItem10 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item10);
 
+        numeroPonto.setText(String.valueOf(listaPonto.size() + 1));
 
         Button botaoRegistrar = (Button) mView.findViewById(R.id.dialogo_qualidade_ponto_botao_registrar);
         List<ATIVIDADE_INDICADORES> atividadeIndicadores = dao.listaAtividadeIndicadores(osSelecionada.getID_ATIVIDADE(), "N");
@@ -321,20 +636,109 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         textLetra9.setText(atividadeIndicadores.get(8).getREFERENCIA());
         textLetra10.setText(atividadeIndicadores.get(9).getREFERENCIA());
 
+        editItem1.requestFocus();
+        if (dialogoPontoAberto == true && auxSavedInstanceState != null) {
+            ultimoFocus = auxSavedInstanceState.getInt("ultimoFocus");
+            EditText auxEdit = mView.findViewById(ultimoFocus);
+            if (auxEdit != null) auxEdit.requestFocus();
+
+            editItem1 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item1);
+            editItem2 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item2);
+            editItem3 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item3);
+            editItem4 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item4);
+            editItem5 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item5);
+            editItem6 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item6);
+            editItem7 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item7);
+            editItem8 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item8);
+            editItem9 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item9);
+            editItem10 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item10);
+
+            if (auxSavedInstanceState.getBoolean("editItem5") == true) editItem5.setChecked(true);
+            if (auxSavedInstanceState.getBoolean("editItem7") == true) editItem7.setChecked(true);
+            if (auxSavedInstanceState.getBoolean("editItem8") == true) editItem8.setChecked(true);
+            if (auxSavedInstanceState.getBoolean("editItem9") == true) editItem9.setChecked(true);
+
+            if (auxSavedInstanceState.getString("editItem1") != null)
+                if (!auxSavedInstanceState.getString("editItem1").isEmpty())
+                    editItem1.setText(auxSavedInstanceState.getString("editItem1"));
+
+            if (auxSavedInstanceState.getString("editItem2") != null)
+                if (!auxSavedInstanceState.getString("editItem2").isEmpty())
+                    editItem2.setText(auxSavedInstanceState.getString("editItem2"));
+
+            if (auxSavedInstanceState.getString("editItem3") != null)
+                if (!auxSavedInstanceState.getString("editItem3").isEmpty())
+                    editItem3.setText(auxSavedInstanceState.getString("editItem3"));
+
+            if (auxSavedInstanceState.getString("editItem4") != null)
+                if (!auxSavedInstanceState.getString("editItem4").isEmpty())
+                    editItem4.setText(auxSavedInstanceState.getString("editItem4"));
+
+            if (auxSavedInstanceState.getString("editItem6") != null)
+                if (!auxSavedInstanceState.getString("editItem6").isEmpty())
+                    editItem6.setText(auxSavedInstanceState.getString("editItem6"));
+
+            if (auxSavedInstanceState.getString("editItem10") != null)
+                if (!auxSavedInstanceState.getString("editItem10").isEmpty())
+                    editItem10.setText(auxSavedInstanceState.getString("editItem10"));
+        }
+
+        editItem1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) ultimoFocus = v.findFocus().getId();
+            }
+        });
+
+        editItem2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) ultimoFocus = v.findFocus().getId();
+            }
+        });
+
+        editItem3.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) ultimoFocus = v.findFocus().getId();
+            }
+        });
+
+        editItem4.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) ultimoFocus = v.findFocus().getId();
+            }
+        });
+
+        editItem6.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) ultimoFocus = v.findFocus().getId();
+            }
+        });
+
+        editItem10.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) ultimoFocus = v.findFocus().getId();
+            }
+        });
+
         botaoRegistrar.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
                 boolean todosEditCorretos = true;
 
-                if(converteu(editItem1)==false) todosEditCorretos=false;
-                if(converteu(editItem2)==false) todosEditCorretos=false;
-                if(converteu(editItem3)==false) todosEditCorretos=false;
-                if(converteu(editItem4)==false) todosEditCorretos=false;
-                if(converteu(editItem6)==false) todosEditCorretos=false;
-                if(converteu(editItem10)==false) todosEditCorretos=false;
+                if (converteu(editItem1) == false) todosEditCorretos = false;
+                if (converteu(editItem2) == false) todosEditCorretos = false;
+                if (converteu(editItem3) == false) todosEditCorretos = false;
+                if (converteu(editItem4) == false) todosEditCorretos = false;
+                if (converteu(editItem6) == false) todosEditCorretos = false;
+                if (converteu(editItem10) == false) todosEditCorretos = false;
 
-                if(todosEditCorretos==false){
+                if (todosEditCorretos == false) {
                     AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
                             .setTitle("Erro!")
                             .setMessage("Um ou mais campos contém valores inválidos, favor corrigir.")
@@ -344,74 +748,129 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                                 }
                             }).create();
                     dialog.show();
-                }else {
+                } else {
                     double check = 0;
 
-                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.formataDataDb(data.getText().toString()),
-                            listaPonto.size()+1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(0).getID_INDICADOR(),
+                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+                            listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(0).getID_INDICADOR(),
                             Double.valueOf(editItem1.getText().toString().replace(',', '.')), 0, 0));
 
-                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.formataDataDb(data.getText().toString()),
-                            listaPonto.size()+1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(1).getID_INDICADOR(),
+                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+                            listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(1).getID_INDICADOR(),
                             Double.valueOf(editItem2.getText().toString().replace(',', '.')), 0, 0));
 
-                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.formataDataDb(data.getText().toString()),
-                            listaPonto.size()+1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(2).getID_INDICADOR(),
+                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+                            listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(2).getID_INDICADOR(),
                             Double.valueOf(editItem3.getText().toString().replace(',', '.')), 0, 0));
 
-                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.formataDataDb(data.getText().toString()),
-                            listaPonto.size()+1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(3).getID_INDICADOR(),
+                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+                            listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(3).getID_INDICADOR(),
                             Double.valueOf(editItem4.getText().toString().replace(',', '.')), 0, 0));
 
-                    if(editItem5.isChecked()) check=1;
+                    if (editItem5.isChecked()) check = 1;
                     else check = 0;
-                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.formataDataDb(data.getText().toString()),
-                            listaPonto.size()+1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(4).getID_INDICADOR(),
+                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+                            listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(4).getID_INDICADOR(),
                             check, 0, 0));
 
-                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.formataDataDb(data.getText().toString()),
-                            listaPonto.size()+1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(5).getID_INDICADOR(),
+                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+                            listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(5).getID_INDICADOR(),
                             Double.valueOf(editItem6.getText().toString().replace(',', '.')), 0, 0));
 
-                    if(editItem7.isChecked()) check=1;
+                    if (editItem7.isChecked()) check = 1;
                     else check = 0;
-                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.formataDataDb(data.getText().toString()),
-                            listaPonto.size()+1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(6).getID_INDICADOR(),
+                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+                            listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(6).getID_INDICADOR(),
                             check, 0, 0));
 
-                    if(editItem8.isChecked()) check=1;
+                    if (editItem8.isChecked()) check = 1;
                     else check = 0;
-                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.formataDataDb(data.getText().toString()),
-                            listaPonto.size()+1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(7).getID_INDICADOR(),
+                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+                            listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(7).getID_INDICADOR(),
                             check, 0, 0));
 
-                    if(editItem9.isChecked()) check=1;
+                    if (editItem9.isChecked()) check = 1;
                     else check = 0;
-                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.formataDataDb(data.getText().toString()),
-                            listaPonto.size()+1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(8).getID_INDICADOR(),
+                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+                            listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(8).getID_INDICADOR(),
                             check, 0, 0));
 
-                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.formataDataDb(data.getText().toString()),
-                            listaPonto.size()+1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(9).getID_INDICADOR(),
+                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+                            listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(9).getID_INDICADOR(),
                             Double.valueOf(editItem10.getText().toString().replace(',', '.')), 0, 0));
 
-                     Intent it = new Intent(ActivityQualidade.this, ActivityQualidade.class);
-                     startActivity(it);
-                     dialog.dismiss();
+                    dialogoPontoAberto = false;
+                    Intent it = new Intent(ActivityQualidade.this, ActivityQualidade.class);
+                    startActivity(it);
+                    dialogoPonto.dismiss();
                 }
-                }
+            }
+        });
+
+        dialogoPonto.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                dialogoPontoAberto = false;
+                auxSavedInstanceState = null;
+            }
         });
     }
 
-    private boolean converteu(EditText valor){
-            try {
-                double teste = Double.parseDouble(valor.getText().toString().replace(',', '.'));
-            }
-            catch (NumberFormatException | NullPointerException n) {
-                valor.setError("");
-                return false;
-            }
+    private boolean converteu(EditText valor) {
+        try {
+            double teste = Double.parseDouble(valor.getText().toString().replace(',', '.'));
+        } catch (NumberFormatException | NullPointerException n) {
+            valor.setError("");
+            return false;
+        }
         return true;
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("dialogoPontoAberto", dialogoPontoAberto);
+        outState.putBoolean("dialogoVerionAberto", dialogoVerionAberto);
+
+        if (dialogoPontoAberto == true) {
+            boolean item5 = false;
+            boolean item7 = false;
+            boolean item8 = false;
+            boolean item9 = false;
+
+            if (editItem5.isChecked()) item5 = true;
+            if (editItem7.isChecked()) item7 = true;
+            if (editItem8.isChecked()) item8 = true;
+            if (editItem9.isChecked()) item9 = true;
+
+            outState.putString("editItem1", editItem1.getText().toString());
+            outState.putString("editItem2", editItem2.getText().toString());
+            outState.putString("editItem3", editItem3.getText().toString());
+            outState.putString("editItem4", editItem4.getText().toString());
+            outState.putBoolean("editItem5", item5);
+            outState.putString("editItem6", editItem6.getText().toString());
+            outState.putBoolean("editItem7", item7);
+            outState.putBoolean("editItem8", item8);
+            outState.putBoolean("editItem9", item9);
+            outState.putString("editItem10", editItem10.getText().toString());
+
+            outState.putInt("ultimoFocus", ultimoFocus);
+        }
+
+        if (dialogoVerionAberto == true) {
+            outState.putString("mediaEditP1", mediaEditP1.getText().toString());
+            outState.putString("mediaEditP2", mediaEditP2.getText().toString());
+            outState.putString("desvioEditP1", desvioEditP1.getText().toString());
+            outState.putString("desvioEditP2", desvioEditP2.getText().toString());
+
+            outState.putInt("ultimoFocus", ultimoFocus);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dialogoVerionAberto == true) dialogoVerion.dismiss();
+        if (dialogoPontoAberto == true) dialogoPonto.dismiss();
+    }
 }

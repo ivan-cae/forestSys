@@ -32,9 +32,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.forestsys.Adapters.AdaptadorApontamentos;
-import com.example.forestsys.BaseDeDados;
-import com.example.forestsys.DAO;
-import com.example.forestsys.DataHoraAtual;
+import com.example.forestsys.assets.BaseDeDados;
+import com.example.forestsys.assets.DAO;
+import com.example.forestsys.assets.DataHoraAtual;
 import com.example.forestsys.R;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
 import com.example.forestsys.classes.O_S_ATIVIDADES_DIA;
@@ -125,7 +125,8 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     private Bundle savedInstanceStateAux;
     public static String[] pegaDescInsumos;
     private List<O_S_ATIVIDADES_DIA> listaAtividades;
-    List<O_S_ATIVIDADE_INSUMOS> insumos_dia = new ArrayList<O_S_ATIVIDADE_INSUMOS>();
+    private List<O_S_ATIVIDADE_INSUMOS> insumos_dia = new ArrayList<O_S_ATIVIDADE_INSUMOS>();
+    public Join_OS_INSUMOS insumoMudouOrientacao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -673,24 +674,16 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         if(editouRegistro==true && fechouDialogoReg==false) {
             edicaoReg = false;
             if (posicaoResponsavel != oSAtividadesDiaAtual.getID_RESPONSAVEL()) edicaoReg = true;
-            Log.e("pos resp", String.valueOf(oSAtividadesDiaAtual.getID_RESPONSAVEL()) + " " + String.valueOf(edicaoReg));
             if (posicaoPrestador != oSAtividadesDiaAtual.getID_PRESTADOR()) edicaoReg = true;
-            Log.e("pos prest", String.valueOf(oSAtividadesDiaAtual.getID_PRESTADOR()) + " " + String.valueOf(edicaoReg));
             if (!ho.equals(oSAtividadesDiaAtual.getHO())) edicaoReg = true;
-            Log.e("HO", String.valueOf(ho + " " + oSAtividadesDiaAtual.getHO()) + " " + String.valueOf(edicaoReg));
             if (!hm.equals(oSAtividadesDiaAtual.getHM())) edicaoReg = true;
-            Log.e("HM", String.valueOf(hm + " " + oSAtividadesDiaAtual.getHM()) + " " + String.valueOf(edicaoReg));
             if (!hh.equals(oSAtividadesDiaAtual.getHH())) edicaoReg = true;
-            Log.e("HH", String.valueOf(hh + " " + oSAtividadesDiaAtual.getHH()) + " " + String.valueOf(edicaoReg));
             if (!area.equals(oSAtividadesDiaAtual.getAREA_REALIZADA())) edicaoReg = true;
-            Log.e("AREA", String.valueOf(area + " " + oSAtividadesDiaAtual.getAREA_REALIZADA()) + " " + String.valueOf(edicaoReg));
 
             if (!hoe.isEmpty() && !hoe.equals(oSAtividadesDiaAtual.getHO_ESCAVADEIRA()))
                 edicaoReg = true;
-            Log.e("HOE", String.valueOf(hoe + " " + oSAtividadesDiaAtual.getHO_ESCAVADEIRA()) + " " + String.valueOf(edicaoReg));
             if (!hme.isEmpty() && !hme.equals(oSAtividadesDiaAtual.getHM_ESCAVADEIRA()))
                 edicaoReg = true;
-            Log.e("HME", String.valueOf(hme + " " + oSAtividadesDiaAtual.getHM_ESCAVADEIRA()) + " " + String.valueOf(edicaoReg));
             if (edicaoReg == true){
                acaoInativoAtividade="EDICAO";
                 abreDialogoEdicaoReg();
@@ -741,8 +734,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             oSAtividadesDiaAtual.setHO(ho);
             oSAtividadesDiaAtual.setHM_ESCAVADEIRA(hme);
             oSAtividadesDiaAtual.setHO_ESCAVADEIRA(hoe);
-            Log.e("prest", String.valueOf(posicaoPrestador));
-            Log.e("resp", String.valueOf(posicaoResponsavel));
+
             oSAtividadesDiaAtual.setID_PRESTADOR(posicaoPrestador);
             oSAtividadesDiaAtual.setID_RESPONSAVEL(posicaoResponsavel);
             oSAtividadesDiaAtual.setID_PROGRAMACAO_ATIVIDADE(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());

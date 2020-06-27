@@ -14,8 +14,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.forestsys.BaseDeDados;
-import com.example.forestsys.DAO;
+import com.example.forestsys.assets.BaseDeDados;
+import com.example.forestsys.assets.DAO;
 import com.example.forestsys.R;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
 import com.example.forestsys.classes.O_S_ATIVIDADES;

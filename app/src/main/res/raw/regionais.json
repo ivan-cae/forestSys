@@ -1,0 +1,22 @@
+{
+  "REGIONAIS": [
+    {
+      "ID_REGIONAL": 1,
+      "DESCRICAO": "Regional 1",
+      "SETOR_TODOS": 1,
+      "ATIVO": 1
+    },
+    {
+      "ID_REGIONAL": 2,
+      "DESCRICAO": "Regional 2",
+      "SETOR_TODOS": 1,
+      "ATIVO": 1
+    },
+    {
+      "ID_REGIONAL": 3,
+      "DESCRICAO": "Regional 3",
+      "SETOR_TODOS": 1,
+      "ATIVO": 1
+    }
+  ]
+}

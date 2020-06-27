@@ -15,10 +15,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.forestsys.NDSpinner;
+import com.example.forestsys.assets.NDSpinner;
 import com.example.forestsys.R;
 import com.example.forestsys.classes.GGF_USUARIOS;
 import com.example.forestsys.classes.O_S_ATIVIDADES_DIA;

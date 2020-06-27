@@ -5,11 +5,10 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.forestsys.BaseDeDados;
-import com.example.forestsys.DAO;
+import com.example.forestsys.assets.BaseDeDados;
+import com.example.forestsys.assets.DAO;
 import com.example.forestsys.classes.MAQUINAS;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RepositorioMaquinas {

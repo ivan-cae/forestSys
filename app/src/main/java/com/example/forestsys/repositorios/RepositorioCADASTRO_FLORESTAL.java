@@ -5,49 +5,49 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.forestsys.BaseDeDados;
-import com.example.forestsys.DAO;
+import com.example.forestsys.assets.BaseDeDados;
+import com.example.forestsys.assets.DAO;
 import com.example.forestsys.classes.CADASTRO_FLORESTAL;
 
 import java.util.List;
 
 public class RepositorioCADASTRO_FLORESTAL {
     private DAO dao;
-    private LiveData<List<CADASTRO_FLORESTAL>> os;
+    private LiveData<List<CADASTRO_FLORESTAL>> cadastros;
     private List <CADASTRO_FLORESTAL> listaCadFlorestal;
 
     public RepositorioCADASTRO_FLORESTAL(Application application) {
         BaseDeDados baseDeDados = BaseDeDados.getInstance(application);
         dao = baseDeDados.dao();
-        os = dao.todosCadFlorestal();
+        cadastros = dao.todosCadFlorestal();
     }
 
-    //retorna uma instância da ClasseOs
-//parâmetro de entrada: id inteiro para busca na tabela ClasseOs
-    public LiveData<CADASTRO_FLORESTAL> getCad(int id) {
-        return dao.selecionaCadFlorestal(id);
+    //retorna uma instância da CADASTRO_FLORESTAL
+//parâmetro de entrada: id inteiro para busca na tabela CADASTRO_FLORESTAL
+    public CADASTRO_FLORESTAL getCad(int idReg, int idSet, String talhao, int ciclo, int idManejo) {
+        return dao.selecionaCadFlorestal(idReg, idSet, talhao, ciclo, idManejo);
     }
 
-    //retorna uma lista com todos os itens cadastrados na tabela ClasseOs
+    //retorna uma lista com todos os itens cadastrados na tabela CADASTRO_FLORESTAL
     public LiveData<List<CADASTRO_FLORESTAL>> getTodosCad() {
-        return os;
+        return cadastros;
     }
 
 
-    //inclui uma instância da ClasseOs no DB
-//parâmetro de entrada: instancia da ClasseOs
+    //inclui uma instância da CADASTRO_FLORESTAL no DB
+//parâmetro de entrada: instancia da CADASTRO_FLORESTAL
     public void insert(CADASTRO_FLORESTAL classeOs) {
         new RepositorioCADASTRO_FLORESTAL.InsertAsyncTask(dao).execute(classeOs);
     }
 
-    //atualiza uma instância da ClasseOs no DB
-//parâmetro de entrada: instancia da ClasseOs
+    //atualiza uma instância da CADASTRO_FLORESTAL no DB
+//parâmetro de entrada: instancia da CADASTRO_FLORESTAL
     public void update(CADASTRO_FLORESTAL classeOs) {
         new RepositorioCADASTRO_FLORESTAL.UpdateAsyncTask(dao).execute(classeOs);
     }
 
-    //apaga uma instância da ClasseOs no DB
-//parâmetro de entrada: instancia da ClasseOs
+    //apaga uma instância da CADASTRO_FLORESTAL no DB
+//parâmetro de entrada: instancia da CADASTRO_FLORESTAL
     public void delete(CADASTRO_FLORESTAL classeOs) {
         new RepositorioCADASTRO_FLORESTAL.DeleteAsyncTask(dao).execute(classeOs);
     }
@@ -61,8 +61,8 @@ public class RepositorioCADASTRO_FLORESTAL {
         }
 
         @Override
-        protected Void doInBackground(CADASTRO_FLORESTAL... os) {
-            dao.insert(os[0]);
+        protected Void doInBackground(CADASTRO_FLORESTAL... cadastros) {
+            dao.insert(cadastros[0]);
             return null;
         }
     }
@@ -75,8 +75,8 @@ public class RepositorioCADASTRO_FLORESTAL {
         }
 
         @Override
-        protected Void doInBackground(CADASTRO_FLORESTAL... os) {
-            dao.update(os[0]);
+        protected Void doInBackground(CADASTRO_FLORESTAL... cadastros) {
+            dao.update(cadastros[0]);
             return null;
         }
     }
@@ -90,8 +90,8 @@ public class RepositorioCADASTRO_FLORESTAL {
         }
 
         @Override
-        protected Void doInBackground(CADASTRO_FLORESTAL... os) {
-            dao.delete(os[0]);
+        protected Void doInBackground(CADASTRO_FLORESTAL... cadastros) {
+            dao.delete(cadastros[0]);
             return null;
         }
     }

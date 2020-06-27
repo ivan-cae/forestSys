@@ -35,7 +35,7 @@ public class O_S_ATIVIDADES {
     private Integer ID_REGIONAL;
 
     @ColumnInfo(name = "ID_SETOR")
-    private String ID_SETOR;
+    private Integer ID_SETOR;
 
     @ColumnInfo(name = "TALHAO")
     private String TALHAO;
@@ -44,7 +44,7 @@ public class O_S_ATIVIDADES {
     private Integer CICLO;
 
     @ColumnInfo(name = "ID_MANEJO")
-    private String ID_MANEJO;
+    private Integer ID_MANEJO;
 
     @ColumnInfo(name = "ID_ATIVIDADE")
     private Integer ID_ATIVIDADE;
@@ -70,7 +70,7 @@ public class O_S_ATIVIDADES {
 
     private int STATUS_NUM;
 
-    public O_S_ATIVIDADES(Integer ID_PROGRAMACAO_ATIVIDADE, Integer ID_REGIONAL, String ID_SETOR, String TALHAO, Integer CICLO, String ID_MANEJO, Integer ID_ATIVIDADE, Integer ID_RESPONSAVEL, String DATA_PROGRAMADA, double AREA_PROGRAMADA, Integer PRIORIDADE, Integer EXPERIMENTO, Integer MADEIRA_NO_TALHAO, String OBSERVACAO, String DATA_INICIAL, String DATA_FINAL, double AREA_REALIZADA, String STATUS, int STATUS_NUM) {
+    public O_S_ATIVIDADES(Integer ID_PROGRAMACAO_ATIVIDADE, Integer ID_REGIONAL, Integer ID_SETOR, String TALHAO, Integer CICLO, Integer ID_MANEJO, Integer ID_ATIVIDADE, Integer ID_RESPONSAVEL, String DATA_PROGRAMADA, double AREA_PROGRAMADA, Integer PRIORIDADE, Integer EXPERIMENTO, Integer MADEIRA_NO_TALHAO, String OBSERVACAO, String DATA_INICIAL, String DATA_FINAL, double AREA_REALIZADA, String STATUS, int STATUS_NUM) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.ID_REGIONAL = ID_REGIONAL;
         this.ID_SETOR = ID_SETOR;
@@ -108,11 +108,11 @@ public class O_S_ATIVIDADES {
         this.ID_REGIONAL = ID_REGIONAL;
     }
 
-    public String getID_SETOR() {
+    public Integer getID_SETOR() {
         return ID_SETOR;
     }
 
-    public void setID_SETOR(String ID_SETOR) {
+    public void setID_SETOR(Integer ID_SETOR) {
         this.ID_SETOR = ID_SETOR;
     }
 
@@ -132,11 +132,11 @@ public class O_S_ATIVIDADES {
         this.CICLO = CICLO;
     }
 
-    public String getID_MANEJO() {
+    public Integer getID_MANEJO() {
         return ID_MANEJO;
     }
 
-    public void setID_MANEJO(String ID_MANEJO) {
+    public void setID_MANEJO(Integer ID_MANEJO) {
         this.ID_MANEJO = ID_MANEJO;
     }
 
