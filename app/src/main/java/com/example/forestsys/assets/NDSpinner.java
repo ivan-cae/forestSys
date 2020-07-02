@@ -2,8 +2,12 @@ package com.example.forestsys.assets;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import static com.example.forestsys.activities.FragmentoRendimento.spinnerPrestador;
 
 @SuppressLint("AppCompatCustomView")
 public class NDSpinner extends Spinner {

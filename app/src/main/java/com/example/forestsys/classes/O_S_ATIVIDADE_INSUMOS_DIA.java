@@ -17,7 +17,7 @@ import androidx.room.ForeignKey;
                         childColumns = "ID_PROGRAMACAO_ATIVIDADE",
                         onDelete = ForeignKey.NO_ACTION,
                         onUpdate = ForeignKey.NO_ACTION)},
-        primaryKeys = {"ID_PROGRAMACAO_ATIVIDADE", "DATA", "ID_INSUMO"})
+        primaryKeys = {"ID_PROGRAMACAO_ATIVIDADE", "ID_INSUMO", "DATA"})
 
 public class O_S_ATIVIDADE_INSUMOS_DIA {
 

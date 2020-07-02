@@ -16,7 +16,8 @@
         android:icon="@mipmap/icone_gelf"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.ActivityQualidade"></activity>
+        <activity android:name=".activities.ActivityQualidade"
+            android:screenOrientation="fullSensor" />
         <activity
             android:name=".activities.FragmentoInsumos"
             android:screenOrientation="portrait"

@@ -150,12 +150,12 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
                 startActivity(it1);
                 break;
 
-            case R.id.cadastrar_conta:
+            case R.id.atividades:
                 Intent it2 = new Intent(this, ActivityMain.class);
                 startActivity(it2);
                 break;
 
-            case R.id.config_login:
+            case R.id.calculadora:
                 Intent it3 = new Intent(this, CalculadoraMain.class);
                 startActivity(it3);
                 break;

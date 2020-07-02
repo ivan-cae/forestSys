@@ -9,11 +9,11 @@
             android:icon="@drawable/ic_home"
             android:title="Dashboard" />
         <item
-            android:id="@+id/cadastrar_conta"
+            android:id="@+id/atividades"
             android:icon="@drawable/ic_ordens"
             android:title="Atividades" />
         <item
-            android:id="@+id/config_login"
+            android:id="@+id/calculadora"
             android:icon="@android:drawable/ic_input_add"
             android:title="Calculadora" />
     </group>

@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -57,6 +56,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static android.view.View.GONE;
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
 import static com.example.forestsys.activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.activities.ActivityMain.osSelecionada;
@@ -415,44 +415,55 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.dash:
-                AlertDialog dialogoDash = new AlertDialog.Builder(ActivityCalibracao.this)
-                        .setTitle("Abrir a Dashboard?")
-                        .setMessage("Caso clique em SIM, você perderá os dados da calibração!")
-                        .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                if(osSelecionada.getSTATUS_NUM()==2)
+                {
+                    Intent it = new Intent(ActivityCalibracao.this, ActivityDashboard.class);
+                    startActivity(it);
+                }else {
+                    AlertDialog dialogoDash = new AlertDialog.Builder(ActivityCalibracao.this)
+                            .setTitle("Abrir a Dashboard?")
+                            .setMessage("Caso clique em SIM, você perderá os dados da calibração!")
+                            .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
 
-                                Intent it = new Intent(ActivityCalibracao.this, ActivityDashboard.class);
-                                startActivity(it);
-                            }
-                        }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        }).create();
-                dialogoDash.show();
+                                    Intent it = new Intent(ActivityCalibracao.this, ActivityDashboard.class);
+                                    startActivity(it);
+                                }
+                            }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                }
+                            }).create();
+                    dialogoDash.show();
+                }
+                    break;
+
+            case R.id.atividades:
+                if(osSelecionada.getSTATUS_NUM()==2)
+                {
+                    Intent it = new Intent(ActivityCalibracao.this, ActivityMain.class);
+                    startActivity(it);
+                }else {
+                    AlertDialog dialogoAtividades = new AlertDialog.Builder(ActivityCalibracao.this)
+                            .setTitle("Voltar Para a Listagem de Atividades?")
+                            .setMessage("Caso clique em SIM, você perderá os dados da calibração!")
+                            .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    Intent it = new Intent(ActivityCalibracao.this, ActivityMain.class);
+                                    startActivity(it);
+                                }
+                            }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                }
+                            }).create();
+                    dialogoAtividades.show();
+                }
                 break;
-
-            case R.id.cadastrar_conta:
-                AlertDialog dialogoAtividades = new AlertDialog.Builder(ActivityCalibracao.this)
-                        .setTitle("Voltar Para a Listagem de Atividades?")
-                        .setMessage("Caso clique em SIM, você perderá os dados da calibração!")
-                        .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                                Intent it = new Intent(ActivityCalibracao.this, ActivityMain.class);
-                                startActivity(it);
-                            }
-                        }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        }).create();
-                dialogoAtividades.show();
-                break;
-
-            case R.id.config_login:
+            case R.id.calculadora:
                 Intent it3 = new Intent(this, CalculadoraMain.class);
                 startActivity(it3);
                 break;
@@ -593,6 +604,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                                 p1_a5.setText(valorCorreto.replace('.', ','));
                             }
                         }
+                        testaConfirmacao();
                         dialog.dismiss();
                     }
                 }
@@ -730,7 +742,6 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         p1Media.setText(String.valueOf((mediaGeralp1)).replace('.', ','));
         Double aux1 = arredonda2Casas(desvioPadrao(amostrasP1));
         desvioProduto1.setText(String.valueOf((aux1)).replace('.', ','));
-        testaConfirmacao();
     }
 
     //Abre caixa de diálogo para preencher amostras do produto
@@ -863,6 +874,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                                 p2_a5.setText(valorCorreto.replace('.', ','));
                             }
                         }
+                        testaConfirmacao();
                         dialog.dismiss();
                     }
                 }
@@ -999,7 +1011,6 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         p2Media.setText(String.valueOf((mediaGeralp2)).replace('.', ','));
         Double aux1 = arredonda2Casas(desvioPadrao(amostrasP2));
         desvioProduto2.setText(String.valueOf((aux1)).replace('.', ','));
-        testaConfirmacao();
     }
 
     //Checa se há uma calibração para a máquina selecionada na data e turno atuais
@@ -1135,10 +1146,13 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
     //Testa as conformidades para liberar o botão de confirmação
     public void testaConfirmacao() {
-        botaoConfirma.setVisibility(View.GONE);
+        testaP1();
+        testaP2();
         if (atualP1 >= 5 && atualP2 >= 5 && todosConformeP1 == true && todosConformeP2 == true && idOperador != -1 && idMaquinaImplemento != -1) {
             botaoConfirma.setVisibility(View.VISIBLE);
             pulseAnimation(botaoConfirma);
+        }else{
+            botaoConfirma.setVisibility(GONE);
         }
     }
 
@@ -1315,6 +1329,19 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             amostrasP2[i] = 0.0;
         }
 
+        if(osSelecionada.getSTATUS_NUM()==2){
+            botaoMediaP1.setEnabled(false);
+            botaoMediaP2.setEnabled(false);
+            botaoConfirma.setEnabled(false);
+
+            spinnerMaquinaImplemento.setEnabled(false);
+            spinnerOperador.setEnabled(false);
+
+            botaoMediaP1.setVisibility(GONE);
+            botaoMediaP2.setVisibility(GONE);
+            botaoConfirma.setVisibility(GONE);
+        }
+
         p1_a1.setClickable(false);
 
         p1_a2.setClickable(false);
@@ -1374,7 +1401,11 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         botaoVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogoFechar();
+                if(osSelecionada.getSTATUS_NUM()==2)
+                {
+                    Intent it = new Intent(ActivityCalibracao.this, ActivityAtividades.class);
+                    startActivity(it);
+                }else dialogoFechar();
             }
         });
 
@@ -1409,6 +1440,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
                                     osSelecionada.setSTATUS("Andamento");
                                     osSelecionada.setSTATUS_NUM(1);
+                                    osSelecionada.setDATA_FINAL(dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()));
                                     dao.update(osSelecionada);
                                     Toast.makeText(getApplicationContext(), "Calibração Salva com sucesso!", Toast.LENGTH_LONG).show();
                                     Intent it = new Intent(ActivityCalibracao.this, ActivityCalibracao.class);
@@ -1425,14 +1457,6 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         });
 
         mudouOrientacao = false;
-    }
-
-    //SObrescrita do método onBackPressed nativo do Android para que feche o menu de navegação lateral
-    @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        }
     }
 
     @Override
@@ -1486,5 +1510,13 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
         outState.putInt("idMaquinaImplemento", idMaquinaImplemento);
         outState.putInt("idOperador", idOperador);
+    }
+
+    //SObrescrita do método onBackPressed nativo do Android para que feche o menu de navegação lateral
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
     }
 }

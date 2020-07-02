@@ -13,7 +13,7 @@ import com.example.forestsys.R;
 public class CalculadoraMain extends AppCompatActivity {
 
     private TextView e1, e2;
-    private int contador = 0;
+    private long contador = 0;
     private String expressao = "";
     private String texto = "";
     private Double resultado = 0.0;

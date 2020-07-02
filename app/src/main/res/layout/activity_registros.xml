@@ -72,15 +72,15 @@
             android:textAlignment="center"
             android:textSize="12sp"
             android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/textView76"
-            app:layout_constraintTop_toTopOf="@+id/textView76" />
+            app:layout_constraintStart_toEndOf="@+id/textView77"
+            app:layout_constraintTop_toTopOf="@+id/textView77" />
 
         <TextView
             android:id="@+id/textView70"
             android:layout_width="55dp"
             android:layout_height="20dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="32dp"
             android:background="#BDB8B8"
             android:text="Data"
             android:textAlignment="center"
@@ -94,6 +94,7 @@
             android:layout_width="55dp"
             android:layout_height="20dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="1dp"
             android:background="#BDB8B8"
             android:text="Total"
             android:textAlignment="center"
@@ -107,6 +108,7 @@
             android:id="@+id/registros_total_area"
             android:layout_width="35dp"
             android:layout_height="20dp"
+            android:layout_marginTop="1dp"
             android:background="#BDB8B8"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
@@ -119,6 +121,7 @@
             android:id="@+id/registros_total_hh"
             android:layout_width="30dp"
             android:layout_height="20dp"
+            android:layout_marginTop="1dp"
             android:background="#BDB8B8"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
@@ -131,6 +134,7 @@
             android:id="@+id/registros_total_ho"
             android:layout_width="30dp"
             android:layout_height="20dp"
+            android:layout_marginTop="1dp"
             android:background="#BDB8B8"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
@@ -143,6 +147,7 @@
             android:id="@+id/registros_total_hm"
             android:layout_width="30dp"
             android:layout_height="20dp"
+            android:layout_marginTop="1dp"
             android:background="#BDB8B8"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
@@ -155,6 +160,7 @@
             android:id="@+id/registros_total_hme"
             android:layout_width="35dp"
             android:layout_height="20dp"
+            android:layout_marginTop="1dp"
             android:background="#BDB8B8"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
@@ -180,6 +186,7 @@
             android:id="@+id/registros_total_insumo2"
             android:layout_width="85dp"
             android:layout_height="20dp"
+            android:layout_marginTop="1dp"
             android:background="#BDB8B8"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
@@ -192,6 +199,7 @@
             android:id="@+id/registros_total_insumo1"
             android:layout_width="85dp"
             android:layout_height="20dp"
+            android:layout_marginTop="1dp"
             android:background="#BDB8B8"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
@@ -228,6 +236,7 @@
             android:id="@+id/registros_total_hoe"
             android:layout_width="35dp"
             android:layout_height="20dp"
+            android:layout_marginTop="1dp"
             android:background="#BDB8B8"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
@@ -235,18 +244,6 @@
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/registros_total_hm"
             app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
-
-        <TextView
-            android:id="@+id/textView76"
-            android:layout_width="35dp"
-            android:layout_height="20dp"
-            android:background="#BDB8B8"
-            android:text="Area"
-            android:textAlignment="center"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/textView70"
-            app:layout_constraintTop_toTopOf="@+id/textView70" />
 
         <TextView
             android:id="@+id/textView77"
@@ -478,7 +475,7 @@
         <FrameLayout
             android:id="@+id/registro_fragmento_rendimento"
             android:layout_width="300dp"
-            android:layout_height="305dp"
+            android:layout_height="380dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/botao_apontamentos_geral">
 

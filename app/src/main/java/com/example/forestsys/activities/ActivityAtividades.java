@@ -5,17 +5,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +37,9 @@ import com.example.forestsys.assets.DAO;
 import com.example.forestsys.assets.DataHoraAtual;
 import com.example.forestsys.R;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
+import com.example.forestsys.classes.AVAL_PONTO_SUBSOLAGEM;
 import com.example.forestsys.classes.CALIBRAGEM_SUBSOLAGEM;
+import com.example.forestsys.classes.INDICADORES_SUBSOLAGEM;
 import com.example.forestsys.classes.O_S_ATIVIDADES_DIA;
 import com.example.forestsys.classes.O_S_ATIVIDADE_INSUMOS_DIA;
 import com.example.forestsys.classes.join.Join_OS_INSUMOS;
@@ -108,10 +115,16 @@ public class ActivityAtividades extends AppCompatActivity
 
     public static List<Join_OS_INSUMOS> listaJoinOsInsumosSelecionados;
 
+    private boolean abriuDialogoJustificativa;
+    private EditText valorDialogoJustificativa;
+    private Bundle auxSavedInstanceState;
+    private AlertDialog dialogoEdicao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        abriuDialogoJustificativa = false;
         setContentView(R.layout.activity_atividades);
         setTitle(nomeEmpresaPref);
 
@@ -123,8 +136,9 @@ public class ActivityAtividades extends AppCompatActivity
         editouInsumo2 = false;
         insumoMudouOrientacao = null;
 
-        listaJoinOsInsumosSelecionados = new ArrayList<Join_OS_INSUMOS>();
 
+
+        listaJoinOsInsumosSelecionados = new ArrayList<Join_OS_INSUMOS>();
 
         area="";
         ho="";
@@ -161,12 +175,16 @@ public class ActivityAtividades extends AppCompatActivity
 
 
         talhaoOs.setText(String.valueOf(osSelecionada.getTALHAO()));
-        obsOs.setText(String.valueOf(osSelecionada.getOBSERVACAO()));
+
+        if(osSelecionada.getOBSERVACAO()!=null) obsOs.setText(String.valueOf(osSelecionada.getOBSERVACAO()));
+
         statusOs.setText(osSelecionada.getSTATUS());
         areaOs.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace(".", ",")+"ha");
         manejoOs.setText(String.valueOf(dao.selecionaManejo(osSelecionada.getID_MANEJO()).getDESCRICAO()));
         dataProgramada.setText(dataHoraAtual.formataDataTextView(osSelecionada.getDATA_PROGRAMADA()));
         areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA())+"ha");
+
+        obsOs.setMovementMethod(new ScrollingMovementMethod());
 
         String temMadeira = "NÃO";
         if (osSelecionada.getMADEIRA_NO_TALHAO() == 1) temMadeira = "SIM";
@@ -179,10 +197,21 @@ public class ActivityAtividades extends AppCompatActivity
         botaoQualidade = findViewById(R.id.botao_detalhes_qualidade);
         botaoRegistros = findViewById(R.id.botao_apontamentos_geral);
 
+        if(savedInstanceState!=null){
+            auxSavedInstanceState = savedInstanceState;
+            abriuDialogoJustificativa = auxSavedInstanceState.getBoolean("abriuDialogoJustificativa");
+            if(abriuDialogoJustificativa==true) abreDialogoEdicaoIns();
+        }
+
         checaCalibracao();
 
-
         if (osSelecionada.getSTATUS_NUM() != 2) checaCalibragemRegistro();
+
+        if(osSelecionada.getSTATUS_NUM() == 2){
+            botaoFinalizarOs.setVisibility(View.VISIBLE);
+            botaoFinalizarOs.setEnabled(true);
+            botaoFinalizarOs.setBackgroundColor(Color.parseColor("#32CD32"));
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detalhes);
 
@@ -226,6 +255,7 @@ public class ActivityAtividades extends AppCompatActivity
             }
         });
 
+        if(osSelecionada.getSTATUS_NUM()==1){
         botaoFinalizarOs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -287,6 +317,36 @@ public class ActivityAtividades extends AppCompatActivity
                 t1.run();
             }
         });
+        }
+
+        if(osSelecionada.getSTATUS_NUM()==2){
+            botaoFinalizarOs.setText("Editar");
+            botaoFinalizarOs.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Thread t1 = new Thread() {
+                        @Override
+                        public void run() {
+                            AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
+                                    .setTitle("Editar Atividade")
+                                    .setMessage("Deseja Editar a Atividade Atual?")
+                                    .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            abreDialogoEdicaoIns();
+                                        }
+                                    }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                        }
+                                    }).create();
+                            dialog.show();
+                        }
+                    };
+                    t1.run();
+                }
+            });
+        }
 
         voltar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -300,6 +360,66 @@ public class ActivityAtividades extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(talhao, 16));
+            }
+        });
+    }
+
+    //Abre diálogo para justificar a edição da atividade
+    public void abreDialogoEdicaoIns() {
+        abriuDialogoJustificativa =true;
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityAtividades.this);
+        View mView = getLayoutInflater().inflate(R.layout.dialogo_edita_os, null);
+        valorDialogoJustificativa = mView.findViewById(R.id.justificativa_edicao_os);
+        Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_edicao_os);
+
+        if(auxSavedInstanceState!=null){
+            if(auxSavedInstanceState.getString("valorDialogoJustificativa")!=null){
+                if(!auxSavedInstanceState.getString("valorDialogoJustificativa").isEmpty()){
+                    valorDialogoJustificativa.setText(auxSavedInstanceState.getString("valorDialogoJustificativa"));
+                }
+            }
+        }
+
+        mBuilder.setView(mView);
+        dialogoEdicao = mBuilder.create();
+        dialogoEdicao.show();
+
+        botaoOk.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View view) {
+                String str = valorDialogoJustificativa.getText().toString();
+
+                if (str.trim().length() < 3)
+                    valorDialogoJustificativa.setError("Justificativa deve ter mais de 2 caracteres.");
+                else {
+                    String obs = osSelecionada.getOBSERVACAO();
+                    String pegaObs="";
+                    if(!obs.isEmpty() || obs!=null) pegaObs = obs+"\n";
+                    obs = pegaObs.concat("Editado em "+ dataHoraAtual.dataAtual()+" ás "+dataHoraAtual.horaAtual()+". Justificativa: "+(valorDialogoJustificativa.getText().toString()));
+                    osSelecionada.setOBSERVACAO(obs);
+                    osSelecionada.setSTATUS("Andamento");
+                    osSelecionada.setSTATUS_NUM(1);
+                    dao.update(osSelecionada);
+
+                    startActivity(new Intent(ActivityAtividades.this, ActivityAtividades.class));
+                    dialogoEdicao.dismiss();
+                }
+            }
+        });
+
+        dialogoEdicao.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                auxSavedInstanceState = null;
+                abriuDialogoJustificativa = false;
+            }
+        });
+
+        dialogoEdicao.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                auxSavedInstanceState = null;
             }
         });
     }
@@ -335,12 +455,12 @@ public class ActivityAtividades extends AppCompatActivity
                 startActivity(it1);
                 break;
 
-            case R.id.cadastrar_conta:
+            case R.id.atividades:
                 Intent it2 = new Intent(this, ActivityMain.class);
                 startActivity(it2);
                 break;
 
-            case R.id.config_login:
+            case R.id.calculadora:
                 Intent it3 = new Intent(this, CalculadoraMain.class);
                 startActivity(it3);
                 break;
@@ -351,7 +471,8 @@ public class ActivityAtividades extends AppCompatActivity
         return true;
     }
 
-
+    //Define parâmetros para inicialização do mapa
+    //Parâmetro de entrada: item do tipo GoogleMap para iniciazalização
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -413,24 +534,33 @@ public class ActivityAtividades extends AppCompatActivity
         }
     }
 
+    //Verificar se há calibração, registro e qualidade cadastrados
     private void checaCalibragemRegistro() {
-
-
         List<CALIBRAGEM_SUBSOLAGEM> listaCalib = dao.listaCalibragem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
         List<O_S_ATIVIDADES_DIA> listaOsAtiDia = dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
         List<O_S_ATIVIDADE_INSUMOS_DIA> listaInsDia = dao.checaOsInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+        List<AVAL_PONTO_SUBSOLAGEM> aval_subsolagems = dao.listaAvalSubsolagem(osSelecionada.getID_ATIVIDADE());
+        List<INDICADORES_SUBSOLAGEM> indicadoresSubsolagems = dao.listaIndicadoresSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), osSelecionada.getID_ATIVIDADE());
 
         if (listaCalib == null || listaCalib.isEmpty()) {
             botaoFinalizarOs.setEnabled(false);
         }
 
-        if (!listaCalib.isEmpty() && !listaOsAtiDia.isEmpty() && !listaInsDia.isEmpty()) {
-
+        if (!listaCalib.isEmpty() && !listaOsAtiDia.isEmpty() && !listaInsDia.isEmpty() && !aval_subsolagems.isEmpty() && !indicadoresSubsolagems.isEmpty()) {
             botaoFinalizarOs.setVisibility(View.VISIBLE);
             botaoFinalizarOs.setEnabled(true);
             botaoFinalizarOs.setBackgroundColor(Color.parseColor("#32CD32"));
         }
+    }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(abriuDialogoJustificativa==true) outState.putString("valorDialogoJustificativa", valorDialogoJustificativa.getText().toString());
+
+        outState.putBoolean("abriuDialogoJustificativa", abriuDialogoJustificativa);
+
+        if(abriuDialogoJustificativa==true) dialogoEdicao.dismiss();
     }
 
     //SObrescrita do método onBackPressed nativo do Android para que feche o menu de navegação lateral
@@ -439,10 +569,5 @@ public class ActivityAtividades extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
 }

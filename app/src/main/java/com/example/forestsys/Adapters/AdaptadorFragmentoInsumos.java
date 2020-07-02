@@ -29,9 +29,9 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
     public void onBindViewHolder(@NonNull AdaptadorFragmentoInsumos.FragmentoInsumosHolder holder, int position) {
         Join_OS_INSUMOS insumo = insumos.get(position);
 
-        holder.descricao.setText(String.valueOf(insumo.getDESCRICAO()));
-        holder.QTDApl.setText(String.valueOf(insumo.getQTD_APLICADO()).replace(".", ","));
+        if(insumo.getQTD_APLICADO()!=0.0) holder.QTDApl.setText(String.valueOf(insumo.getQTD_APLICADO()).replace(".", ","));
 
+        holder.descricao.setText(String.valueOf(insumo.getDESCRICAO()));
         holder.QTDRec.setText(String.valueOf(insumo.getQTD_HA_RECOMENDADO()).replace('.', ','));
     }
 

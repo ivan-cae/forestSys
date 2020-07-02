@@ -28,17 +28,17 @@ import androidx.room.ForeignKey;
 public class O_S_ATIVIDADES_DIA {
     @NonNull
     @ColumnInfo(name="ID_PROGRAMACAO_ATIVIDADE")
-    private Integer ID_PROGRAMACAO_ATIVIDADE;
+    private int ID_PROGRAMACAO_ATIVIDADE;
 
     @NonNull
     @ColumnInfo(name = "DATA")
     private String DATA;
 
     @ColumnInfo(name = "ID_PRESTADOR")
-    private Integer ID_PRESTADOR;
+    private int ID_PRESTADOR;
 
     @ColumnInfo(name = "ID_RESPONSAVEL")
-    private Integer ID_RESPONSAVEL;
+    private int ID_RESPONSAVEL;
 
     private char STATUS;
     private String AREA_REALIZADA;
@@ -55,11 +55,11 @@ public class O_S_ATIVIDADES_DIA {
     }
 
     @NonNull
-    public Integer getID_PROGRAMACAO_ATIVIDADE() {
+    public int getID_PROGRAMACAO_ATIVIDADE() {
         return ID_PROGRAMACAO_ATIVIDADE;
     }
 
-    public void setID_PROGRAMACAO_ATIVIDADE(@NonNull Integer ID_PROGRAMACAO_ATIVIDADE) {
+    public void setID_PROGRAMACAO_ATIVIDADE(@NonNull int ID_PROGRAMACAO_ATIVIDADE) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
     }
 
@@ -72,19 +72,19 @@ public class O_S_ATIVIDADES_DIA {
         this.DATA = DATA;
     }
 
-    public Integer getID_PRESTADOR() {
+    public int getID_PRESTADOR() {
         return ID_PRESTADOR;
     }
 
-    public void setID_PRESTADOR(Integer ID_PRESTADOR) {
+    public void setID_PRESTADOR(int ID_PRESTADOR) {
         this.ID_PRESTADOR = ID_PRESTADOR;
     }
 
-    public Integer getID_RESPONSAVEL() {
+    public int getID_RESPONSAVEL() {
         return ID_RESPONSAVEL;
     }
 
-    public void setID_RESPONSAVEL(Integer ID_RESPONSAVEL) {
+    public void setID_RESPONSAVEL(int ID_RESPONSAVEL) {
         this.ID_RESPONSAVEL = ID_RESPONSAVEL;
     }
 

@@ -2,6 +2,7 @@ package com.example.forestsys.assets;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -422,7 +423,7 @@ public abstract class BaseDeDados extends RoomDatabase {
         }
     }
 
-
+    //Carrega dados de um json para a classe correspondente
     private static JSONArray carregaJsonUsuarios(Context context) {
         StringBuilder builder = new StringBuilder();
         InputStream in = context.getResources().openRawResource(R.raw.usuarios);
@@ -442,6 +443,7 @@ public abstract class BaseDeDados extends RoomDatabase {
         return null;
     }
 
+    //Carrega dados de um json para a classe correspondente
     private static JSONArray carregaJsonImplementos(Context context) {
         StringBuilder builder = new StringBuilder();
         InputStream in = context.getResources().openRawResource(R.raw.implementos);
@@ -461,6 +463,7 @@ public abstract class BaseDeDados extends RoomDatabase {
         return null;
     }
 
+    //Carrega dados de um json para a classe correspondente
     private static JSONArray carregaJsonMaquinas(Context context) {
         StringBuilder builder = new StringBuilder();
         InputStream in = context.getResources().openRawResource(R.raw.maquinas);
@@ -480,6 +483,7 @@ public abstract class BaseDeDados extends RoomDatabase {
         return null;
     }
 
+    //Carrega dados de um json para a classe correspondente
     private static JSONArray carregaJsonPrestadores(Context context) {
         StringBuilder builder = new StringBuilder();
         InputStream in = context.getResources().openRawResource(R.raw.prestadores);
@@ -499,6 +503,7 @@ public abstract class BaseDeDados extends RoomDatabase {
         return null;
     }
 
+    //Carrega dados de um json para a classe correspondente
     private static JSONArray carregaJsonOperadores(Context context) {
         StringBuilder builder = new StringBuilder();
         InputStream in = context.getResources().openRawResource(R.raw.operadores);
@@ -518,6 +523,7 @@ public abstract class BaseDeDados extends RoomDatabase {
         return null;
     }
 
+    //Carrega dados de um json para a classe correspondente
     private static JSONArray carregaJsonOsAtividades(Context context) {
         StringBuilder builder = new StringBuilder();
         InputStream in = context.getResources().openRawResource(R.raw.os_atividades);
@@ -537,6 +543,7 @@ public abstract class BaseDeDados extends RoomDatabase {
         return null;
     }
 
+    //Carrega dados de um json para a classe correspondente
     private static JSONArray carregaJsonInsumos(Context context) {
         StringBuilder builder = new StringBuilder();
         InputStream in = context.getResources().openRawResource(R.raw.insumos);
@@ -556,6 +563,7 @@ public abstract class BaseDeDados extends RoomDatabase {
         return null;
     }
 
+    //Carrega dados de um json para a classe correspondente
     private static JSONArray carregaJsonOsatividadeInsumos(Context context) {
         StringBuilder builder = new StringBuilder();
         InputStream in = context.getResources().openRawResource(R.raw.os_atividade_insumos);
@@ -575,6 +583,7 @@ public abstract class BaseDeDados extends RoomDatabase {
         return null;
     }
 
+    //Carrega dados de um json para a classe correspondente
     private static JSONArray carregaJsonMaquinaImplemento(Context context) {
         StringBuilder builder = new StringBuilder();
         InputStream in = context.getResources().openRawResource(R.raw.maquina_implemento);
@@ -594,6 +603,7 @@ public abstract class BaseDeDados extends RoomDatabase {
         return null;
     }
 
+    //Carrega dados de um json para a classe correspondente
     private static JSONArray carregaJsonAtividades(Context context) {
         StringBuilder builder = new StringBuilder();
         InputStream in = context.getResources().openRawResource(R.raw.atividades);
@@ -613,6 +623,7 @@ public abstract class BaseDeDados extends RoomDatabase {
         return null;
     }
 
+    //Carrega dados de um json para a classe correspondente
     private static JSONArray carregaJsonAtividadeIndicadores(Context context) {
         StringBuilder builder = new StringBuilder();
         InputStream in = context.getResources().openRawResource(R.raw.atividade_indicadores);
@@ -632,6 +643,7 @@ public abstract class BaseDeDados extends RoomDatabase {
         return null;
     }
 
+    //Carrega dados de um json para a classe correspondente
     private static JSONArray carregaJsonEspacamentos(Context context) {
         StringBuilder builder = new StringBuilder();
         InputStream in = context.getResources().openRawResource(R.raw.espacamentos);
@@ -651,6 +663,7 @@ public abstract class BaseDeDados extends RoomDatabase {
         return null;
     }
 
+    //Carrega dados de um json para a classe correspondente
     private static JSONArray carregaJsonAvalSubsolagem(Context context) {
         StringBuilder builder = new StringBuilder();
         InputStream in = context.getResources().openRawResource(R.raw.aval_subsolagem);
@@ -670,6 +683,7 @@ public abstract class BaseDeDados extends RoomDatabase {
         return null;
     }
 
+    //Carrega dados de um json para a classe correspondente
     private static JSONArray carregaJsonGeoRegionais(Context context) {
         StringBuilder builder = new StringBuilder();
         InputStream in = context.getResources().openRawResource(R.raw.regionais);
@@ -689,6 +703,7 @@ public abstract class BaseDeDados extends RoomDatabase {
         return null;
     }
 
+    //Carrega dados de um json para a classe correspondente
     private static JSONArray carregaJsonManejo(Context context) {
         StringBuilder builder = new StringBuilder();
         InputStream in = context.getResources().openRawResource(R.raw.manejo);
@@ -708,6 +723,7 @@ public abstract class BaseDeDados extends RoomDatabase {
         return null;
     }
 
+    //Carrega dados de um json para a classe correspondente
     private static JSONArray carregaJsonSetores(Context context) {
         StringBuilder builder = new StringBuilder();
         InputStream in = context.getResources().openRawResource(R.raw.setores);
@@ -727,6 +743,7 @@ public abstract class BaseDeDados extends RoomDatabase {
         return null;
     }
 
+    //Carrega dados de um json para a classe correspondente
     private static JSONArray carregaJsonCadFlorestal(Context context) {
         StringBuilder builder = new StringBuilder();
         InputStream in = context.getResources().openRawResource(R.raw.cadastro_florestal);
@@ -746,6 +763,7 @@ public abstract class BaseDeDados extends RoomDatabase {
         return null;
     }
 
+    //Carrega dados de um json para a classe correspondente
     private static JSONArray carregaJsonMaterialGenetico(Context context) {
         StringBuilder builder = new StringBuilder();
         InputStream in = context.getResources().openRawResource(R.raw.material_genetico);

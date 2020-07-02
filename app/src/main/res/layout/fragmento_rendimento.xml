@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
-    android:layout_height="305dp"
+    android:layout_height="380dp"
     android:background="#FFFFFF"
     tools:context=".activities.FragmentoRendimento">
 
     <TextView
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="25dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Prestador:"
@@ -22,7 +22,7 @@
     <com.example.forestsys.assets.NDSpinner
         android:id="@+id/spinner_prestador_apontamento"
         android:layout_width="150dp"
-        android:layout_height="20dp"
+        android:layout_height="25dp"
         android:textSize="16sp"
         android:textStyle="normal"
         app:layout_constraintStart_toEndOf="@+id/textView18"
@@ -31,7 +31,7 @@
     <com.example.forestsys.assets.NDSpinner
         android:id="@+id/spinner_responsavel_apontamento"
         android:layout_width="150dp"
-        android:layout_height="20dp"
+        android:layout_height="25dp"
         android:textSize="16sp"
         android:textStyle="normal"
         app:layout_constraintStart_toEndOf="@+id/textView46"
@@ -40,9 +40,9 @@
     <TextView
         android:id="@+id/textView42"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="25dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:text="Área:"
         android:textSize="18sp"
         android:textStyle="normal"
@@ -64,7 +64,7 @@
     <TextView
         android:id="@+id/textView46"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="25dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Responsável:"
@@ -76,9 +76,9 @@
     <TextView
         android:id="@+id/textView56"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="25dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:text="Hora Operador Escavadeira:"
         android:textSize="18sp"
         android:textStyle="normal"
@@ -160,7 +160,7 @@
     <TextView
         android:id="@+id/textView59"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="25dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
         android:text="Hora Máquina Escavadeira:"
@@ -172,7 +172,7 @@
     <TextView
         android:id="@+id/textView20"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="25dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Hora Operador:"
@@ -184,9 +184,9 @@
     <TextView
         android:id="@+id/textView21"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="25dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:text="Hora Máquina:"
         android:textSize="18sp"
         android:textStyle="normal"
@@ -196,9 +196,9 @@
     <TextView
         android:id="@+id/textView40"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="25dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:text="Hora Ajudante:"
         android:textSize="18sp"
         android:textStyle="normal"
@@ -208,9 +208,9 @@
     <TextView
         android:id="@+id/textView41"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="25dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:text="Observação"
         android:textSize="18sp"
         android:textStyle="normal"

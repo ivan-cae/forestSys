@@ -14,10 +14,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -40,6 +38,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
 
+import static android.view.View.GONE;
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
 import static com.example.forestsys.activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.activities.ActivityMain.osSelecionada;
@@ -192,7 +191,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         status.setText(osSelecionada.getSTATUS());
         area.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()));
         areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()));
-        manejo.setText(String.valueOf(dao.selecionaManejo(osSelecionada.getID_MANEJO())));
+        manejo.setText(String.valueOf(dao.selecionaManejo(osSelecionada.getID_MANEJO()).getDESCRICAO()));
 
         AVAL_SUBSOLAGEM aval_subsolagem = dao.selecionaAvalSubsolagem(idProg);
 
@@ -339,22 +338,27 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         botaoVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
-                        .setTitle("Voltar")
-                        .setMessage("Deseja voltar Para a Tela da Atividade?")
-                        .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                if (osSelecionada.getSTATUS_NUM() == 2) {
+                    Intent it = new Intent(ActivityQualidade.this, ActivityAtividades.class);
+                    startActivity(it);
+                } else {
+                    AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
+                            .setTitle("Voltar")
+                            .setMessage("Deseja voltar Para a Tela da Atividade?")
+                            .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
 
-                                Intent it = new Intent(ActivityQualidade.this, ActivityAtividades.class);
-                                startActivity(it);
-                            }
-                        }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        }).create();
-                dialog.show();
+                                    Intent it = new Intent(ActivityQualidade.this, ActivityAtividades.class);
+                                    startActivity(it);
+                                }
+                            }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                }
+                            }).create();
+                    dialog.show();
+                }
             }
         });
 
@@ -375,6 +379,14 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        if(osSelecionada.getSTATUS_NUM()==2) {
+            botaoPonto.setEnabled(false);
+            botaoPonto.setVisibility(GONE);
+
+            botaoVerion.setEnabled(false);
+            botaoVerion.setVisibility(GONE);
+        }
     }
 
     //Sobreescrita do método de seleção de item do menu de navegação localizado na lateral da tela
@@ -386,12 +398,12 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 startActivity(it1);
                 break;
 
-            case R.id.cadastrar_conta:
+            case R.id.atividades:
                 Intent it2 = new Intent(this, ActivityMain.class);
                 startActivity(it2);
                 break;
 
-            case R.id.config_login:
+            case R.id.calculadora:
                 Intent it3 = new Intent(this, CalculadoraMain.class);
                 startActivity(it3);
                 break;
@@ -816,6 +828,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         });
     }
 
+    //Verifica se o valor em um EditText é válido
     private boolean converteu(EditText valor) {
         try {
             double teste = Double.parseDouble(valor.getText().toString().replace(',', '.'));

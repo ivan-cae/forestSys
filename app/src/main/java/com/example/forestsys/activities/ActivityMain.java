@@ -3,9 +3,7 @@ package com.example.forestsys.activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.FocusFinder;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,7 +34,6 @@ import com.example.forestsys.viewModels.ViewModelO_S_ATIVIDADES;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
-import java.util.Locale;
 
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
 import static com.example.forestsys.activities.ActivityLogin.usuarioLogado;
@@ -129,6 +126,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 
+    //Abre caixa de diálogo perguntando se o usuário deseja realmente voltar para a tela anterior
     public void dialogoVoltar(){
         new AlertDialog.Builder(this)
                 .setTitle("SAIR")
@@ -196,12 +194,12 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                 startActivity(it1);
                 break;
 
-            case R.id.cadastrar_conta:
+            case R.id.atividades:
                 Intent it2 = new Intent(this, ActivityMain.class);
                 startActivity(it2);
                 break;
 
-            case R.id.config_login:
+            case R.id.calculadora:
                 Intent it3 = new Intent(this, CalculadoraMain.class);
                 startActivity(it3);
                 break;

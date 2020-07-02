@@ -6,7 +6,9 @@ import androidx.room.Ignore;
 
 public class Join_OS_INSUMOS {
     int ID_PROGRAMACAO_ATIVIDADE;
+
     int ID_INSUMO;
+
     private String DESCRICAO;
     private double NUTRIENTE_N;
     private double NUTRIENTE_P2O5;
@@ -21,7 +23,6 @@ public class Join_OS_INSUMOS {
     private double NUTRIENTE_MN;
     private String UND_MEDIDA;
 
-
     private int RECOMENDACAO;
     private double QTD_HA_RECOMENDADO;
     private  double QTD_APLICADO;
@@ -30,6 +31,7 @@ public class Join_OS_INSUMOS {
     private String ACAO_INATIVO;
     private char REGISTRO_DESCARREGADO;
     private String OBSERVACAO;
+    private String ID_INSUMO_RM;
 
     public Join_OS_INSUMOS() {
     }
@@ -208,6 +210,14 @@ public class Join_OS_INSUMOS {
 
     public void setOBSERVACAO(String OBSERVACAO) {
         this.OBSERVACAO = OBSERVACAO;
+    }
+
+    public String getID_INSUMO_RM() {
+        return ID_INSUMO_RM;
+    }
+
+    public void setID_INSUMO_RM(String ID_INSUMO_RM) {
+        this.ID_INSUMO_RM = ID_INSUMO_RM;
     }
 
     @Override

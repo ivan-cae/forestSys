@@ -3,6 +3,7 @@ package com.example.forestsys.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
@@ -37,11 +38,12 @@ import static com.example.forestsys.activities.ActivityAtividades.hoe;
 import static com.example.forestsys.activities.ActivityAtividades.oSAtividadesDiaAtual;
 import static com.example.forestsys.activities.ActivityAtividades.obs;
 import static com.example.forestsys.activities.ActivityAtividades.area;
+import static com.example.forestsys.activities.ActivityMain.osSelecionada;
 import static com.example.forestsys.activities.ActivityRegistros.viewModelOSAtividadesDia;
 
 public class FragmentoRendimento extends Fragment {
-    private NDSpinner spinnerResponsavel;
-    private NDSpinner spinnerPrestador;
+    public static NDSpinner spinnerResponsavel;
+    public static NDSpinner spinnerPrestador;
     public static EditText areaRealizadaApontamento;
     public static EditText HOEscavadeiraApontamento;
     public static EditText HOApontamento;
@@ -114,6 +116,7 @@ public class FragmentoRendimento extends Fragment {
         }
     }
 
+    //inicialização dos itens na tela e variáveis
     public void inicializacao() {
         spinnerResponsavel = getView().findViewById(R.id.spinner_responsavel_apontamento);
         spinnerPrestador = getView().findViewById(R.id.spinner_prestador_apontamento);
@@ -124,7 +127,6 @@ public class FragmentoRendimento extends Fragment {
         HHApontamento = getView().findViewById(R.id.hora_homem_apontamento);
         HMEscavadeiraApontamento = getView().findViewById(R.id.hora_maquina_escavadeira_apontamento);
         obsApontamento = getView().findViewById(R.id.obs_apontamento);
-
 
         repositorioUsers = new RepositorioUsers(getActivity().getApplication());
 
@@ -315,8 +317,35 @@ public class FragmentoRendimento extends Fragment {
         } else {
             populaInfo(auxiliar);
         }
+
+        if(osSelecionada.getSTATUS_NUM()==2) {
+            spinnerResponsavel.setEnabled(false);
+            spinnerResponsavel.setVisibility(View.GONE);
+
+            spinnerPrestador.setEnabled(false);
+            spinnerPrestador.setVisibility(View.GONE);
+
+            areaRealizadaApontamento.setEnabled(false);
+            HOEscavadeiraApontamento.setEnabled(false);
+            HOApontamento.setEnabled(false);
+            HMApontamento.setEnabled(false);
+            HHApontamento.setEnabled(false);
+            HMEscavadeiraApontamento.setEnabled(false);
+            obsApontamento.setEnabled(false);
+
+            areaRealizadaApontamento.setVisibility(View.GONE);
+            HOEscavadeiraApontamento.setVisibility(View.GONE);
+            HOApontamento.setVisibility(View.GONE);
+            HMApontamento.setVisibility(View.GONE);
+            HHApontamento.setVisibility(View.GONE);
+            HMEscavadeiraApontamento.setVisibility(View.GONE);
+            obsApontamento.setVisibility(View.GONE);
+        }
     }
 
+    //Checa se o valor de um TextView pode ser convertido para double
+    //parâmetro de entrada: TextView e uma String
+    //parâmetro de saída: null se o valor não puder ser convertido, a própria string se o valor puder ser convertido
     public String checaTextView(TextView t, String str) {
         String s1 = t.getText().toString().trim();
         if (s1.isEmpty()) return null;
@@ -333,6 +362,9 @@ public class FragmentoRendimento extends Fragment {
         return str;
     }
 
+    //Conta quantas indicências de um caractere há em uma String.
+    //Parâmetros de entrada: uma String, um Char
+    //Retorna quantidade de indicências do caracter
     public int contaVirgula(String s, char c) {
         return s.length() == 0 ? 0 : (s.charAt(0) == c ? 1 : 0) + contaVirgula(s.substring(1), c);
     }
@@ -395,4 +427,8 @@ public class FragmentoRendimento extends Fragment {
         outState.putInt("posicaoPrestador", posicaoPrestador);
         outState.putInt("posicaoResponsavel", posicaoResponsavel);
         }
+
+    public void onBackPressed() {
+    }
+
     }

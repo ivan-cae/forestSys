@@ -194,7 +194,7 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
 /*
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.cadastrar_conta:
+            case R.id.atividades:
                 Intent it1 = new Intent(this, ActivityValidarAdmin.class);
                 startActivity(it1);
                 return true;

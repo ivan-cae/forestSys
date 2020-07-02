@@ -830,7 +830,7 @@ instanceKlass org/gradle/workers/internal/IsolatableSerializerRegistry$IsolatedI
 instanceKlass org/gradle/workers/internal/IsolatableSerializerRegistry$IsolatedManagedValueSerializer
 instanceKlass org/gradle/workers/internal/IsolatableSerializerRegistry$AttributeDefinitionSnapshotSerializer
 instanceKlass org/gradle/workers/internal/IsolatableSerializerRegistry$LongValueSnapshotSerializer
-instanceKlass org/gradle/workers/internal/IsolatableSerializerRegistry$IntegerValueSnapshotSerializer
+instanceKlass org/gradle/workers/internal/IsolatableSerializerRegistry$intValueSnapshotSerializer
 instanceKlass org/gradle/workers/internal/IsolatableSerializerRegistry$ShortValueSnapshotSerializer
 instanceKlass org/gradle/workers/internal/IsolatableSerializerRegistry$BooleanValueSnapshotSerializer
 instanceKlass org/gradle/workers/internal/IsolatableSerializerRegistry$StringValueSnapshotSerializer
@@ -2240,12 +2240,12 @@ instanceKlass com/android/build/gradle/internal/plugins/BasePlugin$$Lambda$279
 instanceKlass com/android/builder/profile/Recorder$VoidBlock
 instanceKlass com/google/wireless/android/sdk/stats/GradleBuildProfileSpan$ExecutionType$1
 instanceKlass com/android/tools/build/gradle/internal/profile/StringOption$1
-instanceKlass com/android/tools/build/gradle/internal/profile/IntegerOption$1
+instanceKlass com/android/tools/build/gradle/internal/profile/intOption$1
 instanceKlass com/android/build/gradle/internal/profile/AnalyticsUtil$$Lambda$278
 instanceKlass com/android/build/gradle/internal/profile/AnalyticsUtil$$Lambda$277
 instanceKlass com/android/tools/build/gradle/internal/profile/BooleanOption$1
 instanceKlass com/android/build/gradle/internal/profile/AnalyticsUtil$$Lambda$276
-instanceKlass com/google/wireless/android/sdk/stats/GradleIntegerOptionEntryOrBuilder
+instanceKlass com/google/wireless/android/sdk/stats/GradleintOptionEntryOrBuilder
 instanceKlass com/android/build/gradle/internal/profile/AnalyticsUtil
 instanceKlass com/google/wireless/android/sdk/stats/GradleBuildProject$PluginGeneration$1
 instanceKlass com/google/wireless/android/sdk/stats/GradleBuildProject$PluginType$1
@@ -2493,7 +2493,7 @@ instanceKlass com/google/gson/internal/bind/TypeAdapters$30
 instanceKlass com/google/gson/internal/bind/TypeAdapters$34
 instanceKlass com/google/gson/internal/bind/TypeAdapters$26
 instanceKlass com/google/gson/internal/bind/TypeAdapters$35
-instanceKlass java/util/concurrent/atomic/AtomicIntegerArray
+instanceKlass java/util/concurrent/atomic/AtomicintArray
 instanceKlass com/google/gson/internal/bind/TypeAdapters$33
 instanceKlass com/google/gson/internal/bind/TypeAdapters$32
 instanceKlass com/google/gson/internal/bind/TypeAdapters
@@ -4073,7 +4073,7 @@ instanceKlass org/gradle/groovy/scripts/internal/FileCacheBackedScriptClassCompi
 instanceKlass com/google/common/io/ByteArrayDataInput
 instanceKlass com/google/common/io/ByteArrayDataOutput
 instanceKlass com/google/common/io/ByteStreams
-instanceKlass java/math/MutableBigInteger
+instanceKlass java/math/MutableBigint
 instanceKlass org/gradle/internal/hash/HashValue
 instanceKlass org/gradle/internal/hash/HashUtil
 instanceKlass org/gradle/groovy/scripts/internal/ScriptCacheKey
@@ -6966,7 +6966,7 @@ instanceKlass sun/security/provider/SunEntries$1
 instanceKlass sun/security/provider/SunEntries
 instanceKlass sun/security/jca/ProviderConfig$2
 instanceKlass sun/security/jca/ProviderList$2
-instanceKlass sun/misc/FDBigInteger
+instanceKlass sun/misc/FDBigint
 instanceKlass sun/misc/FloatingDecimal$PreparedASCIIToBinaryBuffer
 instanceKlass sun/misc/FloatingDecimal$ASCIIToBinaryConverter
 instanceKlass sun/misc/FloatingDecimal$BinaryToASCIIBuffer
@@ -8258,7 +8258,7 @@ instanceKlass java/lang/System$2
 instanceKlass sun/misc/JavaLangAccess
 instanceKlass sun/io/Win32ErrorMode
 instanceKlass sun/misc/OSEnvironment
-instanceKlass java/lang/Integer$IntegerCache
+instanceKlass java/lang/int$intCache
 instanceKlass sun/misc/NativeSignalHandler
 instanceKlass sun/misc/Signal
 instanceKlass java/lang/Terminator$1
@@ -8772,14 +8772,14 @@ ciInstanceKlass sun/reflect/DelegatingClassLoader 1 1 13 10 100 7 1 1 1 1 1 1 12
 ciInstanceKlass sun/reflect/ConstantPool 1 1 106 10 9 10 10 10 10 10 10 10 10 10 10 10 10 10 10 7 7 8 10 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 1 1 7 12 1 1 1 1
 instanceKlass sun/reflect/UnsafeFieldAccessorImpl
 ciInstanceKlass sun/reflect/FieldAccessorImpl 1 1 56 10 100 7 100 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 1 1 1 1 1
-instanceKlass sun/reflect/UnsafeIntegerFieldAccessorImpl
+instanceKlass sun/reflect/UnsafeintFieldAccessorImpl
 instanceKlass sun/reflect/UnsafeBooleanFieldAccessorImpl
 instanceKlass sun/reflect/UnsafeObjectFieldAccessorImpl
 instanceKlass sun/reflect/UnsafeQualifiedFieldAccessorImpl
 instanceKlass sun/reflect/UnsafeStaticFieldAccessorImpl
 ciInstanceKlass sun/reflect/UnsafeFieldAccessorImpl 1 1 233 10 9 10 10 9 10 9 10 10 9 10 10 10 10 100 10 10 10 8 10 10 100 8 10 8 10 8 10 100 10 10 8 10 8 10 8 10 8 10 8 10 8 10 8 10 8 10 8 10 10 8 8 8 8 8 8 10 8 8 8 10 10 7 7 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 7 12 7 12 12 7 12 12 12 12 12 12 7 12 7 12 12 1 12 12 1 12 1 1 12 1 12 1 12 1 12 1 12 1 100 12 1 100 12 1 100 12 1 100 12 1 100 12 1 100 12 1 100 12 1 100 12 12 1 1 1 1 1 1 100 12 1 1 1 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 staticfield sun/reflect/UnsafeFieldAccessorImpl unsafe Lsun/misc/Unsafe; sun/misc/Unsafe
-instanceKlass sun/reflect/UnsafeStaticIntegerFieldAccessorImpl
+instanceKlass sun/reflect/UnsafeStaticintFieldAccessorImpl
 instanceKlass sun/reflect/UnsafeQualifiedStaticFieldAccessorImpl
 instanceKlass sun/reflect/UnsafeStaticObjectFieldAccessorImpl
 ciInstanceKlass sun/reflect/UnsafeStaticFieldAccessorImpl 1 1 38 10 9 10 9 7 7 8 10 7 1 1 1 1 1 1 1 1 1 1 12 12 7 12 12 1 1 7 12 1 1 1 1 1 1 1 1 1
@@ -8927,12 +8927,12 @@ staticfield java/lang/Character TYPE Ljava/lang/Class; java/lang/Class
 staticfield java/lang/Character $assertionsDisabled Z 1
 instanceKlass com/google/gson/internal/LazilyParsedNumber
 instanceKlass java/math/BigDecimal
-instanceKlass java/math/BigInteger
+instanceKlass java/math/Bigint
 instanceKlass com/google/common/cache/Striped64
 instanceKlass java/util/concurrent/atomic/AtomicLong
-instanceKlass java/util/concurrent/atomic/AtomicInteger
+instanceKlass java/util/concurrent/atomic/Atomicint
 instanceKlass java/lang/Long
-instanceKlass java/lang/Integer
+instanceKlass java/lang/int
 instanceKlass java/lang/Short
 instanceKlass java/lang/Byte
 instanceKlass java/lang/Double
@@ -8946,12 +8946,12 @@ ciInstanceKlass java/lang/Byte 1 1 153 7 10 9 10 100 100 10 8 10 8 10 10 10 10 1
 staticfield java/lang/Byte TYPE Ljava/lang/Class; java/lang/Class
 ciInstanceKlass java/lang/Short 1 1 161 7 100 10 10 7 100 10 8 10 8 10 10 10 10 10 10 9 10 10 10 8 8 10 9 10 10 10 10 3 3 5 0 10 8 10 9 7 100 7 1 1 1 1 1 3 1 3 1 1 1 1 1 1 1 3 1 3 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 12 12 1 1 12 1 12 1 12 12 12 12 12 12 12 12 12 12 1 1 12 12 12 12 12 12 1 7 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 staticfield java/lang/Short TYPE Ljava/lang/Class; java/lang/Class
-ciInstanceKlass java/lang/Integer 1 1 314 7 100 7 10 9 7 10 10 10 10 10 10 10 10 3 8 10 10 10 3 9 9 3 9 7 8 10 100 10 8 10 10 8 10 8 10 3 10 10 10 10 8 100 10 10 5 0 8 10 10 7 9 9 10 10 9 10 10 10 10 100 100 10 8 8 10 8 8 8 8 8 8 10 10 10 5 0 3 3 3 3 3 10 10 8 10 9 3 3 3 3 3 3 7 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 1 3 1 1 5 0 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 1 12 12 100 12 12 12 7 12 12 12 1 12 12 12 12 12 12 1 1 12 1 12 1 12 12 1 12 1 12 12 12 12 12 1 1 12 12 1 12 12 1 12 12 12 12 12 12 12 7 12 1 1 12 1 1 12 1 1 1 1 1 1 12 12 12 12 12 1 7 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-staticfield java/lang/Integer TYPE Ljava/lang/Class; java/lang/Class
-staticfield java/lang/Integer digits [C 36
-staticfield java/lang/Integer DigitTens [C 100
-staticfield java/lang/Integer DigitOnes [C 100
-staticfield java/lang/Integer sizeTable [I 10
+ciInstanceKlass java/lang/int 1 1 314 7 100 7 10 9 7 10 10 10 10 10 10 10 10 3 8 10 10 10 3 9 9 3 9 7 8 10 100 10 8 10 10 8 10 8 10 3 10 10 10 10 8 100 10 10 5 0 8 10 10 7 9 9 10 10 9 10 10 10 10 100 100 10 8 8 10 8 8 8 8 8 8 10 10 10 5 0 3 3 3 3 3 10 10 8 10 9 3 3 3 3 3 3 7 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 1 3 1 1 5 0 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 1 12 12 100 12 12 12 7 12 12 12 1 12 12 12 12 12 12 1 1 12 1 12 1 12 12 1 12 1 12 12 12 12 12 1 1 12 12 1 12 12 1 12 12 12 12 12 12 12 7 12 1 1 12 1 1 12 1 1 1 1 1 1 12 12 12 12 12 1 7 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+staticfield java/lang/int TYPE Ljava/lang/Class; java/lang/Class
+staticfield java/lang/int digits [C 36
+staticfield java/lang/int DigitTens [C 100
+staticfield java/lang/int DigitOnes [C 100
+staticfield java/lang/int sizeTable [I 10
 ciInstanceKlass java/lang/Long 1 1 361 7 100 7 10 9 7 10 10 10 10 10 5 0 5 0 100 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 5 0 8 10 10 10 7 5 0 5 0 9 9 3 3 100 8 10 8 10 8 8 10 5 0 10 10 10 10 8 100 10 10 8 10 8 10 10 5 0 5 0 9 10 8 8 10 8 8 8 8 8 8 10 10 10 10 9 10 10 10 100 100 10 10 10 10 10 5 0 5 0 5 0 5 0 5 0 10 10 10 8 10 9 7 100 7 1 1 1 1 1 1 5 0 1 1 1 1 1 1 1 3 1 3 1 5 0 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 1 12 12 12 12 12 1 12 12 12 12 12 12 100 12 12 12 12 12 12 7 12 12 12 1 12 12 12 1 12 12 1 1 12 1 12 1 1 12 12 12 12 12 1 1 12 12 1 12 1 12 12 12 12 1 1 12 1 1 1 1 1 1 12 12 12 12 12 12 7 12 1 1 12 12 12 12 12 12 12 1 7 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 staticfield java/lang/Long TYPE Ljava/lang/Class; java/lang/Class
 instanceKlass kotlin/KotlinNullPointerException

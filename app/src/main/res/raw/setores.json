@@ -3,19 +3,109 @@
     {
       "ID_REGIONAL": 1,
       "ID_SETOR": 1,
-      "DESCRICAO": "SARACURA",
+      "DESCRICAO": "AEROPORTO",
       "ATIVO": 1
     },
     {
-      "ID_REGIONAL": 2,
+      "ID_REGIONAL": 1,
       "ID_SETOR": 2,
+      "DESCRICAO": "AGUA PRETA",
+      "ATIVO": 1
+    },
+    {
+      "ID_REGIONAL": 1,
+      "ID_SETOR": 3,
+      "DESCRICAO": "CASTELO",
+      "ATIVO": 1
+    },
+    {
+      "ID_REGIONAL": 1,
+      "ID_SETOR": 4,
       "DESCRICAO": "PINDAIBAS",
       "ATIVO": 1
     },
     {
+      "ID_REGIONAL": 1,
+      "ID_SETOR": 5,
+      "DESCRICAO": "SALTO",
+      "ATIVO": 1
+    },
+    {
+      "ID_REGIONAL": 1,
+      "ID_SETOR": 6,
+      "DESCRICAO": "SARACURA",
+      "ATIVO": 1
+    },
+    {
+      "ID_REGIONAL": 1,
+      "ID_SETOR": 7,
+      "DESCRICAO": "TIADOSIA",
+      "ATIVO": 1
+    },
+    {
+      "ID_REGIONAL": 1,
+      "ID_SETOR": 8,
+      "DESCRICAO": "VENDA NOVA",
+      "ATIVO": 1
+    },
+    {
+      "ID_REGIONAL": 2,
+      "ID_SETOR": 9,
+      "DESCRICAO": "CAMPO ALTO",
+      "ATIVO": 1
+    },
+    {
+      "ID_REGIONAL": 2,
+      "ID_SETOR": 10,
+      "DESCRICAO": "JOIA",
+      "ATIVO": 1
+    },
+    {
+      "ID_REGIONAL": 2,
+      "ID_SETOR": 11,
+      "DESCRICAO": "SANTA QUITERIA",
+      "ATIVO": 1
+    },
+    {
+      "ID_REGIONAL": 2,
+      "ID_SETOR": 12,
+      "DESCRICAO": "TRES IRMAS",
+      "ATIVO": 1
+    },
+    {
       "ID_REGIONAL": 3,
-      "ID_SETOR": 3,
-      "DESCRICAO": "CASTELO",
+      "ID_SETOR": 13,
+      "DESCRICAO": "CARQUEJA",
+      "ATIVO": 1
+    },
+    {
+      "ID_REGIONAL": 3,
+      "ID_SETOR": 14,
+      "DESCRICAO": "PIABANHA",
+      "ATIVO": 1
+    },
+    {
+      "ID_REGIONAL": 3,
+      "ID_SETOR": 15,
+      "DESCRICAO": "RABO DO MUNDO",
+      "ATIVO": 1
+    },
+    {
+      "ID_REGIONAL": 3,
+      "ID_SETOR": 16,
+      "DESCRICAO": "SANTA CRUZ",
+      "ATIVO": 1
+    },
+    {
+      "ID_REGIONAL": 3,
+      "ID_SETOR": 17,
+      "DESCRICAO": "SEDE VELHA",
+      "ATIVO": 1
+    },
+    {
+      "ID_REGIONAL": 3,
+      "ID_SETOR": 18,
+      "DESCRICAO": "SERRA DO CONTRATO",
       "ATIVO": 1
     }
   ]
