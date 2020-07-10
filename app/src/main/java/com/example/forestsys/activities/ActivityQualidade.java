@@ -132,7 +132,9 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     private boolean jaTemVerion = false;
 
     private List<INDICADORES_SUBSOLAGEM> listaVerion;
-
+    double longitude;
+    double latitude;
+    private List<ATIVIDADE_INDICADORES> atividadeIndicadores;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -640,7 +642,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         numeroPonto.setText(String.valueOf(listaPonto.size() + 1));
 
         Button botaoRegistrar = (Button) mView.findViewById(R.id.dialogo_qualidade_ponto_botao_registrar);
-        List<ATIVIDADE_INDICADORES> atividadeIndicadores = dao.listaAtividadeIndicadores(osSelecionada.getID_ATIVIDADE(), "N");
+        atividadeIndicadores = dao.listaAtividadeIndicadores(osSelecionada.getID_ATIVIDADE(), "N");
 
         textItem1.setText(atividadeIndicadores.get(0).getDESCRICAO());
         textItem2.setText(atividadeIndicadores.get(1).getDESCRICAO());
@@ -777,9 +779,6 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                             }).create();
                     dialog.show();
                 } else {
-                    double check = 0;
-
-
                     if (ActivityCompat.checkSelfPermission(ActivityQualidade.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ActivityQualidade.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
                         //    ActivityCompat#requestPermissions
@@ -805,63 +804,26 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                     LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                     Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-                    double longitude = location.getLongitude();
-                    double latitude = (location.getLatitude());
+                    longitude=0;
+                    latitude=0;
 
-                    Log.e("Lat Long", String.valueOf(latitude)+" "+String.valueOf(longitude));
+                    if(location!=null){
+                        longitude = location.getLongitude();
+                        latitude = (location.getLatitude());
+                    }
 
-                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
-                            listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(0).getID_INDICADOR(),
-                            Double.valueOf(editItem1.getText().toString().replace(',', '.')), latitude, longitude));
-
-                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
-                            listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(1).getID_INDICADOR(),
-                            Double.valueOf(editItem2.getText().toString().replace(',', '.')), latitude, longitude));
-
-                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
-                            listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(2).getID_INDICADOR(),
-                            Double.valueOf(editItem3.getText().toString().replace(',', '.')), latitude, longitude));
-
-                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
-                            listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(3).getID_INDICADOR(),
-                            Double.valueOf(editItem4.getText().toString().replace(',', '.')), latitude, longitude));
-
-                    if (editItem5.isChecked()) check = 1;
-                    else check = 0;
-                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
-                            listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(4).getID_INDICADOR(),
-                            check, latitude, longitude));
-
-                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
-                            listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(5).getID_INDICADOR(),
-                            Double.valueOf(editItem6.getText().toString().replace(',', '.')), latitude, longitude));
-
-                    if (editItem7.isChecked()) check = 1;
-                    else check = 0;
-                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
-                            listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(6).getID_INDICADOR(),
-                            check, latitude, longitude));
-
-                    if (editItem8.isChecked()) check = 1;
-                    else check = 0;
-                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
-                            listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(7).getID_INDICADOR(),
-                            check, latitude, longitude));
-
-                    if (editItem9.isChecked()) check = 1;
-                    else check = 0;
-                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
-                            listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(8).getID_INDICADOR(),
-                            check, latitude, longitude));
-
-                    dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
-                            listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(9).getID_INDICADOR(),
-                            Double.valueOf(editItem10.getText().toString().replace(',', '.')), latitude, longitude));
-
-                    dialogoPontoAberto = false;
-                    Intent it = new Intent(ActivityQualidade.this, ActivityQualidade.class);
-                    startActivity(it);
-                    dialogoPonto.dismiss();
+                    if(location==null){
+                        AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
+                                .setTitle("Aviso!")
+                                .setMessage("Não foi possível salvar as coordenadas de localização do dispositivo.")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        salvaPonto();
+                                    }
+                                }).create();
+                        dialog.show();
+                }else salvaPonto();
                 }
             }
         });
@@ -873,6 +835,65 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 auxSavedInstanceState = null;
             }
         });
+    }
+
+    public void salvaPonto(){
+        double check = 0;
+
+        Log.e("Lat Long", String.valueOf(latitude)+" "+String.valueOf(longitude));
+
+        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+                listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(0).getID_INDICADOR(),
+                Double.valueOf(editItem1.getText().toString().replace(',', '.')), latitude, longitude));
+
+        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+                listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(1).getID_INDICADOR(),
+                Double.valueOf(editItem2.getText().toString().replace(',', '.')), latitude, longitude));
+
+        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+                listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(2).getID_INDICADOR(),
+                Double.valueOf(editItem3.getText().toString().replace(',', '.')), latitude, longitude));
+
+        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+                listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(3).getID_INDICADOR(),
+                Double.valueOf(editItem4.getText().toString().replace(',', '.')), latitude, longitude));
+
+        if (editItem5.isChecked()) check = 1;
+        else check = 0;
+        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+                listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(4).getID_INDICADOR(),
+                check, latitude, longitude));
+
+        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+                listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(5).getID_INDICADOR(),
+                Double.valueOf(editItem6.getText().toString().replace(',', '.')), latitude, longitude));
+
+        if (editItem7.isChecked()) check = 1;
+        else check = 0;
+        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+                listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(6).getID_INDICADOR(),
+                check, latitude, longitude));
+
+        if (editItem8.isChecked()) check = 1;
+        else check = 0;
+        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+                listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(7).getID_INDICADOR(),
+                check, latitude, longitude));
+
+        if (editItem9.isChecked()) check = 1;
+        else check = 0;
+        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+                listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(8).getID_INDICADOR(),
+                check, latitude, longitude));
+
+        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+                listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(9).getID_INDICADOR(),
+                Double.valueOf(editItem10.getText().toString().replace(',', '.')), latitude, longitude));
+
+        dialogoPontoAberto = false;
+        Intent it = new Intent(ActivityQualidade.this, ActivityQualidade.class);
+        startActivity(it);
+        dialogoPonto.dismiss();
     }
 
     //Verifica se o valor em um EditText é válido

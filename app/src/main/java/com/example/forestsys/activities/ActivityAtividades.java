@@ -44,6 +44,7 @@ import com.example.forestsys.classes.O_S_ATIVIDADE_INSUMOS_DIA;
 import com.example.forestsys.classes.join.Join_OS_INSUMOS;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Circle;
@@ -341,7 +342,7 @@ public class ActivityAtividades extends AppCompatActivity
                                                 dialog.show();
                                             }
                                             if (temProblemaNosRegs == false) {
-                                                if (osSelecionada.getAREA_PROGRAMADA() > osSelecionada.getAREA_REALIZADA()) {
+                                                if (osSelecionada.getAREA_PROGRAMADA() > osSelecionada.getAREA_REALIZADA() || osSelecionada.getAREA_PROGRAMADA() < osSelecionada.getAREA_REALIZADA()) {
                                                     erroGeral = true;
                                                     abreDialogoJustificativaAreaRealizada();
                                                 }
@@ -489,6 +490,10 @@ public class ActivityAtividades extends AppCompatActivity
         View mView = getLayoutInflater().inflate(R.layout.dialogo_justificativa_area_realizada, null);
         valorDialogoAreaRealizada = mView.findViewById(R.id.justificativa_area_realizada);
         Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_justificativa_area_realizada);
+        TextView texto = mView.findViewById(R.id.textview_dialogo_justificativa_area_realizada);
+        if (osSelecionada.getAREA_PROGRAMADA() > osSelecionada.getAREA_REALIZADA()) texto.setText("Justifique por que a área realizada é menor que a área programada.");
+        if (osSelecionada.getAREA_PROGRAMADA() < osSelecionada.getAREA_REALIZADA()) texto.setText("Justifique por que a área realizada é maior que a área programada.");
+
 
         if (auxSavedInstanceState != null) {
             if (auxSavedInstanceState.getString("valorDialogoAreaRealizada") != null) {
@@ -514,7 +519,8 @@ public class ActivityAtividades extends AppCompatActivity
                     String obs = osSelecionada.getOBSERVACAO();
                     String pegaObs = "";
                     if (!obs.isEmpty() || obs != null) pegaObs = obs + "\n";
-                    obs = pegaObs.concat("Atividade finalizada com a área realizada menor que a área programada em " + dataHoraAtual.dataAtual() + " ás " + dataHoraAtual.horaAtual() + ". Justificativa: " + (valorDialogoAreaRealizada.getText().toString()));
+                    if (osSelecionada.getAREA_PROGRAMADA() > osSelecionada.getAREA_REALIZADA()) obs = pegaObs.concat("Atividade finalizada com a área realizada menor que a área programada em " + dataHoraAtual.dataAtual() + " ás " + dataHoraAtual.horaAtual() + ". Justificativa: " + (valorDialogoAreaRealizada.getText().toString()));;
+                    if (osSelecionada.getAREA_PROGRAMADA() < osSelecionada.getAREA_REALIZADA()) obs = pegaObs.concat("Atividade finalizada com a área realizada maior que a área programada em " + dataHoraAtual.dataAtual() + " ás " + dataHoraAtual.horaAtual() + ". Justificativa: " + (valorDialogoAreaRealizada.getText().toString()));
                     osSelecionada.setOBSERVACAO(obs);
                     dao.update(osSelecionada);
                     salvar();

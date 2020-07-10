@@ -1,4 +1,5 @@
 package com.example.forestsys.activities;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -10,6 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,6 +28,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.forestsys.Adapters.AdaptadorApontamentos;
 import com.example.forestsys.assets.BaseDeDados;
 import com.example.forestsys.assets.DAO;
@@ -38,6 +41,7 @@ import com.example.forestsys.classes.O_S_ATIVIDADE_INSUMOS_DIA;
 import com.example.forestsys.classes.join.Join_OS_INSUMOS;
 import com.example.forestsys.viewModels.ViewModelO_S_ATIVIDADES_DIA;
 import com.google.android.material.navigation.NavigationView;
+
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import static android.view.View.GONE;
 import static com.example.forestsys.activities.ActivityAtividades.editouRegistro;
 import static com.example.forestsys.activities.ActivityAtividades.listaJoinOsInsumosSelecionados;
@@ -134,6 +139,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     private double areaAnterior;
     private boolean erroGeral = false;
     private boolean edicaoReg = false;
+    private boolean naoConcluiuAreaRealizada = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,18 +185,18 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 totalInsumo2.setText(String.valueOf(ins2).replace(".", ","));
 
                 if (!listaAtividades.isEmpty()) {
-                    if (diferencaPercentual(insumos_dia.get(0).getQTD_HA_RECOMENDADO()*osSelecionada.getAREA_PROGRAMADA(), ins1) > 5 ||
-                            diferencaPercentual(insumos_dia.get(0).getQTD_HA_RECOMENDADO()*osSelecionada.getAREA_PROGRAMADA(), ins1) < -5)
+                    if (diferencaPercentual(insumos_dia.get(0).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins1) > 5 ||
+                            diferencaPercentual(insumos_dia.get(0).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins1) < -5)
                         difInsumo1.setBackgroundColor(Color.parseColor("#FF0000"));
                     else difInsumo1.setBackgroundColor(Color.parseColor("#BDB8B8"));
 
-                    if (diferencaPercentual(insumos_dia.get(1).getQTD_HA_RECOMENDADO()*osSelecionada.getAREA_PROGRAMADA(), ins2) > 5 ||
-                            diferencaPercentual(insumos_dia.get(1).getQTD_HA_RECOMENDADO()*osSelecionada.getAREA_PROGRAMADA(), ins2) < -5)
+                    if (diferencaPercentual(insumos_dia.get(1).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins2) > 5 ||
+                            diferencaPercentual(insumos_dia.get(1).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins2) < -5)
                         difInsumo2.setBackgroundColor(Color.parseColor("#FF0000"));
                     else difInsumo2.setBackgroundColor(Color.parseColor("#BDB8B8"));
 
-                    difInsumo1.setText(String.valueOf(diferencaPercentual(insumos_dia.get(0).getQTD_HA_RECOMENDADO()*osSelecionada.getAREA_PROGRAMADA(), ins1)));
-                    difInsumo2.setText(String.valueOf(diferencaPercentual(insumos_dia.get(1).getQTD_HA_RECOMENDADO()*osSelecionada.getAREA_PROGRAMADA(), ins2)));
+                    difInsumo1.setText(String.valueOf(diferencaPercentual(insumos_dia.get(0).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins1)));
+                    difInsumo2.setText(String.valueOf(diferencaPercentual(insumos_dia.get(1).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins2)));
                 }
             }
         };
@@ -347,9 +353,37 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             public void onClick(View v) {
                 testaConformidade();
 
-                if (erro == false && erroInsumos == false && erroGeral == false) {
-                    if (edicaoReg == false) chamaSalvar();
-                    else abreDialogoEdicaoReg();
+                if (erro == false && (novaArea + osSelecionada.getAREA_REALIZADA()) > osSelecionada.getAREA_PROGRAMADA()) {
+                    DecimalFormat format = new DecimalFormat("###.#####");
+                    Double d = (novaArea + osSelecionada.getAREA_REALIZADA()) - osSelecionada.getAREA_PROGRAMADA();
+                    String diferenca = format.format(Double.parseDouble(String.valueOf(d)));
+                    diferenca.replace('.', ',');
+
+                    AlertDialog dialog = new AlertDialog.Builder(ActivityRegistros.this)
+                            .setTitle("O total da área realizada é maior que a área programada")
+                            .setMessage("Diferença: " + diferenca + "\nDeseja salvar mesmo assim?")
+                            .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    if (naoConcluiuAreaRealizada == false && erro == false && erroInsumos == false && erroGeral == false) {
+                                        if (edicaoReg == false) chamaSalvar();
+                                        else abreDialogoEdicaoReg();
+                                    }
+                                }
+                            }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    naoConcluiuAreaRealizada = true;
+                                }
+                            }).create();
+                    dialog.show();
+                }
+
+                if ((novaArea + osSelecionada.getAREA_REALIZADA()) <= osSelecionada.getAREA_PROGRAMADA()) {
+                    if (erro == false && erroInsumos == false && erroGeral == false) {
+                        if (edicaoReg == false) chamaSalvar();
+                        else abreDialogoEdicaoReg();
+                    }
                 }
             }
         });
@@ -410,7 +444,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     editouRegistro = true;
                                     oSAtividadesDiaAtual = dao.selecionaOsAtividadesDia(oSAtividadesDia.getID_PROGRAMACAO_ATIVIDADE(), oSAtividadesDia.getDATA());
-                                      Intent it = new Intent(ActivityRegistros.this, ActivityRegistros.class);
+                                    Intent it = new Intent(ActivityRegistros.this, ActivityRegistros.class);
                                     startActivity(it);
                                 }
                             }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
@@ -747,28 +781,12 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     novaArea = (testeAreaRealizada - areaAnterior);
             }
 
-            if (erro == false && (novaArea + osSelecionada.getAREA_REALIZADA()) > osSelecionada.getAREA_PROGRAMADA()) {
-                DecimalFormat format = new DecimalFormat("###.#####");
-                Double d = (novaArea + osSelecionada.getAREA_REALIZADA()) - osSelecionada.getAREA_PROGRAMADA();
-                String diferenca = format.format(Double.parseDouble(String.valueOf(d)));
-                diferenca.replace('.', ',');
 
-                AlertDialog dialog = new AlertDialog.Builder(ActivityRegistros.this)
-                        .setTitle("A área realizada não pode ser maior que a área programada")
-                        .setMessage("Diferença: " +diferenca)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        }).create();
-                dialog.show();
-                erro = true;
-            }
-
-            if (erro == false && erroInsumos == false && editouRegistro == true){
+            if (erro == false && erroInsumos == false && editouRegistro == true) {
                 edicaoReg = false;
 
-                if (posicaoResponsavel != oSAtividadesDiaAtual.getID_RESPONSAVEL()) edicaoReg = true;
+                if (posicaoResponsavel != oSAtividadesDiaAtual.getID_RESPONSAVEL())
+                    edicaoReg = true;
 
                 if (posicaoPrestador != oSAtividadesDiaAtual.getID_PRESTADOR()) edicaoReg = true;
 
@@ -780,9 +798,11 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
                 if (!area.equals(oSAtividadesDiaAtual.getAREA_REALIZADA())) edicaoReg = true;
 
-                if (!hoe.isEmpty() && !hoe.equals(oSAtividadesDiaAtual.getHO_ESCAVADEIRA())) edicaoReg = true;
+                if (!hoe.isEmpty() && !hoe.equals(oSAtividadesDiaAtual.getHO_ESCAVADEIRA()))
+                    edicaoReg = true;
 
-                if (!hme.isEmpty() && !hme.equals(oSAtividadesDiaAtual.getHM_ESCAVADEIRA())) edicaoReg = true;
+                if (!hme.isEmpty() && !hme.equals(oSAtividadesDiaAtual.getHM_ESCAVADEIRA()))
+                    edicaoReg = true;
 
                 if (edicaoReg == true) {
                     acaoInativoAtividade = "EDICAO";
@@ -852,7 +872,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             listaJoinOsInsumosSelecionados.get(1).setOBSERVACAO(obsInsumo2.getText().toString());
         }
 
-        for(int i = 0; i<listaJoinOsInsumosSelecionados.size(); i++) {
+        for (int i = 0; i < listaJoinOsInsumosSelecionados.size(); i++) {
             Join_OS_INSUMOS persiste = listaJoinOsInsumosSelecionados.get(i);
             dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.formataDataDb(dataDoApontamento),
                     persiste.getID_INSUMO(), persiste.getQTD_APLICADO(), null, '0', persiste.getOBSERVACAO()));
@@ -984,7 +1004,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         }
 
         fragmentoInsumos.onBackPressed();
-        if(abriuDialogoEdicao) dialogoEdicaoRec.cancel();
+        if (abriuDialogoEdicao) dialogoEdicaoRec.cancel();
     }
 
     @Override
