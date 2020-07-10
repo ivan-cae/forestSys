@@ -43,6 +43,7 @@
         android:layout_below="@+id/editText2"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
+        android:background="#FF5722"
         android:onClick="onClick"
         android:text="@string/limpar"
         android:textSize="30sp"
@@ -59,9 +60,10 @@
         android:layout_marginTop="-1dp"
         android:layout_toEndOf="@+id/botao_limpar"
         android:layout_toRightOf="@+id/botao_limpar"
+        android:background="#FF5722"
         android:onClick="onClick"
-        android:textSize="30sp"
         android:text="@string/backspace"
+        android:textSize="30sp"
         android:textStyle="bold" />
 
     <Button
@@ -74,6 +76,7 @@
         android:layout_marginTop="1dp"
         android:layout_marginBottom="4dp"
         android:layout_toRightOf="@id/num9"
+        android:background="#FF5722"
         android:onClick="onClick"
         android:text="%"
         android:textSize="30sp"
@@ -231,9 +234,10 @@
         android:layout_below="@id/botao_limpar"
         android:layout_toEndOf="@id/num9"
         android:layout_toRightOf="@+id/num9"
+        android:background="#FF5722"
         android:onClick="onClick"
-        android:textSize="30sp"
         android:text="+"
+        android:textSize="30sp"
         android:textStyle="bold" />
 
     <Button
@@ -245,6 +249,7 @@
         android:layout_alignParentLeft="false"
         android:layout_toEndOf="@id/num6"
         android:layout_toRightOf="@+id/num6"
+        android:background="#FF5722"
         android:onClick="onClick"
         android:text="-"
         android:textSize="30sp"
@@ -258,6 +263,7 @@
         android:layout_below="@id/num4"
         android:layout_toEndOf="@id/num3"
         android:layout_toRightOf="@id/num3"
+        android:background="#FF5722"
         android:onClick="onClick"
         android:text="@string/dividir"
         android:textSize="30sp"
@@ -271,9 +277,10 @@
         android:layout_below="@id/num1"
         android:layout_toEndOf="@id/botao_ponto"
         android:layout_toRightOf="@id/botao_ponto"
+        android:background="#FF5722"
         android:onClick="onClick"
-        android:textSize="30sp"
         android:text="x"
+        android:textSize="30sp"
         android:textStyle="bold" />
 
     <Button
@@ -286,9 +293,10 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="462dp"
+        android:background="#FF5722"
         android:onClick="onClick"
-        android:textSize="30sp"
         android:text="="
+        android:textSize="30sp"
         android:textStyle="bold" />
 
     <Button
@@ -299,6 +307,7 @@
         android:layout_below="@id/num0"
         android:layout_toEndOf="@id/botao_fecha_parenteses"
         android:layout_toRightOf="@id/botao_fecha_parenteses"
+        android:background="#FF5722"
         android:onClick="onClick"
         android:text="@string/quadrado"
         android:textSize="30sp"
@@ -312,6 +321,7 @@
         android:layout_below="@id/botao_multiplica"
         android:layout_toEndOf="@id/botao_quadrado"
         android:layout_toRightOf="@id/botao_quadrado"
+        android:background="#FF5722"
         android:onClick="onClick"
         android:text="@string/raiz"
         android:textSize="30sp"
@@ -325,6 +335,7 @@
         android:layout_below="@+id/botao_posneg"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
+        android:background="#FF5722"
         android:onClick="onClick"
         android:text="@string/abreParenteses"
         android:textSize="30sp"
@@ -338,6 +349,7 @@
         android:layout_below="@id/num0"
         android:layout_toEndOf="@+id/botao_abre_parenteses"
         android:layout_toRightOf="@id/botao_abre_parenteses"
+        android:background="#FF5722"
         android:onClick="onClick"
         android:text="@string/fechaParenteses"
         android:textSize="30sp"

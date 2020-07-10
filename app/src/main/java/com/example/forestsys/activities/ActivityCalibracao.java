@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -109,7 +110,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
     private ImageButton botaoMediaP1;
     private ImageButton botaoMediaP2;
-    private ImageButton botaoConfirma;
+    private Button botaoConfirma;
     private ImageButton botaoVoltar;
 
     private boolean todosConformeP1;
@@ -225,8 +226,8 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             testaCliqueP1();
             testaCliqueP2();
 
-            if (atualP1 > 5) testaP1();
-            if (atualP2 > 5) testaP2();
+            if (atualP1 >= 5) testaP1();
+            if (atualP2 >= 5) testaP2();
         }
     }
 
@@ -373,7 +374,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     public void dialogoFechar() {
         AlertDialog dialog = new AlertDialog.Builder(ActivityCalibracao.this)
                 .setTitle("Voltar Para a Tela da Atividade?")
-                .setMessage("Caso clique em SIM, você perderá os dados da calibração!")
+                .setMessage("Caso clique em sim, a calibração em andamento será descartada.")
                 .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -415,11 +416,10 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.dash:
-                if(osSelecionada.getSTATUS_NUM()==2)
-                {
+                if (osSelecionada.getSTATUS_NUM() == 2) {
                     Intent it = new Intent(ActivityCalibracao.this, ActivityDashboard.class);
                     startActivity(it);
-                }else {
+                } else {
                     AlertDialog dialogoDash = new AlertDialog.Builder(ActivityCalibracao.this)
                             .setTitle("Abrir a Dashboard?")
                             .setMessage("Caso clique em SIM, você perderá os dados da calibração!")
@@ -437,14 +437,13 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                             }).create();
                     dialogoDash.show();
                 }
-                    break;
+                break;
 
             case R.id.atividades:
-                if(osSelecionada.getSTATUS_NUM()==2)
-                {
+                if (osSelecionada.getSTATUS_NUM() == 2) {
                     Intent it = new Intent(ActivityCalibracao.this, ActivityMain.class);
                     startActivity(it);
-                }else {
+                } else {
                     AlertDialog dialogoAtividades = new AlertDialog.Builder(ActivityCalibracao.this)
                             .setTitle("Voltar Para a Listagem de Atividades?")
                             .setMessage("Caso clique em SIM, você perderá os dados da calibração!")
@@ -609,8 +608,9 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                     }
                 }
                 if (naoPermiteCentena == true)
-                    valor.setError("Valor incorreto: Permitido unidade e dezena.");
-                if (atualP1 > 5) testaP1();
+                    valor.setError("Valor incorreto: Permitido unidades e dezenas.");
+                if (atualP1 >= 5) testaP1();
+                if (atualP2 >= 5) testaP2();
             }
         });
     }
@@ -706,7 +706,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         Double maiorDif = 0.0;
         int posicaoMaiorDif = 0;
 
-        if (atualP1 > 5) {
+        if (atualP1 >= 5) {
             for (int i = 0; i < 4; i++) {
                 if (Math.abs(diferencaPercentual(amostrasP1[i], amostrasP1[i + 1])) > maiorDif) {
                     maiorDif = Math.abs(diferencaPercentual(amostrasP1[i], amostrasP1[i + 1]));
@@ -880,7 +880,8 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                 }
                 if (naoPermiteCentena == true)
                     valor.setError("Valor incorreto: Permitido unidade e dezena.");
-                if (atualP2 > 5) testaP2();
+                if (atualP1 >= 5) testaP1();
+                if (atualP2 >= 5) testaP2();
             }
         });
     }
@@ -974,7 +975,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         Double maiorDif = 0.0;
         int posicaoMaiorDif = 0;
 
-        if (atualP2 > 5) {
+        if (atualP2 >= 5) {
             for (int i = 0; i < 4; i++) {
                 if (Math.abs(diferencaPercentual(amostrasP2[i], amostrasP2[i + 1])) > maiorDif) {
                     maiorDif = Math.abs(diferencaPercentual(amostrasP2[i], amostrasP2[i + 1]));
@@ -1145,15 +1146,17 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     }
 
     //Testa as conformidades para liberar o botão de confirmação
-    public void testaConfirmacao() {
-        testaP1();
-        testaP2();
-        if (atualP1 >= 5 && atualP2 >= 5 && todosConformeP1 == true && todosConformeP2 == true && idOperador != -1 && idMaquinaImplemento != -1) {
-            botaoConfirma.setVisibility(View.VISIBLE);
-            pulseAnimation(botaoConfirma);
-        }else{
-            botaoConfirma.setVisibility(GONE);
+    public boolean testaConfirmacao() {
+        if (atualP1 >= 5 && atualP2 >= 5) {
+            testaP1();
+            testaP2();
+            if (todosConformeP1 == true && todosConformeP2 == true) {
+                if (idOperador != -1 && idMaquinaImplemento != -1) {
+                    return true;
+                }
+            }
         }
+        return false;
     }
 
     //Inicializa todos os itens na tela e seta valores de variáveis
@@ -1329,7 +1332,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             amostrasP2[i] = 0.0;
         }
 
-        if(osSelecionada.getSTATUS_NUM()==2){
+        if (osSelecionada.getSTATUS_NUM() == 2) {
             botaoMediaP1.setEnabled(false);
             botaoMediaP2.setEnabled(false);
             botaoConfirma.setEnabled(false);
@@ -1401,11 +1404,10 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         botaoVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(osSelecionada.getSTATUS_NUM()==2)
-                {
+                if (osSelecionada.getSTATUS_NUM() == 2) {
                     Intent it = new Intent(ActivityCalibracao.this, ActivityAtividades.class);
                     startActivity(it);
-                }else dialogoFechar();
+                } else dialogoFechar();
             }
         });
 
@@ -1421,32 +1423,41 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                             .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                    if (testaConfirmacao() == true) {
+                                        Double mediaP1;
+                                        Double mediaP2;
+                                        Double desvioP1;
+                                        Double desvioP2;
 
-                                    Double mediaP1;
-                                    Double mediaP2;
-                                    Double desvioP1;
-                                    Double desvioP2;
+                                        mediaP1 = Double.valueOf(p1Media.getText().toString().replace(',', '.'));
+                                        mediaP2 = Double.valueOf(p2Media.getText().toString().replace(',', '.'));
+                                        desvioP1 = Double.valueOf(desvioProduto1.getText().toString().replace(',', '.'));
+                                        desvioP2 = Double.valueOf(desvioProduto2.getText().toString().replace(',', '.'));
 
-                                    mediaP1 = Double.valueOf(p1Media.getText().toString().replace(',', '.'));
-                                    mediaP2 = Double.valueOf(p2Media.getText().toString().replace(',', '.'));
-                                    desvioP1 = Double.valueOf(desvioProduto1.getText().toString().replace(',', '.'));
-                                    desvioP2 = Double.valueOf(desvioProduto2.getText().toString().replace(',', '.'));
+                                        CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem = new CALIBRAGEM_SUBSOLAGEM(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
+                                                dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()), checaTurno(), idMaquinaImplemento,
+                                                idOperador, mediaP1, desvioP1, mediaP2, desvioP2);
 
-                                    CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem = new CALIBRAGEM_SUBSOLAGEM(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
-                                            dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()), checaTurno(), idMaquinaImplemento,
-                                            idOperador, mediaP1, desvioP1, mediaP2, desvioP2);
+                                        dao.insert(calibragem_subsolagem);
 
-                                    dao.insert(calibragem_subsolagem);
-
-                                    osSelecionada.setSTATUS("Andamento");
-                                    osSelecionada.setSTATUS_NUM(1);
-                                    osSelecionada.setDATA_FINAL(dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()));
-                                    dao.update(osSelecionada);
-                                    Toast.makeText(getApplicationContext(), "Calibração Salva com sucesso!", Toast.LENGTH_LONG).show();
-                                    Intent it = new Intent(ActivityCalibracao.this, ActivityCalibracao.class);
-                                    startActivity(it);
-                                }
-                            }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                        osSelecionada.setSTATUS("Andamento");
+                                        osSelecionada.setSTATUS_NUM(1);
+                                        osSelecionada.setDATA_FINAL(dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()));
+                                        dao.update(osSelecionada);
+                                        Toast.makeText(getApplicationContext(), "Calibração Salva com sucesso!", Toast.LENGTH_LONG).show();
+                                        Intent it = new Intent(ActivityCalibracao.this, ActivityCalibracao.class);
+                                        startActivity(it);
+                                    }else{
+                                        AlertDialog dialogoErro = new AlertDialog.Builder(ActivityCalibracao.this)
+                                                .setTitle("Erro")
+                                                .setMessage("É necessário corrigir um ou mais erros na calibração antes de prosseguir.")
+                                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                    }}).create();
+                                        dialogoErro.show();
+                                    }
+                                }}).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                 }

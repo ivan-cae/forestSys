@@ -43,11 +43,11 @@ public class AVAL_PONTO_SUBSOLAGEM {
 
     private double VALOR_INDICADOR;
 
-    private int COORDENADA_X;
+    private double COORDENADA_X;
 
-    private int COORDENADA_Y;
+    private double COORDENADA_Y;
 
-    public AVAL_PONTO_SUBSOLAGEM(int ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, int PONTO, int ID_ATIVIDADE, int ID_INDICADOR, double VALOR_INDICADOR, int COORDENADA_X, int COORDENADA_Y) {
+    public AVAL_PONTO_SUBSOLAGEM(int ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, int PONTO, int ID_ATIVIDADE, int ID_INDICADOR, double VALOR_INDICADOR, double COORDENADA_X, double COORDENADA_Y) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.DATA = DATA;
         this.PONTO = PONTO;
@@ -107,19 +107,19 @@ public class AVAL_PONTO_SUBSOLAGEM {
         this.VALOR_INDICADOR = VALOR_INDICADOR;
     }
 
-    public int getCOORDENADA_X() {
+    public double getCOORDENADA_X() {
         return COORDENADA_X;
     }
 
-    public void setCOORDENADA_X(int COORDENADA_X) {
+    public void setCOORDENADA_X(double COORDENADA_X) {
         this.COORDENADA_X = COORDENADA_X;
     }
 
-    public int getCOORDENADA_Y() {
+    public double getCOORDENADA_Y() {
         return COORDENADA_Y;
     }
 
-    public void setCOORDENADA_Y(int COORDENADA_Y) {
+    public void setCOORDENADA_Y(double COORDENADA_Y) {
         this.COORDENADA_Y = COORDENADA_Y;
     }
 }

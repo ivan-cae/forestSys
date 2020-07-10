@@ -1,5 +1,4 @@
 package com.example.forestsys.activities;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -11,8 +10,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,7 +26,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.forestsys.Adapters.AdaptadorApontamentos;
 import com.example.forestsys.assets.BaseDeDados;
 import com.example.forestsys.assets.DAO;
@@ -42,7 +38,6 @@ import com.example.forestsys.classes.O_S_ATIVIDADE_INSUMOS_DIA;
 import com.example.forestsys.classes.join.Join_OS_INSUMOS;
 import com.example.forestsys.viewModels.ViewModelO_S_ATIVIDADES_DIA;
 import com.google.android.material.navigation.NavigationView;
-
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,9 +45,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import static android.view.View.GONE;
-import static com.example.forestsys.activities.ActivityAtividades.edicaoReg;
 import static com.example.forestsys.activities.ActivityAtividades.editouRegistro;
 import static com.example.forestsys.activities.ActivityAtividades.listaJoinOsInsumosSelecionados;
 import static com.example.forestsys.activities.ActivityAtividades.oSAtividadesDiaAtual;
@@ -65,7 +58,6 @@ import static com.example.forestsys.activities.FragmentoRendimento.HHApontamento
 import static com.example.forestsys.activities.FragmentoRendimento.HMApontamento;
 import static com.example.forestsys.activities.FragmentoRendimento.HOApontamento;
 import static com.example.forestsys.activities.FragmentoRendimento.areaRealizadaApontamento;
-import static com.example.forestsys.activities.FragmentoRendimento.auxiliar;
 import static com.example.forestsys.activities.FragmentoRendimento.posicaoPrestador;
 import static com.example.forestsys.activities.FragmentoRendimento.posicaoResponsavel;
 
@@ -87,7 +79,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     private TextView areaRealizada;
     public static TextView dataApontamento;
     private ImageButton voltar;
-    private ImageButton botaoSalvar;
+    private Button botaoSalvar;
     private ImageButton botaoDatePicker;
     public static ViewModelO_S_ATIVIDADES_DIA viewModelOSAtividadesDia;
     private DataHoraAtual dataHoraAtual;
@@ -120,27 +112,43 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
     private TextView insumo1;
     private TextView insumo2;
-
-    private boolean fechouDialogoReg;
-    private Bundle savedInstanceStateAux;
     public static String[] pegaDescInsumos;
     private List<O_S_ATIVIDADES_DIA> listaAtividades;
     private List<O_S_ATIVIDADE_INSUMOS> insumos_dia = new ArrayList<O_S_ATIVIDADE_INSUMOS>();
 
-    FragmentoInsumos fragmentoInsumos;
-    FragmentoRendimento fragmentoRendimento;
+    private FragmentoInsumos fragmentoInsumos;
+    private FragmentoRendimento fragmentoRendimento;
+
+    private AlertDialog dialogoEdicaoRec;
+    private boolean abriuDialogoEdicao;
+    public static Bundle auxSavedInstanceState;
+    private EditText valorJustificativa;
+
+    private double testeAreaRealizada;
+    private boolean erro;
+    private boolean erroInsumos;
+    double auxAreaRealizadaOs;
+    double auxAreaRealizadaDia;
+    private String outraAuxkk;
+    private double novaArea;
+    private double areaAnterior;
+    private boolean erroGeral = false;
+    private boolean edicaoReg = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        savedInstanceStateAux = savedInstanceState;
 
+        auxSavedInstanceState = savedInstanceState;
         inicializacao();
 
         if (savedInstanceState != null) {
             dataDoApontamento = savedInstanceState.getString("data");
             dataApontamento.setText(dataDoApontamento);
             acaoInativoAtividade = savedInstanceState.getString("acaoInativoAtividade");
+            abriuDialogoEdicao = savedInstanceState.getBoolean("abriuDialogoEdicao");
+            editouRegistro = savedInstanceState.getBoolean("editouRegistro");
+            if (abriuDialogoEdicao == true) abreDialogoEdicaoReg();
         }
     }
 
@@ -171,16 +179,18 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 totalInsumo2.setText(String.valueOf(ins2).replace(".", ","));
 
                 if (!listaAtividades.isEmpty()) {
-                    if (diferencaPercentual(insumos_dia.get(0).getQTD_HA_RECOMENDADO(), ins1) > 5 || diferencaPercentual(insumos_dia.get(0).getQTD_HA_RECOMENDADO(), ins1) < -5)
+                    if (diferencaPercentual(insumos_dia.get(0).getQTD_HA_RECOMENDADO()*osSelecionada.getAREA_PROGRAMADA(), ins1) > 5 ||
+                            diferencaPercentual(insumos_dia.get(0).getQTD_HA_RECOMENDADO()*osSelecionada.getAREA_PROGRAMADA(), ins1) < -5)
                         difInsumo1.setBackgroundColor(Color.parseColor("#FF0000"));
                     else difInsumo1.setBackgroundColor(Color.parseColor("#BDB8B8"));
 
-                    if (diferencaPercentual(insumos_dia.get(1).getQTD_HA_RECOMENDADO(), ins2) > 5 || diferencaPercentual(insumos_dia.get(1).getQTD_HA_RECOMENDADO(), ins2) < -5)
+                    if (diferencaPercentual(insumos_dia.get(1).getQTD_HA_RECOMENDADO()*osSelecionada.getAREA_PROGRAMADA(), ins2) > 5 ||
+                            diferencaPercentual(insumos_dia.get(1).getQTD_HA_RECOMENDADO()*osSelecionada.getAREA_PROGRAMADA(), ins2) < -5)
                         difInsumo2.setBackgroundColor(Color.parseColor("#FF0000"));
                     else difInsumo2.setBackgroundColor(Color.parseColor("#BDB8B8"));
 
-                    difInsumo1.setText(String.valueOf(diferencaPercentual(insumos_dia.get(0).getQTD_HA_RECOMENDADO(), ins1)));
-                    difInsumo2.setText(String.valueOf(diferencaPercentual(insumos_dia.get(1).getQTD_HA_RECOMENDADO(), ins2)));
+                    difInsumo1.setText(String.valueOf(diferencaPercentual(insumos_dia.get(0).getQTD_HA_RECOMENDADO()*osSelecionada.getAREA_PROGRAMADA(), ins1)));
+                    difInsumo2.setText(String.valueOf(diferencaPercentual(insumos_dia.get(1).getQTD_HA_RECOMENDADO()*osSelecionada.getAREA_PROGRAMADA(), ins2)));
                 }
             }
         };
@@ -217,8 +227,8 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
         dataHoraAtual = new DataHoraAtual();
 
+        abriuDialogoEdicao = false;
         edicaoReg = false;
-        fechouDialogoReg = false;
 
         if (osSelecionada.getSTATUS_NUM() != 2)
             if (listaAtividades != null)
@@ -268,7 +278,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
         talhaoOs.setText(String.valueOf(osSelecionada.getTALHAO()));
 
-        statusOs.setText(String.valueOf("Andamento"));
+        statusOs.setText(String.valueOf(osSelecionada.getSTATUS()));
         areaOs.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace(".", ","));
         areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()).replace(".", ","));
 
@@ -284,7 +294,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
-        if (editouRegistro) botaoDatePicker.setEnabled(false);
+        //if (editouRegistro) botaoDatePicker.setEnabled(false);
         viewModelOSAtividadesDia = new ViewModelO_S_ATIVIDADES_DIA(getApplication());
 
         if (editouRegistro == false) {
@@ -319,28 +329,15 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         toggle.syncState();
 
 
-        if (savedInstanceStateAux == null) {
+        if (auxSavedInstanceState == null) {
             fragmentoRendimento = new FragmentoRendimento();
             getSupportFragmentManager().beginTransaction().replace(R.id.registro_fragmento_rendimento,
                     fragmentoRendimento).commit();
         }
-        if (savedInstanceStateAux == null) {
+        if (auxSavedInstanceState == null) {
             fragmentoInsumos = new FragmentoInsumos();
             getSupportFragmentManager().beginTransaction().replace(R.id.registro_fragmento_insumos,
                     fragmentoInsumos).commit();
-        }
-        if (auxiliar != null) {
-            auxiliar.setAREA_REALIZADA(area);
-            auxiliar.setHO_ESCAVADEIRA(hoe);
-            auxiliar.setHO(ho);
-            auxiliar.setHM_ESCAVADEIRA(hme);
-            auxiliar.setHM(hm);
-            auxiliar.setHH(hh);
-            auxiliar.setDATA(dataDoApontamento);
-            auxiliar.setID_PRESTADOR(posicaoPrestador);
-            auxiliar.setID_PROGRAMACAO_ATIVIDADE(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
-            auxiliar.setID_RESPONSAVEL(posicaoResponsavel);
-            auxiliar.setOBSERVACAO(obs);
         }
 
         calculaTotais();
@@ -348,7 +345,12 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         botaoSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chamaSalvar();
+                testaConformidade();
+
+                if (erro == false && erroInsumos == false && erroGeral == false) {
+                    if (edicaoReg == false) chamaSalvar();
+                    else abreDialogoEdicaoReg();
+                }
             }
         });
 
@@ -374,7 +376,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                                     hme = "";
                                     obs = "";
 
-                                    auxiliar = null;
                                     oSAtividadesDiaAtual = null;
                                     Intent it = new Intent(ActivityRegistros.this, ActivityAtividades.class);
                                     startActivity(it);
@@ -409,7 +410,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     editouRegistro = true;
                                     oSAtividadesDiaAtual = dao.selecionaOsAtividadesDia(oSAtividadesDia.getID_PROGRAMACAO_ATIVIDADE(), oSAtividadesDia.getDATA());
-                                    Intent it = new Intent(ActivityRegistros.this, ActivityRegistros.class);
+                                      Intent it = new Intent(ActivityRegistros.this, ActivityRegistros.class);
                                     startActivity(it);
                                 }
                             }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
@@ -422,7 +423,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             }
         });
 
-        if(osSelecionada.getSTATUS_NUM()==2){
+        if (osSelecionada.getSTATUS_NUM() == 2) {
             botaoDatePicker.setEnabled(false);
             botaoDatePicker.setVisibility(GONE);
 
@@ -444,33 +445,55 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
     //Abre o diálogo para edição dos registros
     public void abreDialogoEdicaoReg() {
+        abriuDialogoEdicao = true;
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_editar_registro, null);
-        final EditText valor = mView.findViewById(R.id.valor_dialogo_editar_registro);
+        valorJustificativa = mView.findViewById(R.id.valor_dialogo_editar_registro);
         Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_editar_registro);
 
+        if (auxSavedInstanceState != null) {
+            if (auxSavedInstanceState.getString("valorJustificativa") != null) {
+                if (!auxSavedInstanceState.getString("valorJustificativa").isEmpty()) {
+                    valorJustificativa.setText(auxSavedInstanceState.getString("valorJustificativa"));
+                }
+            }
+        }
+
         mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
-        dialog.show();
+        dialogoEdicaoRec = mBuilder.create();
+        dialogoEdicaoRec.setCanceledOnTouchOutside(false);
+        dialogoEdicaoRec.show();
+
         botaoOk.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
-                String str = valor.getText().toString();
+                String str = valorJustificativa.getText().toString();
 
                 if (str.trim().length() < 3)
-                    valor.setError("Justificativa deve ter mais de 2 caracteres.");
+                    valorJustificativa.setError("Justificativa deve ter mais de 2 caracteres.");
                 else {
                     String pegaObs = "";
                     if (!obs.isEmpty()) pegaObs = obs + "\n";
-                    obs = pegaObs.concat("Editado em " + dataHoraAtual.dataAtual() + " ás " + dataHoraAtual.horaAtual() + ". Justificativa: " + (valor.getText().toString()));
-                    edicaoReg = false;
-                    fechouDialogoReg = true;
+                    obs = pegaObs.concat("Editado em " + dataHoraAtual.dataAtual() + " ás " + dataHoraAtual.horaAtual() + ". Justificativa: " + (valorJustificativa.getText().toString()));
                     chamaSalvar();
-                    dialog.dismiss();
+                    dialogoEdicaoRec.dismiss();
                 }
+            }
+        });
+
+        dialogoEdicaoRec.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                auxSavedInstanceState = null;
+                abriuDialogoEdicao = false;
+            }
+        });
+
+        dialogoEdicaoRec.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                Toast.makeText(ActivityRegistros.this, "Operação cancelada pelo usuário", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -537,7 +560,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 }
             }
 
-            try{
+            try {
                 Date date1 = sdf.parse(auxTeste);
                 Date date2 = sdf.parse((dataHoraAtual.formataDataTextView(osSelecionada.getDATA_PROGRAMADA())));
 
@@ -586,10 +609,14 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         }
     }
 
-    //Persiste os dados nos EditTexts no DB ?
-    public void salva() {
+    //testa as condições para conformidade
+    public void testaConformidade() {
+        erroGeral = false;
         if (editouRegistro == false && dao.selecionaOsAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
                 dataHoraAtual.formataDataDb(dataDoApontamento)) != null) {
+
+            erroGeral = true;
+
             AlertDialog dialog = new AlertDialog.Builder(ActivityRegistros.this)
                     .setTitle("Erro!")
                     .setMessage("A data selecionada já tem um registro cadastrado.")
@@ -600,9 +627,9 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     }).create();
             dialog.show();
         } else {
-            double testeAreaRealizada = 0;
-            boolean erro = false;
-            boolean erroInsumos = false;
+            testeAreaRealizada = 0;
+            erro = false;
+            erroInsumos = false;
 
             if (area != null && !area.isEmpty()) {
                 try {
@@ -611,35 +638,42 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 } catch (NumberFormatException | NullPointerException nf) {
                     testeAreaRealizada = NULL;
                     erro = true;
+                    erroGeral = true;
                 }
             }
 
             if (erroNaString(area) == true) {
                 erro = true;
+                erroGeral = true;
                 areaRealizadaApontamento.setError("");
             }
 
             if (erroNaString(ho) == true) {
                 erro = true;
+                erroGeral = true;
                 HOApontamento.setError("");
             }
 
             if (erroNaString(hm) == true) {
                 erro = true;
+                erroGeral = true;
                 HMApontamento.setError("");
             }
 
             if (erroNaString(hh) == true) {
                 erro = true;
+                erroGeral = true;
                 HHApontamento.setError("");
             }
 
 
-            if(posicaoPrestador==-1) {
-                erro=true;
+            if (posicaoPrestador == -1) {
+                erro = true;
+                erroGeral = true;
             }
-            if(posicaoResponsavel==-1){
-                erro=true;
+            if (posicaoResponsavel == -1) {
+                erro = true;
+                erroGeral = true;
             }
 
             if (erroNaString(hme) == true) {
@@ -652,11 +686,19 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
             if (listaJoinOsInsumosSelecionados.size() != 2) {
                 erroInsumos = true;
+                erroGeral = true;
             }
 
-            if(listaJoinOsInsumosSelecionados.size()==2){
-                if(listaJoinOsInsumosSelecionados.get(0).getQTD_APLICADO()==0) erroInsumos=true;
-                if(listaJoinOsInsumosSelecionados.get(1).getQTD_APLICADO()==0) erroInsumos=true;
+            if (listaJoinOsInsumosSelecionados.size() == 2) {
+                if (listaJoinOsInsumosSelecionados.get(0).getQTD_APLICADO() == 0) {
+                    erroGeral = true;
+                    erroInsumos = true;
+                }
+
+                if (listaJoinOsInsumosSelecionados.get(1).getQTD_APLICADO() == 0) {
+                    erroGeral = true;
+                    erroInsumos = true;
+                }
             }
 
             if (erro == true) {
@@ -672,6 +714,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                         }).create();
                 dialogoRegistros.show();
             }
+
             if (erroInsumos == true) {
                 AlertDialog dialogoInsumos = new AlertDialog.Builder(ActivityRegistros.this)
                         .setTitle("Erro!")
@@ -685,8 +728,8 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             }
 
             //testar a área
-            double novaArea = 0;
-            double areaAnterior = 0;
+            novaArea = 0;
+            areaAnterior = 0;
 
             if (erro == false && oSAtividadesDiaAtual != null && testeAreaRealizada != 0) {
                 if (oSAtividadesDiaAtual.getAREA_REALIZADA() != null) {
@@ -703,10 +746,16 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 if (testeAreaRealizada < areaAnterior)
                     novaArea = (testeAreaRealizada - areaAnterior);
             }
+
             if (erro == false && (novaArea + osSelecionada.getAREA_REALIZADA()) > osSelecionada.getAREA_PROGRAMADA()) {
+                DecimalFormat format = new DecimalFormat("###.#####");
+                Double d = (novaArea + osSelecionada.getAREA_REALIZADA()) - osSelecionada.getAREA_PROGRAMADA();
+                String diferenca = format.format(Double.parseDouble(String.valueOf(d)));
+                diferenca.replace('.', ',');
+
                 AlertDialog dialog = new AlertDialog.Builder(ActivityRegistros.this)
-                        .setTitle("Erro!")
-                        .setMessage("A área realizada não pode ser maior que a área programada")
+                        .setTitle("A área realizada não pode ser maior que a área programada")
+                        .setMessage("Diferença: " +diferenca)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -716,118 +765,117 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 erro = true;
             }
 
-            if (editouRegistro == true && fechouDialogoReg == false) {
+            if (erro == false && erroInsumos == false && editouRegistro == true){
                 edicaoReg = false;
-                if (posicaoResponsavel != oSAtividadesDiaAtual.getID_RESPONSAVEL())
-                    edicaoReg = true;
+
+                if (posicaoResponsavel != oSAtividadesDiaAtual.getID_RESPONSAVEL()) edicaoReg = true;
+
                 if (posicaoPrestador != oSAtividadesDiaAtual.getID_PRESTADOR()) edicaoReg = true;
+
                 if (!ho.equals(oSAtividadesDiaAtual.getHO())) edicaoReg = true;
+
                 if (!hm.equals(oSAtividadesDiaAtual.getHM())) edicaoReg = true;
+
                 if (!hh.equals(oSAtividadesDiaAtual.getHH())) edicaoReg = true;
+
                 if (!area.equals(oSAtividadesDiaAtual.getAREA_REALIZADA())) edicaoReg = true;
 
-                if (!hoe.isEmpty() && !hoe.equals(oSAtividadesDiaAtual.getHO_ESCAVADEIRA()))
-                    edicaoReg = true;
-                if (!hme.isEmpty() && !hme.equals(oSAtividadesDiaAtual.getHM_ESCAVADEIRA()))
-                    edicaoReg = true;
+                if (!hoe.isEmpty() && !hoe.equals(oSAtividadesDiaAtual.getHO_ESCAVADEIRA())) edicaoReg = true;
+
+                if (!hme.isEmpty() && !hme.equals(oSAtividadesDiaAtual.getHM_ESCAVADEIRA())) edicaoReg = true;
+
                 if (edicaoReg == true) {
                     acaoInativoAtividade = "EDICAO";
-                    abreDialogoEdicaoReg();
                 }
-            }
-
-            if (erro == false && erroInsumos == false && edicaoReg == false) {
-                if (oSAtividadesDiaAtual != null && oSAtividadesDiaAtual.getDATA() != dataDoApontamento) {
-                    O_S_ATIVIDADES_DIA aux = oSAtividadesDiaAtual;
-
-                    dao.apagaOsAtividadeInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), aux.getDATA());
-
-                    viewModelOSAtividadesDia.delete(aux);
-                }
-
-                double auxAreaRealizadaOs = osSelecionada.getAREA_REALIZADA();
-
-                double auxAreaRealizadaDia;
-
-                if (oSAtividadesDiaAtual != null && oSAtividadesDiaAtual.getAREA_REALIZADA() != null && testeAreaRealizada == 0 || testeAreaRealizada == NULL) {
-                    if (oSAtividadesDiaAtual != null) {
-                        String outraAuxkk = oSAtividadesDiaAtual.getAREA_REALIZADA();
-                        if (outraAuxkk != null && outraAuxkk.contains(","))
-                            outraAuxkk = outraAuxkk.replace(',', '.');
-                        auxAreaRealizadaDia = Double.valueOf(outraAuxkk);
-                        osSelecionada.setAREA_REALIZADA(auxAreaRealizadaOs - auxAreaRealizadaDia);
-                    }
-                } else osSelecionada.setAREA_REALIZADA(auxAreaRealizadaOs + novaArea);
-
-                oSAtividadesDiaAtual = new O_S_ATIVIDADES_DIA();
-
-                if (hoe.contains(",")) hoe = hoe.replace(',', '.');
-                if (ho.contains(",")) ho = ho.replace(',', '.');
-                if (hm.contains(",")) hm = hm.replace(',', '.');
-                if (hh.contains(",")) hh = hh.replace(',', '.');
-
-                if (hme != null) {
-                    if (hme.contains(",")) hme = hme.replace(',', '.');
-                }
-
-                if (hoe != null) {
-                    if (hoe.contains(",")) hoe = hoe.replace(',', '.');
-                }
-
-                oSAtividadesDiaAtual.setAREA_REALIZADA(area);
-                oSAtividadesDiaAtual.setHH(hh);
-                oSAtividadesDiaAtual.setHM(hm);
-                oSAtividadesDiaAtual.setHO(ho);
-                oSAtividadesDiaAtual.setHM_ESCAVADEIRA(hme);
-                oSAtividadesDiaAtual.setHO_ESCAVADEIRA(hoe);
-
-                oSAtividadesDiaAtual.setID_PRESTADOR(posicaoPrestador);
-                oSAtividadesDiaAtual.setID_RESPONSAVEL(posicaoResponsavel);
-                oSAtividadesDiaAtual.setID_PROGRAMACAO_ATIVIDADE(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
-                oSAtividadesDiaAtual.setDATA(dataHoraAtual.formataDataDb(dataDoApontamento));
-                if (acaoInativoAtividade != null)
-                    oSAtividadesDiaAtual.setACAO_INATIVO(acaoInativoAtividade);
-
-                if (obs != null) {
-                    if (!obs.isEmpty()) oSAtividadesDiaAtual.setOBSERVACAO(obs);
-                }
-
-                Join_OS_INSUMOS persiste;
-
-                if (editouRegistro == false) {
-                    listaJoinOsInsumosSelecionados.get(0).setOBSERVACAO(obsInsumo1.getText().toString());
-                    listaJoinOsInsumosSelecionados.get(1).setOBSERVACAO(obsInsumo2.getText().toString());
-                }
-
-                    persiste = listaJoinOsInsumosSelecionados.get(0);
-                    dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.formataDataDb(dataDoApontamento),
-                            persiste.getID_INSUMO(), persiste.getQTD_APLICADO(), null, '0', persiste.getOBSERVACAO()));
-
-                    persiste = listaJoinOsInsumosSelecionados.get(1);
-                dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.formataDataDb(dataDoApontamento),
-                        persiste.getID_INSUMO(), persiste.getQTD_APLICADO(), null, '0', persiste.getOBSERVACAO()));
-
-
-                dao.update(osSelecionada);
-                viewModelOSAtividadesDia.insert(oSAtividadesDiaAtual);
-
-                editouRegistro = false;
-                oSAtividadesDiaAtual = null;
-                listaJoinOsInsumosSelecionados = new ArrayList<Join_OS_INSUMOS>();
-                area = "";
-                ho = "";
-                hm = "";
-                hh = "";
-                hoe = "";
-                hme = "";
-                obs = "";
-
-                Intent it = new Intent(ActivityRegistros.this, ActivityRegistros.class);
-                startActivity(it);
             }
         }
     }
 
+    //Persiste os dados nos EditTexts no DB ?
+    public void salva() {
+
+        if (oSAtividadesDiaAtual != null && oSAtividadesDiaAtual.getDATA() != dataDoApontamento) {
+            O_S_ATIVIDADES_DIA aux = oSAtividadesDiaAtual;
+
+            dao.apagaOsAtividadeInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), aux.getDATA());
+
+            viewModelOSAtividadesDia.delete(aux);
+        }
+
+        auxAreaRealizadaOs = osSelecionada.getAREA_REALIZADA();
+
+        if (oSAtividadesDiaAtual != null && oSAtividadesDiaAtual.getAREA_REALIZADA() != null && testeAreaRealizada == 0 || testeAreaRealizada == NULL) {
+            if (oSAtividadesDiaAtual != null) {
+                outraAuxkk = oSAtividadesDiaAtual.getAREA_REALIZADA();
+                if (outraAuxkk != null && outraAuxkk.contains(","))
+                    outraAuxkk = outraAuxkk.replace(',', '.');
+                auxAreaRealizadaDia = Double.valueOf(outraAuxkk);
+                osSelecionada.setAREA_REALIZADA(auxAreaRealizadaOs - auxAreaRealizadaDia);
+            }
+        } else osSelecionada.setAREA_REALIZADA(auxAreaRealizadaOs + novaArea);
+
+        oSAtividadesDiaAtual = new O_S_ATIVIDADES_DIA();
+
+        if (hoe.contains(",")) hoe = hoe.replace(',', '.');
+        if (ho.contains(",")) ho = ho.replace(',', '.');
+        if (hm.contains(",")) hm = hm.replace(',', '.');
+        if (hh.contains(",")) hh = hh.replace(',', '.');
+
+        if (hme != null) {
+            if (hme.contains(",")) hme = hme.replace(',', '.');
+        }
+
+        if (hoe != null) {
+            if (hoe.contains(",")) hoe = hoe.replace(',', '.');
+        }
+
+        oSAtividadesDiaAtual.setAREA_REALIZADA(area);
+        oSAtividadesDiaAtual.setHH(hh);
+        oSAtividadesDiaAtual.setHM(hm);
+        oSAtividadesDiaAtual.setHO(ho);
+        oSAtividadesDiaAtual.setHM_ESCAVADEIRA(hme);
+        oSAtividadesDiaAtual.setHO_ESCAVADEIRA(hoe);
+
+        oSAtividadesDiaAtual.setID_PRESTADOR(posicaoPrestador);
+        oSAtividadesDiaAtual.setID_RESPONSAVEL(posicaoResponsavel);
+        oSAtividadesDiaAtual.setID_PROGRAMACAO_ATIVIDADE(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+        oSAtividadesDiaAtual.setDATA(dataHoraAtual.formataDataDb(dataDoApontamento));
+        if (acaoInativoAtividade != null)
+            oSAtividadesDiaAtual.setACAO_INATIVO(acaoInativoAtividade);
+
+        if (obs != null) {
+            if (!obs.isEmpty()) oSAtividadesDiaAtual.setOBSERVACAO(obs);
+        }
+
+        if (editouRegistro == false) {
+            listaJoinOsInsumosSelecionados.get(0).setOBSERVACAO(obsInsumo1.getText().toString());
+            listaJoinOsInsumosSelecionados.get(1).setOBSERVACAO(obsInsumo2.getText().toString());
+        }
+
+        for(int i = 0; i<listaJoinOsInsumosSelecionados.size(); i++) {
+            Join_OS_INSUMOS persiste = listaJoinOsInsumosSelecionados.get(i);
+            dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.formataDataDb(dataDoApontamento),
+                    persiste.getID_INSUMO(), persiste.getQTD_APLICADO(), null, '0', persiste.getOBSERVACAO()));
+        }
+
+        dao.update(osSelecionada);
+        viewModelOSAtividadesDia.insert(oSAtividadesDiaAtual);
+
+        edicaoReg = false;
+        editouRegistro = false;
+        oSAtividadesDiaAtual = null;
+        listaJoinOsInsumosSelecionados = new ArrayList<Join_OS_INSUMOS>();
+        area = "";
+        ho = "";
+        hm = "";
+        hh = "";
+        hoe = "";
+        hme = "";
+        obs = "";
+
+        Intent it = new Intent(ActivityRegistros.this, ActivityRegistros.class);
+        startActivity(it);
+    }
 
     //Adiciona o botão de atualização a barra de ação
     @Override
@@ -856,7 +904,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 if (osSelecionada.getSTATUS_NUM() == 2) {
                     Intent it = new Intent(ActivityRegistros.this, ActivityDashboard.class);
                     startActivity(it);
-                }else {
+                } else {
                     AlertDialog dialogoDash = new AlertDialog.Builder(ActivityRegistros.this)
                             .setTitle("Abrir a Dashboard?")
                             .setMessage("Caso clique em SIM, você perderá os dados não salvos!")
@@ -879,7 +927,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 if (osSelecionada.getSTATUS_NUM() == 2) {
                     Intent it = new Intent(ActivityRegistros.this, ActivityMain.class);
                     startActivity(it);
-                }else{
+                } else {
                     AlertDialog dialogoAtividades = new AlertDialog.Builder(ActivityRegistros.this)
                             .setTitle("Voltar Para a Listagem de Atividades?")
                             .setMessage("Caso clique em SIM, você perderá os dados não salvos!")
@@ -936,7 +984,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         }
 
         fragmentoInsumos.onBackPressed();
-        fragmentoRendimento.onBackPressed();
+        if(abriuDialogoEdicao) dialogoEdicaoRec.cancel();
     }
 
     @Override
@@ -944,5 +992,20 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         super.onSaveInstanceState(outState);
         outState.putString("data", dataDoApontamento);
         outState.putString("acaoInativoAtividade", acaoInativoAtividade);
+
+        outState.putBoolean("abriuDialogoEdicao", abriuDialogoEdicao);
+        outState.putBoolean("editouRegistro", editouRegistro);
+
+
+        if (abriuDialogoEdicao == true) {
+            if (valorJustificativa != null) {
+                if (!valorJustificativa.getText().toString().isEmpty()) {
+                    outState.putString("valorJustificativa", valorJustificativa.getText().toString());
+                }
+            }
+        }
+
+
+        if (abriuDialogoEdicao == true) dialogoEdicaoRec.dismiss();
     }
 }

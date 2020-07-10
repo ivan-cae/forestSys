@@ -56,7 +56,6 @@ public class FragmentoRendimento extends Fragment {
     public static int posicaoResponsavel=-1;
     public static int posicaoPrestador=-1;
 
-    public static O_S_ATIVIDADES_DIA auxiliar;
     private RepositorioUsers repositorioUsers;
     private RepositorioPrestadores repositorioPrestadores;
     private ArrayList<PRESTADORES> prestadores;
@@ -311,12 +310,10 @@ public class FragmentoRendimento extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        auxiliar = oSAtividadesDiaAtual;
-        if (auxiliar == null) {
-            auxiliar = new O_S_ATIVIDADES_DIA();
-        } else {
-            populaInfo(auxiliar);
-        }
+
+
+            if(oSAtividadesDiaAtual!=null)populaInfo(oSAtividadesDiaAtual);
+
 
         if(osSelecionada.getSTATUS_NUM()==2) {
             spinnerResponsavel.setEnabled(false);
@@ -427,8 +424,4 @@ public class FragmentoRendimento extends Fragment {
         outState.putInt("posicaoPrestador", posicaoPrestador);
         outState.putInt("posicaoResponsavel", posicaoResponsavel);
         }
-
-    public void onBackPressed() {
-    }
-
     }

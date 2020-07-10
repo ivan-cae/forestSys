@@ -6,14 +6,21 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -126,12 +133,12 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
     private List<INDICADORES_SUBSOLAGEM> listaVerion;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setTitle(nomeEmpresaPref);
-
         auxSavedInstanceState = savedInstanceState;
         setContentView(R.layout.activity_qualidade);
 
@@ -198,7 +205,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         listaVerion = dao.listaIndicadoresSubsolagem(idProg, osSelecionada.getID_ATIVIDADE());
         joinOsInsumos = dao.listaJoinInsumoAtividades(idProg);
 
-        if(!listaVerion.isEmpty()) {
+        if (!listaVerion.isEmpty()) {
             listaInsumoP1.setText(joinOsInsumos.get(0).getDESCRICAO());
             listaInsumoP2.setText(joinOsInsumos.get(1).getDESCRICAO());
 
@@ -214,15 +221,15 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
             pontosRealizados.setText(String.valueOf(listaPonto.get(listaPonto.size() - 1).getPONTO()));
 
-            int idReg=osSelecionada.getID_REGIONAL();
-            int idSet=osSelecionada.getID_SETOR();
-            String talhao=osSelecionada.getTALHAO();
-            int ciclo=osSelecionada.getCICLO();
-            int idManejo=osSelecionada.getID_MANEJO();
+            int idReg = osSelecionada.getID_REGIONAL();
+            int idSet = osSelecionada.getID_SETOR();
+            String talhao = osSelecionada.getTALHAO();
+            int ciclo = osSelecionada.getCICLO();
+            int idManejo = osSelecionada.getID_MANEJO();
 
-            CADASTRO_FLORESTAL cadastro_florestal = dao.selecionaCadFlorestal(idReg,idSet, talhao,ciclo,idManejo);
+            CADASTRO_FLORESTAL cadastro_florestal = dao.selecionaCadFlorestal(idReg, idSet, talhao, ciclo, idManejo);
 
-            String pegaEspacamento [] = dao.selecionaEspacamento(cadastro_florestal.getID_ESPACAMENTO()).getDESCRICAO().trim().replace(',', '.').split("X");
+            String pegaEspacamento[] = dao.selecionaEspacamento(cadastro_florestal.getID_ESPACAMENTO()).getDESCRICAO().trim().replace(',', '.').split("X");
             double teste;
             try {
                 teste = Double.parseDouble(pegaEspacamento[0]);
@@ -235,7 +242,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             int nc3 = dao.qtdNaoConformeMenor(idProg, 3, aval_subsolagem.getFAIXA_SOLO_PREPARADA());
             int nc4 = dao.qtdNaoConformeForaDaFaixa(idProg, 4, aval_subsolagem.getPROFUNDIDADE_ADUBO_INFERIOR(), aval_subsolagem.getPROFUNDIDADE_ADUBO_SUPERIOR());
             int nc5 = dao.qtdNaoConformebool(idProg, 5);
-            int nc6 = dao.qtdNaoConformeForaDaFaixa(idProg, 6, teste*0.95, teste*1.05);
+            int nc6 = dao.qtdNaoConformeForaDaFaixa(idProg, 6, teste * 0.95, teste * 1.05);
             int nc7 = dao.qtdNaoConformebool(idProg, 7);
             int nc8 = dao.qtdNaoConformebool(idProg, 8);
             int nc9 = dao.qtdNaoConformebool(idProg, 9);
@@ -254,43 +261,53 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
             ncProfundidade.setText(String.valueOf(nc1).replace('.', ','));
             ncPercProfundidade.setText(String.valueOf(percNc1).replace('.', ','));
-            if(percNc1>5.0 || percNc1<5.0) ncPercProfundidade.setTextColor(Color.parseColor("#FF0000"));
+            if (percNc1 > 5.0)
+                ncPercProfundidade.setTextColor(Color.parseColor("#FF0000"));
 
             ncEstrondamento.setText(String.valueOf(nc2).replace('.', ','));
             ncPercEstrondamento.setText(String.valueOf(percNc2).replace('.', ','));
-            if(percNc2>5.0 || percNc2<5.0) ncPercEstrondamento.setTextColor(Color.parseColor("#FF0000"));
+            if (percNc2 > 5.0)
+                ncPercEstrondamento.setTextColor(Color.parseColor("#FF0000"));
 
             ncFaixa.setText(String.valueOf(nc3).replace('.', ','));
             ncPercFaixa.setText(String.valueOf(percNc3).replace('.', ','));
-            if(percNc3>5.0 || percNc3<5.0) ncPercFaixa.setTextColor(Color.parseColor("#FF0000"));
+            if (percNc3 > 5.0)
+                ncPercFaixa.setTextColor(Color.parseColor("#FF0000"));
 
             ncProfundidadeFosfato.setText(String.valueOf(nc4).replace('.', ','));
             ncPercProfundidadeFosfato.setText(String.valueOf(percNc4).replace('.', ','));
-            if(percNc4>5.0 || percNc4<5.0) ncPercProfundidadeFosfato.setTextColor(Color.parseColor("#FF0000"));
+            if (percNc4 > 5.0)
+                ncPercProfundidadeFosfato.setTextColor(Color.parseColor("#FF0000"));
 
             ncPresencaFosfato.setText(String.valueOf(nc5).replace('.', ','));
             ncPercPresencaFosfato.setText(String.valueOf(percNc5).replace('.', ','));
-            if(percNc5>5.0 || percNc5<5.0) ncPercPresencaFosfato.setTextColor(Color.parseColor("#FF0000"));
+            if (percNc5 > 5.0)
+                ncPercPresencaFosfato.setTextColor(Color.parseColor("#FF0000"));
 
             ncLargura.setText(String.valueOf(nc6).replace('.', ','));
             ncPercLargura.setText(String.valueOf(percNc6).replace('.', ','));
-            if(percNc6>5.0 || percNc6<5.0) ncPercLargura.setTextColor(Color.parseColor("#FF0000"));
+            if (percNc6 > 5.0)
+                ncPercLargura.setTextColor(Color.parseColor("#FF0000"));
 
             ncPresencaTorroes.setText(String.valueOf(nc7).replace('.', ','));
             ncPercPresencaTorroes.setText(String.valueOf(percNc7).replace('.', ','));
-            if(percNc7>5.0 || percNc7<5.0) ncPercPresencaTorroes.setTextColor(Color.parseColor("#FF0000"));
+            if (percNc7 > 5.0)
+                ncPercPresencaTorroes.setTextColor(Color.parseColor("#FF0000"));
 
             ncEspelhamento.setText(String.valueOf(nc8).replace('.', ','));
             ncPercEspelhamento.setText(String.valueOf(percNc8).replace('.', ','));
-            if(percNc8>5.0 || percNc8<5.0) ncPercEspelhamento.setTextColor(Color.parseColor("#FF0000"));
+            if (percNc8 > 5.0)
+                ncPercEspelhamento.setTextColor(Color.parseColor("#FF0000"));
 
             ncBolsoes.setText(String.valueOf(nc9).replace('.', ','));
             ncPercBolsoes.setText(String.valueOf(percNc9).replace('.', ','));
-            if(percNc9>5.0 || percNc9<5.0) ncPercBolsoes.setTextColor(Color.parseColor("#FF0000"));
+            if (percNc9 > 5.0)
+                ncPercBolsoes.setTextColor(Color.parseColor("#FF0000"));
 
             ncLocalizacao.setText(String.valueOf(nc10).replace('.', ','));
             ncPercLocalizacao.setText(String.valueOf(percNc10).replace('.', ','));
-            if(percNc10>5.0 || percNc10<5.0) ncPercLocalizacao.setTextColor(Color.parseColor("#FF0000"));
+            if (percNc10 > 5.0)
+                ncPercLocalizacao.setTextColor(Color.parseColor("#FF0000"));
         }
 
         if (savedInstanceState != null) {
@@ -380,7 +397,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        if(osSelecionada.getSTATUS_NUM()==2) {
+        if (osSelecionada.getSTATUS_NUM() == 2) {
             botaoPonto.setEnabled(false);
             botaoPonto.setVisibility(GONE);
 
@@ -763,53 +780,82 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 } else {
                     double check = 0;
 
+
+                    if (ActivityCompat.checkSelfPermission(ActivityQualidade.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ActivityQualidade.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+
+                    if (ActivityCompat.checkSelfPermission(ActivityQualidade.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ActivityQualidade.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+
+                    LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                    Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+                    double longitude = location.getLongitude();
+                    double latitude = (location.getLatitude());
+
                     dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
                             listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(0).getID_INDICADOR(),
-                            Double.valueOf(editItem1.getText().toString().replace(',', '.')), 0, 0));
+                            Double.valueOf(editItem1.getText().toString().replace(',', '.')), latitude, longitude));
 
                     dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
                             listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(1).getID_INDICADOR(),
-                            Double.valueOf(editItem2.getText().toString().replace(',', '.')), 0, 0));
+                            Double.valueOf(editItem2.getText().toString().replace(',', '.')), latitude, longitude));
 
                     dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
                             listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(2).getID_INDICADOR(),
-                            Double.valueOf(editItem3.getText().toString().replace(',', '.')), 0, 0));
+                            Double.valueOf(editItem3.getText().toString().replace(',', '.')), latitude, longitude));
 
                     dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
                             listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(3).getID_INDICADOR(),
-                            Double.valueOf(editItem4.getText().toString().replace(',', '.')), 0, 0));
+                            Double.valueOf(editItem4.getText().toString().replace(',', '.')), latitude, longitude));
 
                     if (editItem5.isChecked()) check = 1;
                     else check = 0;
                     dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
                             listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(4).getID_INDICADOR(),
-                            check, 0, 0));
+                            check, latitude, longitude));
 
                     dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
                             listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(5).getID_INDICADOR(),
-                            Double.valueOf(editItem6.getText().toString().replace(',', '.')), 0, 0));
+                            Double.valueOf(editItem6.getText().toString().replace(',', '.')), latitude, longitude));
 
                     if (editItem7.isChecked()) check = 1;
                     else check = 0;
                     dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
                             listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(6).getID_INDICADOR(),
-                            check, 0, 0));
+                            check, latitude, longitude));
 
                     if (editItem8.isChecked()) check = 1;
                     else check = 0;
                     dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
                             listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(7).getID_INDICADOR(),
-                            check, 0, 0));
+                            check, latitude, longitude));
 
                     if (editItem9.isChecked()) check = 1;
                     else check = 0;
                     dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
                             listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(8).getID_INDICADOR(),
-                            check, 0, 0));
+                            check, latitude, longitude));
 
                     dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
                             listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(9).getID_INDICADOR(),
-                            Double.valueOf(editItem10.getText().toString().replace(',', '.')), 0, 0));
+                            Double.valueOf(editItem10.getText().toString().replace(',', '.')), latitude, longitude));
 
                     dialogoPontoAberto = false;
                     Intent it = new Intent(ActivityQualidade.this, ActivityQualidade.class);
@@ -885,5 +931,9 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         super.onDestroy();
         if (dialogoVerionAberto == true) dialogoVerion.dismiss();
         if (dialogoPontoAberto == true) dialogoPonto.dismiss();
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }

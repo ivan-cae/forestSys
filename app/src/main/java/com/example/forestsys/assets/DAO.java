@@ -339,6 +339,7 @@ public interface DAO {
     @Query("SELECT ID_INSUMO FROM INSUMOS WHERE ID_INSUMO_RM=:idInsRm")
     int selecionaInsumoPorRm(String idInsRm);
 
+
     //Scritps O_S_ATIVIDADE_INSUMOS
     @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_INSUMO=:idInsumo")
     List<O_S_ATIVIDADE_INSUMOS> selecionaOsAtividadeInsumo(int idProg, int idInsumo);
@@ -351,7 +352,7 @@ public interface DAO {
 
 
     //Scripts O_S_ATIVIDADE_INSUMOS_DIA
-    @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND DATA=:data")
+    @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND DATA=:data ORDER BY ID_INSUMO")
     List<O_S_ATIVIDADE_INSUMOS_DIA> listaOsAtividadeInsumosDia(int idProg, String data);
 
     @Query("DELETE FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND DATA=:data")

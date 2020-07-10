@@ -1,6 +1,7 @@
 package com.example.forestsys.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +67,7 @@ public class AdaptadorInsumos extends RecyclerView.Adapter<AdaptadorInsumos.Insu
             //acumulador = acumulador/osSelecionada.getAREA_PROGRAMADA();
             acumulador = Double.valueOf(df.format(acumulador).replace(',', '.'));
             holder.QTDApl.setText(String.valueOf(acumulador).replace(".", ","));
-            }
+         }
 
         @Override
         public int getItemCount() {

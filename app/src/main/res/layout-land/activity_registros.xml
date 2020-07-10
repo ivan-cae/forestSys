@@ -22,7 +22,7 @@
             android:layout_marginTop="1dp"
             android:background="#BDB8B8"
             android:textAlignment="center"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/registros_total_hme"
@@ -35,7 +35,7 @@
             android:layout_marginTop="1dp"
             android:background="#BDB8B8"
             android:textAlignment="center"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/registros_total_hh"
@@ -50,7 +50,7 @@
             android:background="#BDB8B8"
             android:text="Total"
             android:textAlignment="center"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +62,7 @@
             android:layout_height="20dp"
             android:background="#BDB8B8"
             android:textAlignment="center"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/registros_dif_insumo1"
@@ -75,7 +75,7 @@
             android:layout_marginTop="1dp"
             android:background="#BDB8B8"
             android:textAlignment="center"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/registros_total_hoe"
@@ -88,7 +88,7 @@
             android:layout_marginTop="1dp"
             android:background="#BDB8B8"
             android:textAlignment="center"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/registros_total_area"
@@ -101,7 +101,7 @@
             android:layout_marginTop="1dp"
             android:background="#BDB8B8"
             android:textAlignment="center"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView80"
@@ -114,7 +114,7 @@
             android:background="#BDB8B8"
             android:text="Dif %"
             android:textAlignment="center"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toStartOf="@+id/registros_total_hme"
@@ -126,7 +126,7 @@
             android:layout_height="20dp"
             android:background="#BDB8B8"
             android:textAlignment="center"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView82"
@@ -139,7 +139,7 @@
             android:layout_marginTop="1dp"
             android:background="#BDB8B8"
             android:textAlignment="center"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/registros_total_hm"
@@ -152,7 +152,7 @@
             android:layout_marginTop="1dp"
             android:background="#BDB8B8"
             android:textAlignment="center"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/registros_total_ho"
@@ -165,23 +165,22 @@
             android:layout_marginTop="1dp"
             android:background="#BDB8B8"
             android:textAlignment="center"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/registros_total_insumo1"
             app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
 
-        <ImageButton
+        <Button
             android:id="@+id/botao_prosseguir_continuar"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:background="#FFFFFF"
+            android:text="Finalizar"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/registro_fragmento_insumos"
-            app:srcCompat="@drawable/ic_action_tick" />
+            app:layout_constraintTop_toBottomOf="@+id/registro_fragmento_insumos" />
 
         <TextView
             android:id="@+id/textView65"
@@ -235,6 +234,7 @@
             android:id="@+id/textView70"
             android:layout_width="55dp"
             android:layout_height="20dp"
+            android:layout_marginTop="8dp"
             android:background="#BDB8B8"
             android:text="Data"
             android:textAlignment="center"
@@ -462,6 +462,18 @@
             app:layout_constraintTop_toTopOf="@+id/data_apontamento"
             app:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
+        <TextView
+            android:id="@+id/textView94"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="Toque No Insumo Para Adicionar a Aplicação"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/registro_fragmento_insumos"
+            app:layout_constraintStart_toStartOf="@+id/registro_fragmento_insumos"
+            app:layout_constraintTop_toBottomOf="@+id/botao_apontamentos_insumos" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/registros_lista"
             android:layout_width="0dp"
@@ -475,8 +487,10 @@
         <FrameLayout
             android:id="@+id/registro_fragmento_rendimento"
             android:layout_width="480dp"
-            android:layout_height="235dp"
+            android:layout_height="240dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="#FFFFFF"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/botao_apontamentos_geral">
 
@@ -487,40 +501,44 @@
             android:layout_width="350dp"
             android:layout_height="280dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:background="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/registros_lista"
-            app:layout_constraintTop_toBottomOf="@+id/botao_apontamentos_insumos">
+            app:layout_constraintTop_toBottomOf="@+id/textView94">
 
         </FrameLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <LinearLayout
-        android:id="@+id/linear_layout_continuar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="visible">
 
         <FrameLayout
             android:id="@+id/fragment_container_continuar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible">
+            android:visibility="visible"
+            tools:layout_editor_absoluteX="15dp"
+            tools:layout_editor_absoluteY="98dp">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar_continuar"
+            <LinearLayout
+                android:id="@+id/linear_layout_continuar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="#4183B1"
-                android:elevation="4dp"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                android:visibility="visible"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar_continuar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="#4183B1"
+                    android:elevation="4dp"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                    android:visibility="visible"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            </LinearLayout>
+
         </FrameLayout>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view_continuar"

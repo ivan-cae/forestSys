@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.forestsys.Adapters.AdaptadorFragmentoInsumos;
 import com.example.forestsys.assets.BaseDeDados;
@@ -37,7 +38,7 @@ import static com.example.forestsys.activities.ActivityRegistros.dataDoApontamen
 import static com.example.forestsys.activities.ActivityAtividades.listaJoinOsInsumosSelecionados;
 import static com.example.forestsys.activities.ActivityMain.osSelecionada;
 import static com.example.forestsys.activities.ActivityRegistros.pegaDescInsumos;
-import static com.example.forestsys.activities.ActivityAtividades.insumoMudouOrientacao;
+import static com.example.forestsys.activities.ActivityAtividades.insumoInsere;
 
 public class FragmentoInsumos extends Fragment {
 
@@ -53,11 +54,7 @@ public class FragmentoInsumos extends Fragment {
     private TextView nomeInsumo1;
     private TextView nomeInsumo2;
 
-    public boolean editouAmbos;
-    private int editouUm;
-    private int contEdicao;
-
-    private  EditText valorDialogoQtd;
+    private EditText valorDialogoQtd;
     private EditText valorDialogoEdicao;
 
     private boolean abriuDialogo;
@@ -65,10 +62,8 @@ public class FragmentoInsumos extends Fragment {
     private Bundle auxSavedInstanceState;
     private AlertDialog dialogoEdicao;
     private AlertDialog dialogoQtdAplicada;
-    private int idInsere=0;
-
-    private double valorAnteriorAEdicao;
-    private int idItemEditado;
+    private double auxValorDialogoQtd;
+    private boolean cancelouDialogoEdicao;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         auxSavedInstanceState = savedInstanceState;
@@ -89,12 +84,10 @@ public class FragmentoInsumos extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        editouUm = 0;
-        editouAmbos = false;
-        contEdicao = 0;
+        if (osSelecionada.getSTATUS_NUM() != 2) {
         abriuDialogo = false;
         abriuDialogoEdicao = false;
+        cancelouDialogoEdicao = false;
         baseDeDados = BaseDeDados.getInstance(getContext());
         dao = baseDeDados.dao();
         obsInsumo1 = getView().findViewById(R.id.obs_insumo1);
@@ -102,77 +95,77 @@ public class FragmentoInsumos extends Fragment {
         nomeInsumo1 = getView().findViewById(R.id.text_fragmento_insumo1);
         nomeInsumo2 = getView().findViewById(R.id.text_fragmento_insumo2);
 
-        if(editouRegistro == true){
+        if (editouRegistro == true) {
             obsInsumo2.setFocusable(false);
             obsInsumo1.setFocusable(false);
         }
 
-        if(savedInstanceState!=null){
-            editouUm = savedInstanceState.getInt("editouUm");
-            editouAmbos = savedInstanceState.getBoolean("editouAmbos");
-            contEdicao = savedInstanceState.getInt("contEdicao");
-
-             obsInsumo1.setText(savedInstanceState.getString("obsInsumo1"));
-             obsInsumo2.setText(savedInstanceState.getString("obsInsumo2"));
-
-             abriuDialogo = savedInstanceState.getBoolean("abriuDialogo");
-            abriuDialogoEdicao = savedInstanceState.getBoolean("abriuDialogoEdicao");
-
-            if(abriuDialogo==true) abreDialogoQtdAplicada(insumoMudouOrientacao);
-            if(abriuDialogoEdicao==true) abreDialogoEdicaoIns(insumoMudouOrientacao);
-        }
             listaJoinOsInsumos = dao.listaJoinInsumoAtividades(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
-        if (editouRegistro) listaJoinOsInsumosSelecionados = dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.formataDataDb(dataDoApontamento));
+            if (editouRegistro && savedInstanceState == null) listaJoinOsInsumosSelecionados = dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.formataDataDb(dataDoApontamento));
 
 
+            nomeInsumo1.setText("Observação - " + pegaDescInsumos[0] + ":");
+            nomeInsumo2.setText("Observação - " + pegaDescInsumos[1] + ":");
 
-        nomeInsumo1.setText("Observação - "+pegaDescInsumos[0]+":");
-        nomeInsumo2.setText("Observação - "+pegaDescInsumos[1]+":");
-
-        if(!listaJoinOsInsumosSelecionados.isEmpty()) {
-            if(listaJoinOsInsumosSelecionados.size()>=1) obsInsumo1.setText(listaJoinOsInsumosSelecionados.get(0).getOBSERVACAO());
-            if(listaJoinOsInsumosSelecionados.size()>=2) obsInsumo2.setText(listaJoinOsInsumosSelecionados.get(1).getOBSERVACAO());
-        }else{
+            if (!listaJoinOsInsumosSelecionados.isEmpty()) {
+                if (listaJoinOsInsumosSelecionados.size() >= 1)
+                    obsInsumo1.setText(listaJoinOsInsumosSelecionados.get(0).getOBSERVACAO());
+                if (listaJoinOsInsumosSelecionados.size() >= 2)
+                    obsInsumo2.setText(listaJoinOsInsumosSelecionados.get(1).getOBSERVACAO());
+            } else {
                 listaJoinOsInsumosSelecionados = listaJoinOsInsumos;
 
                 listaJoinOsInsumosSelecionados.get(0).setQTD_APLICADO(0);
                 listaJoinOsInsumosSelecionados.get(1).setQTD_APLICADO(0);
 
                 listaJoinOsInsumosSelecionados.get(0).setID_INSUMO(dao.selecionaInsumoPorRm(listaJoinOsInsumos.get(0).getID_INSUMO_RM()));
-            listaJoinOsInsumosSelecionados.get(1).setID_INSUMO(dao.selecionaInsumoPorRm(listaJoinOsInsumos.get(1).getID_INSUMO_RM()));
-        }
-        adaptador.setInsumos(listaJoinOsInsumosSelecionados);
-
-
-        adapterInsumos = new ArrayAdapter<Join_OS_INSUMOS>(getActivity(),
-                android.R.layout.simple_spinner_item, listaJoinOsInsumos);
-        adapterInsumos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-
-        adaptador.setOnItemClickListener(new AdaptadorFragmentoInsumos.OnItemClickListener() {
-            @Override
-            public void onItemClick(Join_OS_INSUMOS joinOsInsumos) {
-                AlertDialog dialog = new AlertDialog.Builder(getActivity())
-                        .setTitle("Editar")
-                        .setMessage("Deseja Adicionar a Quantidade Aplicada?")
-                        .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                valorAnteriorAEdicao = joinOsInsumos.getQTD_APLICADO();
-
-                                abreDialogoQtdAplicada(joinOsInsumos);
-                            }
-                        }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        }).create();
-                dialog.show();
+                listaJoinOsInsumosSelecionados.get(1).setID_INSUMO(dao.selecionaInsumoPorRm(listaJoinOsInsumos.get(1).getID_INSUMO_RM()));
             }
-        });
 
-        if(osSelecionada.getSTATUS_NUM()==2) {
+            adaptador.setInsumos(listaJoinOsInsumosSelecionados);
+
+            adapterInsumos = new ArrayAdapter<Join_OS_INSUMOS>(getActivity(),
+                    android.R.layout.simple_spinner_item, listaJoinOsInsumos);
+            adapterInsumos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        if (savedInstanceState != null) {
+            obsInsumo1.setText(savedInstanceState.getString("obsInsumo1"));
+            obsInsumo2.setText(savedInstanceState.getString("obsInsumo2"));
+
+            abriuDialogo = savedInstanceState.getBoolean("abriuDialogo");
+            abriuDialogoEdicao = savedInstanceState.getBoolean("abriuDialogoEdicao");
+
+            if (abriuDialogo == true) abreDialogoQtdAplicada(insumoInsere);
+            if (abriuDialogoEdicao == true)
+                abreDialogoEdicaoIns(savedInstanceState.getDouble("auxValorDialogoQtd"));
+        }
+
+
+
+
+            adaptador.setOnItemClickListener(new AdaptadorFragmentoInsumos.OnItemClickListener() {
+                @Override
+                public void onItemClick(Join_OS_INSUMOS joinOsInsumos) {
+                    AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                            .setTitle("Editar")
+                            .setMessage("Deseja Adicionar a Quantidade Aplicada?")
+                            .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    abreDialogoQtdAplicada(joinOsInsumos);
+                                }
+                            }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                }
+                            }).create();
+                    dialog.show();
+                }
+            });
+        }
+
+        if (osSelecionada.getSTATUS_NUM() == 2) {
             obsInsumo1.setEnabled(false);
             obsInsumo1.setVisibility(View.GONE);
 
@@ -186,15 +179,15 @@ public class FragmentoInsumos extends Fragment {
     //Parâmetro de entrada: instância da classe Join_OS_INSUMOS
     public void abreDialogoQtdAplicada(Join_OS_INSUMOS insere) {
         abriuDialogo = true;
-        insumoMudouOrientacao = insere;
+        insumoInsere = insere;
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
         View mView = getLayoutInflater().inflate(R.layout.dialogo_registros_insumos, null);
         valorDialogoQtd = mView.findViewById(R.id.valor_dialogo_insumos);
         Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_insumos);
 
-        if(auxSavedInstanceState!=null){
-            if(auxSavedInstanceState.getString("valorDialogoQtd")!=null){
-                if(!auxSavedInstanceState.getString("valorDialogoQtd").isEmpty()){
+        if (auxSavedInstanceState != null) {
+            if (auxSavedInstanceState.getString("valorDialogoQtd") != null) {
+                if (!auxSavedInstanceState.getString("valorDialogoQtd").isEmpty()) {
                     valorDialogoQtd.setText(auxSavedInstanceState.getString("valorDialogoQtd"));
                 }
             }
@@ -202,7 +195,9 @@ public class FragmentoInsumos extends Fragment {
 
         mBuilder.setView(mView);
         dialogoQtdAplicada = mBuilder.create();
+        dialogoQtdAplicada.setCanceledOnTouchOutside(false);
         dialogoQtdAplicada.show();
+
         botaoOk.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -214,68 +209,71 @@ public class FragmentoInsumos extends Fragment {
                 for (int i = 0; i < s.length; i++) {
                     if (s[i] == '.') contador++;
                 }
-                if (str==null || str.isEmpty() || contador > 1 || s[s.length - 1] == '.' || s[0] == '.' ||  Double.valueOf(str.replace(',', '.'))==0.0){
+                if (str == null || str.isEmpty() || contador > 1 || s[s.length - 1] == '.' || s[0] == '.' || Double.valueOf(str.replace(',', '.')) == 0.0) {
                     valorDialogoQtd.setError("Valor inválido");
-                }
-                else {
-                    insere.setQTD_APLICADO(Double.valueOf(str));
-                    if (!listaJoinOsInsumosSelecionados.contains(insere))
-                        listaJoinOsInsumosSelecionados.add(insere);
-                    else {
-                        int id = listaJoinOsInsumosSelecionados.indexOf(insere);
-                        idItemEditado = id;
-                        listaJoinOsInsumosSelecionados.set(id, insere);
-                    }
-                    if (editouRegistro == true){
-                        abreDialogoEdicaoIns(insere);
+                } else {
+                    int id = listaJoinOsInsumosSelecionados.indexOf(insumoInsere);
+                    if (editouRegistro == false) {
+                        insumoInsere.setQTD_APLICADO(Double.valueOf(str));
+                        listaJoinOsInsumosSelecionados.set(id, insumoInsere);
+                        adaptador.setInsumos(listaJoinOsInsumosSelecionados);
                     }
 
-                    adaptador.setInsumos(listaJoinOsInsumosSelecionados);
-                    abriuDialogo = false;
-                    dialogoQtdAplicada.dismiss();
+
+                if (editouRegistro == true) {
+                    abreDialogoEdicaoIns(Double.valueOf(valorDialogoQtd.getText().toString()));
                 }
-            }
-        });
 
-        dialogoQtdAplicada.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                auxSavedInstanceState = null;
                 abriuDialogo = false;
+                dialogoQtdAplicada.dismiss();
             }
-        });
+        }
+    });
 
-        dialogoQtdAplicada.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                auxSavedInstanceState = null;
-                abriuDialogo = false;
-            }
-        });
+        dialogoQtdAplicada.setOnDismissListener(new DialogInterface.OnDismissListener()
+
+    {
+        @Override
+        public void onDismiss (DialogInterface dialog){
+        auxSavedInstanceState = null;
+        abriuDialogo = false;
     }
+    });
+
+        dialogoQtdAplicada.setOnCancelListener(new DialogInterface.OnCancelListener()
+
+    {
+        @Override
+        public void onCancel (DialogInterface dialog){
+        Toast.makeText(getActivity(), "Operação cancelada pelo usuário", Toast.LENGTH_SHORT).show();
+        auxSavedInstanceState = null;
+        abriuDialogo = false;
+    }
+    });
+}
 
     //Abre diálogo para edição da quantidade do insumo
     //Método de entrada: uma instância da classe Join_OS_INSUMOS
-    public void abreDialogoEdicaoIns(Join_OS_INSUMOS insere) {
-        abriuDialogoEdicao=true;
-        insumoMudouOrientacao = insere;
+    public void abreDialogoEdicaoIns(double valor) {
+        abriuDialogoEdicao = true;
+        auxValorDialogoQtd = valor;
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
         View mView = getLayoutInflater().inflate(R.layout.dialogo_editar_insumos, null);
         valorDialogoEdicao = mView.findViewById(R.id.valor_dialogo_editar_insumos);
         Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_editar_insumos);
 
-        if(auxSavedInstanceState!=null){
-            if(auxSavedInstanceState.getString("valorDialogoEdicao")!=null){
-                if(!auxSavedInstanceState.getString("valorDialogoEdicao").isEmpty()){
+        if (auxSavedInstanceState != null) {
+            if (auxSavedInstanceState.getString("valorDialogoEdicao") != null) {
+                if (!auxSavedInstanceState.getString("valorDialogoEdicao").isEmpty()) {
                     valorDialogoEdicao.setText(auxSavedInstanceState.getString("valorDialogoEdicao"));
-                    idInsere = auxSavedInstanceState.getInt("idInsere", idInsere);
                 }
             }
         }
-        else idInsere = listaJoinOsInsumosSelecionados.indexOf(insere);
+
 
         mBuilder.setView(mView);
         dialogoEdicao = mBuilder.create();
+        dialogoEdicao.setCanceledOnTouchOutside(false);
         dialogoEdicao.show();
 
         botaoOk.setOnClickListener(new View.OnClickListener() {
@@ -283,19 +281,19 @@ public class FragmentoInsumos extends Fragment {
             @Override
             public void onClick(View view) {
                 String str = valorDialogoEdicao.getText().toString();
-
+                int id = listaJoinOsInsumosSelecionados.indexOf(insumoInsere);
                 if (str.trim().length() < 3)
                     valorDialogoEdicao.setError("Justificativa deve ter mais de 2 caracteres.");
                 else {
+                    insumoInsere.setQTD_APLICADO(valor);
+                    String obs = listaJoinOsInsumosSelecionados.get(id).getOBSERVACAO();
+                    String pegaObs = "";
+                    if (!obs.isEmpty() || obs != null) pegaObs = obs + "\n";
+                    obs = pegaObs.concat("Editado em " + dataHoraAtual.dataAtual() + " ás " + dataHoraAtual.horaAtual() + ". Justificativa: " + (valorDialogoEdicao.getText().toString()));
+                    insumoInsere.setOBSERVACAO(obs);
+                    insumoInsere.setACAO_INATIVO("EDICAO");
 
-                    String obs = listaJoinOsInsumosSelecionados.get(idInsere).getOBSERVACAO();
-                    String pegaObs="";
-                    if(!obs.isEmpty() || obs!=null) pegaObs = obs+"\n";
-                    obs = pegaObs.concat("Editado em "+ dataHoraAtual.dataAtual()+" ás "+dataHoraAtual.horaAtual()+". Justificativa: "+(valorDialogoEdicao.getText().toString()));
-                    insere.setOBSERVACAO(obs);
-                    insere.setACAO_INATIVO("EDICAO");
-                    listaJoinOsInsumosSelecionados.set(idInsere, insere);
-
+                    listaJoinOsInsumosSelecionados.set(id, insumoInsere);
                     adaptador.setInsumos(listaJoinOsInsumosSelecionados);
                     dialogoEdicao.dismiss();
                 }
@@ -307,14 +305,15 @@ public class FragmentoInsumos extends Fragment {
             public void onDismiss(DialogInterface dialog) {
                 auxSavedInstanceState = null;
                 abriuDialogoEdicao = false;
+                cancelouDialogoEdicao = true;
             }
         });
 
         dialogoEdicao.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                listaJoinOsInsumosSelecionados.get(idItemEditado).setQTD_APLICADO(valorAnteriorAEdicao);
-                adaptador.setInsumos(listaJoinOsInsumosSelecionados);
+                Toast.makeText(getActivity(), "Operação cancelada pelo usuário", Toast.LENGTH_SHORT).show();
+                cancelouDialogoEdicao = true;
                 auxSavedInstanceState = null;
                 abriuDialogoEdicao = false;
             }
@@ -328,30 +327,29 @@ public class FragmentoInsumos extends Fragment {
         String str1 = obsInsumo1.getText().toString();
         String str2 = obsInsumo2.getText().toString();
 
-        if(str1.isEmpty() || str1 == null) str1="";
+        if (str1.isEmpty() || str1 == null) str1 = "";
         outState.putString("obsInsumo1", str1);
 
-        if(str2.isEmpty() || str2 == null)str2="";
+        if (str2.isEmpty() || str2 == null) str2 = "";
         outState.putString("obsInsumo2", str2);
-
-        outState.putInt("editouUm", editouUm);
-        outState.putBoolean("editouAmbos", editouAmbos);
-        outState.putInt("contEdicao", contEdicao);
 
         outState.putBoolean("abriuDialogoEdicao", abriuDialogoEdicao);
         outState.putBoolean("abriuDialogo", abriuDialogo);
 
-        if(abriuDialogo) {
+        if (abriuDialogo) {
             outState.putString("valorDialogoQtd", valorDialogoQtd.getText().toString());
             dialogoQtdAplicada.dismiss();
         }
-        if(abriuDialogoEdicao){
-            outState.putInt("idInsere", idInsere);
+        if (abriuDialogoEdicao) {
             outState.putString("valorDialogoEdicao", valorDialogoEdicao.getText().toString());
+            outState.putDouble("auxValorDialogoQtd", auxValorDialogoQtd);
+            outState.putBoolean("cancelouDialogoEdicao", cancelouDialogoEdicao);
             dialogoEdicao.dismiss();
         }
     }
 
     public void onBackPressed() {
+        if(abriuDialogoEdicao) dialogoEdicao.cancel();
+        if(abriuDialogo) dialogoQtdAplicada.cancel();
     }
 }

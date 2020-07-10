@@ -70,7 +70,9 @@ public class O_S_ATIVIDADES {
 
     private int STATUS_NUM;
 
-    public O_S_ATIVIDADES(int ID_PROGRAMACAO_ATIVIDADE, int ID_REGIONAL, int ID_SETOR, String TALHAO, int CICLO, int ID_MANEJO, int ID_ATIVIDADE, int ID_RESPONSAVEL, String DATA_PROGRAMADA, double AREA_PROGRAMADA, int PRIORIDADE, int EXPERIMENTO, int MADEIRA_NO_TALHAO, String OBSERVACAO, String DATA_INICIAL, String DATA_FINAL, double AREA_REALIZADA, String STATUS, int STATUS_NUM) {
+    private boolean EDITOU;
+
+    public O_S_ATIVIDADES(int ID_PROGRAMACAO_ATIVIDADE, int ID_REGIONAL, int ID_SETOR, String TALHAO, int CICLO, int ID_MANEJO, int ID_ATIVIDADE, int ID_RESPONSAVEL, String DATA_PROGRAMADA, double AREA_PROGRAMADA, int PRIORIDADE, int EXPERIMENTO, int MADEIRA_NO_TALHAO, String OBSERVACAO, String DATA_INICIAL, String DATA_FINAL, double AREA_REALIZADA, String STATUS, int STATUS_NUM, boolean EDITOU) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.ID_REGIONAL = ID_REGIONAL;
         this.ID_SETOR = ID_SETOR;
@@ -90,6 +92,7 @@ public class O_S_ATIVIDADES {
         this.AREA_REALIZADA = AREA_REALIZADA;
         this.STATUS = STATUS;
         this.STATUS_NUM = STATUS_NUM;
+        this.EDITOU = EDITOU;
     }
 
     public int getID_PROGRAMACAO_ATIVIDADE() {
@@ -242,5 +245,13 @@ public class O_S_ATIVIDADES {
 
     public void setSTATUS_NUM(int STATUS_NUM) {
         this.STATUS_NUM = STATUS_NUM;
+    }
+
+    public boolean isEDITOU() {
+        return EDITOU;
+    }
+
+    public void setEDITOU(boolean EDITOU) {
+        this.EDITOU = EDITOU;
     }
 }

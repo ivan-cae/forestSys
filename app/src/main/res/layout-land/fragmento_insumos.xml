@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="350dp"
     android:layout_height="280dp"
-    android:background="#FFFFFF"
+    android:background="@drawable/bordas"
     tools:context=".activities.FragmentoInsumos">
 
     <EditText
@@ -98,6 +98,7 @@
         android:id="@+id/recycler_lista_insumos"
         android:layout_width="0dp"
         android:layout_height="60dp"
+        android:layout_marginStart="3dp"
         android:background="#FFFFFF"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="@+id/textView66"
