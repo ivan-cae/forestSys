@@ -139,7 +139,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     private double areaAnterior;
     private boolean erroGeral = false;
     private boolean edicaoReg = false;
-    private boolean naoConcluiuAreaRealizada = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -365,7 +364,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                             .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    if (naoConcluiuAreaRealizada == false && erro == false && erroInsumos == false && erroGeral == false) {
+                                    if (erro == false && erroInsumos == false && erroGeral == false) {
                                         if (edicaoReg == false) chamaSalvar();
                                         else abreDialogoEdicaoReg();
                                     }
@@ -373,7 +372,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                             }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    naoConcluiuAreaRealizada = true;
                                 }
                             }).create();
                     dialog.show();
