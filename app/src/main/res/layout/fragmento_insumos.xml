@@ -97,7 +97,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_lista_insumos"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="80dp"
         android:layout_marginStart="3dp"
         android:layout_marginEnd="3dp"
         android:background="#FFFFFF"

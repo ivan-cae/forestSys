@@ -133,7 +133,6 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
     private List<INDICADORES_SUBSOLAGEM> listaVerion;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -808,6 +807,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                     double longitude = location.getLongitude();
                     double latitude = (location.getLatitude());
+
+                    Log.e("Lat Long", String.valueOf(latitude)+" "+String.valueOf(longitude));
 
                     dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
                             listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(0).getID_INDICADOR(),

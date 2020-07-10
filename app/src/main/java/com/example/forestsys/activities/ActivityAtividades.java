@@ -178,8 +178,7 @@ public class ActivityAtividades extends AppCompatActivity
 
         talhaoOs.setText(String.valueOf(osSelecionada.getTALHAO()));
 
-        if (osSelecionada.getOBSERVACAO() != null)
-            obsOs.setText(String.valueOf(osSelecionada.getOBSERVACAO()));
+        if (osSelecionada.getOBSERVACAO() != null) obsOs.setText(String.valueOf(osSelecionada.getOBSERVACAO()));
 
         statusOs.setText(osSelecionada.getSTATUS());
         areaOs.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace(".", ",") + "ha");
@@ -209,14 +208,18 @@ public class ActivityAtividades extends AppCompatActivity
             if (abriuDialogoAreaRealizada == true) abreDialogoJustificativaAreaRealizada();
         }
 
-        checaCalibracao();
+        if (osSelecionada.isEDITOU() == false) checaCalibracao();
 
-        if (osSelecionada.getSTATUS_NUM() != 2) checaCalibragemRegistro();
+        if (osSelecionada.getSTATUS_NUM() != 2) {
+            if (osSelecionada.isEDITOU() == false) checaCalibragemRegistro();
+        }
 
         if (osSelecionada.getSTATUS_NUM() == 2) {
-            botaoFinalizarOs.setVisibility(View.VISIBLE);
-            botaoFinalizarOs.setEnabled(true);
-            botaoFinalizarOs.setBackgroundColor(Color.parseColor("#32CD32"));
+            if (osSelecionada.isEDITOU() == false) {
+                botaoFinalizarOs.setVisibility(View.VISIBLE);
+                botaoFinalizarOs.setEnabled(true);
+                botaoFinalizarOs.setBackgroundColor(Color.parseColor("#32CD32"));
+            }
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detalhes);
@@ -235,6 +238,36 @@ public class ActivityAtividades extends AppCompatActivity
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        if (osSelecionada.isEDITOU() == true) {
+            botaoQualidade.setEnabled(true);
+            botaoQualidade.setBackgroundColor(Color.parseColor("#75A9EB"));
+
+            botaoCalibracao.setEnabled(true);
+            botaoCalibracao.setBackgroundColor(Color.parseColor("#75A9EB"));
+
+            botaoRegistros.setEnabled(true);
+            botaoRegistros.setBackgroundColor(Color.parseColor("#75A9EB"));
+
+            botaoFinalizarOs.setVisibility(View.VISIBLE);
+            botaoFinalizarOs.setEnabled(true);
+            botaoFinalizarOs.setBackgroundColor(Color.parseColor("#32CD32"));
+        }
+
+        if (osSelecionada.getSTATUS_NUM() == 2) {
+            botaoQualidade.setEnabled(true);
+            botaoQualidade.setBackgroundColor(Color.parseColor("#75A9EB"));
+
+            botaoCalibracao.setEnabled(true);
+            botaoCalibracao.setBackgroundColor(Color.parseColor("#75A9EB"));
+
+            botaoRegistros.setEnabled(true);
+            botaoRegistros.setBackgroundColor(Color.parseColor("#75A9EB"));
+
+            botaoFinalizarOs.setVisibility(View.VISIBLE);
+            botaoFinalizarOs.setEnabled(true);
+            botaoFinalizarOs.setBackgroundColor(Color.parseColor("#32CD32"));
+        }
 
         botaoCalibracao.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -374,17 +407,7 @@ public class ActivityAtividades extends AppCompatActivity
             }
         });
 
-        if (osSelecionada.isEDITOU() == true) {
-            botaoQualidade.setEnabled(true);
-            botaoQualidade.setBackgroundColor(Color.parseColor("#75A9EB"));
 
-            botaoCalibracao.setEnabled(true);
-            botaoCalibracao.setBackgroundColor(Color.parseColor("#75A9EB"));
-
-            botaoFinalizarOs.setVisibility(View.VISIBLE);
-            botaoFinalizarOs.setEnabled(true);
-            botaoFinalizarOs.setBackgroundColor(Color.parseColor("#32CD32"));
-        }
     }
 
     public void salvar() {
@@ -616,7 +639,7 @@ public class ActivityAtividades extends AppCompatActivity
             botaoQualidade.setEnabled(false);
         }
 
-        if (calibragem_subsolagem != null || osSelecionada.getSTATUS_NUM() == 2) {
+        if (calibragem_subsolagem != null || osSelecionada.getSTATUS_NUM() != 2) {
             botaoRegistros.setEnabled(true);
             botaoRegistros.setBackgroundColor(Color.parseColor("#75A9EB"));
 

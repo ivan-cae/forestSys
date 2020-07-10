@@ -53,8 +53,8 @@ public class FragmentoRendimento extends Fragment {
     public static EditText obsApontamento;
 
 
-    public static int posicaoResponsavel=-1;
-    public static int posicaoPrestador=-1;
+    public static int posicaoResponsavel = -1;
+    public static int posicaoPrestador = -1;
 
     private RepositorioUsers repositorioUsers;
     private RepositorioPrestadores repositorioPrestadores;
@@ -73,44 +73,46 @@ public class FragmentoRendimento extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        inicializacao();
-        if(editouRegistro==true){
-            obsApontamento.setFocusable(false);
+        if (osSelecionada.getSTATUS_NUM() != 2) {
+            inicializacao();
+            if (editouRegistro == true) {
+                obsApontamento.setFocusable(false);
 
-            int maior = usuarios.size();
-            if(prestadores.size()>maior) maior = prestadores.size();
-            for(int i = 0; i<maior; i++){
-                if(i<usuarios.size()) {
-                    if (usuarios.get(i).getID_USUARIO() == oSAtividadesDiaAtual.getID_RESPONSAVEL())
-                        posicaoResponsavel = usuarios.get(i).getID_USUARIO();
-                    spinnerResponsavel.setSelection(posicaoResponsavel - 1);
+                int maior = usuarios.size();
+                if (prestadores.size() > maior) maior = prestadores.size();
+                for (int i = 0; i < maior; i++) {
+                    if (i < usuarios.size()) {
+                        if (usuarios.get(i).getID_USUARIO() == oSAtividadesDiaAtual.getID_RESPONSAVEL())
+                            posicaoResponsavel = usuarios.get(i).getID_USUARIO();
+                        spinnerResponsavel.setSelection(posicaoResponsavel - 1);
+                    }
+
+                    if (i < prestadores.size()) {
+                        if (prestadores.get(i).getID_PRESTADOR() == oSAtividadesDiaAtual.getID_PRESTADOR())
+                            posicaoPrestador = prestadores.get(i).getID_PRESTADOR();
+                        spinnerPrestador.setSelection(posicaoPrestador - 1);
+                    }
                 }
-
-                if(i<prestadores.size()){
-                if(prestadores.get(i).getID_PRESTADOR()==oSAtividadesDiaAtual.getID_PRESTADOR()) posicaoPrestador = prestadores.get(i).getID_PRESTADOR();
-                spinnerPrestador.setSelection(posicaoPrestador-1);
-            }
-            }
-            spinnerPrestador.setAdapter(adapterPrestadores);
-            spinnerPrestador.setSelection(posicaoPrestador-1);
-
-            spinnerResponsavel.setAdapter(adapterUsuarios);
-            spinnerResponsavel.setSelection(posicaoResponsavel-1);
-        }
-        else obsApontamento.setFocusable(true);
-
-
-        if(savedInstanceState!=null){
-            posicaoResponsavel = savedInstanceState.getInt("posicaoResponsavel");
-            posicaoPrestador = savedInstanceState.getInt("posicaoPrestador");
-
-            if(posicaoResponsavel!=-1){
-                spinnerResponsavel.setAdapter(adapterUsuarios);
-                spinnerResponsavel.setSelection(posicaoResponsavel);
-            }
-            if(posicaoPrestador!=-1){
                 spinnerPrestador.setAdapter(adapterPrestadores);
-                spinnerPrestador.setSelection(posicaoPrestador);
+                spinnerPrestador.setSelection(posicaoPrestador - 1);
+
+                spinnerResponsavel.setAdapter(adapterUsuarios);
+                spinnerResponsavel.setSelection(posicaoResponsavel - 1);
+            } else obsApontamento.setFocusable(true);
+
+
+            if (savedInstanceState != null) {
+                posicaoResponsavel = savedInstanceState.getInt("posicaoResponsavel");
+                posicaoPrestador = savedInstanceState.getInt("posicaoPrestador");
+
+                if (posicaoResponsavel != -1) {
+                    spinnerResponsavel.setAdapter(adapterUsuarios);
+                    spinnerResponsavel.setSelection(posicaoResponsavel);
+                }
+                if (posicaoPrestador != -1) {
+                    spinnerPrestador.setAdapter(adapterPrestadores);
+                    spinnerPrestador.setSelection(posicaoPrestador);
+                }
             }
         }
     }
@@ -149,7 +151,7 @@ public class FragmentoRendimento extends Fragment {
         spinnerResponsavel.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(contSpinnerResponsavel ==0) spinnerResponsavel.setAdapter(adapterUsuarios);
+                if (contSpinnerResponsavel == 0) spinnerResponsavel.setAdapter(adapterUsuarios);
                 return false;
             }
         });
@@ -157,7 +159,7 @@ public class FragmentoRendimento extends Fragment {
         spinnerPrestador.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(contSpinnerPrestador ==0) spinnerPrestador.setAdapter(adapterPrestadores);
+                if (contSpinnerPrestador == 0) spinnerPrestador.setAdapter(adapterPrestadores);
                 return false;
             }
         });
@@ -284,11 +286,11 @@ public class FragmentoRendimento extends Fragment {
         spinnerPrestador.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (contSpinnerPrestador > 0){
-                position++;
-                posicaoPrestador = position;
-            }
-            contSpinnerPrestador++;
+                if (contSpinnerPrestador > 0) {
+                    position++;
+                    posicaoPrestador = position;
+                }
+                contSpinnerPrestador++;
             }
 
             @Override
@@ -299,11 +301,11 @@ public class FragmentoRendimento extends Fragment {
         spinnerResponsavel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (contSpinnerResponsavel > 0){
+                if (contSpinnerResponsavel > 0) {
                     position++;
                     posicaoResponsavel = position;
                 }
-                contSpinnerResponsavel ++;
+                contSpinnerResponsavel++;
             }
 
             @Override
@@ -312,10 +314,10 @@ public class FragmentoRendimento extends Fragment {
         });
 
 
-            if(oSAtividadesDiaAtual!=null)populaInfo(oSAtividadesDiaAtual);
+        if (oSAtividadesDiaAtual != null) populaInfo(oSAtividadesDiaAtual);
 
 
-        if(osSelecionada.getSTATUS_NUM()==2) {
+        if (osSelecionada.getSTATUS_NUM() == 2) {
             spinnerResponsavel.setEnabled(false);
             spinnerResponsavel.setVisibility(View.GONE);
 
@@ -412,16 +414,18 @@ public class FragmentoRendimento extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("area", area);
-        outState.putString("hoe", hoe);
-        outState.putString("ho", ho);
-        outState.putString("hm", hm);
-        outState.putString("hh", hh);
-        outState.putString("hme", hme);
-        outState.putString("obs", obs);
+        if (osSelecionada.getSTATUS_NUM() != 2) {
+            super.onSaveInstanceState(outState);
+            outState.putString("area", area);
+            outState.putString("hoe", hoe);
+            outState.putString("ho", ho);
+            outState.putString("hm", hm);
+            outState.putString("hh", hh);
+            outState.putString("hme", hme);
+            outState.putString("obs", obs);
 
-        outState.putInt("posicaoPrestador", posicaoPrestador);
-        outState.putInt("posicaoResponsavel", posicaoResponsavel);
+            outState.putInt("posicaoPrestador", posicaoPrestador);
+            outState.putInt("posicaoResponsavel", posicaoResponsavel);
         }
     }
+}
