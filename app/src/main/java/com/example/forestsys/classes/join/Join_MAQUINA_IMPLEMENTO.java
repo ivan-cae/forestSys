@@ -60,7 +60,7 @@ public class Join_MAQUINA_IMPLEMENTO {
     @NonNull
     @Override
     public String toString() {
-        return DESCRICAO_MAQUINA+" + "+DESCRICAO_IMPLEMENTO;
+        return DESCRICAO_IMPLEMENTO;
     }
 }
 

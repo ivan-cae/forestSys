@@ -68,7 +68,7 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
         toggle.syncState();
 
 
-        List<O_S_ATIVIDADES> listaTodasOs = dao.selecionaListaOs();
+        List<O_S_ATIVIDADES> listaTodasOs = dao.todasOs();
         List<O_S_ATIVIDADES_DIA> listaReg = dao.todasOsAtividadesDia();
 
         int contAbertas = 0;

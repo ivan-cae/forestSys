@@ -218,15 +218,43 @@ public interface DAO {
     LiveData <GEO_REGIONAIS> selecionaRegional(int taskId);
 
 
-    //Scripts ClasseOs
-    @Query("SELECT * FROM O_S_ATIVIDADES ORDER BY ID_PROGRAMACAO_ATIVIDADE asc")
-    LiveData<List<O_S_ATIVIDADES>> todasOs();
+    //Scripts O_S_ATIVIDADES
+    @Query("SELECT * FROM O_S_ATIVIDADES ORDER BY DATE(DATA_PROGRAMADA) ASC")
+    List<O_S_ATIVIDADES> listaOsDataAsc();
+
+    @Query("SELECT * FROM O_S_ATIVIDADES ORDER BY DATE(DATA_PROGRAMADA) DESC")
+    List<O_S_ATIVIDADES> listaOsDataDesc();
+
+
+    @Query("SELECT * FROM O_S_ATIVIDADES ORDER BY PRIORIDADE ASC")
+    List<O_S_ATIVIDADES> listaOsPrioridadeAsc();
+
+    @Query("SELECT * FROM O_S_ATIVIDADES ORDER BY PRIORIDADE DESC")
+    List<O_S_ATIVIDADES> listaOsPrioridadeDesc();
+
+
+    @Query("SELECT * FROM O_S_ATIVIDADES JOIN GEO_SETORES WHERE O_S_ATIVIDADES.ID_SETOR = GEO_SETORES.ID_SETOR" +
+            " ORDER BY GEO_SETORES.DESCRICAO ASC")
+    List<O_S_ATIVIDADES> listaOsSetorAsc();
+
+    @Query("SELECT * FROM O_S_ATIVIDADES JOIN GEO_SETORES WHERE O_S_ATIVIDADES.ID_SETOR = GEO_SETORES.ID_SETOR" +
+            " ORDER BY GEO_SETORES.DESCRICAO desc")
+    List<O_S_ATIVIDADES> listaOsSetorDesc();
+
+
+    @Query("SELECT * FROM O_S_ATIVIDADES ORDER BY CAST(TALHAO AS INTEGER) ASC")
+    List<O_S_ATIVIDADES> listaOsTalhaoAsc();
+
+    @Query("SELECT * FROM O_S_ATIVIDADES ORDER BY CAST(TALHAO AS INTEGER) DESC")
+    List<O_S_ATIVIDADES> listaOsTalhaoDesc();
+
 
     @Query("SELECT * FROM O_S_ATIVIDADES WHERE ID_PROGRAMACAO_ATIVIDADE=:taskId")
     O_S_ATIVIDADES selecionaOs(int taskId);
 
-    @Query("SELECT * FROM O_S_ATIVIDADES ORDER BY ID_PROGRAMACAO_ATIVIDADE asc")
-    List<O_S_ATIVIDADES> selecionaListaOs();
+    @Query("SELECT * FROM O_S_ATIVIDADES")
+    List<O_S_ATIVIDADES> todasOs();
+
 
 
     //Scripts CADASTRO_FLORESTAL
@@ -266,6 +294,8 @@ public interface DAO {
     int selecionaIdMaquina(String desc);
 
 
+
+
     //Scripts PRESTADORES
     @Query("SELECT * FROM PRESTADORES WHERE ID_PRESTADOR=:id")
     PRESTADORES selecionaPrestador(int id);
@@ -299,12 +329,6 @@ public interface DAO {
 
     @Query("SELECT * FROM MAQUINA_IMPLEMENTO")
     List<MAQUINA_IMPLEMENTO> listaMaquinaImplemento();
-
-    @Query("SELECT ID_MAQUINA_IMPLEMENTO FROM CALIBRAGEM_SUBSOLAGEM " +
-            "WHERE CALIBRAGEM_SUBSOLAGEM.ID_PROGRAMACAO_ATIVIDADE=:idProg AND " +
-            "CALIBRAGEM_SUBSOLAGEM.DATA=:data AND CALIBRAGEM_SUBSOLAGEM.TURNO=:turno AND" +
-            " CALIBRAGEM_SUBSOLAGEM.ID_MAQUINA_IMPLEMENTO=:idMaqImpl")
-    int checaMaquinaImplemento(int idProg, String data, String turno, int idMaqImpl);
 
 
     //Scripts OPERADORES
@@ -456,8 +480,18 @@ public interface DAO {
     @Query("SELECT * FROM MAQUINA_IMPLEMENTO JOIN MAQUINAS " +
             "ON MAQUINA_IMPLEMENTO.ID_MAQUINA = MAQUINAS.ID_MAQUINA " +
             "JOIN IMPLEMENTOS ON MAQUINA_IMPLEMENTO.ID_IMPLEMENTO = IMPLEMENTOS.ID_IMPLEMENTO " +
-            "ORDER BY ID_MAQUINA_IMPLEMENTO")
-    List<Join_MAQUINA_IMPLEMENTO> listaJoinMaquinaImplemento();
+            "WHERE MAQUINA_IMPLEMENTO.ID_MAQUINA =:idMaq")
+    List<Join_MAQUINA_IMPLEMENTO> listaJoinMaquinaImplemento(int idMaq);
 
+    @Query("SELECT * FROM MAQUINA_IMPLEMENTO JOIN MAQUINAS " +
+            "ON MAQUINA_IMPLEMENTO.ID_MAQUINA = MAQUINAS.ID_MAQUINA " +
+            "JOIN IMPLEMENTOS ON MAQUINA_IMPLEMENTO.ID_IMPLEMENTO = IMPLEMENTOS.ID_IMPLEMENTO " +
+            "WHERE MAQUINA_IMPLEMENTO.ID_MAQUINA_IMPLEMENTO =:idMaqImpl")
+    Join_MAQUINA_IMPLEMENTO selecionaJoinMaquinaImplemento(int idMaqImpl);
 
+    @Query("SELECT CALIBRAGEM_SUBSOLAGEM.ID_MAQUINA_IMPLEMENTO FROM CALIBRAGEM_SUBSOLAGEM " +
+            "WHERE CALIBRAGEM_SUBSOLAGEM.ID_PROGRAMACAO_ATIVIDADE=:idProg AND " +
+            "CALIBRAGEM_SUBSOLAGEM.DATA=:data AND CALIBRAGEM_SUBSOLAGEM.TURNO=:turno AND" +
+            " ID_MAQUINA_IMPLEMENTO =:idMaqImp")
+    int checaMaquinaImplemento(int idProg, String data, String turno, int idMaqImp);
 }

@@ -19,7 +19,7 @@ public class RepositorioO_S_ATIVIDADES {
     public RepositorioO_S_ATIVIDADES(Application application) {
         BaseDeDados baseDeDados = BaseDeDados.getInstance(application);
         dao = baseDeDados.dao();
-        os = dao.todasOs();
+//        os = dao.listaOsDataDesc();
     }
 
     //retorna uma instância da ClasseOs

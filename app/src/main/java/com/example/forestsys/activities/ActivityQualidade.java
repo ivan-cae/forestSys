@@ -814,8 +814,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                     if(location==null){
                         AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
-                                .setTitle("Aviso!")
-                                .setMessage("Não foi possível salvar as coordenadas de localização do dispositivo.")
+                                .setTitle("Falha de Comunicação com o GPS")
+                                .setMessage("Não foi possível salvar as coordenadas de localização do dispositivo.\nAs coordenadas serão zeradas")
                                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {

@@ -223,6 +223,7 @@ public abstract class BaseDeDados extends RoomDatabase {
                 String DATA_INICIAL = obj.getString("DATA_INICIAL");
                 String DATA_FINAL = obj.getString("DATA_FINAL");
                 Double AREA_REALIZADA = obj.getDouble("AREA_REALIZADA");
+
                 DATA_PROGRAMADA = dataHoraAtual.formataDataDb(DATA_PROGRAMADA);
 
                 daoInsere.insert(new O_S_ATIVIDADES(ID_PROGRAMACAO_ATIVIDADE, ID_REGIONAL, ID_SETOR, TALHAO, CICLO, ID_MANEJO, ID_ATIVIDADE, ID_RESPONSAVEL, DATA_PROGRAMADA, AREA_PROGRAMADA, PRIORIDADE, EXPERIMENTO, MADEIRA_NO_TALHAO, OBSERVACAO, DATA_INICIAL, DATA_FINAL, AREA_REALIZADA, "Aberto", 0, false));

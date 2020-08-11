@@ -16,11 +16,38 @@
         android:background="#FFFFFF"
         tools:context=".activities.ActivityCalibracao">
 
+        <TextView
+            android:id="@+id/textView61"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:text="Selecione o Operador:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_implemento_calibragem" />
+
+        <com.example.forestsys.assets.NDSpinner
+            android:id="@+id/spinner_operador_calibragem"
+            android:layout_width="300dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="@+id/textView61"
+            app:layout_constraintTop_toBottomOf="@+id/textView61" />
+
+        <com.example.forestsys.assets.NDSpinner
+            android:id="@+id/spinner_maquina_calibragem"
+            android:layout_width="300dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="@+id/textView16"
+            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_calibracao"
             android:layout_width="604dp"
-            android:layout_height="150dp"
-            android:layout_marginStart="-8dp"
+            android:layout_height="100dp"
             android:background="#FFFFFF"
             app:layout_constraintEnd_toEndOf="@+id/textView27"
             app:layout_constraintStart_toStartOf="@+id/textView26"
@@ -147,18 +174,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.example.forestsys.assets.NDSpinner
-            android:id="@+id/spinner_operador_calibragem"
-            android:layout_width="300dp"
-            android:layout_height="20dp"
-            app:layout_constraintStart_toStartOf="@+id/textView16"
-            app:layout_constraintTop_toBottomOf="@+id/textView16" />
-
         <TextView
             android:id="@+id/textView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="24dp"
             android:text="Data: "
             android:textSize="18sp"
             android:textStyle="bold"
@@ -178,30 +198,12 @@
             android:id="@+id/textView14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="24dp"
             android:text="Talhão: "
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/textView19"
             app:layout_constraintTop_toBottomOf="@+id/textView19" />
-
-        <TextView
-            android:id="@+id/textView17"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="Selecione Máquina e Implemento"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/textView16"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_operador_calibragem" />
-
-        <com.example.forestsys.assets.NDSpinner
-            android:id="@+id/spinner_maquina_implemento_calibragem"
-            android:layout_width="300dp"
-            android:layout_height="20sp"
-            app:layout_constraintStart_toStartOf="@+id/textView17"
-            app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
         <TextView
             android:id="@+id/talhao_os_calibragem"
@@ -216,12 +218,33 @@
             android:id="@+id/textView16"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="Selecione o Operador"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:text="Selecione a Máquina:"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/textView12"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:text="Selecione Implemento:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_maquina_calibragem" />
+
+        <com.example.forestsys.assets.NDSpinner
+            android:id="@+id/spinner_implemento_calibragem"
+            android:layout_width="300dp"
+            android:layout_height="20sp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="@+id/textView17"
+            app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
         <TextView
             android:id="@+id/data_os_calibragem"
@@ -946,20 +969,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Calibrações da atividade: "
+            android:text="Resumo de Calibrações:"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/textView57"
             app:layout_constraintTop_toBottomOf="@+id/textView57" />
-
-        <TextView
-            android:id="@+id/id_os_calibragem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/textView39"
-            app:layout_constraintTop_toTopOf="@+id/textView39" />
 
         <TextView
             android:id="@+id/calibracao_produto1"
@@ -979,7 +993,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <FrameLayout
             android:id="@+id/fragment_container_calibragem"
@@ -1006,7 +1020,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:maxWidth="220dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:menu="@menu/menu_main_lateral" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

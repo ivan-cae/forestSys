@@ -3,17 +3,62 @@
     {
       "ID_MAQUINA_IMPLEMENTO": 1,
       "ID_MAQUINA": 1,
-      "ID_IMPLEMENTO": 3
+      "ID_IMPLEMENTO": 1
     },
     {
       "ID_MAQUINA_IMPLEMENTO": 2,
-      "ID_MAQUINA": 2,
+      "ID_MAQUINA": 1,
       "ID_IMPLEMENTO": 2
     },
     {
       "ID_MAQUINA_IMPLEMENTO": 3,
+      "ID_MAQUINA": 1,
+      "ID_IMPLEMENTO": 3
+    },
+    {
+      "ID_MAQUINA_IMPLEMENTO": 4,
+      "ID_MAQUINA": 1,
+      "ID_IMPLEMENTO": 4
+    },
+    {
+      "ID_MAQUINA_IMPLEMENTO": 5,
+      "ID_MAQUINA": 2,
+      "ID_IMPLEMENTO": 5
+    },
+    {
+      "ID_MAQUINA_IMPLEMENTO": 6,
+      "ID_MAQUINA": 2,
+      "ID_IMPLEMENTO": 6
+    },
+    {
+      "ID_MAQUINA_IMPLEMENTO": 7,
+      "ID_MAQUINA": 2,
+      "ID_IMPLEMENTO": 7
+    },
+    {
+      "ID_MAQUINA_IMPLEMENTO": 8,
+      "ID_MAQUINA": 2,
+      "ID_IMPLEMENTO": 8
+    },
+    {
+      "ID_MAQUINA_IMPLEMENTO": 9,
       "ID_MAQUINA": 3,
-      "ID_IMPLEMENTO": 1
+      "ID_IMPLEMENTO": 9
+    },
+    {
+      "ID_MAQUINA_IMPLEMENTO": 10,
+      "ID_MAQUINA": 3,
+      "ID_IMPLEMENTO": 10
+    },
+    {
+      "ID_MAQUINA_IMPLEMENTO": 11,
+      "ID_MAQUINA": 3,
+      "ID_IMPLEMENTO": 11
+    },
+    {
+      "ID_MAQUINA_IMPLEMENTO": 12,
+      "ID_MAQUINA": 3,
+      "ID_IMPLEMENTO": 12
     }
   ]
 }

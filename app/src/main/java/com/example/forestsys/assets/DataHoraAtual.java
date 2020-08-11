@@ -1,6 +1,8 @@
 package com.example.forestsys.assets;
 
 import android.text.format.DateFormat;
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

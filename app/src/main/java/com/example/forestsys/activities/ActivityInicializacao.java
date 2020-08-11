@@ -1,7 +1,5 @@
 package com.example.forestsys.activities;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,7 +15,6 @@ public class ActivityInicializacao extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-
 
                 Intent it = new Intent(ActivityInicializacao.this, ActivityLogin.class);
 

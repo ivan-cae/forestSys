@@ -358,6 +358,15 @@
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="2dp">
 
+            <LinearLayout
+                android:id="@+id/linear_layout_detalhes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+            </LinearLayout>
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar_detalhes"
                 android:layout_width="match_parent"
@@ -371,15 +380,6 @@
         </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <LinearLayout
-        android:id="@+id/linear_layout_detalhes"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="visible">
-
-    </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view_detalhes"

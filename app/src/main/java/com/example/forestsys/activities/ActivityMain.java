@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +29,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.forestsys.Adapters.AdaptadorOs;
 import com.example.forestsys.R;
+import com.example.forestsys.assets.BaseDeDados;
+import com.example.forestsys.assets.DAO;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
 import com.example.forestsys.classes.O_S_ATIVIDADES;
 import com.example.forestsys.viewModels.ViewModelO_S_ATIVIDADES;
@@ -43,11 +46,24 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
 
     public static O_S_ATIVIDADES osSelecionada;
 
-    private ViewModelO_S_ATIVIDADES viewModelOs;
+    //private ViewModelO_S_ATIVIDADES viewModelOs;
+    private List<O_S_ATIVIDADES> listaOs;
     private RecyclerView recyclerView;
     private DrawerLayout drawer;
     private AdaptadorOs adaptador;
     private ImageButton botaoMainVoltar;
+    private TextView ordenaSetor;
+    private TextView ordenaTalhao;
+    private TextView ordenaStatus;
+    private TextView ordenaPrioridade;
+    private TextView ordenaData;
+    private BaseDeDados baseDeDados;
+    private DAO dao;
+    private boolean ordenaDataBool = false;
+    private boolean ordenaSetorBool = false;
+    private boolean ordenaTalhaoBool = false;
+    private boolean ordenaStatusBool = false;
+    private boolean ordenaPrioridadeBool = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,15 +94,85 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
+        baseDeDados = BaseDeDados.getInstance(getApplicationContext());
+        dao = baseDeDados.dao();
 
         adaptador = new AdaptadorOs();
+        listaOs = dao.listaOsDataAsc();
+        adaptador.setOrdens(listaOs);
         recyclerView.setAdapter(adaptador);
 
-        viewModelOs = ViewModelProviders.of(this).get(ViewModelO_S_ATIVIDADES.class);
+        /*viewModelOs = ViewModelProviders.of(this).get(ViewModelO_S_ATIVIDADES.class);
         viewModelOs.getTodasOS().observe(this, new Observer<List<O_S_ATIVIDADES>>() {
             @Override
             public void onChanged(@Nullable List<O_S_ATIVIDADES> ordemServicos) {
                 adaptador.setOrdens(ordemServicos);
+            }
+        });
+        */
+
+        ordenaTalhao = findViewById(R.id.main_talhao);
+        ordenaSetor = findViewById(R.id.main_setor);
+        ordenaPrioridade = findViewById(R.id.main_prioridade);
+        ordenaStatus = findViewById(R.id.main_status);
+        ordenaData = findViewById(R.id.main_data);
+
+        ordenaTalhao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ordenaTalhaoBool==false) listaOs = dao.listaOsTalhaoDesc();
+                else listaOs = dao.listaOsTalhaoAsc();
+
+                adaptador.setOrdens(listaOs);
+                recyclerView.setAdapter(adaptador);
+
+                ordenaTalhaoBool = !ordenaTalhaoBool;
+            }
+        });
+
+        ordenaSetor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ordenaSetorBool==false) listaOs = dao.listaOsSetorDesc();
+                else listaOs = dao.listaOsSetorAsc();
+
+                adaptador.setOrdens(listaOs);
+                recyclerView.setAdapter(adaptador);
+
+                ordenaSetorBool = !ordenaSetorBool;
+            }
+        });
+
+        ordenaPrioridade.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ordenaPrioridadeBool==false) listaOs = dao.listaOsPrioridadeDesc();
+                else listaOs = dao.listaOsPrioridadeAsc();
+
+                adaptador.setOrdens(listaOs);
+                recyclerView.setAdapter(adaptador);
+
+                ordenaPrioridadeBool = !ordenaPrioridadeBool;
+            }
+        });
+
+        ordenaStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        ordenaData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ordenaDataBool==false) listaOs = dao.listaOsDataDesc();
+                else listaOs = dao.listaOsDataAsc();
+
+                adaptador.setOrdens(listaOs);
+                recyclerView.setAdapter(adaptador);
+
+                ordenaDataBool = !ordenaDataBool;
             }
         });
 
