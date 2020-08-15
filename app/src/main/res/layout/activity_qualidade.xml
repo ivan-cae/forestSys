@@ -16,6 +16,17 @@
         android:layout_height="match_parent"
         android:background="#FFFFFF">
 
+        <TextView
+            android:id="@+id/textView98"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginStart="201dp"
+            android:layout_marginTop="32dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/qualidade_insumo_p2" />
+
         <ImageButton
             android:id="@+id/botao_qualidade_voltar"
             android:layout_width="70dp"
@@ -236,69 +247,64 @@
             app:layout_constraintTop_toBottomOf="@+id/qualidade_nc_profundidade_fosfato" />
 
         <TextView
-            android:id="@+id/textView129"
-            android:layout_width="wrap_content"
+            android:id="@+id/qualidade_indicador_6"
+            android:layout_width="430dp"
             android:layout_height="25dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Largura entre linhas subsoladas - espaçamento"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView115" />
+            app:layout_constraintTop_toBottomOf="@+id/qualidade_indicador_5" />
 
         <TextView
-            android:id="@+id/textView120"
-            android:layout_width="wrap_content"
+            android:id="@+id/qualidade_indicador_9"
+            android:layout_width="430dp"
             android:layout_height="25dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Bolsões de ar"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView126" />
+            app:layout_constraintTop_toBottomOf="@+id/qualidade_indicador_8" />
 
         <TextView
-            android:id="@+id/textView126"
-            android:layout_width="wrap_content"
+            android:id="@+id/qualidade_indicador_8"
+            android:layout_width="430dp"
             android:layout_height="25dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Espelhamento do solo"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView127" />
+            app:layout_constraintTop_toBottomOf="@+id/qualidade_indicador_7" />
 
         <TextView
-            android:id="@+id/textView127"
-            android:layout_width="wrap_content"
+            android:id="@+id/qualidade_indicador_7"
+            android:layout_width="430dp"
             android:layout_height="25dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Presença de torrões na linha prepada"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView129" />
+            app:layout_constraintTop_toBottomOf="@+id/qualidade_indicador_6" />
 
         <TextView
-            android:id="@+id/textView128"
-            android:layout_width="wrap_content"
+            android:id="@+id/qualidade_indicador_10"
+            android:layout_width="430dp"
             android:layout_height="25dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Localização do KCL"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView120" />
+            app:layout_constraintTop_toBottomOf="@+id/qualidade_indicador_9" />
 
         <TextView
             android:id="@+id/textView137"
@@ -311,7 +317,7 @@
             android:textSize="17sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView128" />
+            app:layout_constraintTop_toBottomOf="@+id/qualidade_indicador_10" />
 
         <TextView
             android:id="@+id/qualidade_pontos_realizados"
@@ -347,69 +353,64 @@
             app:layout_constraintTop_toBottomOf="@+id/textView83" />
 
         <TextView
-            android:id="@+id/textView107"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="Profundidade de subsolagem"
-            android:textAllCaps="true"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView138" />
-
-        <TextView
-            android:id="@+id/textView112"
+            android:id="@+id/qualidade_indicador_1"
             android:layout_width="430dp"
             android:layout_height="25dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Prof. do fosfato, quando visível, na linha subsolada"
             android:textAllCaps="true"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView114" />
+            app:layout_constraintTop_toBottomOf="@+id/textView98" />
 
         <TextView
-            android:id="@+id/textView114"
-            android:layout_width="wrap_content"
+            android:id="@+id/qualidade_indicador_4"
+            android:layout_width="430dp"
             android:layout_height="25dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Faixa de solo preparada pela grade"
             android:textAllCaps="true"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView108" />
+            app:layout_constraintTop_toBottomOf="@+id/qualidade_indicador_3" />
 
         <TextView
-            android:id="@+id/textView115"
-            android:layout_width="wrap_content"
+            android:id="@+id/qualidade_indicador_3"
+            android:layout_width="430dp"
             android:layout_height="25dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Presença de fosfato (quando visível)"
             android:textAllCaps="true"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView112" />
+            app:layout_constraintTop_toBottomOf="@+id/qualidade_indicador_2" />
 
         <TextView
-            android:id="@+id/textView108"
-            android:layout_width="wrap_content"
+            android:id="@+id/qualidade_indicador_5"
+            android:layout_width="430dp"
             android:layout_height="25dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Largura de estrondamento lateral"
+            android:textAllCaps="false"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/qualidade_indicador_4" />
+
+        <TextView
+            android:id="@+id/qualidade_indicador_2"
+            android:layout_width="430dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:textAllCaps="true"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView107" />
+            app:layout_constraintTop_toBottomOf="@+id/qualidade_indicador_1" />
 
         <TextView
             android:id="@+id/textView85"
@@ -527,29 +528,27 @@
             android:id="@+id/textView90"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="8dp"
-            android:text="Dados Verion"
+            android:layout_marginBottom="16dp"
+            android:text="Dados do Sistema de Precisão"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/qualidade_area" />
+            app:layout_constraintBottom_toTopOf="@+id/textView93"
+            app:layout_constraintEnd_toEndOf="@+id/textView102"
+            app:layout_constraintStart_toStartOf="@+id/textView93" />
 
         <TextView
             android:id="@+id/textView93"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="89dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="72dp"
             android:background="#BDB8B8"
             android:text="Insumo"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView90" />
+            app:layout_constraintTop_toBottomOf="@+id/textView87" />
 
         <TextView
             android:id="@+id/qualidade_insumo_p1"
@@ -639,25 +638,23 @@
             android:id="@+id/textView138"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginStart="260dp"
             android:text="NC"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/textView112"
-            app:layout_constraintTop_toBottomOf="@+id/qualidade_desvio_padrao_p2" />
+            app:layout_constraintStart_toEndOf="@+id/textView98"
+            app:layout_constraintTop_toTopOf="@+id/textView98" />
 
         <TextView
             android:id="@+id/textView139"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_marginStart="55dp"
-            android:layout_marginTop="32dp"
             android:text="%NC"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/textView138"
-            app:layout_constraintTop_toBottomOf="@+id/qualidade_desvio_padrao_p2" />
+            app:layout_constraintTop_toTopOf="@+id/textView138" />
 
         <TextView
             android:id="@+id/qualidade_nc_profundidade_subsolagem"

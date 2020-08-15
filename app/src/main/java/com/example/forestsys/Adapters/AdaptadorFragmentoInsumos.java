@@ -1,5 +1,6 @@
 package com.example.forestsys.Adapters;
 
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.forestsys.R;
 import com.example.forestsys.classes.join.Join_OS_INSUMOS;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import static com.example.forestsys.activities.ActivityAtividades.area;
+import static java.sql.Types.NULL;
 
 public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFragmentoInsumos.FragmentoInsumosHolder> {
 
@@ -33,7 +37,34 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
         if(insumo.getQTD_APLICADO()!=0.0) holder.QTDApl.setText(String.valueOf(insumo.getQTD_APLICADO()).replace(".", ","));
 
         holder.descricao.setText(String.valueOf(insumo.getDESCRICAO()));
-        holder.QTDRec.setText(String.valueOf(insumo.getQTD_HA_RECOMENDADO()).replace('.', ','));
+        if(area!=null && area!="" && !area.isEmpty()){
+            String auxString = area;
+            if(auxString.contains(",")) auxString = auxString.replace(",", ".");
+
+            double auxDouble = NULL;
+            auxDouble = Double.valueOf(auxString);
+            if(auxDouble != NULL) {
+                holder.QTDRec.setText(String.valueOf(insumo.getQTD_HA_RECOMENDADO() * auxDouble).replace('.', ','));
+                if(diferencaPercentual((insumo.getQTD_HA_RECOMENDADO() * auxDouble), insumo.getQTD_APLICADO()) > 5.0000 ||
+                        diferencaPercentual((insumo.getQTD_HA_RECOMENDADO() * auxDouble), insumo.getQTD_APLICADO()) < -5.0000){
+                    holder.QTDApl.setTextColor(Color.parseColor("#FF0000"));
+                }
+                else{
+                    holder.QTDApl.setTextColor(Color.parseColor("#808080"));
+                }
+            }
+        }
+    }
+
+    //Calcula a diferença percentual entre dois números do tipo Double
+    //Parâmetro de entrada: dois Doubles
+    private static Double diferencaPercentual(Double anterior, Double atual) {
+        Log.e("Recomendado, Aplicado", String.valueOf(anterior) +" "+ String.valueOf(atual));
+        Double calculo = (1 - (atual / anterior)) * 100;//((anterior - atual) / anterior) * 100.0
+        DecimalFormat df = new DecimalFormat("###.##");
+        Log.e("Dif Percent", String.valueOf(Double.valueOf(df.format(calculo).replace(',', '.'))));
+        if (Double.valueOf(df.format(calculo).replace(',', '.')) == 0.0) return -0.0;
+        return Double.valueOf(df.format(calculo).replace(',', '.'));
     }
 
     @Override
@@ -77,4 +108,3 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
         this.listener = listener;
     }
 }
-

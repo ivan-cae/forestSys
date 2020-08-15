@@ -43,18 +43,15 @@ public class GGF_USUARIOS implements Serializable {
     @ColumnInfo(name = "DESCRICAO")
     private String DESCRICAO;
 
-    @Ignore
-    public GGF_USUARIOS(int ID_USUARIO, String EMAIL, String SENHA) {
-        this.ID_USUARIO = ID_USUARIO;
-        this.SENHA = SENHA;
-        this.EMAIL = EMAIL;
-    }
+    private int NIVEL_ACESSO;
 
-    public GGF_USUARIOS(int ID_USUARIO,  String EMAIL, String SENHA, String DESCRICAO) {
+    public GGF_USUARIOS(int ID_USUARIO, String EMAIL, String SENHA, String DESCRICAO, int NIVEL_ACESSO, int ATIVO) {
         this.ID_USUARIO = ID_USUARIO;
-        this.EMAIL = EMAIL;
         this.SENHA = SENHA;
+        this.ATIVO = ATIVO;
+        this.EMAIL = EMAIL;
         this.DESCRICAO = DESCRICAO;
+        this.NIVEL_ACESSO = NIVEL_ACESSO;
     }
 
     public int getID_USUARIO() {
@@ -111,6 +108,14 @@ public class GGF_USUARIOS implements Serializable {
 
     public void setDESCRICAO(String DESCRICAO) {
         this.DESCRICAO = DESCRICAO;
+    }
+
+    public int getNIVEL_ACESSO() {
+        return NIVEL_ACESSO;
+    }
+
+    public void setNIVEL_ACESSO(int NIVEL_ACESSO) {
+        this.NIVEL_ACESSO = NIVEL_ACESSO;
     }
 
     @Override

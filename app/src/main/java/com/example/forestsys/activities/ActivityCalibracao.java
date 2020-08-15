@@ -1079,7 +1079,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
     //formula= (1-(amostra atual/amostra anterior))/100
     //Calcula a diferença percentual entre dois números do tipo Double
-    //Parâmetro de entrada: um Double
+    //Parâmetro de entrada: dois Doubles
     private static Double diferencaPercentual(Double anterior, Double atual) {
         Double calculo = (1 - (atual / anterior)) * 100;//((anterior - atual) / anterior) * 100.0
         DecimalFormat df = new DecimalFormat("###.##");

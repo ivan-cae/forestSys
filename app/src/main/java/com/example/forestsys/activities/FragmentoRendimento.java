@@ -5,7 +5,9 @@ import androidx.annotation.Nullable;
 
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -195,6 +197,8 @@ public class FragmentoRendimento extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 area = checaTextView(areaRealizadaApontamento, area);
+                FragmentoInsumos frag=(FragmentoInsumos)getActivity().getSupportFragmentManager().findFragmentById(R.id.registro_fragmento_insumos);
+                frag.setInsumos();
             }
         });
 

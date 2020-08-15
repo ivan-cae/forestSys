@@ -120,8 +120,9 @@ public abstract class BaseDeDados extends RoomDatabase {
                 String EMAIL = obj.getString("EMAIL");
                 String SENHA = obj.getString("SENHA");
                 String DESCRICAO = obj.getString("DESCRICAO");
-
-                daoInsere.insert(new GGF_USUARIOS(ID_USUARIO, EMAIL, SENHA, DESCRICAO));
+                int NIVEL_ACESSO = obj.getInt("NIVEL_ACESSO");
+                int ATIVO = obj.getInt("ATIVO");
+                daoInsere.insert(new GGF_USUARIOS(ID_USUARIO, EMAIL, SENHA, DESCRICAO, NIVEL_ACESSO, ATIVO));
             }
         } catch (JSONException e) {
             e.printStackTrace();

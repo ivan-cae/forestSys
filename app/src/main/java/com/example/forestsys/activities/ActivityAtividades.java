@@ -273,7 +273,6 @@ public class ActivityAtividades extends AppCompatActivity
         botaoCalibracao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent it = new Intent(ActivityAtividades.this, ActivityCalibracao.class);
                 startActivity(it);
             }
@@ -282,16 +281,52 @@ public class ActivityAtividades extends AppCompatActivity
         botaoRegistros.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent(ActivityAtividades.this, ActivityRegistros.class);
-                startActivity(it);
+                if(checaCalibracao()==false){
+                    AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
+                            .setTitle("Calibração Não Encontrada.")
+                            .setMessage("Não Há Calibração No Dia Atual, Deseja Continuar Mesmo Assim?")
+                            .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Intent it = new Intent(ActivityAtividades.this, ActivityRegistros.class);
+                                    startActivity(it);
+                                }
+                            }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                }
+                            }).create();
+                    dialog.show();
+                }else{
+                    Intent it = new Intent(ActivityAtividades.this, ActivityRegistros.class);
+                    startActivity(it);
+                }
             }
         });
 
         botaoQualidade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent(ActivityAtividades.this, ActivityQualidade.class);
-                startActivity(it);
+                if(checaCalibracao()==false){
+                AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
+                        .setTitle("Calibração Não Encontrada.")
+                        .setMessage("Não Há Calibração No Dia Atual, Deseja Continuar Mesmo Assim?")
+                        .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent it = new Intent(ActivityAtividades.this, ActivityQualidade.class);
+                                startActivity(it);
+                            }
+                        }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                            }
+                        }).create();
+                dialog.show();
+                }else{
+                    Intent it = new Intent(ActivityAtividades.this, ActivityQualidade.class);
+                    startActivity(it);
+                }
             }
         });
 
@@ -636,25 +671,16 @@ public class ActivityAtividades extends AppCompatActivity
     }
 
     //Checa se há uma calibração naquela data e turno
-    private void checaCalibracao() {
+    private boolean checaCalibracao() {
         CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem = dao.checaCalibragem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
                 dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()), checaTurno());
 
-        if (calibragem_subsolagem == null) {
-            botaoRegistros.setEnabled(false);
-            botaoQualidade.setEnabled(false);
-        }
+        if (calibragem_subsolagem == null) return false;
 
-        if (calibragem_subsolagem != null || osSelecionada.getSTATUS_NUM() != 2) {
-            botaoRegistros.setEnabled(true);
-            botaoRegistros.setBackgroundColor(Color.parseColor("#75A9EB"));
-
-            botaoQualidade.setEnabled(true);
-            botaoQualidade.setBackgroundColor(Color.parseColor("#75A9EB"));
-        }
+        return true;
     }
 
-    //Verificar se há calibração, registro e qualidade cadastrados
+    //Verifica se há calibração, registro e qualidade cadastrados
     private void checaCalibragemRegistro() {
         List<CALIBRAGEM_SUBSOLAGEM> listaCalib = dao.listaCalibragem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
         List<O_S_ATIVIDADES_DIA> listaOsAtiDia = dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
@@ -688,6 +714,8 @@ public class ActivityAtividades extends AppCompatActivity
         outState.putBoolean("abriuDialogoJustificativaEdicaoOs", abriuDialogoJustificativaEdicaoOs);
         if (abriuDialogoJustificativaEdicaoOs == true) dialogoEdicaoOs.dismiss();
     }
+
+
 
     //SObrescrita do método onBackPressed nativo do Android para que feche o menu de navegação lateral
     @Override

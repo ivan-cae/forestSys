@@ -993,7 +993,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <FrameLayout
             android:id="@+id/fragment_container_calibragem"
@@ -1020,7 +1020,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:maxWidth="220dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:menu="@menu/menu_main_lateral" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

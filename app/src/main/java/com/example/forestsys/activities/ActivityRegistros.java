@@ -184,7 +184,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 totalInsumo2.setText(String.valueOf(ins2).replace(".", ","));
 
                 if (!listaAtividades.isEmpty()) {
-                    if (diferencaPercentual(insumos_dia.get(0).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins1) > 5 ||
+                    /*if (diferencaPercentual(insumos_dia.get(0).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins1) > 5 ||
                             diferencaPercentual(insumos_dia.get(0).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins1) < -5)
                         difInsumo1.setBackgroundColor(Color.parseColor("#FF0000"));
                     else difInsumo1.setBackgroundColor(Color.parseColor("#BDB8B8"));
@@ -193,7 +193,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                             diferencaPercentual(insumos_dia.get(1).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins2) < -5)
                         difInsumo2.setBackgroundColor(Color.parseColor("#FF0000"));
                     else difInsumo2.setBackgroundColor(Color.parseColor("#BDB8B8"));
-
+                    */
                     difInsumo1.setText(String.valueOf(diferencaPercentual(insumos_dia.get(0).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins1)));
                     difInsumo2.setText(String.valueOf(diferencaPercentual(insumos_dia.get(1).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins2)));
                 }
@@ -335,15 +335,17 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
 
         if (auxSavedInstanceState == null) {
-            fragmentoRendimento = new FragmentoRendimento();
-            getSupportFragmentManager().beginTransaction().replace(R.id.registro_fragmento_rendimento,
-                    fragmentoRendimento).commit();
-        }
-        if (auxSavedInstanceState == null) {
             fragmentoInsumos = new FragmentoInsumos();
             getSupportFragmentManager().beginTransaction().replace(R.id.registro_fragmento_insumos,
                     fragmentoInsumos).commit();
         }
+
+        if (auxSavedInstanceState == null) {
+            fragmentoRendimento = new FragmentoRendimento();
+            getSupportFragmentManager().beginTransaction().replace(R.id.registro_fragmento_rendimento,
+                    fragmentoRendimento).commit();
+        }
+
 
         calculaTotais();
 

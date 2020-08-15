@@ -39,6 +39,7 @@ import static com.example.forestsys.activities.ActivityAtividades.listaJoinOsIns
 import static com.example.forestsys.activities.ActivityMain.osSelecionada;
 import static com.example.forestsys.activities.ActivityRegistros.pegaDescInsumos;
 import static com.example.forestsys.activities.ActivityAtividades.insumoInsere;
+import static com.example.forestsys.activities.ActivityAtividades.area;
 
 public class FragmentoInsumos extends Fragment {
 
@@ -124,7 +125,7 @@ public class FragmentoInsumos extends Fragment {
                 listaJoinOsInsumosSelecionados.get(1).setID_INSUMO(dao.selecionaInsumoPorRm(listaJoinOsInsumos.get(1).getID_INSUMO_RM()));
             }
 
-            adaptador.setInsumos(listaJoinOsInsumosSelecionados);
+            setInsumos();
 
             adapterInsumos = new ArrayAdapter<Join_OS_INSUMOS>(getActivity(),
                     android.R.layout.simple_spinner_item, listaJoinOsInsumos);
@@ -146,20 +147,35 @@ public class FragmentoInsumos extends Fragment {
             adaptador.setOnItemClickListener(new AdaptadorFragmentoInsumos.OnItemClickListener() {
                 @Override
                 public void onItemClick(Join_OS_INSUMOS joinOsInsumos) {
-                    AlertDialog dialog = new AlertDialog.Builder(getActivity())
-                            .setTitle("Editar")
-                            .setMessage("Deseja Adicionar a Quantidade Aplicada para " + joinOsInsumos.getDESCRICAO() + "?")
-                            .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    abreDialogoQtdAplicada(joinOsInsumos);
-                                }
-                            }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                }
-                            }).create();
-                    dialog.show();
+                    String auxArea = area;
+                    if(area.contains(",")) auxArea = auxArea.replace(",", ".");
+
+                    if(auxArea.isEmpty() || auxArea=="" || Double.valueOf(auxArea)==0 || Double.valueOf(auxArea)==null){
+                        AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                                .setTitle("Erro")
+                                .setMessage("É Necessário preencher Corretamente a Área Antes de Adicionar Insumos.")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                }).create();
+                        dialog.show();
+                }else{
+                        AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                                .setTitle("Editar")
+                                .setMessage("Deseja Adicionar a Quantidade Aplicada para " + joinOsInsumos.getDESCRICAO() + "?")
+                                .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        abreDialogoQtdAplicada(joinOsInsumos);
+                                    }
+                                }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                }).create();
+                        dialog.show();
+                    }
                 }
             });
         }
@@ -209,12 +225,12 @@ public class FragmentoInsumos extends Fragment {
                     if (editouRegistro == false) {
                         insumoInsere.setQTD_APLICADO(Double.valueOf(str));
                         listaJoinOsInsumosSelecionados.set(id, insumoInsere);
-                        adaptador.setInsumos(listaJoinOsInsumosSelecionados);
+                        setInsumos();
                     }
 
 
                     if (editouRegistro == true) {
-                        abreDialogoEdicaoIns(Double.valueOf(valorDialogoQtd.getText().toString()));
+                        abreDialogoEdicaoIns(Double.valueOf(str));
                     }
 
                     abriuDialogo = false;
@@ -283,7 +299,7 @@ public class FragmentoInsumos extends Fragment {
                     insumoInsere.setACAO_INATIVO("EDICAO");
 
                     listaJoinOsInsumosSelecionados.set(id, insumoInsere);
-                    adaptador.setInsumos(listaJoinOsInsumosSelecionados);
+                    setInsumos();
                     dialogoEdicao.dismiss();
                 }
             }
@@ -307,6 +323,10 @@ public class FragmentoInsumos extends Fragment {
                 abriuDialogoEdicao = false;
             }
         });
+    }
+
+    public void setInsumos(){
+        adaptador.setInsumos(listaJoinOsInsumosSelecionados);
     }
 
     @Override

@@ -47,6 +47,8 @@ public class AVAL_PONTO_SUBSOLAGEM {
 
     private double COORDENADA_Y;
 
+    private int NC_TRATADA;
+
     public AVAL_PONTO_SUBSOLAGEM(int ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, int PONTO, int ID_ATIVIDADE, int ID_INDICADOR, double VALOR_INDICADOR, double COORDENADA_X, double COORDENADA_Y) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.DATA = DATA;
@@ -121,5 +123,13 @@ public class AVAL_PONTO_SUBSOLAGEM {
 
     public void setCOORDENADA_Y(double COORDENADA_Y) {
         this.COORDENADA_Y = COORDENADA_Y;
+    }
+
+    public int getNC_TRATADA() {
+        return NC_TRATADA;
+    }
+
+    public void setNC_TRATADA(int NC_TRATADA) {
+        this.NC_TRATADA = NC_TRATADA;
     }
 }

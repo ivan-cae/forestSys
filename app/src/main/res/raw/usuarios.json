@@ -4,19 +4,25 @@
       "ID_USUARIO": 1,
       "EMAIL": "a",
       "SENHA": "a",
-      "DESCRICAO": "Usuario1"
+      "DESCRICAO": "Usuario1",
+      "NIVEL_ACESSO": "0",
+      "ATIVO": 1
     },
     {
       "ID_USUARIO": 2,
       "EMAIL": "Usuario2",
       "SENHA": "a",
-      "DESCRICAO": "Usuario2"
+      "DESCRICAO": "Usuario2",
+      "NIVEL_ACESSO": "1",
+      "ATIVO": 1
     },
     {
       "ID_USUARIO": 3,
       "EMAIL": "Usuario3",
       "SENHA": "a",
-      "DESCRICAO": "Usuario3"
+      "DESCRICAO": "Usuario3",
+      "NIVEL_ACESSO": "2",
+      "ATIVO": 1
     }
   ]
 }

@@ -118,6 +118,17 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     private TextView listaDesvioP1;
     private TextView listaDesvioP2;
 
+    private TextView indicador1;
+    private TextView indicador2;
+    private TextView indicador3;
+    private TextView indicador4;
+    private TextView indicador5;
+    private TextView indicador6;
+    private TextView indicador7;
+    private TextView indicador8;
+    private TextView indicador9;
+    private TextView indicador10;
+
     private Bundle auxSavedInstanceState;
 
     private int ultimoFocus;
@@ -135,6 +146,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     double longitude;
     double latitude;
     private List<ATIVIDADE_INDICADORES> atividadeIndicadores;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -201,10 +213,34 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()));
         manejo.setText(String.valueOf(dao.selecionaManejo(osSelecionada.getID_MANEJO()).getDESCRICAO()));
 
+        indicador1 = findViewById(R.id.qualidade_indicador_1);
+        indicador2 = findViewById(R.id.qualidade_indicador_2);
+        indicador3 = findViewById(R.id.qualidade_indicador_3);
+        indicador4 = findViewById(R.id.qualidade_indicador_4);
+        indicador5 = findViewById(R.id.qualidade_indicador_5);
+        indicador6 = findViewById(R.id.qualidade_indicador_6);
+        indicador7 = findViewById(R.id.qualidade_indicador_7);
+        indicador8 = findViewById(R.id.qualidade_indicador_8);
+        indicador9 = findViewById(R.id.qualidade_indicador_9);
+        indicador10 = findViewById(R.id.qualidade_indicador_10);
+
         AVAL_SUBSOLAGEM aval_subsolagem = dao.selecionaAvalSubsolagem(idProg);
 
         listaVerion = dao.listaIndicadoresSubsolagem(idProg, osSelecionada.getID_ATIVIDADE());
         joinOsInsumos = dao.listaJoinInsumoAtividades(idProg);
+
+        atividadeIndicadores = dao.listaAtividadeIndicadores(osSelecionada.getID_ATIVIDADE(), "N");
+
+        indicador1.setText(atividadeIndicadores.get(0).getDESCRICAO());
+        indicador2.setText(atividadeIndicadores.get(1).getDESCRICAO());
+        indicador3.setText(atividadeIndicadores.get(2).getDESCRICAO());
+        indicador4.setText(atividadeIndicadores.get(3).getDESCRICAO());
+        indicador5.setText(atividadeIndicadores.get(4).getDESCRICAO());
+        indicador6.setText(atividadeIndicadores.get(5).getDESCRICAO());
+        indicador7.setText(atividadeIndicadores.get(6).getDESCRICAO());
+        indicador8.setText(atividadeIndicadores.get(7).getDESCRICAO());
+        indicador9.setText(atividadeIndicadores.get(8).getDESCRICAO());
+        indicador10.setText(atividadeIndicadores.get(9).getDESCRICAO());
 
         if (!listaVerion.isEmpty()) {
             listaInsumoP1.setText(joinOsInsumos.get(0).getDESCRICAO());
@@ -480,6 +516,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         mBuilder.setView(mView);
         dialogoVerion = mBuilder.create();
         dialogoVerion.show();
+        dialogoVerion.setCanceledOnTouchOutside(false);
 
         if (jaTemVerion == true) {
             mediaEditP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
@@ -601,9 +638,10 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_qualidade_ponto, null);
         mBuilder.setView(mView);
+
         dialogoPonto = mBuilder.create();
         dialogoPonto.show();
-
+        dialogoPonto.setCanceledOnTouchOutside(false);
         TextView numeroPonto = mView.findViewById(R.id.dialogo_qualidade_ponto_numero);
 
         TextView textItem1 = mView.findViewById(R.id.dialogo_qualidade_ponto_item1);
@@ -804,15 +842,15 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                     LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                     Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-                    longitude=0;
-                    latitude=0;
+                    longitude = 0;
+                    latitude = 0;
 
-                    if(location!=null){
+                    if (location != null) {
                         longitude = location.getLongitude();
                         latitude = (location.getLatitude());
                     }
 
-                    if(location==null){
+                    if (location == null) {
                         AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
                                 .setTitle("Falha de Comunicação com o GPS")
                                 .setMessage("Não foi possível salvar as coordenadas de localização do dispositivo.\nAs coordenadas serão zeradas")
@@ -823,7 +861,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                                     }
                                 }).create();
                         dialog.show();
-                }else salvaPonto();
+                    } else salvaPonto();
                 }
             }
         });
@@ -837,10 +875,10 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         });
     }
 
-    public void salvaPonto(){
+    public void salvaPonto() {
         double check = 0;
 
-        Log.e("Lat Long", String.valueOf(latitude)+" "+String.valueOf(longitude));
+        Log.e("Lat Long", String.valueOf(latitude) + " " + String.valueOf(longitude));
 
         dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(0).getID_INDICADOR(),
