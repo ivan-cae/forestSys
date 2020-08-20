@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.forestsys.assets.ApplicationTodos;
 import com.example.forestsys.assets.BaseDeDados;
 import com.example.forestsys.assets.DAO;
-import com.example.forestsys.assets.DataHoraAtual;
+import com.example.forestsys.assets.Ferramentas;
 import com.example.forestsys.R;
 import com.example.forestsys.classes.CALIBRAGEM_SUBSOLAGEM;
 import com.example.forestsys.classes.IMPLEMENTOS;
@@ -51,9 +51,9 @@ public class AdaptadorCalibracao extends RecyclerView.Adapter<AdaptadorCalibraca
         IMPLEMENTOS aux3 = dao.selecionaImplemento(aux1.getID_IMPLEMENTO());
         OPERADORES aux4 = dao.selecionaOperador(calibragem.getID_OPERADOR());
 
-        DataHoraAtual dataHoraAtual = new DataHoraAtual();
+        Ferramentas ferramentas = new Ferramentas();
 
-        holder.data.setText((dataHoraAtual.formataDataTextView(calibragem.getDATA())));
+        holder.data.setText((ferramentas.formataDataTextView(calibragem.getDATA())));
         holder.turno.setText((calibragem.getTURNO()));
         holder.maquina.setText(aux2.getDESCRICAO());
         holder.implemento.setText(aux3.getDESCRICAO());

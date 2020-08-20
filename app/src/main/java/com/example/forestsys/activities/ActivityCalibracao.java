@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -40,7 +39,7 @@ import com.example.forestsys.Adapters.AdaptadorCalibracao;
 import com.example.forestsys.R;
 import com.example.forestsys.assets.BaseDeDados;
 import com.example.forestsys.assets.DAO;
-import com.example.forestsys.assets.DataHoraAtual;
+import com.example.forestsys.assets.Ferramentas;
 import com.example.forestsys.assets.NDSpinner;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
 
@@ -48,7 +47,6 @@ import com.example.forestsys.classes.CALIBRAGEM_SUBSOLAGEM;
 import com.example.forestsys.classes.MAQUINAS;
 import com.example.forestsys.classes.OPERADORES;
 import com.example.forestsys.classes.join.Join_MAQUINA_IMPLEMENTO;
-import com.example.forestsys.classes.join.Join_OS_INSUMOS;
 import com.google.android.material.navigation.NavigationView;
 
 import java.text.DecimalFormat;
@@ -140,7 +138,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     private BaseDeDados baseDeDados;
     private DAO dao;
 
-    private DataHoraAtual dataHoraAtual;
+    private Ferramentas ferramentas;
 
     private RecyclerView recyclerView;
     private AdaptadorCalibracao adaptador;
@@ -1039,7 +1037,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     //Parâmetro de entrada: Descrição da máquina selecionada
     public boolean checaMaquinaImplemento(int s) {
         int checagem = dao.checaMaquinaImplemento(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
-                dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()), checaTurno(), s);
+                ferramentas.formataDataDb(ferramentas.dataAtual()), checaTurno(), s);
         if (checagem > 0) return true;
         return false;
     }
@@ -1185,7 +1183,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         setContentView(R.layout.activity_calibracao);
         setTitle(nomeEmpresaPref);
 
-        dataHoraAtual = new DataHoraAtual();
+        ferramentas = new Ferramentas();
 
         baseDeDados = BaseDeDados.getInstance(getApplicationContext());
         dao = baseDeDados.dao();
@@ -1276,7 +1274,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
         botaoMediaP2 = findViewById(R.id.botao_calibragem_media_p2);
 
-        osData.setText(dataHoraAtual.dataAtual());
+        osData.setText(ferramentas.dataAtual());
 
         osTurno.setText(checaTurno());
 
@@ -1502,14 +1500,14 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                                         desvioP2 = Double.valueOf(desvioProduto2.getText().toString().replace(',', '.'));
 
                                         CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem = new CALIBRAGEM_SUBSOLAGEM(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
-                                                dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()), checaTurno(), idMaquinaImplemento,
+                                                ferramentas.formataDataDb(ferramentas.dataAtual()), checaTurno(), idMaquinaImplemento,
                                                 idOperador, mediaP1, desvioP1, mediaP2, desvioP2);
 
                                         dao.insert(calibragem_subsolagem);
 
                                         osSelecionada.setSTATUS("Andamento");
                                         osSelecionada.setSTATUS_NUM(1);
-                                        osSelecionada.setDATA_FINAL(dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()));
+                                        osSelecionada.setDATA_FINAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
                                         dao.update(osSelecionada);
                                         Toast.makeText(getApplicationContext(), "Calibração Salva com sucesso!", Toast.LENGTH_LONG).show();
                                         Intent it = new Intent(ActivityCalibracao.this, ActivityCalibracao.class);

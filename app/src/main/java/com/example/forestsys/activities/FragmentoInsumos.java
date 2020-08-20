@@ -15,11 +15,10 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,8 +28,7 @@ import android.widget.Toast;
 import com.example.forestsys.Adapters.AdaptadorFragmentoInsumos;
 import com.example.forestsys.assets.BaseDeDados;
 import com.example.forestsys.assets.DAO;
-import com.example.forestsys.assets.DataHoraAtual;
-import com.example.forestsys.assets.NDSpinner;
+import com.example.forestsys.assets.Ferramentas;
 import com.example.forestsys.R;
 import com.example.forestsys.classes.join.Join_OS_INSUMOS;
 
@@ -52,7 +50,7 @@ public class FragmentoInsumos extends Fragment {
     private DAO dao;
     private AdaptadorFragmentoInsumos adaptador;
     private ArrayAdapter<Join_OS_INSUMOS> adapterInsumos;
-    private DataHoraAtual dataHoraAtual;
+    private Ferramentas ferramentas;
     public static EditText obsInsumo1;
     public static EditText obsInsumo2;
     private TextView nomeInsumo1;
@@ -81,7 +79,7 @@ public class FragmentoInsumos extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        dataHoraAtual = new DataHoraAtual();
+        ferramentas = new Ferramentas();
         return root;
     }
 
@@ -107,7 +105,7 @@ public class FragmentoInsumos extends Fragment {
             listaJoinOsInsumos = dao.listaJoinInsumoAtividades(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
             if (editouRegistro && savedInstanceState == null)
-                listaJoinOsInsumosSelecionados = dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.formataDataDb(dataDoApontamento));
+                listaJoinOsInsumosSelecionados = dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), ferramentas.formataDataDb(dataDoApontamento));
 
 
             nomeInsumo1.setText("Observação - " + pegaDescInsumos[0] + ":");
@@ -184,6 +182,39 @@ public class FragmentoInsumos extends Fragment {
         }
     }
 
+    //Poe a virgula automaticamente como separador decimal dos números inseridos nas caixas de texto
+    //parâmetros de entrada: Uma instância de uma caixa de texto, um double representando a qtd_ha_recomendado para o insumo,
+    //a string contendo os valores inseridos na caixa de texto
+    public void mascaraVirgula(EditText edit, double qtd_ha_rec , CharSequence s){
+        int tamanho;
+        String input;
+
+        tamanho = edit.length();
+        input = s.toString();
+
+        if (!input.isEmpty()) {
+
+            String qtdrec = String.valueOf(Double.valueOf(area.replace(',', '.')) * qtd_ha_rec);
+
+            String[] antesDaVirgula = qtdrec.replace('.', ',').split(",");
+
+            edit.setFilters(new InputFilter[]{
+                    new InputFilter.LengthFilter(antesDaVirgula[0].length() + 3)});
+
+            char[] aux = input.toCharArray();
+            if((tamanho+1) != antesDaVirgula[0].length() && aux[tamanho - 1] == ','){
+                edit.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+            } else {
+                if(tamanho == antesDaVirgula[0].length()+1) {
+                    char []charAux = input.toCharArray();
+                    String stringAux = String.valueOf(charAux[tamanho-1]);
+                    input = input.substring(0, tamanho-1);
+                    edit.setText(input + ","+ stringAux);
+                    edit.setSelection(edit.getText().toString().length());
+                }
+            }
+        }
+    }
 
     //Abre o diálogo para preencher a quantidade aplicada de um insumo.
     //Parâmetro de entrada: instância da classe Join_OS_INSUMOS
@@ -199,41 +230,18 @@ public class FragmentoInsumos extends Fragment {
 
         valorDialogoQtd.addTextChangedListener(new TextWatcher() {
 
-            int first = 0;
-            int second;
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mascaraVirgula(valorDialogoQtd, insere.getQTD_HA_RECOMENDADO(), s);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
 
-                String input = s.toString();
-
-                if (!input.isEmpty()) {
-                    String qtdrec = String.valueOf(Double.valueOf(area.replace(',', '.')) * insere.getQTD_HA_RECOMENDADO());
-
-                    String[] antesDaVirgula = qtdrec.replace('.', ',').split(",");
-
-                    valorDialogoQtd.setFilters(new InputFilter[]{
-                            new InputFilter.LengthFilter(antesDaVirgula[0].length() + 3)});
-
-                    second = first;
-                    first = s.length();
-
-                    if (valorDialogoQtd.length() == antesDaVirgula[0].length() && first > second) {
-
-                        valorDialogoQtd.setText(input + ",");
-                        valorDialogoQtd.setSelection(valorDialogoQtd.getText().toString().length());
-                    }
-
-                }
             }
         });
 
@@ -338,7 +346,7 @@ public class FragmentoInsumos extends Fragment {
                     String obs = listaJoinOsInsumosSelecionados.get(id).getOBSERVACAO();
                     String pegaObs = "";
                     if (!obs.isEmpty() || obs != null) pegaObs = obs + "\n";
-                    obs = pegaObs.concat("Editado em " + dataHoraAtual.dataAtual() + " ás " + dataHoraAtual.horaAtual() + ". Justificativa: " + (valorDialogoEdicao.getText().toString()));
+                    obs = pegaObs.concat("Editado em " + ferramentas.dataAtual() + " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorDialogoEdicao.getText().toString()));
                     insumoInsere.setOBSERVACAO(obs);
                     insumoInsere.setACAO_INATIVO("EDICAO");
 

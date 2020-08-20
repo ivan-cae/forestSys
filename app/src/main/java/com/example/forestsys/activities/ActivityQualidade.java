@@ -24,6 +24,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -34,7 +35,7 @@ import android.widget.TextView;
 
 import com.example.forestsys.assets.BaseDeDados;
 import com.example.forestsys.assets.DAO;
-import com.example.forestsys.assets.DataHoraAtual;
+import com.example.forestsys.assets.Ferramentas;
 import com.example.forestsys.R;
 import com.example.forestsys.assets.Formulas;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
@@ -43,13 +44,11 @@ import com.example.forestsys.classes.AVAL_PONTO_SUBSOLAGEM;
 import com.example.forestsys.classes.AVAL_SUBSOLAGEM;
 import com.example.forestsys.classes.CADASTRO_FLORESTAL;
 import com.example.forestsys.classes.INDICADORES_SUBSOLAGEM;
-import com.example.forestsys.classes.join.Join_OS_INSUMOS;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
 
 import static android.view.View.GONE;
-import static com.example.forestsys.activities.ActivityAtividades.area;
 import static com.example.forestsys.activities.ActivityAtividades.joinOsInsumos;
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
 import static com.example.forestsys.activities.ActivityLogin.usuarioLogado;
@@ -64,7 +63,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     private TextView area;
     private TextView areaRealizada;
     private TextView manejo;
-    private DataHoraAtual dataHoraAtual;
+    private Ferramentas ferramentas;
     private DAO dao;
     private BaseDeDados baseDeDados;
     private ImageButton botaoVerion;
@@ -164,7 +163,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
         baseDeDados = BaseDeDados.getInstance(getApplicationContext());
         dao = baseDeDados.dao();
-        dataHoraAtual = new DataHoraAtual();
+        ferramentas = new Ferramentas();
         dialogoPontoAberto = false;
         dialogoVerionAberto = false;
 
@@ -212,7 +211,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         listaDesvioP2 = findViewById(R.id.qualidade_desvio_padrao_p2);
 
         talhao.setText(osSelecionada.getTALHAO());
-        data.setText(dataHoraAtual.dataAtual());
+        data.setText(ferramentas.dataAtual());
         status.setText(osSelecionada.getSTATUS());
         area.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()));
         areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()));
@@ -447,6 +446,41 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         }
     }
 
+    //Poe a virgula automaticamente como separador decimal dos números inseridos nas caixas de teste
+    //parâmetros de entrada: Uma instância de uma caixa de texto, um inteiro representando o índice da lista de indicadores onde está armazenado
+    //limite superiorn inferior e casas decimais permitidos para o indicador, a string contendo os valores inseridos na caixa de texto
+    public void mascaraVirgula(EditText edit, int i, CharSequence s){
+        int tamanho;
+        String input;
+        String[] antesDaVirgula;
+
+        tamanho = edit.length();
+        input = s.toString();
+
+        if (!input.isEmpty()) {
+
+            antesDaVirgula = String.valueOf(atividadeIndicadores.get(i).getLIMITE_SUPERIOR())
+                    .replace('.', ',').split(",");
+
+            edit.setFilters(new InputFilter[]{
+                    new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(i).getCASAS_DECIMAIS() + 1)});
+
+            char[] aux = input.toCharArray();
+            if((tamanho+1) != antesDaVirgula[0].length() && aux[tamanho - 1] == ','){
+                edit.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+            } else {
+                Log.e("Tamanho da String", String.valueOf(tamanho));
+                if(tamanho == antesDaVirgula[0].length()+1) {
+                    char []charAux = input.toCharArray();
+                    String stringAux = String.valueOf(charAux[tamanho-1]);
+                    input = input.substring(0, tamanho-1);
+                    edit.setText(input + ","+ stringAux);
+                    edit.setSelection(edit.getText().toString().length());
+                }
+            }
+        }
+    }
+
     //Sobreescrita do método de seleção de item do menu de navegação localizado na lateral da tela
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -507,9 +541,6 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
         mediaEditP1.addTextChangedListener(new TextWatcher() {
 
-            int first = 0;
-            int second;
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -517,37 +548,17 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mascaraVirgula(mediaEditP1, 0, s);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
 
-                String input = s.toString();
-
-                if (!input.isEmpty()) {
-
-                    String[] antesDaVirgula = String.valueOf(atividadeIndicadores.get(0).getLIMITE_SUPERIOR()).split(",");
-
-                    mediaEditP1.setFilters(new InputFilter[]{
-                            new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(0).getCASAS_DECIMAIS() + 1)});
-
-                    second = first;
-                    first = s.length();
-
-                    if (mediaEditP1.length() == antesDaVirgula[0].length() && first > second) {
-                        mediaEditP1.setText(input + ",");
-                        mediaEditP1.setSelection(mediaEditP1.getText().toString().length());
-                    }
-
-                }
             }
         });
 
         desvioEditP1.addTextChangedListener(new TextWatcher() {
 
-            int first = 0;
-            int second;
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -555,36 +566,16 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mascaraVirgula(desvioEditP1, 1, s);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
-                String input = s.toString();
-
-                if (!input.isEmpty()) {
-
-                    String[] antesDaVirgula = String.valueOf(atividadeIndicadores.get(1).getLIMITE_SUPERIOR()).split(",");
-
-                    desvioEditP1.setFilters(new InputFilter[]{
-                            new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(1).getCASAS_DECIMAIS() + 1)});
-
-                    second = first;
-                    first = s.length();
-
-                    if (desvioEditP1.length() == antesDaVirgula[0].length() && first > second) {
-                        desvioEditP1.setText(input + ",");
-                        desvioEditP1.setSelection(desvioEditP1.getText().toString().length());
-                    }
-                }
             }
+
         });
 
-        mediaEditP2.addTextChangedListener(new TextWatcher(){
-
-            int first = 0;
-            int second;
-
+        mediaEditP2.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -592,36 +583,17 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mascaraVirgula(mediaEditP2, 2, s);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
 
-                String input = s.toString();
-
-                if (!input.isEmpty()) {
-
-                    String[] antesDaVirgula = String.valueOf(atividadeIndicadores.get(2).getLIMITE_SUPERIOR()).split(",");
-
-                    mediaEditP2.setFilters(new InputFilter[]{
-                            new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(2).getCASAS_DECIMAIS() + 1)});
-
-                    second = first;
-                    first = s.length();
-
-                    if (mediaEditP2.length() == antesDaVirgula[0].length() && first > second) {
-                        mediaEditP2.setText(input + ",");
-                        mediaEditP2.setSelection(mediaEditP2.getText().toString().length());
-                    }
-                }
             }
         });
 
         desvioEditP2.addTextChangedListener(new TextWatcher() {
 
-            int first = 0;
-            int second;
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -629,28 +601,12 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mascaraVirgula(desvioEditP2, 3, s);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
 
-                String input = s.toString();
-
-                if (!input.isEmpty()) {
-
-                    String[] antesDaVirgula = String.valueOf(atividadeIndicadores.get(3).getLIMITE_SUPERIOR()).split(",");
-
-                    desvioEditP2.setFilters(new InputFilter[]{
-                            new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(3).getCASAS_DECIMAIS() + 1)});
-
-                    second = first;
-                    first = s.length();
-
-                    if (desvioEditP2.length() == antesDaVirgula[0].length() && first > second) {
-                        desvioEditP2.setText(input + ",");
-                        desvioEditP2.setSelection(desvioEditP2.getText().toString().length());
-                    }
-                }
             }
         });
 
@@ -692,9 +648,6 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
             mediaEditP1.addTextChangedListener(new TextWatcher() {
 
-                int first = 0;
-                int second;
-
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -702,37 +655,17 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    mascaraVirgula(mediaEditP1, 0, s);
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
 
-                    String input = s.toString();
-
-                    if (!input.isEmpty()) {
-
-                        String[] antesDaVirgula = String.valueOf(atividadeIndicadores.get(0).getLIMITE_SUPERIOR()).split(",");
-
-                        mediaEditP1.setFilters(new InputFilter[]{
-                                new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(0).getCASAS_DECIMAIS() + 1)});
-
-                        second = first;
-                        first = s.length();
-
-                        if (mediaEditP1.length() == antesDaVirgula[0].length() && first > second) {
-                            mediaEditP1.setText(input + ",");
-                            mediaEditP1.setSelection(mediaEditP1.getText().toString().length());
-                        }
-
-                    }
                 }
             });
 
             desvioEditP1.addTextChangedListener(new TextWatcher() {
 
-                int first = 0;
-                int second;
-
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -740,36 +673,16 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    mascaraVirgula(desvioEditP1, 1, s);
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
-
-                    String input = s.toString();
-
-                    if (!input.isEmpty()) {
-
-                        String[] antesDaVirgula = String.valueOf(atividadeIndicadores.get(1).getLIMITE_SUPERIOR()).split(",");
-
-                        desvioEditP1.setFilters(new InputFilter[]{
-                                new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(1).getCASAS_DECIMAIS() + 1)});
-
-                        second = first;
-                        first = s.length();
-
-                        if (desvioEditP1.length() == antesDaVirgula[0].length() && first > second) {
-                            desvioEditP1.setText(input + ",");
-                            desvioEditP1.setSelection(desvioEditP1.getText().toString().length());
-                        }
-                    }
                 }
+
             });
 
-            mediaEditP2.addTextChangedListener(new TextWatcher(){
-
-                int first = 0;
-                int second;
-
+            mediaEditP2.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -777,36 +690,17 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    mascaraVirgula(mediaEditP2, 2, s);
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
 
-                    String input = s.toString();
-
-                    if (!input.isEmpty()) {
-
-                        String[] antesDaVirgula = String.valueOf(atividadeIndicadores.get(2).getLIMITE_SUPERIOR()).split(",");
-
-                        mediaEditP2.setFilters(new InputFilter[]{
-                                new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(2).getCASAS_DECIMAIS() + 1)});
-
-                        second = first;
-                        first = s.length();
-
-                        if (mediaEditP2.length() == antesDaVirgula[0].length() && first > second) {
-                            mediaEditP2.setText(input + ",");
-                            mediaEditP2.setSelection(mediaEditP2.getText().toString().length());
-                        }
-                    }
                 }
             });
 
             desvioEditP2.addTextChangedListener(new TextWatcher() {
 
-                int first = 0;
-                int second;
-
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -814,28 +708,12 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    mascaraVirgula(desvioEditP2, 3, s);
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
 
-                    String input = s.toString();
-
-                    if (!input.isEmpty()) {
-
-                        String[] antesDaVirgula = String.valueOf(atividadeIndicadores.get(3).getLIMITE_SUPERIOR()).split(",");
-
-                        desvioEditP2.setFilters(new InputFilter[]{
-                                new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(3).getCASAS_DECIMAIS() + 1)});
-
-                        second = first;
-                        first = s.length();
-
-                        if (desvioEditP2.length() == antesDaVirgula[0].length() && first > second) {
-                            desvioEditP2.setText(input + ",");
-                            desvioEditP2.setSelection(desvioEditP2.getText().toString().length());
-                        }
-                    }
                 }
             });
 
@@ -906,10 +784,10 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                             }).create();
                     dialog.show();
                 } else {
-                    dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 11, dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()), Double.valueOf(mediaEditP1.getText().toString().replace(',', '.'))));
-                    dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 12, dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()), Double.valueOf(desvioEditP1.getText().toString().replace(',', '.'))));
-                    dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 13, dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()), Double.valueOf(mediaEditP2.getText().toString().replace(',', '.'))));
-                    dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.'))));
+                    dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 11, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP1.getText().toString().replace(',', '.'))));
+                    dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 12, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP1.getText().toString().replace(',', '.'))));
+                    dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 13, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP2.getText().toString().replace(',', '.'))));
+                    dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.'))));
                     listaVerion = dao.listaIndicadoresSubsolagem(idProg, osSelecionada.getID_ATIVIDADE());
 
                     listaInsumoP1.setText(joinOsInsumos.get(0).getDESCRICAO());
@@ -1005,9 +883,6 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
         editItem1.addTextChangedListener(new TextWatcher() {
 
-            int first = 0;
-            int second;
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -1015,37 +890,16 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mascaraVirgula(editItem1, 0, s);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
-                String input = s.toString();
-
-                if (!input.isEmpty()) {
-
-                    String[] antesDaVirgula = String.valueOf(atividadeIndicadores.get(0).getLIMITE_SUPERIOR()).split(",");
-
-                    editItem1.setFilters(new InputFilter[]{
-                            new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(0).getCASAS_DECIMAIS() + 1)});
-
-                    second = first;
-                    first = s.length();
-
-                    if (editItem1.length() == antesDaVirgula[0].length() && first > second) {
-                        editItem1.setText(input + ",");
-                        editItem1.setSelection(editItem1.getText().toString().length());
-                    }
-
-                }
             }
         });
 
         editItem2.addTextChangedListener(new TextWatcher() {
 
-            int first = 0;
-            int second;
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -1053,39 +907,16 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mascaraVirgula(editItem2, 1, s);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
-                String input = s.toString();
-
-                if (!input.isEmpty()) {
-
-                    String[] antesDaVirgula = String.valueOf(atividadeIndicadores.get(1).getLIMITE_SUPERIOR()).split(",");
-
-
-                    editItem2.setFilters(new InputFilter[]{
-                            new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(1).getCASAS_DECIMAIS() + 1)});
-
-                    second = first;
-                    first = s.length();
-
-                    if (editItem2.length() == antesDaVirgula[0].length() && first > second) {
-
-                        editItem2.setText(input + ",");
-                        editItem2.setSelection(editItem2.getText().toString().length());
-                    }
-
-                }
             }
         });
 
         editItem3.addTextChangedListener(new TextWatcher() {
 
-            int first = 0;
-            int second;
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -1093,39 +924,16 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mascaraVirgula(editItem3, 2, s);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
-                String input = s.toString();
-
-                if (!input.isEmpty()) {
-
-                    String[] antesDaVirgula = String.valueOf(atividadeIndicadores.get(2).getLIMITE_SUPERIOR()).split(",");
-
-
-                    editItem3.setFilters(new InputFilter[]{
-                            new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(2).getCASAS_DECIMAIS() + 1)});
-
-                    second = first;
-                    first = s.length();
-
-                    if (editItem3.length() == antesDaVirgula[0].length() && first > second) {
-
-                        editItem3.setText(input + ",");
-                        editItem3.setSelection(editItem3.getText().toString().length());
-                    }
-
-                }
-            }
+}
         });
 
         editItem4.addTextChangedListener(new TextWatcher() {
 
-            int first = 0;
-            int second;
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -1133,39 +941,16 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mascaraVirgula(editItem4, 3, s);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
-                String input = s.toString();
-
-                if (!input.isEmpty()) {
-
-                    String[] antesDaVirgula = String.valueOf(atividadeIndicadores.get(3).getLIMITE_SUPERIOR()).split(",");
-
-
-                    editItem4.setFilters(new InputFilter[]{
-                            new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(3).getCASAS_DECIMAIS() + 1)});
-
-                    second = first;
-                    first = s.length();
-
-                    if (editItem4.length() == antesDaVirgula[0].length() && first > second) {
-
-                        editItem4.setText(input + ",");
-                        editItem4.setSelection(editItem4.getText().toString().length());
-                    }
-
-                }
             }
         });
 
         editItem6.addTextChangedListener(new TextWatcher() {
 
-            int first = 0;
-            int second;
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -1173,37 +958,18 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mascaraVirgula(editItem6, 5, s);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
 
-                String input = s.toString();
 
-                if (!input.isEmpty()) {
-
-                    String[] antesDaVirgula = String.valueOf(atividadeIndicadores.get(5).getLIMITE_SUPERIOR()).split(",");
-
-
-                    editItem6.setFilters(new InputFilter[]{
-                            new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(5).getCASAS_DECIMAIS() + 1)});
-
-                    second = first;
-                    first = s.length();
-
-                    if (editItem6.length() == antesDaVirgula[0].length() && first > second) {
-                        editItem6.setText(input + ",");
-                        editItem6.setSelection(editItem6.getText().toString().length());
-                    }
-                }
             }
         });
 
         editItem10.addTextChangedListener(new TextWatcher() {
 
-            int first = 0;
-            int second;
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -1211,30 +977,11 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mascaraVirgula(editItem10, 9, s);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
-                String input = s.toString();
-
-                if (!input.isEmpty()) {
-
-                    String[] antesDaVirgula = String.valueOf(atividadeIndicadores.get(9).getLIMITE_SUPERIOR()).split(",");
-
-
-                    editItem10.setFilters(new InputFilter[]{
-                            new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(9).getCASAS_DECIMAIS() + 1)});
-
-                    second = first;
-                    first = s.length();
-
-                    if (editItem10.length() == antesDaVirgula[0].length() && first > second) {
-
-                        editItem10.setText(input + ",");
-                        editItem10.setSelection(editItem10.getText().toString().length());
-                    }
-                }
             }
         });
 
@@ -1264,9 +1011,6 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
             editItem1.addTextChangedListener(new TextWatcher() {
 
-                int first = 0;
-                int second;
-
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -1274,39 +1018,16 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    mascaraVirgula(editItem1, 0, s);
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
-
-                    Log.e("TextChanged", "");
-                    String input = s.toString();
-
-                    if (!input.isEmpty()) {
-
-                        String[] antesDaVirgula = String.valueOf(atividadeIndicadores.get(0).getLIMITE_SUPERIOR()).split(",");
-
-                        editItem1.setFilters(new InputFilter[]{
-                                new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(0).getCASAS_DECIMAIS() + 1)});
-
-                        second = first;
-                        first = s.length();
-
-                        if (editItem1.length() == antesDaVirgula[0].length() && first > second) {
-                            Log.e("Entrou", "");
-                            editItem1.setText(input + ",");
-                            editItem1.setSelection(editItem1.getText().toString().length());
-                        }
-
-                    }
                 }
             });
 
             editItem2.addTextChangedListener(new TextWatcher() {
 
-                int first = 0;
-                int second;
-
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -1314,39 +1035,16 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    mascaraVirgula(editItem2, 1, s);
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
-
-                    String input = s.toString();
-
-                    if (!input.isEmpty()) {
-
-                        String[] antesDaVirgula = String.valueOf(atividadeIndicadores.get(1).getLIMITE_SUPERIOR()).split(",");
-
-
-                        editItem2.setFilters(new InputFilter[]{
-                                new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(1).getCASAS_DECIMAIS() + 1)});
-
-                        second = first;
-                        first = s.length();
-
-                        if (editItem2.length() == antesDaVirgula[0].length() && first > second) {
-
-                            editItem2.setText(input + ",");
-                            editItem2.setSelection(editItem2.getText().toString().length());
-                        }
-
-                    }
                 }
             });
 
             editItem3.addTextChangedListener(new TextWatcher() {
 
-                int first = 0;
-                int second;
-
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -1354,39 +1052,16 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    mascaraVirgula(editItem3, 2, s);
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
-
-                    String input = s.toString();
-
-                    if (!input.isEmpty()) {
-
-                        String[] antesDaVirgula = String.valueOf(atividadeIndicadores.get(2).getLIMITE_SUPERIOR()).split(",");
-
-
-                        editItem3.setFilters(new InputFilter[]{
-                                new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(2).getCASAS_DECIMAIS() + 1)});
-
-                        second = first;
-                        first = s.length();
-
-                        if (editItem3.length() == antesDaVirgula[0].length() && first > second) {
-
-                            editItem3.setText(input + ",");
-                            editItem3.setSelection(editItem3.getText().toString().length());
-                        }
-
-                    }
                 }
             });
 
             editItem4.addTextChangedListener(new TextWatcher() {
 
-                int first = 0;
-                int second;
-
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -1394,39 +1069,16 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    mascaraVirgula(editItem4, 3, s);
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
-
-                    String input = s.toString();
-
-                    if (!input.isEmpty()) {
-
-                        String[] antesDaVirgula = String.valueOf(atividadeIndicadores.get(3).getLIMITE_SUPERIOR()).split(",");
-
-
-                        editItem4.setFilters(new InputFilter[]{
-                                new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(3).getCASAS_DECIMAIS() + 1)});
-
-                        second = first;
-                        first = s.length();
-
-                        if (editItem4.length() == antesDaVirgula[0].length() && first > second) {
-
-                            editItem4.setText(input + ",");
-                            editItem4.setSelection(editItem4.getText().toString().length());
-                        }
-
-                    }
                 }
             });
 
             editItem6.addTextChangedListener(new TextWatcher() {
 
-                int first = 0;
-                int second;
-
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -1434,38 +1086,18 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    mascaraVirgula(editItem6, 5, s);
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
 
-                    String input = s.toString();
 
-                    if (!input.isEmpty()) {
-
-                        String[] antesDaVirgula = String.valueOf(atividadeIndicadores.get(5).getLIMITE_SUPERIOR()).split(",");
-
-
-                        editItem6.setFilters(new InputFilter[]{
-                                new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(5).getCASAS_DECIMAIS() + 1)});
-
-                        second = first;
-                        first = s.length();
-
-                        if (editItem6.length() == antesDaVirgula[0].length() && first > second) {
-
-                            editItem6.setText(input + ",");
-                            editItem6.setSelection(editItem6.getText().toString().length());
-                        }
-                    }
                 }
             });
 
             editItem10.addTextChangedListener(new TextWatcher() {
 
-                int first = 0;
-                int second;
-
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -1473,30 +1105,11 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    mascaraVirgula(editItem10, 9, s);
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
-
-                    String input = s.toString();
-
-                    if (!input.isEmpty()) {
-
-                        String[] antesDaVirgula = String.valueOf(atividadeIndicadores.get(9).getLIMITE_SUPERIOR()).split(",");
-
-
-                        editItem10.setFilters(new InputFilter[]{
-                                new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(9).getCASAS_DECIMAIS() + 1)});
-
-                        second = first;
-                        first = s.length();
-
-                        if (editItem10.length() == antesDaVirgula[0].length() && first > second) {
-
-                            editItem10.setText(input + ",");
-                            editItem10.setSelection(editItem10.getText().toString().length());
-                        }
-                    }
                 }
             });
 
@@ -1657,51 +1270,51 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     public void salvaPonto() {
         double check = 0;
 
-        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(0).getID_INDICADOR(),
                 Double.valueOf(editItem1.getText().toString().replace(',', '.')), latitude, longitude));
 
-        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(1).getID_INDICADOR(),
                 Double.valueOf(editItem2.getText().toString().replace(',', '.')), latitude, longitude));
 
-        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(2).getID_INDICADOR(),
                 Double.valueOf(editItem3.getText().toString().replace(',', '.')), latitude, longitude));
 
-        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(3).getID_INDICADOR(),
                 Double.valueOf(editItem4.getText().toString().replace(',', '.')), latitude, longitude));
 
         if (editItem5.isChecked()) check = 1;
         else check = 0;
-        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(4).getID_INDICADOR(),
                 check, latitude, longitude));
 
-        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(5).getID_INDICADOR(),
                 Double.valueOf(editItem6.getText().toString().replace(',', '.')), latitude, longitude));
 
         if (editItem7.isChecked()) check = 1;
         else check = 0;
-        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(6).getID_INDICADOR(),
                 check, latitude, longitude));
 
         if (editItem8.isChecked()) check = 1;
         else check = 0;
-        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(7).getID_INDICADOR(),
                 check, latitude, longitude));
 
         if (editItem9.isChecked()) check = 1;
         else check = 0;
-        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(8).getID_INDICADOR(),
                 check, latitude, longitude));
 
-        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataHoraAtual.formataDataDb(data.getText().toString()),
+        dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(9).getID_INDICADOR(),
                 Double.valueOf(editItem10.getText().toString().replace(',', '.')), latitude, longitude));
 

@@ -33,7 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.forestsys.Adapters.AdaptadorInsumos;
 import com.example.forestsys.assets.BaseDeDados;
 import com.example.forestsys.assets.DAO;
-import com.example.forestsys.assets.DataHoraAtual;
+import com.example.forestsys.assets.Ferramentas;
 import com.example.forestsys.R;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
 import com.example.forestsys.classes.AVAL_PONTO_SUBSOLAGEM;
@@ -44,7 +44,6 @@ import com.example.forestsys.classes.O_S_ATIVIDADE_INSUMOS_DIA;
 import com.example.forestsys.classes.join.Join_OS_INSUMOS;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Circle;
@@ -86,7 +85,7 @@ public class ActivityAtividades extends AppCompatActivity
     private AdaptadorInsumos adaptador;
 
     public static List<Join_OS_INSUMOS> joinOsInsumos;
-    private DataHoraAtual dataHoraAtual;
+    private Ferramentas ferramentas;
 
     private BaseDeDados baseDeDados;
     private DAO dao;
@@ -133,7 +132,7 @@ public class ActivityAtividades extends AppCompatActivity
         setContentView(R.layout.activity_atividades);
         setTitle(nomeEmpresaPref);
 
-        dataHoraAtual = new DataHoraAtual();
+        ferramentas = new Ferramentas();
         oSAtividadesDiaAtual = null;
         editouRegistro = false;
         editouInsumo1 = false;
@@ -184,7 +183,7 @@ public class ActivityAtividades extends AppCompatActivity
         statusOs.setText(osSelecionada.getSTATUS());
         areaOs.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace(".", ",") + "ha");
         manejoOs.setText(String.valueOf(dao.selecionaManejo(osSelecionada.getID_MANEJO()).getDESCRICAO()));
-        dataProgramada.setText(dataHoraAtual.formataDataTextView(osSelecionada.getDATA_PROGRAMADA()));
+        dataProgramada.setText(ferramentas.formataDataTextView(osSelecionada.getDATA_PROGRAMADA()));
         areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()) + "ha");
 
         obsOs.setMovementMethod(new ScrollingMovementMethod());
@@ -455,7 +454,7 @@ public class ActivityAtividades extends AppCompatActivity
     public void salvar() {
         osSelecionada.setSTATUS_NUM(2);
         osSelecionada.setSTATUS("Finalizado");
-        osSelecionada.setDATA_FINAL(dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()));
+        osSelecionada.setDATA_FINAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
         osSelecionada.setEDITOU(false);
         dao.update(osSelecionada);
         Toast.makeText(ActivityAtividades.this, "Atividade Finalizada Com Sucesso!", Toast.LENGTH_LONG).show();
@@ -494,7 +493,7 @@ public class ActivityAtividades extends AppCompatActivity
                     String obs = osSelecionada.getOBSERVACAO();
                     String pegaObs = "";
                     if (!obs.isEmpty() || obs != null) pegaObs = obs + "\n";
-                    obs = pegaObs.concat("Editado em " + dataHoraAtual.dataAtual() + " ás " + dataHoraAtual.horaAtual() + ". Justificativa: " + (valorDialogoJustificativaEdicaoOs.getText().toString()));
+                    obs = pegaObs.concat("Editado em " + ferramentas.dataAtual() + " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorDialogoJustificativaEdicaoOs.getText().toString()));
                     osSelecionada.setOBSERVACAO(obs);
                     osSelecionada.setSTATUS("Andamento");
                     osSelecionada.setSTATUS_NUM(1);
@@ -560,8 +559,8 @@ public class ActivityAtividades extends AppCompatActivity
                     String obs = osSelecionada.getOBSERVACAO();
                     String pegaObs = "";
                     if (!obs.isEmpty() || obs != null) pegaObs = obs + "\n";
-                    if (osSelecionada.getAREA_PROGRAMADA() > osSelecionada.getAREA_REALIZADA()) obs = pegaObs.concat("Atividade finalizada com a área realizada menor que a área programada em " + dataHoraAtual.dataAtual() + " ás " + dataHoraAtual.horaAtual() + ". Justificativa: " + (valorDialogoAreaRealizada.getText().toString()));;
-                    if (osSelecionada.getAREA_PROGRAMADA() < osSelecionada.getAREA_REALIZADA()) obs = pegaObs.concat("Atividade finalizada com a área realizada maior que a área programada em " + dataHoraAtual.dataAtual() + " ás " + dataHoraAtual.horaAtual() + ". Justificativa: " + (valorDialogoAreaRealizada.getText().toString()));
+                    if (osSelecionada.getAREA_PROGRAMADA() > osSelecionada.getAREA_REALIZADA()) obs = pegaObs.concat("Atividade finalizada com a área realizada menor que a área programada em " + ferramentas.dataAtual() + " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorDialogoAreaRealizada.getText().toString()));;
+                    if (osSelecionada.getAREA_PROGRAMADA() < osSelecionada.getAREA_REALIZADA()) obs = pegaObs.concat("Atividade finalizada com a área realizada maior que a área programada em " + ferramentas.dataAtual() + " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorDialogoAreaRealizada.getText().toString()));
                     osSelecionada.setOBSERVACAO(obs);
                     dao.update(osSelecionada);
                     salvar();
@@ -679,7 +678,7 @@ public class ActivityAtividades extends AppCompatActivity
     //Checa se há uma calibração naquela data e turno
     private boolean checaCalibracao() {
         CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem = dao.checaCalibragem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
-                dataHoraAtual.formataDataDb(dataHoraAtual.dataAtual()), checaTurno());
+                ferramentas.formataDataDb(ferramentas.dataAtual()), checaTurno());
 
         if (calibragem_subsolagem == null) return false;
 

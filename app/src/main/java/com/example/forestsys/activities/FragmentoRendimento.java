@@ -13,6 +13,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -125,6 +126,37 @@ public class FragmentoRendimento extends Fragment {
         }
     }
 
+    //Poe a virgula automaticamente como separador decimal dos números inseridos nas caixas de texto
+    //parâmetros de entrada: Uma instância de uma caixa de texto, um inteiro representando quantos números virão antes da virgula,
+    //umaa string contendo os valores inseridos na caixa de texto
+    public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
+        int tamanho;
+        String input;
+
+        tamanho = edit.length();
+        input = s.toString();
+
+        if (!input.isEmpty()) {
+
+            edit.setFilters(new InputFilter[]{
+                    new InputFilter.LengthFilter(antesDaVirgula + 3)});
+
+            char[] aux = input.toCharArray();
+            if ((tamanho + 1) != antesDaVirgula && aux[tamanho - 1] == ',') {
+                edit.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+            } else {
+                if (tamanho == antesDaVirgula + 1) {
+                    char[] charAux = input.toCharArray();
+                    String stringAux = String.valueOf(charAux[tamanho - 1]);
+                    input = input.substring(0, tamanho - 1);
+                    edit.setText(input + "," + stringAux);
+                    edit.setSelection(edit.getText().toString().length());
+                }
+            }
+        }
+    }
+
+
     //inicialização dos itens na tela e variáveis
     public void inicializacao() {
         spinnerResponsavel = getView().findViewById(R.id.spinner_responsavel_apontamento);
@@ -190,87 +222,49 @@ public class FragmentoRendimento extends Fragment {
         });
 
         areaRealizadaApontamento.addTextChangedListener(new TextWatcher() {
-
-            int first = 0;
-            int second;
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
                 area = checaTextView(areaRealizadaApontamento, area, 0);
                 FragmentoInsumos frag = (FragmentoInsumos) getActivity().getSupportFragmentManager().findFragmentById(R.id.registro_fragmento_insumos);
                 frag.setInsumos();
 
-                String input = s.toString();
+                String[] antesDaVirgula = String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace('.', ',').split(",");
+                mascaraVirgula(areaRealizadaApontamento, antesDaVirgula[0].length(), s);
+            }
 
-                if (!input.isEmpty()) {
-                    String areaProgramada = String.valueOf(osSelecionada.getAREA_PROGRAMADA());
+            @Override
+            public void afterTextChanged(Editable s) {
 
-                    areaProgramada = areaProgramada.replace('.', ',');
-
-                    String[] antesDaVirgula = areaProgramada.split(",");
-
-                    areaRealizadaApontamento.setFilters(new InputFilter[]{
-                            new InputFilter.LengthFilter(antesDaVirgula[0].length() + 3)});
-
-
-                    second = first;
-                    first = s.length();
-
-                    if (areaRealizadaApontamento.length() == antesDaVirgula[0].length() && first > second) {
-
-                        areaRealizadaApontamento.setText(input + ",");
-                        areaRealizadaApontamento.setSelection(areaRealizadaApontamento.getText().toString().length());
-                    }
-
-                }
             }
         });
 
         HOEscavadeiraApontamento.addTextChangedListener(new TextWatcher() {
-            int first = 0;
-            int second;
+
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                hoe = checaTextView(HOEscavadeiraApontamento, hoe, 0);
+                mascaraVirgula(HOEscavadeiraApontamento, 2, s);
 
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                hoe = checaTextView(HOEscavadeiraApontamento, hoe, 0);
 
-                second = first;
-                first = s.length();
-
-                String input = s.toString();
-
-                if (!input.isEmpty()) {
-                    if (HOEscavadeiraApontamento.length() == 2 && first > second){
-
-                        HOEscavadeiraApontamento.setText(input + ",");
-                        HOEscavadeiraApontamento.setSelection(HOEscavadeiraApontamento.getText().toString().length());
-                    }
-                }
             }
         });
 
         HOApontamento.addTextChangedListener(new TextWatcher() {
-            int first = 0;
-            int second;
+
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -278,31 +272,19 @@ public class FragmentoRendimento extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                ho = checaTextView(HOApontamento, ho, 0);
+                mascaraVirgula(HOApontamento, 2, s);
             }
+
 
             @Override
             public void afterTextChanged(Editable s) {
-                ho = checaTextView(HOApontamento, ho, 0);
 
-                second = first;
-                first = s.length();
-
-                String input = s.toString();
-
-                if (!input.isEmpty()) {
-                    if (HOApontamento.length() == 2 && first > second){
-
-                        HOApontamento.setText(input + ",");
-                        HOApontamento.setSelection(HOApontamento.getText().toString().length());
-                    }
-                }
             }
         });
 
         HMApontamento.addTextChangedListener(new TextWatcher() {
-            int first = 0;
-            int second;
+
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -310,31 +292,18 @@ public class FragmentoRendimento extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                hm = checaTextView(HMApontamento, hm, 0);
+                mascaraVirgula(HMApontamento, 2, s);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                hm = checaTextView(HMApontamento, hm, 0);
 
-                second = first;
-                first = s.length();
-
-                String input = s.toString();
-
-                if (!input.isEmpty()) {
-                    if (HMApontamento.length() == 2 && first > second){
-
-                        HMApontamento.setText(input + ",");
-                        HMApontamento.setSelection(HMApontamento.getText().toString().length());
-                    }
-                }
-                }
+            }
         });
 
         HMEscavadeiraApontamento.addTextChangedListener(new TextWatcher() {
-            int first = 0;
-            int second;
+
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -342,57 +311,31 @@ public class FragmentoRendimento extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                hme = checaTextView(HMEscavadeiraApontamento, hme, 0);
+                mascaraVirgula(HMEscavadeiraApontamento, 2, s);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                hme = checaTextView(HMEscavadeiraApontamento, hme, 0);
 
-                second = first;
-                first = s.length();
-
-                String input = s.toString();
-
-                if (!input.isEmpty()) {
-                    if (HMEscavadeiraApontamento.length() == 2 && first > second){
-
-                        HMEscavadeiraApontamento.setText(input + ",");
-                        HMEscavadeiraApontamento.setSelection(HMEscavadeiraApontamento.getText().toString().length());
-                    }
-                }
             }
         });
 
         HHApontamento.addTextChangedListener(new TextWatcher() {
-            int first = 0;
-            int second;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                hh = checaTextView(HHApontamento, hh, 300);
+                mascaraVirgula(HHApontamento, 3, s);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                hh = checaTextView(HHApontamento, hh, 300);
 
-                String input = s.toString();
-
-                second = first;
-                first = s.length();
-
-
-                if (!input.isEmpty()) {
-                    if (HHApontamento.length() == 3 && first > second){
-
-                        HHApontamento.setText(input + ",");
-                        HHApontamento.setSelection(HHApontamento.getText().toString().length());
-                    }
-                }
             }
         });
 
@@ -458,7 +401,7 @@ public class FragmentoRendimento extends Fragment {
     //Checa se o valor de um TextView pode ser convertido para double
     //parâmetro de entrada: TextView e uma String
     //parâmetro de saída: null se o valor não puder ser convertido, a própria string se o valor puder ser convertido
-    public String checaTextView(TextView t, String str, double limite){
+    public String checaTextView(TextView t, String str, double limite) {
         String s1 = t.getText().toString().trim();
         if (s1.isEmpty()) return null;
         char[] c = s1.toCharArray();
@@ -469,14 +412,14 @@ public class FragmentoRendimento extends Fragment {
             } else {
                 str = s1;
                 t.setError(null);
-                if(limite != 0){
+                if (limite != 0) {
                     double teste = 0;
                     try {
                         teste = Double.parseDouble(str.replace(',', '.'));
                     } catch (NumberFormatException | NullPointerException n) {
                         teste = 0;
                     }
-                    if(teste > limite) {
+                    if (teste > limite) {
                         t.setError("Valor Acima do permitido! O registro não será salvo.");
                         str = "";
                     }
@@ -540,17 +483,17 @@ public class FragmentoRendimento extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
 
-            super.onSaveInstanceState(outState);
-            outState.putString("area", area);
-            outState.putString("hoe", hoe);
-            outState.putString("ho", ho);
-            outState.putString("hm", hm);
-            outState.putString("hh", hh);
-            outState.putString("hme", hme);
-            outState.putString("obs", obs);
+        super.onSaveInstanceState(outState);
+        outState.putString("area", area);
+        outState.putString("hoe", hoe);
+        outState.putString("ho", ho);
+        outState.putString("hm", hm);
+        outState.putString("hh", hh);
+        outState.putString("hme", hme);
+        outState.putString("obs", obs);
 
-            outState.putInt("posicaoPrestador", posicaoPrestador);
-            outState.putInt("posicaoResponsavel", posicaoResponsavel);
+        outState.putInt("posicaoPrestador", posicaoPrestador);
+        outState.putInt("posicaoResponsavel", posicaoResponsavel);
 
     }
 }

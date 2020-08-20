@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.forestsys.assets.ApplicationTodos;
 import com.example.forestsys.assets.BaseDeDados;
 import com.example.forestsys.assets.DAO;
-import com.example.forestsys.assets.DataHoraAtual;
+import com.example.forestsys.assets.Ferramentas;
 import com.example.forestsys.R;
 import com.example.forestsys.classes.GGF_USUARIOS;
 import com.example.forestsys.classes.O_S_ATIVIDADES_DIA;
@@ -30,7 +30,7 @@ public class AdaptadorApontamentos extends RecyclerView.Adapter<AdaptadorApontam
     private DAO dao;
     private OnItemClickListener listener;
     private Context context = ApplicationTodos.getAppContext();
-    private DataHoraAtual dataHoraAtual;
+    private Ferramentas ferramentas;
 
     @NonNull
     @Override
@@ -55,8 +55,8 @@ public class AdaptadorApontamentos extends RecyclerView.Adapter<AdaptadorApontam
         GGF_USUARIOS ggf_usuarios = dao.selecionaUser(oSAtividadesDia.getID_RESPONSAVEL());
         PRESTADORES prestadores = dao.selecionaPrestador(oSAtividadesDia.getID_PRESTADOR());
 
-        dataHoraAtual = new DataHoraAtual();
-        holder.data.setText((DataHoraAtual.formataDataTextView(oSAtividadesDia.getDATA())));
+        ferramentas = new Ferramentas();
+        holder.data.setText((Ferramentas.formataDataTextView(oSAtividadesDia.getDATA())));
         holder.responsavel.setText((ggf_usuarios.getDESCRICAO()));
         holder.prestador.setText(prestadores.getDESCRICAO());
         holder.area.setText(oSAtividadesDia.getAREA_REALIZADA());

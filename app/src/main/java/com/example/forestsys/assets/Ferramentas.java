@@ -2,6 +2,7 @@ package com.example.forestsys.assets;
 
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.widget.EditText;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,7 +10,7 @@ import java.util.Date;
 
 import static java.lang.String.format;
 
-public class DataHoraAtual {
+public class Ferramentas {
 
     //Retorna a hora atual do dispositivo
     public static String horaAtual() {
@@ -66,5 +67,6 @@ public class DataHoraAtual {
         String ano = caracteres[0] + "" + caracteres[1] + "" + caracteres[2] + "" + caracteres[3];
         return dia+ "-" +mes+ "-" +ano;
     }
+
 
 }

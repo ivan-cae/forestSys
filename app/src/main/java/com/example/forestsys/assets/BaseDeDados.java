@@ -2,7 +2,6 @@ package com.example.forestsys.assets;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -63,7 +62,7 @@ public abstract class BaseDeDados extends RoomDatabase {
 
     public abstract DAO dao();
 
-    public static DataHoraAtual dataHoraAtual = new DataHoraAtual();
+    public static Ferramentas ferramentas = new Ferramentas();
 
     public static synchronized BaseDeDados getInstance(Context context) {
         activity = context.getApplicationContext();
@@ -225,7 +224,7 @@ public abstract class BaseDeDados extends RoomDatabase {
                 String DATA_FINAL = obj.getString("DATA_FINAL");
                 Double AREA_REALIZADA = obj.getDouble("AREA_REALIZADA");
 
-                DATA_PROGRAMADA = dataHoraAtual.formataDataDb(DATA_PROGRAMADA);
+                DATA_PROGRAMADA = ferramentas.formataDataDb(DATA_PROGRAMADA);
 
                 daoInsere.insert(new O_S_ATIVIDADES(ID_PROGRAMACAO_ATIVIDADE, ID_REGIONAL, ID_SETOR, TALHAO, CICLO, ID_MANEJO, ID_ATIVIDADE, ID_RESPONSAVEL, DATA_PROGRAMADA, AREA_PROGRAMADA, PRIORIDADE, EXPERIMENTO, MADEIRA_NO_TALHAO, OBSERVACAO, DATA_INICIAL, DATA_FINAL, AREA_REALIZADA, "Aberto", 0, false));
             }

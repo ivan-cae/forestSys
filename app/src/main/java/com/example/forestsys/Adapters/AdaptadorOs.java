@@ -1,6 +1,5 @@
 package com.example.forestsys.Adapters;
 
-import android.app.Application;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -15,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.forestsys.assets.ApplicationTodos;
 import com.example.forestsys.assets.BaseDeDados;
 import com.example.forestsys.assets.DAO;
-import com.example.forestsys.assets.DataHoraAtual;
+import com.example.forestsys.assets.Ferramentas;
 import com.example.forestsys.R;
 import com.example.forestsys.classes.O_S_ATIVIDADES;
 
@@ -61,8 +60,8 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
         holder.itemView.setBackgroundColor(corFundo);
 
         holder.setor.setText(String.valueOf(dao.selecionaSetor(ordem.getID_SETOR()).getDESCRICAO()));
-        DataHoraAtual dataHoraAtual = new DataHoraAtual();
-        holder.data.setText(String.valueOf(dataHoraAtual.formataDataTextView(ordem.getDATA_PROGRAMADA())));
+        Ferramentas ferramentas = new Ferramentas();
+        holder.data.setText(String.valueOf(ferramentas.formataDataTextView(ordem.getDATA_PROGRAMADA())));
         holder.talhao.setText(String.valueOf(ordem.getTALHAO()));
         holder.status.setText(ordem.getSTATUS());
         holder.area.setText(String.valueOf(ordem.getAREA_PROGRAMADA()).replace(".", ","));

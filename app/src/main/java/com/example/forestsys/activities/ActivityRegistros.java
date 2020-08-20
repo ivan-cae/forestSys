@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -32,7 +31,7 @@ import android.widget.Toast;
 import com.example.forestsys.Adapters.AdaptadorApontamentos;
 import com.example.forestsys.assets.BaseDeDados;
 import com.example.forestsys.assets.DAO;
-import com.example.forestsys.assets.DataHoraAtual;
+import com.example.forestsys.assets.Ferramentas;
 import com.example.forestsys.R;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
 import com.example.forestsys.classes.O_S_ATIVIDADES_DIA;
@@ -88,7 +87,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     private Button botaoSalvar;
     private ImageButton botaoDatePicker;
     public static ViewModelO_S_ATIVIDADES_DIA viewModelOSAtividadesDia;
-    private DataHoraAtual dataHoraAtual;
+    private Ferramentas ferramentas;
     public static String dataDoApontamento;
     private String acaoInativoAtividade = null;
 
@@ -231,7 +230,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         setContentView(R.layout.activity_registros);
         setTitle(nomeEmpresaPref);
 
-        dataHoraAtual = new DataHoraAtual();
+        ferramentas = new Ferramentas();
 
         abriuDialogoEdicao = false;
         edicaoReg = false;
@@ -318,9 +317,9 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
             if (dia < 10) d = "0" + d;
 
-            dataDoApontamento = dataHoraAtual.dataAtual();
+            dataDoApontamento = ferramentas.dataAtual();
         } else
-            dataDoApontamento = dataHoraAtual.formataDataTextView(oSAtividadesDiaAtual.getDATA());
+            dataDoApontamento = ferramentas.formataDataTextView(oSAtividadesDiaAtual.getDATA());
 
         dataApontamento.setText(dataDoApontamento);
 
@@ -510,7 +509,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 else {
                     String pegaObs = "";
                     if (!obs.isEmpty()) pegaObs = obs + "\n";
-                    obs = pegaObs.concat("Editado em " + dataHoraAtual.dataAtual() + " ás " + dataHoraAtual.horaAtual() + ". Justificativa: " + (valorJustificativa.getText().toString()));
+                    obs = pegaObs.concat("Editado em " + ferramentas.dataAtual() + " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorJustificativa.getText().toString()));
                     chamaSalvar();
                     dialogoEdicaoRec.dismiss();
                 }
@@ -579,9 +578,9 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             String pattern = ("dd-MM-yyyy");
             SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 
-            DataHoraAtual dataHoraAtual = new DataHoraAtual();
+            Ferramentas ferramentas = new Ferramentas();
             if (!auxTeste.equals(dataDoApontamento)) {
-                if (dao.selecionaOsAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.formataDataDb(auxTeste)) != null) {
+                if (dao.selecionaOsAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), ferramentas.formataDataDb(auxTeste)) != null) {
                     AlertDialog dialog = new AlertDialog.Builder(getContext())
                             .setTitle("Erro!")
                             .setMessage("A data selecionada já tem um registro cadastrado.")
@@ -597,7 +596,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
             try {
                 Date date1 = sdf.parse(auxTeste);
-                Date date2 = sdf.parse((dataHoraAtual.formataDataTextView(osSelecionada.getDATA_PROGRAMADA())));
+                Date date2 = sdf.parse((ferramentas.formataDataTextView(osSelecionada.getDATA_PROGRAMADA())));
 
                 if (date1.before(date2)) {
                     temErro = true;
@@ -617,7 +616,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
             try {
                 Date date1 = sdf.parse(auxTeste);
-                Date date2 = sdf.parse(dataHoraAtual.dataAtual());
+                Date date2 = sdf.parse(ferramentas.dataAtual());
                 if (date1.after(date2)) {
                     AlertDialog dialog = new AlertDialog.Builder(getContext())
                             .setTitle("Erro!")
@@ -648,7 +647,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     public void testaConformidade() {
         erroGeral = false;
         if (editouRegistro == false && dao.selecionaOsAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
-                dataHoraAtual.formataDataDb(dataDoApontamento)) != null) {
+                ferramentas.formataDataDb(dataDoApontamento)) != null) {
 
             erroGeral = true;
 
@@ -860,7 +859,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         oSAtividadesDiaAtual.setID_PRESTADOR(posicaoPrestador);
         oSAtividadesDiaAtual.setID_RESPONSAVEL(posicaoResponsavel);
         oSAtividadesDiaAtual.setID_PROGRAMACAO_ATIVIDADE(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
-        oSAtividadesDiaAtual.setDATA(dataHoraAtual.formataDataDb(dataDoApontamento));
+        oSAtividadesDiaAtual.setDATA(ferramentas.formataDataDb(dataDoApontamento));
         if (acaoInativoAtividade != null)
             oSAtividadesDiaAtual.setACAO_INATIVO(acaoInativoAtividade);
 
@@ -875,7 +874,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
         for (int i = 0; i < listaJoinOsInsumosSelecionados.size(); i++) {
             Join_OS_INSUMOS persiste = listaJoinOsInsumosSelecionados.get(i);
-            dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), dataHoraAtual.formataDataDb(dataDoApontamento),
+            dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), ferramentas.formataDataDb(dataDoApontamento),
                     persiste.getID_INSUMO(), persiste.getQTD_APLICADO(), null, '0', persiste.getOBSERVACAO()));
         }
 
