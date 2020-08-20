@@ -249,8 +249,8 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             testaCliqueP1();
             testaCliqueP2();
 
-            if (atualP1 >= 5) testaP1();
-            if (atualP2 >= 5) testaP2();
+            if (atualP1 > 5) testaP1();
+            if (atualP2 > 5) testaP2();
         }
     }
 
@@ -631,8 +631,8 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                 }
                 if (naoPermiteCentena == true)
                     valor.setError("Valor incorreto: Permitido unidades e dezenas.");
-                if (atualP1 >= 5) testaP1();
-                if (atualP2 >= 5) testaP2();
+                if (atualP1 > 5) testaP1();
+                if (atualP2 > 5) testaP2();
             }
         });
     }
@@ -901,8 +901,8 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                 }
                 if (naoPermiteCentena == true)
                     valor.setError("Valor incorreto: Permitido unidade e dezena.");
-                if (atualP1 >= 5) testaP1();
-                if (atualP2 >= 5) testaP2();
+                if (atualP1 > 5) testaP1();
+                if (atualP2 > 5) testaP2();
             }
         });
     }
