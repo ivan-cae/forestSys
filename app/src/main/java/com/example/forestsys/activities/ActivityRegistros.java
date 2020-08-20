@@ -52,6 +52,7 @@ import java.util.List;
 
 import static android.view.View.GONE;
 import static com.example.forestsys.activities.ActivityAtividades.editouRegistro;
+import static com.example.forestsys.activities.ActivityAtividades.joinOsInsumos;
 import static com.example.forestsys.activities.ActivityAtividades.listaJoinOsInsumosSelecionados;
 import static com.example.forestsys.activities.ActivityAtividades.oSAtividadesDiaAtual;
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
@@ -273,8 +274,8 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         difInsumo1 = findViewById(R.id.registros_dif_insumo1);
         difInsumo2 = findViewById(R.id.registros_dif_insumo2);
 
-        insumo1.setText(dao.selecionaInsumo(insumos_dia.get(0).getID_INSUMO()).getDESCRICAO());
-        insumo2.setText(dao.selecionaInsumo(insumos_dia.get(1).getID_INSUMO()).getDESCRICAO());
+        insumo1.setText(joinOsInsumos.get(0).getDESCRICAO());
+        insumo2.setText(joinOsInsumos.get(1).getDESCRICAO());
         pegaDescInsumos = new String[2];
 
         pegaDescInsumos[0] = insumo1.getText().toString();

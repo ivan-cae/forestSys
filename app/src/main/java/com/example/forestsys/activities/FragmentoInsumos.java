@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -193,6 +196,47 @@ public class FragmentoInsumos extends Fragment {
         Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_insumos);
         TextView titulo = mView.findViewById(R.id.textview_dialogo_insumos);
         titulo.setText("Digite A Quantidade Aplicada" + "\n" +insumoInsere.getDESCRICAO());
+
+        valorDialogoQtd.addTextChangedListener(new TextWatcher() {
+
+            int first = 0;
+            int second;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                String input = s.toString();
+
+                if (!input.isEmpty()) {
+                    String qtdrec = String.valueOf(Double.valueOf(area.replace(',', '.')) * insere.getQTD_HA_RECOMENDADO());
+
+                    String[] antesDaVirgula = qtdrec.replace('.', ',').split(",");
+
+                    valorDialogoQtd.setFilters(new InputFilter[]{
+                            new InputFilter.LengthFilter(antesDaVirgula[0].length() + 3)});
+
+                    second = first;
+                    first = s.length();
+
+                    if (valorDialogoQtd.length() == antesDaVirgula[0].length() && first > second) {
+
+                        valorDialogoQtd.setText(input + ",");
+                        valorDialogoQtd.setSelection(valorDialogoQtd.getText().toString().length());
+                    }
+
+                }
+            }
+        });
+
 
         if (auxSavedInstanceState != null) {
             if (auxSavedInstanceState.getString("valorDialogoQtd") != null) {

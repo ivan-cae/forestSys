@@ -59,11 +59,9 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
     //Calcula a diferença percentual entre dois números do tipo Double
     //Parâmetro de entrada: dois Doubles
     private static Double diferencaPercentual(Double anterior, Double atual) {
-        Log.e("Recomendado, Aplicado", String.valueOf(anterior) +" "+ String.valueOf(atual));
-        Double calculo = (1 - (atual / anterior)) * 100;//((anterior - atual) / anterior) * 100.0
+           Double calculo = (1 - (atual / anterior)) * 100;//((anterior - atual) / anterior) * 100.0
         DecimalFormat df = new DecimalFormat("###.##");
-        Log.e("Dif Percent", String.valueOf(Double.valueOf(df.format(calculo).replace(',', '.'))));
-        if (Double.valueOf(df.format(calculo).replace(',', '.')) == 0.0) return -0.0;
+         if (Double.valueOf(df.format(calculo).replace(',', '.')) == 0.0) return -0.0;
         return Double.valueOf(df.format(calculo).replace(',', '.'));
     }
 

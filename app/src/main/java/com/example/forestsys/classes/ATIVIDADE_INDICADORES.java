@@ -38,7 +38,8 @@ public class ATIVIDADE_INDICADORES {
     private int LIMITE_SUPERIOR;
     private int CASAS_DECIMAIS;
 
-    public ATIVIDADE_INDICADORES(int ID_INDICADOR, int ID_ATIVIDADE, int ORDEM_INDICADOR, String REFERENCIA, String DESCRICAO, int ATIVO, String VERION) {
+    public ATIVIDADE_INDICADORES(int ID_INDICADOR, int ID_ATIVIDADE, int ORDEM_INDICADOR, String REFERENCIA, String DESCRICAO,
+                                 int ATIVO, String VERION, int LIMITE_SUPERIOR, int LIMITE_INFERIOR, int CASAS_DECIMAIS) {
         this.ID_ATIVIDADE = ID_ATIVIDADE;
         this.ID_INDICADOR = ID_INDICADOR;
         this.ORDEM_INDICADOR = ORDEM_INDICADOR;
@@ -46,6 +47,9 @@ public class ATIVIDADE_INDICADORES {
         this.DESCRICAO = DESCRICAO;
         this.ATIVO = ATIVO;
         this.VERION = VERION;
+        this.LIMITE_SUPERIOR = LIMITE_SUPERIOR;
+        this.LIMITE_INFERIOR = LIMITE_INFERIOR;
+        this.CASAS_DECIMAIS = CASAS_DECIMAIS;
     }
 
     public int getID_ATIVIDADE() {

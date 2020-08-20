@@ -85,7 +85,7 @@ public class ActivityAtividades extends AppCompatActivity
     private RecyclerView recyclerView;
     private AdaptadorInsumos adaptador;
 
-    private List<Join_OS_INSUMOS> joinOsInsumos;
+    public static List<Join_OS_INSUMOS> joinOsInsumos;
     private DataHoraAtual dataHoraAtual;
 
     private BaseDeDados baseDeDados;
@@ -399,33 +399,39 @@ public class ActivityAtividades extends AppCompatActivity
             });
         }
 
+
         if (osSelecionada.getSTATUS_NUM() == 2) {
             botaoFinalizarOs.setText("Editar");
-            botaoFinalizarOs.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Thread t1 = new Thread() {
-                        @Override
-                        public void run() {
-                            AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
-                                    .setTitle("Editar Atividade")
-                                    .setMessage("Deseja Editar a Atividade Atual?")
-                                    .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            abreDialogoEdicaoAtividade();
-                                        }
-                                    }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                        }
-                                    }).create();
-                            dialog.show();
-                        }
-                    };
-                    t1.run();
-                }
-            });
+            if(usuarioLogado.getNIVEL_ACESSO()!=2){
+                botaoFinalizarOs.setClickable(false);
+                botaoFinalizarOs.setVisibility(View.GONE);
+            }else {
+                botaoFinalizarOs.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Thread t1 = new Thread() {
+                            @Override
+                            public void run() {
+                                AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
+                                        .setTitle("Editar Atividade")
+                                        .setMessage("Deseja Editar a Atividade Atual?")
+                                        .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                abreDialogoEdicaoAtividade();
+                                            }
+                                        }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                            }
+                                        }).create();
+                                dialog.show();
+                            }
+                        };
+                        t1.run();
+                    }
+                });
+            }
         }
 
         voltar.setOnClickListener(new View.OnClickListener() {

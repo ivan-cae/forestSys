@@ -10,7 +10,9 @@ import androidx.fragment.app.FragmentManager;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,7 +31,11 @@ import com.example.forestsys.repositorios.RepositorioPrestadores;
 import com.example.forestsys.repositorios.RepositorioUsers;
 import com.example.forestsys.viewModels.ViewModelO_S_ATIVIDADES_DIA;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import static com.example.forestsys.activities.ActivityAtividades.editouRegistro;
 import static com.example.forestsys.activities.ActivityAtividades.hh;
@@ -184,6 +190,10 @@ public class FragmentoRendimento extends Fragment {
         });
 
         areaRealizadaApontamento.addTextChangedListener(new TextWatcher() {
+
+            int first = 0;
+            int second;
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -191,18 +201,44 @@ public class FragmentoRendimento extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                area = checaTextView(areaRealizadaApontamento, area);
-                FragmentoInsumos frag=(FragmentoInsumos)getActivity().getSupportFragmentManager().findFragmentById(R.id.registro_fragmento_insumos);
+                area = checaTextView(areaRealizadaApontamento, area, 0);
+                FragmentoInsumos frag = (FragmentoInsumos) getActivity().getSupportFragmentManager().findFragmentById(R.id.registro_fragmento_insumos);
                 frag.setInsumos();
+
+                String input = s.toString();
+
+                if (!input.isEmpty()) {
+                    String areaProgramada = String.valueOf(osSelecionada.getAREA_PROGRAMADA());
+
+                    areaProgramada = areaProgramada.replace('.', ',');
+
+                    String[] antesDaVirgula = areaProgramada.split(",");
+
+                    areaRealizadaApontamento.setFilters(new InputFilter[]{
+                            new InputFilter.LengthFilter(antesDaVirgula[0].length() + 3)});
+
+
+                    second = first;
+                    first = s.length();
+
+                    if (areaRealizadaApontamento.length() == antesDaVirgula[0].length() && first > second) {
+
+                        areaRealizadaApontamento.setText(input + ",");
+                        areaRealizadaApontamento.setSelection(areaRealizadaApontamento.getText().toString().length());
+                    }
+
+                }
             }
         });
 
         HOEscavadeiraApontamento.addTextChangedListener(new TextWatcher() {
+            int first = 0;
+            int second;
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -215,11 +251,26 @@ public class FragmentoRendimento extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                hoe = checaTextView(HOEscavadeiraApontamento, hoe);
+                hoe = checaTextView(HOEscavadeiraApontamento, hoe, 0);
+
+                second = first;
+                first = s.length();
+
+                String input = s.toString();
+
+                if (!input.isEmpty()) {
+                    if (HOEscavadeiraApontamento.length() == 2 && first > second){
+
+                        HOEscavadeiraApontamento.setText(input + ",");
+                        HOEscavadeiraApontamento.setSelection(HOEscavadeiraApontamento.getText().toString().length());
+                    }
+                }
             }
         });
 
         HOApontamento.addTextChangedListener(new TextWatcher() {
+            int first = 0;
+            int second;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -232,11 +283,27 @@ public class FragmentoRendimento extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                ho = checaTextView(HOApontamento, ho);
+                ho = checaTextView(HOApontamento, ho, 0);
+
+                second = first;
+                first = s.length();
+
+                String input = s.toString();
+
+                if (!input.isEmpty()) {
+                    if (HOApontamento.length() == 2 && first > second){
+
+                        HOApontamento.setText(input + ",");
+                        HOApontamento.setSelection(HOApontamento.getText().toString().length());
+                    }
+                }
             }
         });
 
         HMApontamento.addTextChangedListener(new TextWatcher() {
+            int first = 0;
+            int second;
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -248,12 +315,58 @@ public class FragmentoRendimento extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                hm = checaTextView(HMApontamento, hm);
+                hm = checaTextView(HMApontamento, hm, 0);
 
+                second = first;
+                first = s.length();
+
+                String input = s.toString();
+
+                if (!input.isEmpty()) {
+                    if (HMApontamento.length() == 2 && first > second){
+
+                        HMApontamento.setText(input + ",");
+                        HMApontamento.setSelection(HMApontamento.getText().toString().length());
+                    }
+                }
+                }
+        });
+
+        HMEscavadeiraApontamento.addTextChangedListener(new TextWatcher() {
+            int first = 0;
+            int second;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                hme = checaTextView(HMEscavadeiraApontamento, hme, 0);
+
+                second = first;
+                first = s.length();
+
+                String input = s.toString();
+
+                if (!input.isEmpty()) {
+                    if (HMEscavadeiraApontamento.length() == 2 && first > second){
+
+                        HMEscavadeiraApontamento.setText(input + ",");
+                        HMEscavadeiraApontamento.setSelection(HMEscavadeiraApontamento.getText().toString().length());
+                    }
+                }
             }
         });
 
         HHApontamento.addTextChangedListener(new TextWatcher() {
+            int first = 0;
+            int second;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -265,27 +378,23 @@ public class FragmentoRendimento extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                hh = checaTextView(HHApontamento, hh);
+                hh = checaTextView(HHApontamento, hh, 300);
 
+                String input = s.toString();
+
+                second = first;
+                first = s.length();
+
+
+                if (!input.isEmpty()) {
+                    if (HHApontamento.length() == 3 && first > second){
+
+                        HHApontamento.setText(input + ",");
+                        HHApontamento.setSelection(HHApontamento.getText().toString().length());
+                    }
+                }
             }
         });
-
-        HMEscavadeiraApontamento.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                hme = checaTextView(HMEscavadeiraApontamento, hme);
-            }
-        });
-
 
         spinnerPrestador.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -349,7 +458,7 @@ public class FragmentoRendimento extends Fragment {
     //Checa se o valor de um TextView pode ser convertido para double
     //parâmetro de entrada: TextView e uma String
     //parâmetro de saída: null se o valor não puder ser convertido, a própria string se o valor puder ser convertido
-    public String checaTextView(TextView t, String str) {
+    public String checaTextView(TextView t, String str, double limite){
         String s1 = t.getText().toString().trim();
         if (s1.isEmpty()) return null;
         char[] c = s1.toCharArray();
@@ -360,6 +469,18 @@ public class FragmentoRendimento extends Fragment {
             } else {
                 str = s1;
                 t.setError(null);
+                if(limite != 0){
+                    double teste = 0;
+                    try {
+                        teste = Double.parseDouble(str.replace(',', '.'));
+                    } catch (NumberFormatException | NullPointerException n) {
+                        teste = 0;
+                    }
+                    if(teste > limite) {
+                        t.setError("Valor Acima do permitido! O registro não será salvo.");
+                        str = "";
+                    }
+                }
             }
         }
         return str;
@@ -418,7 +539,7 @@ public class FragmentoRendimento extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        if (osSelecionada.getSTATUS_NUM() != 2) {
+
             super.onSaveInstanceState(outState);
             outState.putString("area", area);
             outState.putString("hoe", hoe);
@@ -430,6 +551,6 @@ public class FragmentoRendimento extends Fragment {
 
             outState.putInt("posicaoPrestador", posicaoPrestador);
             outState.putInt("posicaoResponsavel", posicaoResponsavel);
-        }
+
     }
 }

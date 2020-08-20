@@ -62,6 +62,7 @@ import static android.view.View.GONE;
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
 import static com.example.forestsys.activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.activities.ActivityMain.osSelecionada;
+import static com.example.forestsys.activities.ActivityAtividades.joinOsInsumos;
 import static java.sql.Types.NULL;
 
 public class ActivityCalibracao extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -153,7 +154,6 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     private int contSpinnerMaquina;
     private int contSpinnerMaquinaImplemento;
 
-    private List<Join_OS_INSUMOS> joinOsCalibracaoInsumos;
     private TextView nomeProduto1;
     private TextView nomeProduto2;
 
@@ -1195,7 +1195,6 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
         todosConformeP1 = false;
         todosConformeP2 = false;
-        joinOsCalibracaoInsumos = dao.listaJoinInsumoAtividades(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
         nomeProduto1 = findViewById(R.id.calibracao_produto1);
         nomeProduto2 = findViewById(R.id.calibracao_produto2);
@@ -1268,8 +1267,8 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         mediaGeralp2 = 0.0;
         mediaPercentualp2 = 0.0;
 
-        nomeProduto1.setText(joinOsCalibracaoInsumos.get(0).getDESCRICAO());
-        nomeProduto2.setText(joinOsCalibracaoInsumos.get(1).getDESCRICAO());
+        nomeProduto1.setText(joinOsInsumos.get(0).getDESCRICAO());
+        nomeProduto2.setText(joinOsInsumos.get(1).getDESCRICAO());
 
         osTalhao.setText(osSelecionada.getTALHAO());
 
