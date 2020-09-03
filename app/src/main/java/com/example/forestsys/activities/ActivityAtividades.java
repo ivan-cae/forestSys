@@ -36,6 +36,7 @@ import com.example.forestsys.assets.DAO;
 import com.example.forestsys.assets.Ferramentas;
 import com.example.forestsys.R;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
+import com.example.forestsys.classes.ATIVIDADE_INDICADORES;
 import com.example.forestsys.classes.AVAL_PONTO_SUBSOLAGEM;
 import com.example.forestsys.classes.CALIBRAGEM_SUBSOLAGEM;
 import com.example.forestsys.classes.INDICADORES_SUBSOLAGEM;
@@ -112,6 +113,9 @@ public class ActivityAtividades extends AppCompatActivity
     public static Join_OS_INSUMOS insumoInsere;
 
     public static List<Join_OS_INSUMOS> listaJoinOsInsumosSelecionados;
+
+    public static  List<List<AVAL_PONTO_SUBSOLAGEM>> listaPontosCorrecaoAux;
+    public static List<List<AVAL_PONTO_SUBSOLAGEM>> listaCorrecoes = new ArrayList<>();
 
     private boolean abriuDialogoJustificativaEdicaoOs;
     private EditText valorDialogoJustificativaEdicaoOs;

@@ -757,6 +757,18 @@
             app:layout_constraintTop_toBottomOf="@+id/textView130"
             app:srcCompat="@drawable/botao_adicionar_circular" />
 
+        <Button
+            android:id="@+id/qualidade_botao_correcao"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginStart="70dp"
+            android:background="#75A9EB"
+            android:text="Correções"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="@+id/textView130"
+            app:layout_constraintStart_toEndOf="@+id/textView130"
+            app:layout_constraintTop_toTopOf="@+id/textView130" />
+
         <TextView
             android:id="@+id/textView130"
             android:layout_width="wrap_content"

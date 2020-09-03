@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bordas">
+
+    <TextView
+        android:id="@+id/qualidade_correcao_coordenada_item_7"
+        android:layout_width="150dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="2dp"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/qualidade_correcao_textview_coordenadas"
+        app:layout_constraintStart_toStartOf="@+id/qualidade_correcao_textview_coordenadas"
+        app:layout_constraintTop_toBottomOf="@+id/qualidade_correcao_coordenada_item_6" />
+
+    <TextView
+        android:id="@+id/qualidade_correcao_coordenada_item_8"
+        android:layout_width="150dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="2dp"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/qualidade_correcao_textview_coordenadas"
+        app:layout_constraintStart_toStartOf="@+id/qualidade_correcao_textview_coordenadas"
+        app:layout_constraintTop_toBottomOf="@+id/qualidade_correcao_coordenada_item_7" />
+
+    <TextView
+        android:id="@+id/qualidade_correcao_coordenada_item_9"
+        android:layout_width="150dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="2dp"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/qualidade_correcao_textview_coordenadas"
+        app:layout_constraintStart_toStartOf="@+id/qualidade_correcao_textview_coordenadas"
+        app:layout_constraintTop_toBottomOf="@+id/qualidade_correcao_coordenada_item_8" />
+
+    <TextView
+        android:id="@+id/qualidade_correcao_coordenada_item_6"
+        android:layout_width="150dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="2dp"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/qualidade_correcao_textview_coordenadas"
+        app:layout_constraintStart_toStartOf="@+id/qualidade_correcao_textview_coordenadas"
+        app:layout_constraintTop_toBottomOf="@+id/qualidade_correcao_coordenada_item_5" />
+
+    <TextView
+        android:id="@+id/qualidade_correcao_coordenada_item_5"
+        android:layout_width="150dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="2dp"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/qualidade_correcao_textview_coordenadas"
+        app:layout_constraintStart_toStartOf="@+id/qualidade_correcao_textview_coordenadas"
+        app:layout_constraintTop_toBottomOf="@+id/qualidade_correcao_coordenada_item_4" />
+
+    <TextView
+        android:id="@+id/qualidade_correcao_coordenada_item_10"
+        android:layout_width="150dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="2dp"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/qualidade_correcao_textview_coordenadas"
+        app:layout_constraintStart_toStartOf="@+id/qualidade_correcao_textview_coordenadas"
+        app:layout_constraintTop_toBottomOf="@+id/qualidade_correcao_coordenada_item_9" />
+
+    <TextView
+        android:id="@+id/qualidade_correcao_coordenada_item_3"
+        android:layout_width="150dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="2dp"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/qualidade_correcao_textview_coordenadas"
+        app:layout_constraintStart_toStartOf="@+id/qualidade_correcao_textview_coordenadas"
+        app:layout_constraintTop_toBottomOf="@+id/qualidade_correcao_coordenada_item_2" />
+
+    <TextView
+        android:id="@+id/qualidade_correcao_coordenada_item_4"
+        android:layout_width="150dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="2dp"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/qualidade_correcao_textview_coordenadas"
+        app:layout_constraintStart_toStartOf="@+id/qualidade_correcao_textview_coordenadas"
+        app:layout_constraintTop_toBottomOf="@+id/qualidade_correcao_coordenada_item_3" />
+
+    <TextView
+        android:id="@+id/qualidade_correcao_coordenada_item_2"
+        android:layout_width="150dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="2dp"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/qualidade_correcao_textview_coordenadas"
+        app:layout_constraintStart_toStartOf="@+id/qualidade_correcao_textview_coordenadas"
+        app:layout_constraintTop_toBottomOf="@+id/qualidade_correcao_coordenada_item_1" />
+
+    <TextView
+        android:id="@+id/qualidade_correcao_coordenada_item_1"
+        android:layout_width="150dp"
+        android:layout_height="33dp"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/qualidade_correcao_textview_coordenadas"
+        app:layout_constraintStart_toStartOf="@+id/qualidade_correcao_textview_coordenadas"
+        app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_correcao_edit_item1" />
+
+    <TextView
+        android:id="@+id/qualidade_correcao_textview_coordenadas"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Coordenadas"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/qualidade_correcao_textview_correcao"
+        app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_correcao_numero" />
+
+    <CheckBox
+        android:id="@+id/dialogo_qualidade_ponto_correcao_edit_item8"
+        style="@android:style/Widget.Material.Light.CompoundButton.CheckBox"
+        android:layout_width="30dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="32dp"
+        android:buttonTint="#1C53EC"
+        android:checked="false"
+        android:imeOptions="actionNext"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/dialogo_qualidade_ponto_correcao_item8"
+        app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_correcao_item8"
+        app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_correcao_item8" />
+
+    <CheckBox
+        android:id="@+id/dialogo_qualidade_ponto_correcao_edit_item7"
+        style="@android:style/Widget.Material.Light.CompoundButton.CheckBox"
+        android:layout_width="30dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="32dp"
+        android:buttonTint="#1C53EC"
+        android:checked="false"
+        android:imeOptions="actionNext"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/dialogo_qualidade_ponto_correcao_item7"
+        app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_correcao_item7"
+        app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_correcao_item7" />
+
+    <CheckBox
+        android:id="@+id/dialogo_qualidade_ponto_correcao_edit_item9"
+        style="@android:style/Widget.Material.Light.CompoundButton.CheckBox"
+        android:layout_width="30dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="32dp"
+        android:buttonTint="#1C53EC"
+        android:checked="false"
+        android:imeOptions="actionNext"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/dialogo_qualidade_ponto_correcao_item9"
+        app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_correcao_item9"
+        app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_correcao_item9" />
+
+    <CheckBox
+        android:id="@+id/dialogo_qualidade_ponto_correcao_edit_item10"
+        style="@android:style/Widget.Material.Light.CompoundButton.CheckBox"
+        android:layout_width="30dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="32dp"
+        android:buttonTint="#1C53EC"
+        android:imeOptions="actionNext"
+
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/dialogo_qualidade_ponto_correcao_item10"
+        app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_correcao_item10"
+        app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_correcao_item10" />
+
+    <CheckBox
+        android:id="@+id/dialogo_qualidade_ponto_correcao_edit_item6"
+        style="@android:style/Widget.Material.Light.CompoundButton.CheckBox"
+        android:layout_width="30dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="32dp"
+        android:buttonTint="#1C53EC"
+        android:imeOptions="actionNext"
+
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/dialogo_qualidade_ponto_correcao_item6"
+        app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_correcao_item6"
+        app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_correcao_item6" />
+
+    <CheckBox
+        android:id="@+id/dialogo_qualidade_ponto_correcao_edit_item4"
+        android:layout_width="30dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="32dp"
+        android:buttonTint="#1C53EC"
+        android:imeOptions="actionNext"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/dialogo_qualidade_ponto_correcao_item4"
+        app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_correcao_item4"
+        app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_correcao_item4" />
+
+    <CheckBox
+        android:id="@+id/dialogo_qualidade_ponto_correcao_edit_item2"
+        android:layout_width="30dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="32dp"
+        android:buttonTint="#1C53EC"
+        android:imeOptions="actionNext"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/dialogo_qualidade_ponto_correcao_item2"
+        app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_correcao_item2"
+        app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_correcao_item2" />
+
+    <CheckBox
+        android:id="@+id/dialogo_qualidade_ponto_correcao_edit_item3"
+        android:layout_width="30dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="32dp"
+        android:buttonTint="#1C53EC"
+        android:imeOptions="actionNext"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/dialogo_qualidade_ponto_correcao_item3"
+        app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_correcao_item3"
+        app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_correcao_item3" />
+
+    <TextView
+        android:id="@+id/dialogo_qualidade_ponto_correcao_item10"
+        android:layout_width="180dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:textAllCaps="true"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_correcao_item9" />
+
+    <TextView
+        android:id="@+id/dialogo_qualidade_ponto_correcao_item9"
+        android:layout_width="180dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:textAllCaps="true"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_correcao_item8" />
+
+    <TextView
+        android:id="@+id/dialogo_qualidade_ponto_correcao_item5"
+        android:layout_width="180dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:textAllCaps="true"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_correcao_item4" />
+
+    <TextView
+        android:id="@+id/dialogo_qualidade_ponto_correcao_item6"
+        android:layout_width="180dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:textAllCaps="true"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_correcao_item5" />
+
+    <TextView
+        android:id="@+id/dialogo_qualidade_ponto_correcao_item8"
+        android:layout_width="180dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:textAllCaps="true"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_correcao_item7" />
+
+    <TextView
+        android:id="@+id/dialogo_qualidade_ponto_correcao_item7"
+        android:layout_width="180dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:textAllCaps="true"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_correcao_item6" />
+
+    <TextView
+        android:id="@+id/dialogo_qualidade_ponto_correcao_item4"
+        android:layout_width="180dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:textAllCaps="true"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_correcao_item3" />
+
+    <TextView
+        android:id="@+id/dialogo_qualidade_ponto_correcao_item2"
+        android:layout_width="180dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:textAllCaps="true"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_correcao_item1" />
+
+    <TextView
+        android:id="@+id/dialogo_qualidade_ponto_correcao_item1"
+        android:layout_width="180dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:textAllCaps="true"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/qualidade_correcao_textview_correcao" />
+
+    <TextView
+        android:id="@+id/dialogo_qualidade_ponto_correcao_item3"
+        android:layout_width="180dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:textAllCaps="true"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_correcao_item2" />
+
+    <TextView
+        android:id="@+id/dialogo_qualidade_ponto_textview"
+        android:layout_width="0dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Ponto: "
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/dialogo_qualidade_ponto_correcao_numero"
+        android:layout_width="500dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="16dp"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_textview"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/dialogo_qualidade_ponto_correcao_edit_item1"
+        style="@style/Widget.AppCompat.CompoundButton.CheckBox"
+        android:layout_width="30dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="32dp"
+        android:buttonTint="#1C53EC"
+        android:ems="10"
+        android:imeOptions="actionNext"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/dialogo_qualidade_ponto_correcao_item1"
+        app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_correcao_item1"
+        app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_correcao_item1" />
+
+
+    <CheckBox
+        android:id="@+id/dialogo_qualidade_ponto_correcao_edit_item5"
+        style="@android:style/Widget.Material.Light.CompoundButton.CheckBox"
+        android:layout_width="30dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="32dp"
+        android:buttonTint="#1C53EC"
+        android:checked="false"
+        android:imeOptions="actionNext"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/dialogo_qualidade_ponto_correcao_item5"
+        app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_correcao_item5"
+        app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_correcao_item5" />
+
+    <TextView
+        android:id="@+id/qualidade_correcao_textview_correcao"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="196dp"
+        android:layout_marginTop="8dp"
+        android:text="Correção"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_correcao_numero" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

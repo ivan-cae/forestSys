@@ -407,11 +407,21 @@ public interface DAO {
     @Query(("SELECT * FROM ATIVIDADE_INDICADORES WHERE ID_ATIVIDADE=:idAtv AND VERION=:verion ORDER BY ORDEM_INDICADOR"))
     List<ATIVIDADE_INDICADORES> listaAtividadeIndicadores(int idAtv, String verion);
 
+    @Query("SELECT DESCRICAO FROM ATIVIDADE_INDICADORES WHERE ID_ATIVIDADE=:idAtv AND ID_INDICADOR=:idInd")
+    String descricaoIndicador(int idAtv, int idInd);
+
+    @Query("SELECT INDICADOR_CORRIGIVEL FROM ATIVIDADE_INDICADORES WHERE ID_ATIVIDADE=:idAtv AND ID_INDICADOR=:idInd")
+    int indicadorCorrigivel(int idAtv, int idInd);
+
 
     //Scripts AVAL_PONTO_SUBSOLAGEM
     @Query("SELECT *FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idAtv GROUP BY PONTO ORDER BY PONTO")
     List<AVAL_PONTO_SUBSOLAGEM> listaAvalSubsolagem(int idAtv);
 
+    @Query("SELECT * FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_ATIVIDADE=:idAtv AND PONTO=:ponto")
+    List<AVAL_PONTO_SUBSOLAGEM> listaPontoCorrecoes(int idProg, int idAtv, int ponto);
+
+    //Checa quantidade de cada indicador não conforme
     @Query("SELECT COUNT(*) FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idAtv AND ID_INDICADOR=:idInd AND VALOR_INDICADOR<:valor")
     int qtdNaoConformeMenor(int idAtv, int idInd, double valor);
 
@@ -423,6 +433,19 @@ public interface DAO {
 
     @Query("SELECT COUNT(*) FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_INDICADOR=:idInd")
     int qtdIndicador(int idProg, int idInd);
+
+    //checa qual indicador não está conforme para cada ponto
+    @Query("SELECT * FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idAtv AND ID_INDICADOR=:idInd AND VALOR_INDICADOR<:valor AND PONTO=:ponto")
+    boolean valorNaoConformeMenor(int idAtv, int idInd, double valor, int ponto);
+
+    @Query("SELECT * FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idAtv AND ID_INDICADOR=:idInd AND VALOR_INDICADOR=1 AND PONTO=:ponto")
+    boolean valorNaoConformebool(int idAtv, int idInd, int ponto);
+
+    @Query("SELECT * FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idAtv AND ID_INDICADOR=:idInd AND VALOR_INDICADOR NOT BETWEEN (:valor1) AND (:valor2)  AND PONTO=:ponto")
+    boolean valorNaoConformeForaDaFaixa(int idAtv, int idInd, double valor1, double valor2, int ponto);
+
+
+
 
 
     //Scripts ESPACAMENTOS

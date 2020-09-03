@@ -1,6 +1,7 @@
 package com.example.forestsys.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
@@ -9,8 +10,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,7 +27,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +36,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.forestsys.Adapters.AdaptadorCorrecaoQualidade;
 import com.example.forestsys.assets.BaseDeDados;
 import com.example.forestsys.assets.DAO;
 import com.example.forestsys.assets.Ferramentas;
@@ -46,10 +50,19 @@ import com.example.forestsys.classes.CADASTRO_FLORESTAL;
 import com.example.forestsys.classes.INDICADORES_SUBSOLAGEM;
 import com.google.android.material.navigation.NavigationView;
 
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import static android.view.View.GONE;
 import static com.example.forestsys.activities.ActivityAtividades.joinOsInsumos;
+import static com.example.forestsys.activities.ActivityAtividades.listaCorrecoes;
+import static com.example.forestsys.activities.ActivityAtividades.listaPontosCorrecaoAux;
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
 import static com.example.forestsys.activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.activities.ActivityMain.osSelecionada;
@@ -68,7 +81,9 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     private BaseDeDados baseDeDados;
     private ImageButton botaoVerion;
     private ImageButton botaoPonto;
+    private Button botaoCorrecoes;
 
+    private TextWatcher textWatcherVerion;
 
     private EditText mediaEditP1;
     private EditText mediaEditP2;
@@ -81,6 +96,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     private ImageButton botaoVoltar;
     private boolean dialogoVerionAberto;
     private boolean dialogoPontoAberto;
+    private boolean dialogoCorrecaoAberto;
 
     private EditText editItem1;
     private EditText editItem2;
@@ -139,6 +155,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
     private AlertDialog dialogoVerion;
     private AlertDialog dialogoPonto;
+    private AlertDialog dialogoCorrecao;
 
     private Formulas formulas;
 
@@ -150,6 +167,10 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     double longitude;
     double latitude;
     private List<ATIVIDADE_INDICADORES> atividadeIndicadores;
+
+    private RecyclerView recyclerView;
+    private AdaptadorCorrecaoQualidade adaptador;
+    private int qtdPontos = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,6 +187,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         ferramentas = new Ferramentas();
         dialogoPontoAberto = false;
         dialogoVerionAberto = false;
+        dialogoCorrecaoAberto = false;
 
         idProg = osSelecionada.getID_PROGRAMACAO_ATIVIDADE();
 
@@ -177,6 +199,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         manejo = findViewById(R.id.qualidade_manejo);
         botaoVerion = findViewById(R.id.qualidade_botao_verion);
         botaoPonto = findViewById(R.id.qualidade_botao_ponto);
+        botaoCorrecoes = findViewById(R.id.qualidade_botao_correcao);
         pontosRealizados = findViewById(R.id.qualidade_pontos_realizados);
         botaoVoltar = findViewById(R.id.botao_qualidade_voltar);
 
@@ -353,9 +376,16 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         if (savedInstanceState != null) {
             dialogoVerionAberto = savedInstanceState.getBoolean("dialogoVerionAberto");
             dialogoPontoAberto = savedInstanceState.getBoolean("dialogoPontoAberto");
+            dialogoCorrecaoAberto = savedInstanceState.getBoolean("dialogoCorrecaoAberto");
 
             if (dialogoPontoAberto == true) abreDialogoPonto();
             if (dialogoVerionAberto == true) abreDialogoVerion();
+            if (dialogoCorrecaoAberto == true) abreDialogoCorrecao();
+        }
+
+        if(dialogoPontoAberto ==false && dialogoVerionAberto == false && dialogoCorrecaoAberto==false){
+            savedInstanceState = null;
+            auxSavedInstanceState = null;
         }
 
 
@@ -391,6 +421,27 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             }
         });
 
+        if (!listaPonto.isEmpty()) {
+            qtdPontos = listaPonto.get(listaPonto.size() - 1).getPONTO();
+        }
+
+        if (qtdPontos > 0) {
+            botaoCorrecoes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    List<AVAL_PONTO_SUBSOLAGEM> listaAux = new ArrayList<>();
+                    if (auxSavedInstanceState != null) {
+                        listaCorrecoes = listaPontosCorrecaoAux;
+                    }else {
+                        for (int i = 1; i < qtdPontos + 1; i++) {
+                            listaAux = dao.listaPontoCorrecoes(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), osSelecionada.getID_ATIVIDADE(), i);
+                            listaCorrecoes.add(listaAux);
+                        }
+                    }
+                    abreDialogoCorrecao();
+                }
+            });
+        } else botaoCorrecoes.setVisibility(View.GONE);
 
         botaoVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -449,7 +500,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     //Poe a virgula automaticamente como separador decimal dos números inseridos nas caixas de teste
     //parâmetros de entrada: Uma instância de uma caixa de texto, um inteiro representando o índice da lista de indicadores onde está armazenado
     //limite superiorn inferior e casas decimais permitidos para o indicador, a string contendo os valores inseridos na caixa de texto
-    public void mascaraVirgula(EditText edit, int i, CharSequence s){
+    public void mascaraVirgula(EditText edit, int i, CharSequence s) {
         int tamanho;
         String input;
         String[] antesDaVirgula;
@@ -466,15 +517,14 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                     new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(i).getCASAS_DECIMAIS() + 1)});
 
             char[] aux = input.toCharArray();
-            if((tamanho+1) != antesDaVirgula[0].length() && aux[tamanho - 1] == ','){
+            if ((tamanho + 1) != antesDaVirgula[0].length() && aux[tamanho - 1] == ',') {
                 edit.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
             } else {
-                Log.e("Tamanho da String", String.valueOf(tamanho));
-                if(tamanho == antesDaVirgula[0].length()+1) {
-                    char []charAux = input.toCharArray();
-                    String stringAux = String.valueOf(charAux[tamanho-1]);
-                    input = input.substring(0, tamanho-1);
-                    edit.setText(input + ","+ stringAux);
+                if (tamanho == antesDaVirgula[0].length() + 1) {
+                    char[] charAux = input.toCharArray();
+                    String stringAux = String.valueOf(charAux[tamanho - 1]);
+                    input = input.substring(0, tamanho - 1);
+                    edit.setText(input + "," + stringAux);
                     edit.setSelection(edit.getText().toString().length());
                 }
             }
@@ -538,6 +588,32 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         mediaEditP2 = mView.findViewById(R.id.dialogo_qualidade_verion_media_p2);
         desvioEditP1 = mView.findViewById(R.id.dialogo_qualidade_verion_desvio_padrao_p1);
         desvioEditP2 = mView.findViewById(R.id.dialogo_qualidade_verion_desvio_padrao_p2);
+
+        Button botaoRegistrar = (Button) mView.findViewById(R.id.dialogo_qualidade_verion_botao_registrar);
+
+        mediaP1Nome.setText(joinOsInsumos.get(0).getDESCRICAO() + " - P1");
+        mediaP2Nome.setText(joinOsInsumos.get(1).getDESCRICAO() + " - P2");
+        desvioP1Nome.setText(joinOsInsumos.get(0).getDESCRICAO() + " - P1");
+        desvioP2Nome.setText(joinOsInsumos.get(1).getDESCRICAO() + " - P2");
+
+        letraItem1.setText(atividadeIndicadores.get(0).getREFERENCIA());
+        letraItem2.setText(atividadeIndicadores.get(1).getREFERENCIA());
+        letraItem3.setText(atividadeIndicadores.get(2).getREFERENCIA());
+        letraItem4.setText(atividadeIndicadores.get(3).getREFERENCIA());
+
+
+        mBuilder.setView(mView);
+        dialogoVerion = mBuilder.create();
+        dialogoVerion.show();
+        dialogoVerion.setCanceledOnTouchOutside(false);
+
+        if (jaTemVerion == true) {
+
+            mediaEditP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
+            desvioEditP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
+            mediaEditP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
+            desvioEditP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
+        }
 
         mediaEditP1.addTextChangedListener(new TextWatcher() {
 
@@ -610,31 +686,6 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             }
         });
 
-
-        Button botaoRegistrar = (Button) mView.findViewById(R.id.dialogo_qualidade_verion_botao_registrar);
-
-        mediaP1Nome.setText(joinOsInsumos.get(0).getDESCRICAO() + " - P1");
-        mediaP2Nome.setText(joinOsInsumos.get(1).getDESCRICAO() + " - P2");
-        desvioP1Nome.setText(joinOsInsumos.get(0).getDESCRICAO() + " - P1");
-        desvioP2Nome.setText(joinOsInsumos.get(1).getDESCRICAO() + " - P2");
-
-        letraItem1.setText(atividadeIndicadores.get(0).getREFERENCIA());
-        letraItem2.setText(atividadeIndicadores.get(1).getREFERENCIA());
-        letraItem3.setText(atividadeIndicadores.get(2).getREFERENCIA());
-        letraItem4.setText(atividadeIndicadores.get(3).getREFERENCIA());
-
-        mBuilder.setView(mView);
-        dialogoVerion = mBuilder.create();
-        dialogoVerion.show();
-        dialogoVerion.setCanceledOnTouchOutside(false);
-
-        if (jaTemVerion == true) {
-            mediaEditP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
-            desvioEditP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
-            mediaEditP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
-            desvioEditP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
-        }
-
         mediaEditP1.requestFocus();
         if (dialogoVerionAberto == true && auxSavedInstanceState != null) {
             ultimoFocus = auxSavedInstanceState.getInt("ultimoFocus");
@@ -645,6 +696,22 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             mediaEditP2 = mView.findViewById(R.id.dialogo_qualidade_verion_media_p2);
             desvioEditP1 = mView.findViewById(R.id.dialogo_qualidade_verion_desvio_padrao_p1);
             desvioEditP2 = mView.findViewById(R.id.dialogo_qualidade_verion_desvio_padrao_p2);
+
+            if (auxSavedInstanceState.getString("mediaEditP1") != null)
+                if (!auxSavedInstanceState.getString("mediaEditP1").isEmpty())
+                    mediaEditP1.setText(auxSavedInstanceState.getString("mediaEditP1"));
+
+            if (auxSavedInstanceState.getString("mediaEditP2") != null)
+                if (!auxSavedInstanceState.getString("mediaEditP2").isEmpty())
+                    mediaEditP2.setText(auxSavedInstanceState.getString("mediaEditP2"));
+
+            if (auxSavedInstanceState.getString("desvioEditP1") != null)
+                if (!auxSavedInstanceState.getString("desvioEditP1").isEmpty())
+                    desvioEditP1.setText(auxSavedInstanceState.getString("desvioEditP1"));
+
+            if (auxSavedInstanceState.getString("desvioEditP2") != null)
+                if (!auxSavedInstanceState.getString("desvioEditP2").isEmpty())
+                    desvioEditP2.setText(auxSavedInstanceState.getString("desvioEditP2"));
 
             mediaEditP1.addTextChangedListener(new TextWatcher() {
 
@@ -717,21 +784,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 }
             });
 
-            if (auxSavedInstanceState.getString("mediaEditP1") != null)
-                if (!auxSavedInstanceState.getString("mediaEditP1").isEmpty())
-                    mediaEditP1.setText(auxSavedInstanceState.getString("mediaEditP1"));
 
-            if (auxSavedInstanceState.getString("mediaEditP2") != null)
-                if (!auxSavedInstanceState.getString("mediaEditP2").isEmpty())
-                    mediaEditP2.setText(auxSavedInstanceState.getString("mediaEditP2"));
-
-            if (auxSavedInstanceState.getString("desvioEditP1") != null)
-                if (!auxSavedInstanceState.getString("desvioEditP1").isEmpty())
-                    desvioEditP1.setText(auxSavedInstanceState.getString("desvioEditP1"));
-
-            if (auxSavedInstanceState.getString("desvioEditP2") != null)
-                if (!auxSavedInstanceState.getString("desvioEditP2").isEmpty())
-                    desvioEditP2.setText(auxSavedInstanceState.getString("desvioEditP2"));
         }
 
         mediaEditP1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -811,6 +864,178 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 auxSavedInstanceState = null;
             }
         });
+    }
+
+    public void abreDialogoCorrecao() {
+
+        dialogoCorrecaoAberto = true;
+
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+        View mView = getLayoutInflater().inflate(R.layout.dialogo_correcao_ponto, null);
+        Button botaoCorrecaoRegistrar;
+        mBuilder.setView(mView);
+
+        botaoCorrecaoRegistrar = mView.findViewById(R.id.dialogo_correcao_salvar);
+
+        recyclerView = mView.findViewById(R.id.lista_correcao_ponto);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+        adaptador = new AdaptadorCorrecaoQualidade();
+
+        recyclerView.setAdapter(adaptador);
+        if(auxSavedInstanceState == null)listaCorrecoes = checaCorrecoes(listaCorrecoes);
+
+        if (listaCorrecoes.isEmpty()) {
+            AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
+                    .setTitle("Erro")
+                    .setMessage("Não há correções para serem feitas.")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    }).create();
+            dialog.show();
+        } else {
+            dialogoCorrecao = mBuilder.create();
+            dialogoCorrecao.show();
+            dialogoCorrecao.setCanceledOnTouchOutside(false);
+
+            dialogoCorrecao.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    listaPontosCorrecaoAux = new ArrayList<>();
+                    auxSavedInstanceState = null;
+                    dialogoCorrecaoAberto = false;
+                    listaPontosCorrecaoAux = new ArrayList<>();
+                    Toast.makeText(ActivityQualidade.this, "Operação cancelada pelo usuário", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            adaptador.setCorrecao(listaCorrecoes);
+            botaoCorrecaoRegistrar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int tam = listaPontosCorrecaoAux.size();
+                    for (int i = 0; i < tam; i++) {
+                        List<AVAL_PONTO_SUBSOLAGEM> ponto = listaPontosCorrecaoAux.get(i);
+                        int tamPonto = ponto.size();
+                        for (int j = 0; j < tamPonto; j++) {
+                            dao.update(ponto.get(j));
+                        }
+                    }
+                    listaPontosCorrecaoAux = new ArrayList<>();
+                    auxSavedInstanceState = null;
+                    dialogoCorrecaoAberto = false;
+                    listaPontosCorrecaoAux = new ArrayList<>();
+                    dialogoCorrecao.dismiss();
+                }
+            });
+        }
+    }
+
+    public List<List<AVAL_PONTO_SUBSOLAGEM>> checaCorrecoes(List<List<AVAL_PONTO_SUBSOLAGEM>> pontos) {
+        int tam = pontos.size();
+        List<List<AVAL_PONTO_SUBSOLAGEM>> aux = new ArrayList<>();
+        for (int i = 0; i < tam; i++) {
+            List<AVAL_PONTO_SUBSOLAGEM> ponto = pontos.get(i);
+
+            boolean temCorrecao = false;
+            int idReg = osSelecionada.getID_REGIONAL();
+            int idSet = osSelecionada.getID_SETOR();
+            String talhao = osSelecionada.getTALHAO();
+            int ciclo = osSelecionada.getCICLO();
+            int idManejo = osSelecionada.getID_MANEJO();
+            int nPonto = ponto.get(0).getPONTO();
+            CADASTRO_FLORESTAL cadastro_florestal = dao.selecionaCadFlorestal(idReg, idSet, talhao, ciclo, idManejo);
+
+            String pegaEspacamento[] = dao.selecionaEspacamento(cadastro_florestal.getID_ESPACAMENTO()).getDESCRICAO().trim().replace(',', '.').split("X");
+            double teste;
+            try {
+                teste = Double.parseDouble(pegaEspacamento[0]);
+            } catch (NumberFormatException | NullPointerException n) {
+                teste = 3;
+            }
+
+            int idProg = osSelecionada.getID_PROGRAMACAO_ATIVIDADE();
+
+            AVAL_SUBSOLAGEM aval_subsolagem = dao.selecionaAvalSubsolagem(idProg);
+
+            boolean nc1 = dao.valorNaoConformeMenor(idProg, 1, aval_subsolagem.getPROFUNDIDADE(), nPonto);
+            boolean nc2 = dao.valorNaoConformeForaDaFaixa(idProg, 2, aval_subsolagem.getESTRONDAMENTO_LATERAL_INFERIOR(), aval_subsolagem.getESTRONDAMENTO_LATERAL_SUPERIOR(), nPonto);
+            boolean nc3 = dao.valorNaoConformeMenor(idProg, 3, aval_subsolagem.getFAIXA_SOLO_PREPARADA(), nPonto);
+            boolean nc4 = dao.valorNaoConformeForaDaFaixa(idProg, 4, aval_subsolagem.getPROFUNDIDADE_ADUBO_INFERIOR(), aval_subsolagem.getPROFUNDIDADE_ADUBO_SUPERIOR(), nPonto);
+            boolean nc5 = dao.valorNaoConformebool(idProg, 5, nPonto);
+            boolean nc6 = dao.valorNaoConformeForaDaFaixa(idProg, 6, teste * 0.95, teste * 1.05, nPonto);
+            boolean nc7 = dao.valorNaoConformebool(idProg, 7, nPonto);
+            boolean nc8 = dao.valorNaoConformebool(idProg, 8, nPonto);
+            boolean nc9 = dao.valorNaoConformebool(idProg, 9, nPonto);
+            boolean nc10 = dao.valorNaoConformeForaDaFaixa(idProg, 10, aval_subsolagem.getLOCALIZACAO_INSUMO_INFERIOR(), aval_subsolagem.getLOCALIZACAO_INSUMO_SUPERIOR(), nPonto);
+
+            if (nc1 == true) {
+                if (dao.indicadorCorrigivel(ponto.get(0).getID_ATIVIDADE(), ponto.get(0).getID_INDICADOR()) == 1) {
+                    temCorrecao = true;
+                }
+            }
+
+            if (nc2 == true) {
+                if (dao.indicadorCorrigivel(ponto.get(1).getID_ATIVIDADE(), ponto.get(1).getID_INDICADOR()) == 1) {
+                    temCorrecao = true;
+                }
+            }
+
+            if (nc3 == true) {
+                if (dao.indicadorCorrigivel(ponto.get(2).getID_ATIVIDADE(), ponto.get(2).getID_INDICADOR()) == 1) {
+                    temCorrecao = true;
+                }
+            }
+
+            if (nc4 == true) {
+                if (dao.indicadorCorrigivel(ponto.get(3).getID_ATIVIDADE(), ponto.get(3).getID_INDICADOR()) == 1) {
+                    temCorrecao = true;
+                }
+            }
+
+            if (nc5 == true) {
+                if (dao.indicadorCorrigivel(ponto.get(4).getID_ATIVIDADE(), ponto.get(4).getID_INDICADOR()) == 1) {
+                    temCorrecao = true;
+                }
+            }
+
+            if (nc6 == true) {
+                if (dao.indicadorCorrigivel(ponto.get(5).getID_ATIVIDADE(), ponto.get(5).getID_INDICADOR()) == 1) {
+                    temCorrecao = true;
+                }
+            }
+
+            if (nc7 == true) {
+                if (dao.indicadorCorrigivel(ponto.get(6).getID_ATIVIDADE(), ponto.get(6).getID_INDICADOR()) == 1) {
+                    temCorrecao = true;
+                }
+            }
+
+            if (nc8 == true) {
+                if (dao.indicadorCorrigivel(ponto.get(7).getID_ATIVIDADE(), ponto.get(7).getID_INDICADOR()) == 1) {
+                    temCorrecao = true;
+                }
+            }
+
+            if (nc9 == true) {
+                if (dao.indicadorCorrigivel(ponto.get(8).getID_ATIVIDADE(), ponto.get(8).getID_INDICADOR()) == 1) {
+                    temCorrecao = true;
+                }
+            }
+
+            if (nc10 == true) {
+                if (dao.indicadorCorrigivel(ponto.get(9).getID_ATIVIDADE(), ponto.get(9).getID_INDICADOR()) == 1) {
+                    temCorrecao = true;
+                }
+            }
+
+            if (temCorrecao == true) {
+                aux.add(ponto);
+            }
+        }
+        return aux;
     }
 
     //Abre caixa de diálogo para preenchimento dos dados do ponto
@@ -929,7 +1154,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
             @Override
             public void afterTextChanged(Editable s) {
-}
+            }
         });
 
         editItem4.addTextChangedListener(new TextWatcher() {
@@ -1272,51 +1497,51 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
         dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(0).getID_INDICADOR(),
-                Double.valueOf(editItem1.getText().toString().replace(',', '.')), latitude, longitude));
+                Double.valueOf(editItem1.getText().toString().replace(',', '.')), latitude, longitude, 0));
 
         dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(1).getID_INDICADOR(),
-                Double.valueOf(editItem2.getText().toString().replace(',', '.')), latitude, longitude));
+                Double.valueOf(editItem2.getText().toString().replace(',', '.')), latitude, longitude, 0));
 
         dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(2).getID_INDICADOR(),
-                Double.valueOf(editItem3.getText().toString().replace(',', '.')), latitude, longitude));
+                Double.valueOf(editItem3.getText().toString().replace(',', '.')), latitude, longitude, 0));
 
         dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(3).getID_INDICADOR(),
-                Double.valueOf(editItem4.getText().toString().replace(',', '.')), latitude, longitude));
+                Double.valueOf(editItem4.getText().toString().replace(',', '.')), latitude, longitude, 0));
 
         if (editItem5.isChecked()) check = 1;
         else check = 0;
         dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(4).getID_INDICADOR(),
-                check, latitude, longitude));
+                check, latitude, longitude, 0));
 
         dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(5).getID_INDICADOR(),
-                Double.valueOf(editItem6.getText().toString().replace(',', '.')), latitude, longitude));
+                Double.valueOf(editItem6.getText().toString().replace(',', '.')), latitude, longitude, 0));
 
         if (editItem7.isChecked()) check = 1;
         else check = 0;
         dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(6).getID_INDICADOR(),
-                check, latitude, longitude));
+                check, latitude, longitude, 0));
 
         if (editItem8.isChecked()) check = 1;
         else check = 0;
         dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(7).getID_INDICADOR(),
-                check, latitude, longitude));
+                check, latitude, longitude, 0));
 
         if (editItem9.isChecked()) check = 1;
         else check = 0;
         dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(8).getID_INDICADOR(),
-                check, latitude, longitude));
+                check, latitude, longitude, 0));
 
         dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(9).getID_INDICADOR(),
-                Double.valueOf(editItem10.getText().toString().replace(',', '.')), latitude, longitude));
+                Double.valueOf(editItem10.getText().toString().replace(',', '.')), latitude, longitude, 0));
 
         dialogoPontoAberto = false;
         Intent it = new Intent(ActivityQualidade.this, ActivityQualidade.class);
@@ -1340,6 +1565,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         super.onSaveInstanceState(outState);
         outState.putBoolean("dialogoPontoAberto", dialogoPontoAberto);
         outState.putBoolean("dialogoVerionAberto", dialogoVerionAberto);
+        outState.putBoolean("dialogoCorrecaoAberto", dialogoCorrecaoAberto);
 
         if (dialogoPontoAberto == true) {
             boolean item5 = false;
@@ -1381,6 +1607,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         super.onDestroy();
         if (dialogoVerionAberto == true) dialogoVerion.dismiss();
         if (dialogoPontoAberto == true) dialogoPonto.dismiss();
+        if (dialogoCorrecaoAberto == true) dialogoCorrecao.dismiss();
     }
 
     @Override

@@ -204,7 +204,7 @@ public class FragmentoRendimento extends Fragment {
             }
         });
 
-        obsApontamento.addTextChangedListener(new TextWatcher() {
+       obsApontamento.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start,
                                           int count, int after) {
@@ -238,7 +238,6 @@ public class FragmentoRendimento extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 

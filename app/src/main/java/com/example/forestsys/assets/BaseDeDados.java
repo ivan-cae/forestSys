@@ -305,11 +305,12 @@ public abstract class BaseDeDados extends RoomDatabase {
                 String DESCRICAO = obj.getString("DESCRICAO");
                 int ATIVO = obj.getInt("ATIVO");
                 String VERION = obj.getString("VERION");
+                int INDICADOR_CORRIGIVEL = obj.getInt("INDICADOR_CORRIGIVEL");
                 int LIMITE_INFERIOR = obj.getInt("LIMITE_INFERIOR");
                 int LIMITE_SUPERIOR = obj.getInt("LIMITE_SUPERIOR");
                 int CASAS_DECIMAIS = obj.getInt("CASAS_DECIMAIS");
 
-                daoInsere.insert(new ATIVIDADE_INDICADORES(ID_INDICADOR, ID_ATIVIDADE, ORDEM_INDICADOR, REFERENCIA, DESCRICAO, ATIVO, VERION, LIMITE_SUPERIOR, LIMITE_INFERIOR, CASAS_DECIMAIS));
+                daoInsere.insert(new ATIVIDADE_INDICADORES(ID_INDICADOR, ID_ATIVIDADE, ORDEM_INDICADOR, REFERENCIA, DESCRICAO, ATIVO, VERION, LIMITE_SUPERIOR, LIMITE_INFERIOR, CASAS_DECIMAIS, INDICADOR_CORRIGIVEL));
             }
         } catch (JSONException e) {
             e.printStackTrace();

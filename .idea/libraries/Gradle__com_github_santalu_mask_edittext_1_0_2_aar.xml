@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.santalu:mask-edittext:1.0.2@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a595c2904014f7a931e2dd71d83ad4c6/jetified-mask-edittext-1.0.2/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a595c2904014f7a931e2dd71d83ad4c6/jetified-mask-edittext-1.0.2/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a595c2904014f7a931e2dd71d83ad4c6/jetified-mask-edittext-1.0.2/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1df2af96047ecf8508bf077c5af24604/jetified-mask-edittext-1.0.2/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1df2af96047ecf8508bf077c5af24604/jetified-mask-edittext-1.0.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1df2af96047ecf8508bf077c5af24604/jetified-mask-edittext-1.0.2/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
