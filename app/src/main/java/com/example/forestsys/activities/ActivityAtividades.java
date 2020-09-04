@@ -115,7 +115,7 @@ public class ActivityAtividades extends AppCompatActivity
     public static List<Join_OS_INSUMOS> listaJoinOsInsumosSelecionados;
 
     public static  List<List<AVAL_PONTO_SUBSOLAGEM>> listaPontosCorrecaoAux;
-    public static List<List<AVAL_PONTO_SUBSOLAGEM>> listaCorrecoes = new ArrayList<>();
+    public static List<List<AVAL_PONTO_SUBSOLAGEM>> listaCorrecoes;
 
     private boolean abriuDialogoJustificativaEdicaoOs;
     private EditText valorDialogoJustificativaEdicaoOs;
@@ -145,6 +145,9 @@ public class ActivityAtividades extends AppCompatActivity
 
 
         listaJoinOsInsumosSelecionados = new ArrayList<Join_OS_INSUMOS>();
+
+        listaCorrecoes = new ArrayList<>();
+        listaPontosCorrecaoAux = new ArrayList<>();
 
         area = "";
         ho = "";

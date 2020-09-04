@@ -864,6 +864,15 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 auxSavedInstanceState = null;
             }
         });
+
+        dialogoVerion.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                dialogoVerionAberto = false;
+                auxSavedInstanceState = null;
+                Toast.makeText(ActivityQualidade.this, "Operação cancelada pelo usuário", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void abreDialogoCorrecao() {
@@ -903,11 +912,19 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             dialogoCorrecao.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
-                    listaPontosCorrecaoAux = new ArrayList<>();
                     auxSavedInstanceState = null;
                     dialogoCorrecaoAberto = false;
                     listaPontosCorrecaoAux = new ArrayList<>();
+                    listaCorrecoes = new ArrayList<>();
                     Toast.makeText(ActivityQualidade.this, "Operação cancelada pelo usuário", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            dialogoCorrecao.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    auxSavedInstanceState = null;
+                    dialogoCorrecaoAberto = false;
                 }
             });
 
@@ -1486,8 +1503,16 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         dialogoPonto.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
+
+            }
+        });
+
+        dialogoPonto.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
                 dialogoPontoAberto = false;
                 auxSavedInstanceState = null;
+                Toast.makeText(ActivityQualidade.this, "Operação cancelada pelo usuário", Toast.LENGTH_SHORT).show();
             }
         });
     }
