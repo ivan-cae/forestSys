@@ -1,7 +1,6 @@
 package com.example.forestsys.activities;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -50,14 +48,10 @@ import com.example.forestsys.classes.CADASTRO_FLORESTAL;
 import com.example.forestsys.classes.INDICADORES_SUBSOLAGEM;
 import com.google.android.material.navigation.NavigationView;
 
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import static android.view.View.GONE;
 import static com.example.forestsys.activities.ActivityAtividades.joinOsInsumos;
@@ -82,8 +76,6 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     private ImageButton botaoVerion;
     private ImageButton botaoPonto;
     private Button botaoCorrecoes;
-
-    private TextWatcher textWatcherVerion;
 
     private EditText mediaEditP1;
     private EditText mediaEditP2;
@@ -277,7 +269,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             listaMediaP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
             listaDesvioP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
         }
-        listaPonto = dao.listaAvalSubsolagem(idProg);
+        listaPonto = dao.listaAvalPontoSubsolagem(idProg);
 
         if (listaPonto.isEmpty()) pontosRealizados.setText("0");
         else {
@@ -433,9 +425,9 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                     if (auxSavedInstanceState != null) {
                         listaCorrecoes = listaPontosCorrecaoAux;
                     }else {
-                        for (int i = 1; i < qtdPontos + 1; i++) {
+                        for (int i = 1; i < qtdPontos+1; i++) {
                             listaAux = dao.listaPontoCorrecoes(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), osSelecionada.getID_ATIVIDADE(), i);
-                            listaCorrecoes.add(listaAux);
+                            if(!listaCorrecoes.contains(listaAux))listaCorrecoes.add(listaAux);
                         }
                     }
                     abreDialogoCorrecao();
@@ -941,9 +933,11 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                         }
                     }
                     listaPontosCorrecaoAux = new ArrayList<>();
+                    listaCorrecoes = new ArrayList<>();
                     auxSavedInstanceState = null;
                     dialogoCorrecaoAberto = false;
-                    listaPontosCorrecaoAux = new ArrayList<>();
+                    Intent it = new Intent(ActivityQualidade.this, ActivityQualidade.class);
+                    startActivity(it);
                     dialogoCorrecao.dismiss();
                 }
             });

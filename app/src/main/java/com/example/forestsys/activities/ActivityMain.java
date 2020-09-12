@@ -1,15 +1,18 @@
 package com.example.forestsys.activities;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.ColorSpace;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -21,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -31,11 +35,17 @@ import com.example.forestsys.Adapters.AdaptadorOs;
 import com.example.forestsys.R;
 import com.example.forestsys.assets.BaseDeDados;
 import com.example.forestsys.assets.DAO;
+import com.example.forestsys.assets.NDSpinner;
 import com.example.forestsys.calculadora.i.CalculadoraMain;
+import com.example.forestsys.classes.MAQUINAS;
 import com.example.forestsys.classes.O_S_ATIVIDADES;
 import com.example.forestsys.viewModels.ViewModelO_S_ATIVIDADES;
 import com.google.android.material.navigation.NavigationView;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.example.forestsys.activities.ActivityLogin.nomeEmpresaPref;
@@ -46,7 +56,6 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
 
     public static O_S_ATIVIDADES osSelecionada;
 
-    //private ViewModelO_S_ATIVIDADES viewModelOs;
     private List<O_S_ATIVIDADES> listaOs;
     private RecyclerView recyclerView;
     private DrawerLayout drawer;
@@ -54,16 +63,17 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
     private ImageButton botaoMainVoltar;
     private TextView ordenaSetor;
     private TextView ordenaTalhao;
-    private TextView ordenaStatus;
-    private TextView ordenaPrioridade;
     private TextView ordenaData;
     private BaseDeDados baseDeDados;
     private DAO dao;
     private boolean ordenaDataBool = false;
     private boolean ordenaSetorBool = false;
     private boolean ordenaTalhaoBool = false;
-    private boolean ordenaStatusBool = false;
-    private boolean ordenaPrioridadeBool = false;
+    private SearchView sv = null;
+    private NDSpinner spinnerPrioridade;
+    private String[] filtragemPrioridade = new String[]{"Nenhuma", "Baixa", "Média", "Alta"};
+    private int posicaoSpinnerPrioridade;
+    private String dadosSearchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +99,9 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        ordenaTalhao = findViewById(R.id.main_talhao);
+        ordenaSetor = findViewById(R.id.main_setor);
+        ordenaData = findViewById(R.id.main_data);
 
         recyclerView = findViewById(R.id.lista_os);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -98,31 +111,85 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         dao = baseDeDados.dao();
 
         adaptador = new AdaptadorOs();
-        listaOs = dao.listaOsDataAsc();
+        listaOs = dao.listaOsDataSemPrioridadeAsc();
         adaptador.setOrdens(listaOs);
         recyclerView.setAdapter(adaptador);
 
-        /*viewModelOs = ViewModelProviders.of(this).get(ViewModelO_S_ATIVIDADES.class);
-        viewModelOs.getTodasOS().observe(this, new Observer<List<O_S_ATIVIDADES>>() {
+        sv = (SearchView) findViewById(R.id.searchview);
+        sv.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        spinnerPrioridade = findViewById(R.id.main_spinner_prioridade);
+        ArrayAdapter adapterPioridade = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, filtragemPrioridade);
+        adapterPioridade.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPrioridade.setAdapter(adapterPioridade);
+
+        dadosSearchView = "";
+        posicaoSpinnerPrioridade = 0;
+
+        if (savedInstanceState != null) {
+            posicaoSpinnerPrioridade = savedInstanceState.getInt("posicaoSpinnerPrioridade");
+            dadosSearchView = savedInstanceState.getString("dadosSearchView");
+        }
+
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onChanged(@Nullable List<O_S_ATIVIDADES> ordemServicos) {
-                adaptador.setOrdens(ordemServicos);
+            public boolean onQueryTextSubmit(String s) {
+                adaptador.getFilter().filter(s);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                adaptador.getFilter().filter(s);
+                return true;
             }
         });
-        */
 
-        ordenaTalhao = findViewById(R.id.main_talhao);
-        ordenaSetor = findViewById(R.id.main_setor);
-        ordenaPrioridade = findViewById(R.id.main_prioridade);
-        ordenaStatus = findViewById(R.id.main_status);
-        ordenaData = findViewById(R.id.main_data);
+        sv.post(new Runnable() {
+            @Override
+            public void run() {
+                sv.setQuery(dadosSearchView, true);
+            }
+        });
+
+
+        spinnerPrioridade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position != 0) {
+                    listaOs = dao.filtraPrioridade(position);
+                }
+                if (position == 0) {
+                    listaOs = dao.listaOsDataSemPrioridadeAsc();
+                }
+
+                posicaoSpinnerPrioridade=position;
+
+                adaptador.setOrdens(listaOs);
+                recyclerView.setAdapter(adaptador);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        spinnerPrioridade.setSelection(posicaoSpinnerPrioridade);
 
         ordenaTalhao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ordenaTalhaoBool==false) listaOs = dao.listaOsTalhaoDesc();
-                else listaOs = dao.listaOsTalhaoAsc();
-
+                if (posicaoSpinnerPrioridade == 0) {
+                    if (ordenaTalhaoBool == false)
+                        listaOs = dao.listaOsTalhaoSemPrioridadeDesc();
+                    else listaOs = dao.listaOsTalhaoSemPrioridadeAsc();
+                } else {
+                    if (ordenaTalhaoBool == false)
+                        listaOs = dao.listaOsTalhaoDesc(posicaoSpinnerPrioridade);
+                    else listaOs = dao.listaOsTalhaoAsc(posicaoSpinnerPrioridade);
+                }
                 adaptador.setOrdens(listaOs);
                 recyclerView.setAdapter(adaptador);
 
@@ -133,32 +200,18 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         ordenaSetor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ordenaSetorBool==false) listaOs = dao.listaOsSetorDesc();
-                else listaOs = dao.listaOsSetorAsc();
-
+                if(posicaoSpinnerPrioridade==0){
+                    if (ordenaSetorBool == false)
+                        listaOs = dao.listaOsSetorSemPrioridadeDesc();
+                    else listaOs = dao.listaOsSetorSemPrioridadeAsc();
+                }else {
+                    if (ordenaSetorBool == false)
+                        listaOs = dao.listaOsSetorDesc(posicaoSpinnerPrioridade);
+                    else listaOs = dao.listaOsSetorAsc(posicaoSpinnerPrioridade);
+                }
                 adaptador.setOrdens(listaOs);
                 recyclerView.setAdapter(adaptador);
-
                 ordenaSetorBool = !ordenaSetorBool;
-            }
-        });
-
-        ordenaPrioridade.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(ordenaPrioridadeBool==false) listaOs = dao.listaOsPrioridadeDesc();
-                else listaOs = dao.listaOsPrioridadeAsc();
-
-                adaptador.setOrdens(listaOs);
-                recyclerView.setAdapter(adaptador);
-
-                ordenaPrioridadeBool = !ordenaPrioridadeBool;
-            }
-        });
-
-        ordenaStatus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
             }
         });
@@ -166,9 +219,15 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         ordenaData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ordenaDataBool==false) listaOs = dao.listaOsDataDesc();
-                else listaOs = dao.listaOsDataAsc();
-
+                if(posicaoSpinnerPrioridade==0){
+                    if (ordenaDataBool == false)
+                        listaOs = dao.listaOsDataSemPrioridadeDesc();
+                    else listaOs = dao.listaOsDataSemPrioridadeAsc();
+                }else {
+                    if (ordenaDataBool == false)
+                        listaOs = dao.listaOsDataDesc(posicaoSpinnerPrioridade);
+                    else listaOs = dao.listaOsDataAsc(posicaoSpinnerPrioridade);
+                }
                 adaptador.setOrdens(listaOs);
                 recyclerView.setAdapter(adaptador);
 
@@ -180,8 +239,8 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         adaptador.setOnItemClickListener(new AdaptadorOs.OnItemClickListener() {
             @Override
             public void onItemClick(O_S_ATIVIDADES classeOs) {
-                    osSelecionada = classeOs;
-                    Intent it = new Intent(ActivityMain.this, ActivityAtividades.class);
+                osSelecionada = classeOs;
+                Intent it = new Intent(ActivityMain.this, ActivityAtividades.class);
                 startActivity(it);
             }
         });
@@ -192,28 +251,10 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                 dialogoVoltar();
             }
         });
-
-        SearchView sv=(SearchView) findViewById(R.id.searchview);
-
-        sv.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                adaptador.getFilter().filter(s);
-                return false;
-            }
-        });
-
-        InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 
     //Abre caixa de diálogo perguntando se o usuário deseja realmente voltar para a tela anterior
-    public void dialogoVoltar(){
+    public void dialogoVoltar() {
         new AlertDialog.Builder(this)
                 .setTitle("SAIR")
                 .setMessage("Deseja fechar o aplicativo ?")
@@ -226,9 +267,10 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                         startActivity(it);
                     }
                 })
-                .setNegativeButton("NÃO",  new DialogInterface.OnClickListener() {
+                .setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {}
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
                 })
                 .create()
                 .show();
@@ -260,9 +302,10 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                                 startActivity(it);
                             }
                         })
-                        .setNegativeButton("NÃO",  new DialogInterface.OnClickListener() {
+                        .setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {}
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                            }
                         })
                         .create()
                         .show();
@@ -301,5 +344,16 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("posicaoSpinnerPrioridade", posicaoSpinnerPrioridade);
+
+        dadosSearchView = sv.getQuery().toString();
+        outState.putString("dadosSearchView", dadosSearchView);
+
+        sv.setQuery("", false);
     }
 }

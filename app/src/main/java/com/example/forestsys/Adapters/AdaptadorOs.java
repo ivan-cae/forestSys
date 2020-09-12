@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,7 +32,7 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
     private DAO dao;
     private BaseDeDados baseDeDados;
     private Context context = ApplicationTodos.getAppContext();
-
+    private Ferramentas ferramentas = new Ferramentas();
 
     @NonNull
     @Override
@@ -51,11 +52,11 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
         ordem = ordens.get(position);
 
         //aberta-verde
-        if(ordem.getSTATUS_NUM()==0) corFundo=(Color.parseColor("#a9d18e"));
+        if (ordem.getSTATUS_NUM() == 0) corFundo = (Color.parseColor("#a9d18e"));
         //andamento-bege
-        if(ordem.getSTATUS_NUM()==1) corFundo=(Color.parseColor("#fff2cc"));
+        if (ordem.getSTATUS_NUM() == 1) corFundo = (Color.parseColor("#fff2cc"));
         //azul-finalizada
-        if(ordem.getSTATUS_NUM()==2) corFundo=(Color.parseColor("#9dc3e6"));
+        if (ordem.getSTATUS_NUM() == 2) corFundo = (Color.parseColor("#9dc3e6"));
 
         holder.itemView.setBackgroundColor(corFundo);
 
@@ -70,10 +71,10 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
         String temMadeira = "NÃO";
         if (ordem.getMADEIRA_NO_TALHAO() == 1) temMadeira = "SIM";
         holder.madeira.setText(temMadeira);
-        String prio="Baixa";
+        String prio = "Baixa";
 
-        if(ordem.getPRIORIDADE()==2) prio="Normal";
-        if(ordem.getPRIORIDADE()==3) prio="Alta";
+        if (ordem.getPRIORIDADE() == 2) prio = "Normal";
+        if (ordem.getPRIORIDADE() == 3) prio = "Alta";
         holder.prioridade.setText(prio);
     }
 
@@ -86,6 +87,10 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
         this.ordens = ordens;
         ordensFiltradas = new ArrayList<>(ordens);
         notifyDataSetChanged();
+    }
+
+    public List<O_S_ATIVIDADES> getOrdensFiltradas() {
+        return ordensFiltradas;
     }
 
     class OsHolder extends RecyclerView.ViewHolder {
@@ -101,7 +106,6 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
 
         public OsHolder(@NonNull View itemView) {
             super(itemView);
-
 
 
             status = itemView.findViewById(R.id.status_item_lista);
@@ -142,12 +146,18 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<O_S_ATIVIDADES> listaFiltrada = new ArrayList<>();
-            if(constraint == null || constraint.length()==0){
+            if (constraint == null || constraint.length() == 0) {
                 listaFiltrada.addAll(ordensFiltradas);
-            }else{
-                String filtro = constraint.toString();
-                for(O_S_ATIVIDADES os : ordensFiltradas){
-                    if(String.valueOf(os.getTALHAO()).startsWith(filtro)){
+            } else {
+                String filtro = constraint.toString().toLowerCase();
+                for (O_S_ATIVIDADES os : ordensFiltradas) {
+                    if (String.valueOf(os.getTALHAO().toLowerCase()).contains(filtro)) {
+                        listaFiltrada.add(os);
+                    } else if (String.valueOf(dao.selecionaSetor(os.getID_SETOR()).getDESCRICAO().toLowerCase()).contains(filtro)) {
+                        listaFiltrada.add(os);
+                    } else if (String.valueOf(ferramentas.formataDataTextView(os.getDATA_PROGRAMADA().toLowerCase())).contains(filtro)) {
+                        listaFiltrada.add(os);
+                    } else if (String.valueOf(os.getPRIORIDADE()).toLowerCase().contains(filtro)) {
                         listaFiltrada.add(os);
                     }
                 }
@@ -160,7 +170,9 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             ordens.clear();
-            ordens.addAll((List)results.values);
+            if(results.values!=null ){
+                ordens.addAll((List) results.values);
+            }
             notifyDataSetChanged();
         }
     };

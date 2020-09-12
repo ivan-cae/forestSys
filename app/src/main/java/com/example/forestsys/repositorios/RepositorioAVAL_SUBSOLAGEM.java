@@ -15,7 +15,7 @@ public class RepositorioAVAL_SUBSOLAGEM {
     public RepositorioAVAL_SUBSOLAGEM(Application application) {
         BaseDeDados baseDeDados = BaseDeDados.getInstance(application);
         dao = baseDeDados.dao();
-        aval_subsolagens = dao.listaAvalSubsolagem();
+        aval_subsolagens = dao.listaAvalPontoSubsolagem();
     }
 
     //retorna uma instância da AVAL_SUBSOLAGEM
@@ -26,7 +26,7 @@ public class RepositorioAVAL_SUBSOLAGEM {
 
     //retorna uma lista com todos os itens cadastrados na tabela AVAL_SUBSOLAGEM
     public List<AVAL_SUBSOLAGEM> listaMaquinas() {
-        return dao.listaAvalSubsolagem();
+        return dao.listaAvalPontoSubsolagem();
     }
 
     //retorna uma lista com todos os itens cadastrados na tabela AVAL_SUBSOLAGEM

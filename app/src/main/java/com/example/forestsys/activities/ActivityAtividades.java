@@ -697,7 +697,7 @@ public class ActivityAtividades extends AppCompatActivity
         List<CALIBRAGEM_SUBSOLAGEM> listaCalib = dao.listaCalibragem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
         List<O_S_ATIVIDADES_DIA> listaOsAtiDia = dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
         List<O_S_ATIVIDADE_INSUMOS_DIA> listaInsDia = dao.checaOsInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
-        List<AVAL_PONTO_SUBSOLAGEM> aval_subsolagems = dao.listaAvalSubsolagem(osSelecionada.getID_ATIVIDADE());
+        List<AVAL_PONTO_SUBSOLAGEM> aval_subsolagems = dao.listaAvalPontoSubsolagem(osSelecionada.getID_ATIVIDADE());
         List<INDICADORES_SUBSOLAGEM> indicadoresSubsolagems = dao.listaIndicadoresSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), osSelecionada.getID_ATIVIDADE());
 
         if (listaCalib == null || listaCalib.isEmpty()) {

@@ -34,7 +34,6 @@ public class ActivityLogin extends AppCompatActivity{ //implements PopupMenu.OnM
     private ImageButton botaoVoltar;
     public static GGF_USUARIOS usuarioLogado = null;
 
-
     private ImageView imageViewLogo;
     private ImageView imageViewRodape;
     private String nomeUsuario;

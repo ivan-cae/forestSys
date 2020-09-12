@@ -1,5 +1,7 @@
 package com.example.forestsys.assets;
 
+import android.view.View;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -220,33 +222,46 @@ public interface DAO {
 
     //Scripts O_S_ATIVIDADES
     @Query("SELECT * FROM O_S_ATIVIDADES ORDER BY DATE(DATA_PROGRAMADA) ASC")
-    List<O_S_ATIVIDADES> listaOsDataAsc();
+    List<O_S_ATIVIDADES> listaOsDataSemPrioridadeAsc();
 
     @Query("SELECT * FROM O_S_ATIVIDADES ORDER BY DATE(DATA_PROGRAMADA) DESC")
-    List<O_S_ATIVIDADES> listaOsDataDesc();
+    List<O_S_ATIVIDADES> listaOsDataSemPrioridadeDesc();
 
+    @Query("SELECT * FROM O_S_ATIVIDADES WHERE PRIORIDADE =:prioridade ORDER BY DATE(DATA_PROGRAMADA) ASC")
+    List<O_S_ATIVIDADES> listaOsDataAsc(int prioridade);
 
-    @Query("SELECT * FROM O_S_ATIVIDADES ORDER BY PRIORIDADE ASC")
-    List<O_S_ATIVIDADES> listaOsPrioridadeAsc();
-
-    @Query("SELECT * FROM O_S_ATIVIDADES ORDER BY PRIORIDADE DESC")
-    List<O_S_ATIVIDADES> listaOsPrioridadeDesc();
+    @Query("SELECT * FROM O_S_ATIVIDADES WHERE PRIORIDADE =:prioridade  ORDER BY DATE(DATA_PROGRAMADA) DESC")
+    List<O_S_ATIVIDADES> listaOsDataDesc(int prioridade);
 
 
     @Query("SELECT * FROM O_S_ATIVIDADES JOIN GEO_SETORES WHERE O_S_ATIVIDADES.ID_SETOR = GEO_SETORES.ID_SETOR" +
             " ORDER BY GEO_SETORES.DESCRICAO ASC")
-    List<O_S_ATIVIDADES> listaOsSetorAsc();
+    List<O_S_ATIVIDADES> listaOsSetorSemPrioridadeAsc();
 
     @Query("SELECT * FROM O_S_ATIVIDADES JOIN GEO_SETORES WHERE O_S_ATIVIDADES.ID_SETOR = GEO_SETORES.ID_SETOR" +
-            " ORDER BY GEO_SETORES.DESCRICAO desc")
-    List<O_S_ATIVIDADES> listaOsSetorDesc();
+            " ORDER BY GEO_SETORES.DESCRICAO DESC")
+    List<O_S_ATIVIDADES> listaOsSetorSemPrioridadeDesc();
+
+    @Query("SELECT * FROM O_S_ATIVIDADES JOIN GEO_SETORES WHERE O_S_ATIVIDADES.ID_SETOR = GEO_SETORES.ID_SETOR AND PRIORIDADE =:prioridade" +
+            " ORDER BY GEO_SETORES.DESCRICAO ASC")
+    List<O_S_ATIVIDADES> listaOsSetorAsc(int prioridade);
+
+    @Query("SELECT * FROM O_S_ATIVIDADES JOIN GEO_SETORES WHERE O_S_ATIVIDADES.ID_SETOR = GEO_SETORES.ID_SETOR AND PRIORIDADE =:prioridade" +
+            " ORDER BY GEO_SETORES.DESCRICAO DESC")
+    List<O_S_ATIVIDADES> listaOsSetorDesc(int prioridade);
 
 
     @Query("SELECT * FROM O_S_ATIVIDADES ORDER BY CAST(TALHAO AS INTEGER) ASC")
-    List<O_S_ATIVIDADES> listaOsTalhaoAsc();
+    List<O_S_ATIVIDADES> listaOsTalhaoSemPrioridadeAsc();
 
     @Query("SELECT * FROM O_S_ATIVIDADES ORDER BY CAST(TALHAO AS INTEGER) DESC")
-    List<O_S_ATIVIDADES> listaOsTalhaoDesc();
+    List<O_S_ATIVIDADES> listaOsTalhaoSemPrioridadeDesc();
+
+    @Query("SELECT * FROM O_S_ATIVIDADES WHERE PRIORIDADE =:prioridade  ORDER BY CAST(TALHAO AS INTEGER) ASC")
+    List<O_S_ATIVIDADES> listaOsTalhaoAsc(int prioridade);
+
+    @Query("SELECT * FROM O_S_ATIVIDADES WHERE PRIORIDADE =:prioridade  ORDER BY CAST(TALHAO AS INTEGER) DESC")
+    List<O_S_ATIVIDADES> listaOsTalhaoDesc(int prioridade);
 
 
     @Query("SELECT * FROM O_S_ATIVIDADES WHERE ID_PROGRAMACAO_ATIVIDADE=:taskId")
@@ -255,6 +270,8 @@ public interface DAO {
     @Query("SELECT * FROM O_S_ATIVIDADES")
     List<O_S_ATIVIDADES> todasOs();
 
+    @Query("SELECT * FROM O_S_ATIVIDADES WHERE PRIORIDADE=:prioridade")
+    List<O_S_ATIVIDADES> filtraPrioridade(int prioridade);
 
 
     //Scripts CADASTRO_FLORESTAL
@@ -416,9 +433,9 @@ public interface DAO {
 
     //Scripts AVAL_PONTO_SUBSOLAGEM
     @Query("SELECT *FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idAtv GROUP BY PONTO ORDER BY PONTO")
-    List<AVAL_PONTO_SUBSOLAGEM> listaAvalSubsolagem(int idAtv);
+    List<AVAL_PONTO_SUBSOLAGEM> listaAvalPontoSubsolagem(int idAtv);
 
-    @Query("SELECT * FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_ATIVIDADE=:idAtv AND PONTO=:ponto")
+    @Query("SELECT DISTINCT * FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_ATIVIDADE=:idAtv AND PONTO=:ponto")
     List<AVAL_PONTO_SUBSOLAGEM> listaPontoCorrecoes(int idProg, int idAtv, int ponto);
 
     //Checa quantidade de cada indicador não conforme
@@ -461,7 +478,7 @@ public interface DAO {
     AVAL_SUBSOLAGEM selecionaAvalSubsolagem(int idProg);
 
     @Query("SELECT * FROM AVAL_SUBSOLAGEM")
-    List<AVAL_SUBSOLAGEM> listaAvalSubsolagem();
+    List<AVAL_SUBSOLAGEM> listaAvalPontoSubsolagem();
 
 
     //Scripts INDICADORES_SUBSOLAGEM
