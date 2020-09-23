@@ -168,7 +168,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     private int posicaoImplemento;
 
     private boolean mudouOrientacao;
-    private Bundle auxSavedInstanceState=null;
+    private Bundle auxSavedInstanceState = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -411,6 +411,14 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         dialog.show();
     }
 
+    //Retorna false se não houver nenhum item preenchido ou true se houver
+    public boolean algumItemPreenchido() {
+        if (p1_a1.getText().toString().isEmpty() && p2_a1.getText().toString().isEmpty() && idMaquinaImplemento == -1 && idMaquina == -1
+                && idOperador == -1) return false;
+
+        return true;
+    }
+
     //Adiciona o botão de atualização a barra de ação
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -437,6 +445,10 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.dash:
+                if (algumItemPreenchido() == false) {
+                    Intent it = new Intent(ActivityCalibracao.this, ActivityDashboard.class);
+                    startActivity(it);
+                }else{
                 if (osSelecionada.getSTATUS_NUM() == 2) {
                     Intent it = new Intent(ActivityCalibracao.this, ActivityDashboard.class);
                     startActivity(it);
@@ -447,7 +459,6 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                             .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-
                                     Intent it = new Intent(ActivityCalibracao.this, ActivityDashboard.class);
                                     startActivity(it);
                                 }
@@ -458,9 +469,14 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                             }).create();
                     dialogoDash.show();
                 }
+                }
                 break;
 
             case R.id.atividades:
+                if (algumItemPreenchido() == false) {
+                    Intent it = new Intent(ActivityCalibracao.this, ActivityMain.class);
+                    startActivity(it);
+                }else{
                 if (osSelecionada.getSTATUS_NUM() == 2) {
                     Intent it = new Intent(ActivityCalibracao.this, ActivityMain.class);
                     startActivity(it);
@@ -481,7 +497,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                                 }
                             }).create();
                     dialogoAtividades.show();
-                }
+                }}
                 break;
             case R.id.calculadora:
                 Intent it3 = new Intent(this, CalculadoraMain.class);
@@ -1349,7 +1365,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                     adapterImplemento.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     posicaoMaquina = position;
 
-                    if(contSpinnerMaquina == 1 && auxSavedInstanceState!=null) {
+                    if (contSpinnerMaquina == 1 && auxSavedInstanceState != null) {
                         idMaquina = auxSavedInstanceState.getInt("idMaquina");
                         idMaquinaImplemento = auxSavedInstanceState.getInt("idMaquinaImplemento");
                         posicaoMaquina = auxSavedInstanceState.getInt("posicaoMaquina");
@@ -1472,7 +1488,13 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                 if (osSelecionada.getSTATUS_NUM() == 2) {
                     Intent it = new Intent(ActivityCalibracao.this, ActivityAtividades.class);
                     startActivity(it);
-                } else dialogoFechar();
+                } else {
+                    if (algumItemPreenchido() == true) dialogoFechar();
+                    else {
+                        Intent it = new Intent(ActivityCalibracao.this, ActivityAtividades.class);
+                        startActivity(it);
+                    }
+                }
             }
         });
 
@@ -1505,10 +1527,13 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
                                         dao.insert(calibragem_subsolagem);
 
-                                        osSelecionada.setSTATUS("Andamento");
-                                        osSelecionada.setSTATUS_NUM(1);
-                                        osSelecionada.setDATA_FINAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
-                                        dao.update(osSelecionada);
+                                        if (osSelecionada.getSTATUS_NUM() == 0) {
+                                            osSelecionada.setSTATUS("Andamento");
+                                            osSelecionada.setSTATUS_NUM(1);
+                                            osSelecionada.setDATA_INICIAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
+                                            dao.update(osSelecionada);
+                                        }
+
                                         Toast.makeText(getApplicationContext(), "Calibração Salva com sucesso!", Toast.LENGTH_LONG).show();
                                         Intent it = new Intent(ActivityCalibracao.this, ActivityCalibracao.class);
                                         startActivity(it);

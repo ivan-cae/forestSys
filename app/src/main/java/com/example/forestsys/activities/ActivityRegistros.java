@@ -17,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -61,8 +62,11 @@ import static com.example.forestsys.activities.FragmentoInsumos.obsInsumo1;
 import static com.example.forestsys.activities.FragmentoInsumos.obsInsumo2;
 import static com.example.forestsys.activities.FragmentoRendimento.HHApontamento;
 import static com.example.forestsys.activities.FragmentoRendimento.HMApontamento;
+import static com.example.forestsys.activities.FragmentoRendimento.HMEscavadeiraApontamento;
 import static com.example.forestsys.activities.FragmentoRendimento.HOApontamento;
+import static com.example.forestsys.activities.FragmentoRendimento.HOEscavadeiraApontamento;
 import static com.example.forestsys.activities.FragmentoRendimento.areaRealizadaApontamento;
+import static com.example.forestsys.activities.FragmentoRendimento.obsApontamento;
 import static com.example.forestsys.activities.FragmentoRendimento.posicaoPrestador;
 import static com.example.forestsys.activities.FragmentoRendimento.posicaoResponsavel;
 
@@ -352,37 +356,53 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         botaoSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                testaConformidade();
+                if (editouRegistro == false && dao.selecionaOsAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
+                        ferramentas.formataDataDb(dataDoApontamento)) != null) {
 
-                if (erro == false && (novaArea + osSelecionada.getAREA_REALIZADA()) > osSelecionada.getAREA_PROGRAMADA()) {
-                    DecimalFormat format = new DecimalFormat("###.#####");
-                    Double d = (novaArea + osSelecionada.getAREA_REALIZADA()) - osSelecionada.getAREA_PROGRAMADA();
-                    String diferenca = format.format(Double.parseDouble(String.valueOf(d)));
-                    diferenca.replace('.', ',');
+                    erroGeral = true;
 
                     AlertDialog dialog = new AlertDialog.Builder(ActivityRegistros.this)
-                            .setTitle("O total da área realizada é maior que a área programada")
-                            .setMessage("Diferença: " + diferenca + "\nDeseja salvar mesmo assim?")
-                            .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    if (erro == false && erroInsumos == false && erroGeral == false) {
-                                        if (edicaoReg == false) chamaSalvar();
-                                        else abreDialogoEdicaoReg();
-                                    }
-                                }
-                            }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                            .setTitle("Erro!")
+                            .setMessage("A data selecionada já tem um registro cadastrado.")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                 }
                             }).create();
                     dialog.show();
-                }
+                } else {
+                    testaConformidade();
 
-                if ((novaArea + osSelecionada.getAREA_REALIZADA()) <= osSelecionada.getAREA_PROGRAMADA()) {
-                    if (erro == false && erroInsumos == false && erroGeral == false) {
-                        if (edicaoReg == false) chamaSalvar();
-                        else abreDialogoEdicaoReg();
+                    if (erro == false && (novaArea + osSelecionada.getAREA_REALIZADA()) > osSelecionada.getAREA_PROGRAMADA()) {
+                        DecimalFormat format = new DecimalFormat("###.#####");
+                        Double d = (novaArea + osSelecionada.getAREA_REALIZADA()) - osSelecionada.getAREA_PROGRAMADA();
+                        String diferenca = format.format(Double.parseDouble(String.valueOf(d)));
+                        diferenca.replace('.', ',');
+
+                        AlertDialog dialog = new AlertDialog.Builder(ActivityRegistros.this)
+                                .setTitle("O total da área realizada é maior que a área programada")
+                                .setMessage("Diferença: " + diferenca + "\nDeseja salvar mesmo assim?")
+                                .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        if (erro == false && erroInsumos == false && erroGeral == false) {
+                                            if (edicaoReg == false) chamaSalvar();
+                                            else abreDialogoEdicaoReg();
+                                        }
+                                    }
+                                }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                }).create();
+                        dialog.show();
+                    }
+
+                    if ((novaArea + osSelecionada.getAREA_REALIZADA()) <= osSelecionada.getAREA_PROGRAMADA()) {
+                        if (erro == false && erroInsumos == false && erroGeral == false) {
+                            if (edicaoReg == false) chamaSalvar();
+                            else abreDialogoEdicaoReg();
+                        }
                     }
                 }
             }
@@ -391,35 +411,49 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         voltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (osSelecionada.getSTATUS_NUM() == 2) {
+                if (algumItemPreenchido() == false) {
+                    area = "";
+                    ho = "";
+                    hm = "";
+                    hh = "";
+                    hoe = "";
+                    hme = "";
+                    obs = "";
+
+                    oSAtividadesDiaAtual = null;
                     Intent it = new Intent(ActivityRegistros.this, ActivityAtividades.class);
                     startActivity(it);
                 } else {
-                    AlertDialog dialog = new AlertDialog.Builder(ActivityRegistros.this)
-                            .setTitle("Voltar Para a tela da atividade?")
-                            .setMessage("Caso clique em SIM, você perderá os dados não salvos!")
-                            .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
+                    if (osSelecionada.getSTATUS_NUM() == 2) {
+                        Intent it = new Intent(ActivityRegistros.this, ActivityAtividades.class);
+                        startActivity(it);
+                    } else {
+                        AlertDialog dialog = new AlertDialog.Builder(ActivityRegistros.this)
+                                .setTitle("Voltar Para a tela da atividade?")
+                                .setMessage("Caso clique em SIM, você perderá os dados não salvos!")
+                                .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
 
-                                    area = "";
-                                    ho = "";
-                                    hm = "";
-                                    hh = "";
-                                    hoe = "";
-                                    hme = "";
-                                    obs = "";
+                                        area = "";
+                                        ho = "";
+                                        hm = "";
+                                        hh = "";
+                                        hoe = "";
+                                        hme = "";
+                                        obs = "";
 
-                                    oSAtividadesDiaAtual = null;
-                                    Intent it = new Intent(ActivityRegistros.this, ActivityAtividades.class);
-                                    startActivity(it);
-                                }
-                            }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                }
-                            }).create();
-                    dialog.show();
+                                        oSAtividadesDiaAtual = null;
+                                        Intent it = new Intent(ActivityRegistros.this, ActivityAtividades.class);
+                                        startActivity(it);
+                                    }
+                                }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                }).create();
+                        dialog.show();
+                    }
                 }
             }
         });
@@ -646,167 +680,152 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     //testa as condições para conformidade
     public void testaConformidade() {
         erroGeral = false;
-        if (editouRegistro == false && dao.selecionaOsAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
-                ferramentas.formataDataDb(dataDoApontamento)) != null) {
 
+        testeAreaRealizada = 0;
+        erro = false;
+        erroInsumos = false;
+
+        if (area != null && !area.isEmpty()) {
+            try {
+                if (area.contains(",")) area = area.replace(',', '.');
+                testeAreaRealizada = Double.valueOf(area);
+            } catch (NumberFormatException | NullPointerException nf) {
+                testeAreaRealizada = NULL;
+                erro = true;
+                erroGeral = true;
+            }
+        }
+
+        if (erroNaString(area) == true) {
+            erro = true;
             erroGeral = true;
+            areaRealizadaApontamento.setError("");
+        }
 
-            AlertDialog dialog = new AlertDialog.Builder(ActivityRegistros.this)
+        if (erroNaString(ho) == true) {
+            erro = true;
+            erroGeral = true;
+            HOApontamento.setError("");
+        }
+
+        if (erroNaString(hm) == true) {
+            erro = true;
+            erroGeral = true;
+            HMApontamento.setError("");
+        }
+
+        if (erroNaString(hh) == true) {
+            erro = true;
+            erroGeral = true;
+            HHApontamento.setError("");
+        }
+
+
+        if (posicaoPrestador == -1) {
+            erro = true;
+            erroGeral = true;
+        }
+        if (posicaoResponsavel == -1) {
+            erro = true;
+            erroGeral = true;
+        }
+
+        if (erroNaString(hme) == true) {
+            hme = "";
+        }
+
+        if (erroNaString(hoe) == true) {
+            hoe = "";
+        }
+
+        if (listaJoinOsInsumosSelecionados.size() != 2) {
+            erroInsumos = true;
+            erroGeral = true;
+        }
+
+        if (listaJoinOsInsumosSelecionados.size() == 2) {
+            if (listaJoinOsInsumosSelecionados.get(0).getQTD_APLICADO() == 0) {
+                erroGeral = true;
+                erroInsumos = true;
+            }
+
+            if (listaJoinOsInsumosSelecionados.get(1).getQTD_APLICADO() == 0) {
+                erroGeral = true;
+                erroInsumos = true;
+            }
+        }
+
+        if (erro == true) {
+            AlertDialog dialogoRegistros = new AlertDialog.Builder(ActivityRegistros.this)
                     .setTitle("Erro!")
-                    .setMessage("A data selecionada já tem um registro cadastrado.")
+                    .setMessage("Um ou mais itens na aba de registros contém erros." + "\n" +
+                            "Somente os campos Hora Operador Escavadeira e Hora Máquina Escavadeira " +
+                            "não são obrigatórios.")
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                         }
                     }).create();
-            dialog.show();
-        } else {
-            testeAreaRealizada = 0;
-            erro = false;
-            erroInsumos = false;
+            dialogoRegistros.show();
+        }
 
-            if (area != null && !area.isEmpty()) {
-                try {
-                    if (area.contains(",")) area = area.replace(',', '.');
-                    testeAreaRealizada = Double.valueOf(area);
-                } catch (NumberFormatException | NullPointerException nf) {
-                    testeAreaRealizada = NULL;
-                    erro = true;
-                    erroGeral = true;
-                }
+        if (erroInsumos == true) {
+            AlertDialog dialogoInsumos = new AlertDialog.Builder(ActivityRegistros.this)
+                    .setTitle("Erro!")
+                    .setMessage("A aplicação dos insumos não foi preenchida ou está parcialmente preenchida.")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    }).create();
+            dialogoInsumos.show();
+        }
+
+        //testar a área
+        novaArea = 0;
+        areaAnterior = 0;
+
+        if (erro == false && oSAtividadesDiaAtual != null && testeAreaRealizada != 0) {
+            if (oSAtividadesDiaAtual.getAREA_REALIZADA() != null) {
+                String auxStr = oSAtividadesDiaAtual.getAREA_REALIZADA();
+                if (auxStr.contains(",")) auxStr = auxStr.replace(',', '.');
+                areaAnterior = Double.valueOf(auxStr);
             }
+        }
 
-            if (erroNaString(area) == true) {
-                erro = true;
-                erroGeral = true;
-                areaRealizadaApontamento.setError("");
-            }
+        if (testeAreaRealizada != NULL || testeAreaRealizada != 0) {
+            if (testeAreaRealizada > areaAnterior)
+                novaArea = (testeAreaRealizada - areaAnterior);
 
-            if (erroNaString(ho) == true) {
-                erro = true;
-                erroGeral = true;
-                HOApontamento.setError("");
-            }
-
-            if (erroNaString(hm) == true) {
-                erro = true;
-                erroGeral = true;
-                HMApontamento.setError("");
-            }
-
-            if (erroNaString(hh) == true) {
-                erro = true;
-                erroGeral = true;
-                HHApontamento.setError("");
-            }
+            if (testeAreaRealizada < areaAnterior)
+                novaArea = (testeAreaRealizada - areaAnterior);
+        }
 
 
-            if (posicaoPrestador == -1) {
-                erro = true;
-                erroGeral = true;
-            }
-            if (posicaoResponsavel == -1) {
-                erro = true;
-                erroGeral = true;
-            }
+        if (erro == false && erroInsumos == false && editouRegistro == true) {
+            edicaoReg = false;
 
-            if (erroNaString(hme) == true) {
-                hme = "";
-            }
+            if (posicaoResponsavel != oSAtividadesDiaAtual.getID_RESPONSAVEL())
+                edicaoReg = true;
 
-            if (erroNaString(hoe) == true) {
-                hoe = "";
-            }
+            if (posicaoPrestador != oSAtividadesDiaAtual.getID_PRESTADOR()) edicaoReg = true;
 
-            if (listaJoinOsInsumosSelecionados.size() != 2) {
-                erroInsumos = true;
-                erroGeral = true;
-            }
+            if (!ho.equals(oSAtividadesDiaAtual.getHO())) edicaoReg = true;
 
-            if (listaJoinOsInsumosSelecionados.size() == 2) {
-                if (listaJoinOsInsumosSelecionados.get(0).getQTD_APLICADO() == 0) {
-                    erroGeral = true;
-                    erroInsumos = true;
-                }
+            if (!hm.equals(oSAtividadesDiaAtual.getHM())) edicaoReg = true;
 
-                if (listaJoinOsInsumosSelecionados.get(1).getQTD_APLICADO() == 0) {
-                    erroGeral = true;
-                    erroInsumos = true;
-                }
-            }
+            if (!hh.equals(oSAtividadesDiaAtual.getHH())) edicaoReg = true;
 
-            if (erro == true) {
-                AlertDialog dialogoRegistros = new AlertDialog.Builder(ActivityRegistros.this)
-                        .setTitle("Erro!")
-                        .setMessage("Um ou mais itens na aba de registros contém erros." + "\n" +
-                                "Somente os campos Hora Operador Escavadeira e Hora Máquina Escavadeira " +
-                                "não são obrigatórios.")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        }).create();
-                dialogoRegistros.show();
-            }
+            if (!area.equals(oSAtividadesDiaAtual.getAREA_REALIZADA())) edicaoReg = true;
 
-            if (erroInsumos == true) {
-                AlertDialog dialogoInsumos = new AlertDialog.Builder(ActivityRegistros.this)
-                        .setTitle("Erro!")
-                        .setMessage("A aplicação dos insumos não foi preenchida ou está parcialmente preenchida.")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        }).create();
-                dialogoInsumos.show();
-            }
+            if (!hoe.isEmpty() && !hoe.equals(oSAtividadesDiaAtual.getHO_ESCAVADEIRA()))
+                edicaoReg = true;
 
-            //testar a área
-            novaArea = 0;
-            areaAnterior = 0;
+            if (!hme.isEmpty() && !hme.equals(oSAtividadesDiaAtual.getHM_ESCAVADEIRA()))
+                edicaoReg = true;
 
-            if (erro == false && oSAtividadesDiaAtual != null && testeAreaRealizada != 0) {
-                if (oSAtividadesDiaAtual.getAREA_REALIZADA() != null) {
-                    String auxStr = oSAtividadesDiaAtual.getAREA_REALIZADA();
-                    if (auxStr.contains(",")) auxStr = auxStr.replace(',', '.');
-                    areaAnterior = Double.valueOf(auxStr);
-                }
-            }
-
-            if (testeAreaRealizada != NULL || testeAreaRealizada != 0) {
-                if (testeAreaRealizada > areaAnterior)
-                    novaArea = (testeAreaRealizada - areaAnterior);
-
-                if (testeAreaRealizada < areaAnterior)
-                    novaArea = (testeAreaRealizada - areaAnterior);
-            }
-
-
-            if (erro == false && erroInsumos == false && editouRegistro == true) {
-                edicaoReg = false;
-
-                if (posicaoResponsavel != oSAtividadesDiaAtual.getID_RESPONSAVEL())
-                    edicaoReg = true;
-
-                if (posicaoPrestador != oSAtividadesDiaAtual.getID_PRESTADOR()) edicaoReg = true;
-
-                if (!ho.equals(oSAtividadesDiaAtual.getHO())) edicaoReg = true;
-
-                if (!hm.equals(oSAtividadesDiaAtual.getHM())) edicaoReg = true;
-
-                if (!hh.equals(oSAtividadesDiaAtual.getHH())) edicaoReg = true;
-
-                if (!area.equals(oSAtividadesDiaAtual.getAREA_REALIZADA())) edicaoReg = true;
-
-                if (!hoe.isEmpty() && !hoe.equals(oSAtividadesDiaAtual.getHO_ESCAVADEIRA()))
-                    edicaoReg = true;
-
-                if (!hme.isEmpty() && !hme.equals(oSAtividadesDiaAtual.getHM_ESCAVADEIRA()))
-                    edicaoReg = true;
-
-                if (edicaoReg == true) {
-                    acaoInativoAtividade = "EDICAO";
-                }
+            if (edicaoReg == true) {
+                acaoInativoAtividade = "EDICAO";
             }
         }
     }
@@ -881,6 +900,13 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         dao.update(osSelecionada);
         viewModelOSAtividadesDia.insert(oSAtividadesDiaAtual);
 
+        if (osSelecionada.getSTATUS_NUM() == 0) {
+            osSelecionada.setSTATUS("Andamento");
+            osSelecionada.setSTATUS_NUM(1);
+            osSelecionada.setDATA_INICIAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
+            dao.update(osSelecionada);
+        }
+
         edicaoReg = false;
         editouRegistro = false;
         oSAtividadesDiaAtual = null;
@@ -916,53 +942,117 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         }
     }
 
+    //Retorna false se não houver nenhum item preenchido ou true se houver
+    public boolean algumItemPreenchido() {
+        if (posicaoResponsavel != -1) return true;
+        if (posicaoPrestador != -1) return true;
+
+        if (area != null) {
+            if (area.length()!=0) return true;
+        }
+        if (ho != null) {
+            if (ho.length()!=0) return true;
+        }
+        if (hm != null) {
+            if (hm.length()!=0) return true;
+        }
+        if (hh != null) {
+            if (hh.length()!=0) return true;
+        }
+        if (hoe != null) {
+            if (hoe.length()!=0) return true;
+        }
+        if (hme != null) {
+            if (hme.length()!=0) return true;
+        }
+        if (obs != null) {
+            if (obs.length()!=0) return true;
+        }
+
+        if (listaJoinOsInsumosSelecionados.get(0).getQTD_APLICADO() != 0) return true;
+        if (listaJoinOsInsumosSelecionados.get(1).getQTD_APLICADO() != 0) return true;
+
+        return false;
+    }
+
+
     //Sobreescrita do método de seleção de item do menu de navegação localizado na lateral da tela
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.dash:
-                if (osSelecionada.getSTATUS_NUM() == 2) {
+                if (algumItemPreenchido() == false) {
+                    area = "";
+                    ho = "";
+                    hm = "";
+                    hh = "";
+                    hoe = "";
+                    hme = "";
+                    obs = "";
+
+                    oSAtividadesDiaAtual = null;
+
                     Intent it = new Intent(ActivityRegistros.this, ActivityDashboard.class);
                     startActivity(it);
                 } else {
-                    AlertDialog dialogoDash = new AlertDialog.Builder(ActivityRegistros.this)
-                            .setTitle("Abrir a Dashboard?")
-                            .setMessage("Caso clique em SIM, você perderá os dados não salvos!")
-                            .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Intent it = new Intent(ActivityRegistros.this, ActivityDashboard.class);
-                                    startActivity(it);
-                                }
-                            }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                }
-                            }).create();
-                    dialogoDash.show();
+                    if (osSelecionada.getSTATUS_NUM() == 2) {
+                        Intent it = new Intent(ActivityRegistros.this, ActivityDashboard.class);
+                        startActivity(it);
+                    } else {
+                        AlertDialog dialogoDash = new AlertDialog.Builder(ActivityRegistros.this)
+                                .setTitle("Abrir a Dashboard?")
+                                .setMessage("Caso clique em SIM, você perderá os dados não salvos!")
+                                .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent it = new Intent(ActivityRegistros.this, ActivityDashboard.class);
+                                        startActivity(it);
+                                    }
+                                }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                }).create();
+                        dialogoDash.show();
+                    }
                 }
                 break;
 
             case R.id.atividades:
-                if (osSelecionada.getSTATUS_NUM() == 2) {
+                if (algumItemPreenchido() == false) {
+                    area = "";
+                    ho = "";
+                    hm = "";
+                    hh = "";
+                    hoe = "";
+                    hme = "";
+                    obs = "";
+
+                    oSAtividadesDiaAtual = null;
+
                     Intent it = new Intent(ActivityRegistros.this, ActivityMain.class);
                     startActivity(it);
                 } else {
-                    AlertDialog dialogoAtividades = new AlertDialog.Builder(ActivityRegistros.this)
-                            .setTitle("Voltar Para a Listagem de Atividades?")
-                            .setMessage("Caso clique em SIM, você perderá os dados não salvos!")
-                            .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Intent it = new Intent(ActivityRegistros.this, ActivityMain.class);
-                                    startActivity(it);
-                                }
-                            }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                }
-                            }).create();
-                    dialogoAtividades.show();
+                    if (osSelecionada.getSTATUS_NUM() == 2) {
+                        Intent it = new Intent(ActivityRegistros.this, ActivityMain.class);
+                        startActivity(it);
+                    } else {
+                        AlertDialog dialogoAtividades = new AlertDialog.Builder(ActivityRegistros.this)
+                                .setTitle("Voltar Para a Listagem de Atividades?")
+                                .setMessage("Caso clique em SIM, você perderá os dados não salvos!")
+                                .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent it = new Intent(ActivityRegistros.this, ActivityMain.class);
+                                        startActivity(it);
+                                    }
+                                }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                }).create();
+                        dialogoAtividades.show();
+                    }
                 }
                 break;
 

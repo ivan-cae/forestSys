@@ -2,13 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bordas">
 
     <TextView
         android:id="@+id/qualidade_correcao_coordenada_item_7"
-        android:layout_width="150dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:textAlignment="center"
@@ -21,7 +21,7 @@
 
     <TextView
         android:id="@+id/qualidade_correcao_coordenada_item_8"
-        android:layout_width="150dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:textAlignment="center"
@@ -34,7 +34,7 @@
 
     <TextView
         android:id="@+id/qualidade_correcao_coordenada_item_9"
-        android:layout_width="150dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:textAlignment="center"
@@ -47,7 +47,7 @@
 
     <TextView
         android:id="@+id/qualidade_correcao_coordenada_item_6"
-        android:layout_width="150dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:textAlignment="center"
@@ -60,7 +60,7 @@
 
     <TextView
         android:id="@+id/qualidade_correcao_coordenada_item_5"
-        android:layout_width="150dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:textAlignment="center"
@@ -73,7 +73,7 @@
 
     <TextView
         android:id="@+id/qualidade_correcao_coordenada_item_10"
-        android:layout_width="150dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:textAlignment="center"
@@ -86,7 +86,7 @@
 
     <TextView
         android:id="@+id/qualidade_correcao_coordenada_item_3"
-        android:layout_width="150dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:textAlignment="center"
@@ -99,7 +99,7 @@
 
     <TextView
         android:id="@+id/qualidade_correcao_coordenada_item_4"
-        android:layout_width="150dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:textAlignment="center"
@@ -112,7 +112,7 @@
 
     <TextView
         android:id="@+id/qualidade_correcao_coordenada_item_2"
-        android:layout_width="150dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:textAlignment="center"
@@ -125,7 +125,7 @@
 
     <TextView
         android:id="@+id/qualidade_correcao_coordenada_item_1"
-        android:layout_width="150dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:textAlignment="center"
@@ -140,7 +140,7 @@
         android:id="@+id/qualidade_correcao_textview_coordenadas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="138dp"
         android:text="Coordenadas"
         android:textAlignment="center"
         android:textSize="17sp"
@@ -154,7 +154,7 @@
         style="@android:style/Widget.Material.Light.CompoundButton.CheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="100dp"
         android:buttonTint="#1C53EC"
         android:checked="false"
         android:imeOptions="actionNext"
@@ -170,7 +170,7 @@
         style="@android:style/Widget.Material.Light.CompoundButton.CheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="100dp"
         android:buttonTint="#1C53EC"
         android:checked="false"
         android:imeOptions="actionNext"
@@ -186,7 +186,7 @@
         style="@android:style/Widget.Material.Light.CompoundButton.CheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="100dp"
         android:buttonTint="#1C53EC"
         android:checked="false"
         android:imeOptions="actionNext"
@@ -202,7 +202,7 @@
         style="@android:style/Widget.Material.Light.CompoundButton.CheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="100dp"
         android:buttonTint="#1C53EC"
         android:imeOptions="actionNext"
 
@@ -218,7 +218,7 @@
         style="@android:style/Widget.Material.Light.CompoundButton.CheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="100dp"
         android:buttonTint="#1C53EC"
         android:imeOptions="actionNext"
 
@@ -233,7 +233,7 @@
         android:id="@+id/dialogo_qualidade_ponto_correcao_edit_item4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="100dp"
         android:buttonTint="#1C53EC"
         android:imeOptions="actionNext"
         android:scaleX="2"
@@ -247,7 +247,7 @@
         android:id="@+id/dialogo_qualidade_ponto_correcao_edit_item2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="100dp"
         android:buttonTint="#1C53EC"
         android:imeOptions="actionNext"
         android:scaleX="2"
@@ -261,7 +261,7 @@
         android:id="@+id/dialogo_qualidade_ponto_correcao_edit_item3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="100dp"
         android:buttonTint="#1C53EC"
         android:imeOptions="actionNext"
         android:scaleX="2"
@@ -273,7 +273,7 @@
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_correcao_item10"
-        android:layout_width="220dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
@@ -286,7 +286,7 @@
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_correcao_item9"
-        android:layout_width="220dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
@@ -299,7 +299,7 @@
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_correcao_item5"
-        android:layout_width="220dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
@@ -312,7 +312,7 @@
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_correcao_item6"
-        android:layout_width="220dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
@@ -325,7 +325,7 @@
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_correcao_item8"
-        android:layout_width="220dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
@@ -338,7 +338,7 @@
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_correcao_item7"
-        android:layout_width="220dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
@@ -351,7 +351,7 @@
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_correcao_item4"
-        android:layout_width="220dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
@@ -364,7 +364,7 @@
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_correcao_item2"
-        android:layout_width="220dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
@@ -377,7 +377,7 @@
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_correcao_item1"
-        android:layout_width="220dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
@@ -390,7 +390,7 @@
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_correcao_item3"
-        android:layout_width="220dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
@@ -416,7 +416,7 @@
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_correcao_numero"
-        android:layout_width="500dp"
+        android:layout_width="300dp"
         android:layout_height="33dp"
         android:layout_marginTop="16dp"
         android:textSize="25sp"
@@ -430,7 +430,7 @@
         style="@style/Widget.AppCompat.CompoundButton.CheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="100dp"
         android:buttonTint="#1C53EC"
         android:imeOptions="actionNext"
         android:scaleX="2"
@@ -446,7 +446,7 @@
         style="@android:style/Widget.Material.Light.CompoundButton.CheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="100dp"
         android:buttonTint="#1C53EC"
         android:checked="false"
         android:imeOptions="actionNext"
@@ -461,7 +461,7 @@
         android:id="@+id/qualidade_correcao_textview_correcao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="240dp"
+        android:layout_marginStart="390dp"
         android:layout_marginTop="8dp"
         android:text="Correção"
         android:textSize="17sp"

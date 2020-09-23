@@ -47,10 +47,10 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
                 holder.QTDRec.setText(String.valueOf(insumo.getQTD_HA_RECOMENDADO() * auxDouble).replace('.', ','));
                 if(diferencaPercentual((insumo.getQTD_HA_RECOMENDADO() * auxDouble), insumo.getQTD_APLICADO()) > 5.0000 ||
                         diferencaPercentual((insumo.getQTD_HA_RECOMENDADO() * auxDouble), insumo.getQTD_APLICADO()) < -5.0000){
-                    holder.QTDApl.setTextColor(Color.parseColor("#FF0000"));
+                    if(!holder.QTDApl.getText().toString().isEmpty())holder.QTDApl.setBackgroundColor(Color.parseColor("#FF0000"));
                 }
                 else{
-                    holder.QTDApl.setTextColor(Color.parseColor("#808080"));
+                    if(!holder.QTDApl.getText().toString().isEmpty())holder.QTDApl.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
                 }
             }
         }

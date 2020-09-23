@@ -497,7 +497,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         String input;
         String[] antesDaVirgula;
 
-        tamanho = edit.length();
+        tamanho = edit.getText().toString().length();
         input = s.toString();
 
         if (!input.isEmpty()) {
@@ -594,11 +594,6 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         letraItem4.setText(atividadeIndicadores.get(3).getREFERENCIA());
 
 
-        mBuilder.setView(mView);
-        dialogoVerion = mBuilder.create();
-        dialogoVerion.show();
-        dialogoVerion.setCanceledOnTouchOutside(false);
-
         if (jaTemVerion == true) {
 
             mediaEditP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
@@ -607,6 +602,35 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             desvioEditP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
         }
 
+        mediaEditP1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) ultimoFocus = v.findFocus().getId();
+            }
+        });
+
+        mediaEditP2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) ultimoFocus = v.findFocus().getId();
+            }
+        });
+
+        desvioEditP1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) ultimoFocus = v.findFocus().getId();
+            }
+        });
+
+        desvioEditP2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) ultimoFocus = v.findFocus().getId();
+            }
+        });
+
+        if (auxSavedInstanceState == null) {
         mediaEditP1.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -679,6 +703,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         });
 
         mediaEditP1.requestFocus();
+    }
+
         if (dialogoVerionAberto == true && auxSavedInstanceState != null) {
             ultimoFocus = auxSavedInstanceState.getInt("ultimoFocus");
             EditText auxEdit = mView.findViewById(ultimoFocus);
@@ -775,37 +801,13 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 }
             });
-
-
         }
 
-        mediaEditP1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) ultimoFocus = v.findFocus().getId();
-            }
-        });
+        mBuilder.setView(mView);
+        dialogoVerion = mBuilder.create();
+        dialogoVerion.show();
+        dialogoVerion.setCanceledOnTouchOutside(false);
 
-        mediaEditP2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) ultimoFocus = v.findFocus().getId();
-            }
-        });
-
-        desvioEditP1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) ultimoFocus = v.findFocus().getId();
-            }
-        });
-
-        desvioEditP2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) ultimoFocus = v.findFocus().getId();
-            }
-        });
 
         botaoRegistrar.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -813,10 +815,10 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             public void onClick(View view) {
                 boolean todosEditCorretos = true;
 
-                if (converteu(mediaEditP1) == false) todosEditCorretos = false;
-                if (converteu(mediaEditP2) == false) todosEditCorretos = false;
-                if (converteu(desvioEditP1) == false) todosEditCorretos = false;
-                if (converteu(desvioEditP2) == false) todosEditCorretos = false;
+                if (converteuPrecisao(mediaEditP1) == false) todosEditCorretos = false;
+                if (converteuPrecisao(mediaEditP2) == false) todosEditCorretos = false;
+                if (converteuPrecisao(desvioEditP1) == false) todosEditCorretos = false;
+                if (converteuPrecisao(desvioEditP2) == false) todosEditCorretos = false;
 
                 if (todosEditCorretos == false) {
                     AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
@@ -842,6 +844,13 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                     listaDesvioP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
                     listaMediaP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
                     listaDesvioP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
+
+                    if(osSelecionada.getSTATUS_NUM()==0) {
+                        osSelecionada.setSTATUS("Andamento");
+                        osSelecionada.setSTATUS_NUM(1);
+                        osSelecionada.setDATA_INICIAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
+                        dao.update(osSelecionada);
+                    }
 
                     dialogoVerionAberto = false;
                     dialogoVerion.dismiss();
@@ -874,9 +883,11 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_correcao_ponto, null);
         Button botaoCorrecaoRegistrar;
+        Button botaoCorrecaoCancelar;
         mBuilder.setView(mView);
 
         botaoCorrecaoRegistrar = mView.findViewById(R.id.dialogo_correcao_salvar);
+        botaoCorrecaoCancelar  = mView.findViewById(R.id.dialogo_correcao_cancelar);
 
         recyclerView = mView.findViewById(R.id.lista_correcao_ponto);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -900,7 +911,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             dialogoCorrecao = mBuilder.create();
             dialogoCorrecao.show();
             dialogoCorrecao.setCanceledOnTouchOutside(false);
-
+            dialogoCorrecao.setCancelable(false);
             dialogoCorrecao.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
@@ -920,6 +931,12 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 }
             });
 
+            botaoCorrecaoCancelar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogoCorrecao.cancel();
+                }
+            });
             adaptador.setCorrecao(listaCorrecoes);
             botaoCorrecaoRegistrar.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1117,6 +1134,50 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         textLetra9.setText(atividadeIndicadores.get(8).getREFERENCIA());
         textLetra10.setText(atividadeIndicadores.get(9).getREFERENCIA());
 
+        editItem1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) ultimoFocus = v.findFocus().getId();
+            }
+        });
+
+        editItem2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) ultimoFocus = v.findFocus().getId();
+            }
+        });
+
+        editItem3.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) ultimoFocus = v.findFocus().getId();
+            }
+        });
+
+        editItem4.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) ultimoFocus = v.findFocus().getId();
+            }
+        });
+
+        editItem6.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) ultimoFocus = v.findFocus().getId();
+            }
+        });
+
+        editItem10.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) ultimoFocus = v.findFocus().getId();
+            }
+        });
+
+
+        if (auxSavedInstanceState == null) {
         editItem1.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -1222,12 +1283,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         });
 
         editItem1.requestFocus();
-
-        mBuilder.setView(mView);
-
-        dialogoPonto = mBuilder.create();
-        dialogoPonto.show();
-        dialogoPonto.setCanceledOnTouchOutside(false);
+    }
 
         if (dialogoPontoAberto == true && auxSavedInstanceState != null) {
             ultimoFocus = auxSavedInstanceState.getInt("ultimoFocus");
@@ -1379,47 +1435,12 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                     editItem10.setText(auxSavedInstanceState.getString("editItem10"));
         }
 
-        editItem1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) ultimoFocus = v.findFocus().getId();
-            }
-        });
+        mBuilder.setView(mView);
 
-        editItem2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) ultimoFocus = v.findFocus().getId();
-            }
-        });
+        dialogoPonto = mBuilder.create();
+        dialogoPonto.show();
+        dialogoPonto.setCanceledOnTouchOutside(false);
 
-        editItem3.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) ultimoFocus = v.findFocus().getId();
-            }
-        });
-
-        editItem4.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) ultimoFocus = v.findFocus().getId();
-            }
-        });
-
-        editItem6.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) ultimoFocus = v.findFocus().getId();
-            }
-        });
-
-        editItem10.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) ultimoFocus = v.findFocus().getId();
-            }
-        });
 
         botaoRegistrar.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -1427,12 +1448,12 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             public void onClick(View view) {
                 boolean todosEditCorretos = true;
 
-                if (converteu(editItem1) == false) todosEditCorretos = false;
-                if (converteu(editItem2) == false) todosEditCorretos = false;
-                if (converteu(editItem3) == false) todosEditCorretos = false;
-                if (converteu(editItem4) == false) todosEditCorretos = false;
-                if (converteu(editItem6) == false) todosEditCorretos = false;
-                if (converteu(editItem10) == false) todosEditCorretos = false;
+                if (converteuPonto(editItem1, atividadeIndicadores.get(0).getLIMITE_INFERIOR(), atividadeIndicadores.get(0).getLIMITE_SUPERIOR()) == false) todosEditCorretos = false;
+                if (converteuPonto(editItem2, atividadeIndicadores.get(1).getLIMITE_INFERIOR(), atividadeIndicadores.get(1).getLIMITE_SUPERIOR()) == false) todosEditCorretos = false;
+                if (converteuPonto(editItem3, atividadeIndicadores.get(2).getLIMITE_INFERIOR(), atividadeIndicadores.get(2).getLIMITE_SUPERIOR()) == false) todosEditCorretos = false;
+                if (converteuPonto(editItem4, atividadeIndicadores.get(3).getLIMITE_INFERIOR(), atividadeIndicadores.get(3).getLIMITE_SUPERIOR()) == false) todosEditCorretos = false;
+                if (converteuPonto(editItem6, atividadeIndicadores.get(5).getLIMITE_INFERIOR(), atividadeIndicadores.get(5).getLIMITE_SUPERIOR()) == false) todosEditCorretos = false;
+                if (converteuPonto(editItem10, atividadeIndicadores.get(9).getLIMITE_INFERIOR(), atividadeIndicadores.get(9).getLIMITE_SUPERIOR()) == false) todosEditCorretos = false;
 
                 if (todosEditCorretos == false) {
                     AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
@@ -1562,22 +1583,48 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(9).getID_INDICADOR(),
                 Double.valueOf(editItem10.getText().toString().replace(',', '.')), latitude, longitude, 0));
 
+        if(osSelecionada.getSTATUS_NUM()==0) {
+            osSelecionada.setSTATUS("Andamento");
+            osSelecionada.setSTATUS_NUM(1);
+            osSelecionada.setDATA_INICIAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
+            dao.update(osSelecionada);
+        }
+
         dialogoPontoAberto = false;
         Intent it = new Intent(ActivityQualidade.this, ActivityQualidade.class);
         startActivity(it);
         dialogoPonto.dismiss();
     }
 
-    //Verifica se o valor em um EditText é válido
-    private boolean converteu(EditText valor) {
+    //Verifica se o valor em um EditText no dialog de registro de ponto é válido
+    private boolean converteuPonto(EditText valor, int limiteInf, int limiteSup) {
+        double teste;
         try {
-            double teste = Double.parseDouble(valor.getText().toString().replace(',', '.'));
+            teste = Double.parseDouble(valor.getText().toString().replace(',', '.'));
         } catch (NumberFormatException | NullPointerException n) {
-            valor.setError("");
+            valor.setError("Valor Inválido");
+            return false;
+        }
+        if(teste>limiteSup || teste<limiteInf){
+            valor.setError("Valor Fora da Faixa:\nMínimo: "+ String.valueOf(limiteInf)+"\nMáximo: "+String.valueOf(limiteSup));
             return false;
         }
         return true;
     }
+
+    //Verifica se o valor em um EditText no dialog de registro de ponto é válido
+    private boolean converteuPrecisao(EditText valor) {
+        double teste;
+        try {
+            teste = Double.parseDouble(valor.getText().toString().replace(',', '.'));
+        } catch (NumberFormatException | NullPointerException n) {
+            valor.setError("Valor Inválido");
+            return false;
+        }
+
+        return true;
+    }
+
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {

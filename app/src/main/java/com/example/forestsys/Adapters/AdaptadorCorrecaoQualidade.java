@@ -23,6 +23,7 @@ import com.example.forestsys.classes.AVAL_PONTO_SUBSOLAGEM;
 import com.example.forestsys.classes.AVAL_SUBSOLAGEM;
 import com.example.forestsys.classes.CADASTRO_FLORESTAL;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,8 +96,12 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
                 holder.coordItem1.setVisibility(View.VISIBLE);
 
                 holder.item1.setText(String.valueOf(dao.descricaoIndicador(ponto.get(0).getID_ATIVIDADE(), ponto.get(0).getID_INDICADOR())));
-                if (ponto.get(0).getNC_TRATADA() == 1) holder.editItem1.setChecked(true);
-                holder.coordItem1.setText("X " + String.valueOf(ponto.get(0).getCOORDENADA_X()) + "\n Y " + String.valueOf(ponto.get(0).getCOORDENADA_Y()));
+                if (ponto.get(0).getNC_TRATADA() == 1) {
+                    holder.editItem1.setChecked(true);
+                    holder.editItem1.setEnabled(false);
+                }
+
+                holder.coordItem1.setText("Lat: " + formataLatLong(String.valueOf((ponto.get(0).getCOORDENADA_X()))) + "\n Long: " + formataLatLong(String.valueOf((ponto.get(0).getCOORDENADA_Y()))));
 
                 holder.numeroPonto.setText(String.valueOf(ponto.get(0).getPONTO()));
 
@@ -123,8 +128,11 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
                 holder.coordItem2.setVisibility(View.VISIBLE);
 
                 holder.item2.setText(String.valueOf(dao.descricaoIndicador(ponto.get(1).getID_ATIVIDADE(), ponto.get(1).getID_INDICADOR())));
-                if (ponto.get(1).getNC_TRATADA() == 1) holder.editItem2.setChecked(true);
-                holder.coordItem2.setText("X " + String.valueOf(ponto.get(1).getCOORDENADA_X()) + "\n Y " + String.valueOf(ponto.get(1).getCOORDENADA_Y()));
+                if (ponto.get(1).getNC_TRATADA() == 1) {
+                    holder.editItem2.setChecked(true);
+                    holder.editItem2.setEnabled(false);
+                }
+                holder.coordItem2.setText("Lat: " + formataLatLong(String.valueOf((ponto.get(1).getCOORDENADA_X()))) + "\n Long: " + formataLatLong(String.valueOf((ponto.get(1).getCOORDENADA_Y()))));
 
                 holder.numeroPonto.setText(String.valueOf(ponto.get(1).getPONTO()));
 
@@ -150,8 +158,11 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
                 holder.coordItem3.setVisibility(View.VISIBLE);
 
                 holder.item3.setText(String.valueOf(dao.descricaoIndicador(ponto.get(2).getID_ATIVIDADE(), ponto.get(2).getID_INDICADOR())));
-                if (ponto.get(2).getNC_TRATADA() == 1) holder.editItem3.setChecked(true);
-                holder.coordItem3.setText("X " + String.valueOf(ponto.get(2).getCOORDENADA_X()) + "\n Y " + String.valueOf(ponto.get(2).getCOORDENADA_Y()));
+                if (ponto.get(2).getNC_TRATADA() == 1){
+                    holder.editItem3.setChecked(true);
+                    holder.editItem3.setEnabled(false);
+                }
+                holder.coordItem3.setText("Lat: " + formataLatLong(String.valueOf((ponto.get(2).getCOORDENADA_X()))) + "\n Long: " + formataLatLong(String.valueOf((ponto.get(2).getCOORDENADA_Y()))));
 
                 holder.numeroPonto.setText(String.valueOf(ponto.get(2).getPONTO()));
 
@@ -177,8 +188,11 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
                 holder.coordItem4.setVisibility(View.VISIBLE);
 
                 holder.item4.setText(String.valueOf(dao.descricaoIndicador(ponto.get(3).getID_ATIVIDADE(), ponto.get(3).getID_INDICADOR())));
-                if (ponto.get(3).getNC_TRATADA() == 1) holder.editItem4.setChecked(true);
-                holder.coordItem4.setText("X " + String.valueOf(ponto.get(3).getCOORDENADA_X()) + "\n Y " + String.valueOf(ponto.get(3).getCOORDENADA_Y()));
+                if (ponto.get(3).getNC_TRATADA() == 1) {
+                    holder.editItem4.setChecked(true);
+                    holder.editItem4.setEnabled(false);
+                }
+                holder.coordItem4.setText("Lat: " + formataLatLong(String.valueOf((ponto.get(3).getCOORDENADA_X()))) + "\n Long: " + formataLatLong(String.valueOf((ponto.get(3).getCOORDENADA_Y()))));
 
                 holder.numeroPonto.setText(String.valueOf(ponto.get(3).getPONTO()));
 
@@ -204,9 +218,12 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
                 holder.coordItem5.setVisibility(View.VISIBLE);
 
                 holder.item5.setText(String.valueOf(dao.descricaoIndicador(ponto.get(4).getID_ATIVIDADE(), ponto.get(4).getID_INDICADOR())));
-                if (ponto.get(4).getNC_TRATADA() == 1) holder.editItem5.setChecked(true);
+                if (ponto.get(4).getNC_TRATADA() == 1) {
+                    holder.editItem5.setChecked(true);
+                    holder.editItem5.setEnabled(false);
+                }
 
-                holder.coordItem5.setText("X " + String.valueOf(ponto.get(4).getCOORDENADA_X()) + "\n Y " + String.valueOf(ponto.get(4).getCOORDENADA_Y()));
+                holder.coordItem5.setText("Lat: " + formataLatLong(String.valueOf((ponto.get(4).getCOORDENADA_X()))) + "\n Long: " + formataLatLong(String.valueOf((ponto.get(4).getCOORDENADA_Y()))));
                 holder.numeroPonto.setText(String.valueOf(ponto.get(4).getPONTO()));
 
                 holder.editItem5.setOnClickListener(new View.OnClickListener() {
@@ -231,8 +248,11 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
                 holder.coordItem6.setVisibility(View.VISIBLE);
 
                 holder.item6.setText(String.valueOf(dao.descricaoIndicador(ponto.get(5).getID_ATIVIDADE(), ponto.get(5).getID_INDICADOR())));
-                if (ponto.get(5).getNC_TRATADA() == 1) holder.editItem6.setChecked(true);
-                holder.coordItem6.setText("X " + String.valueOf(ponto.get(5).getCOORDENADA_X()) + "\n Y " + String.valueOf(ponto.get(5).getCOORDENADA_Y()));
+                if (ponto.get(5).getNC_TRATADA() == 1){
+                    holder.editItem6.setChecked(true);
+                    holder.editItem6.setEnabled(false);
+                }
+                holder.coordItem6.setText("Lat: " + formataLatLong(String.valueOf((ponto.get(5).getCOORDENADA_X()))) + "\n Long: " + formataLatLong(String.valueOf((ponto.get(5).getCOORDENADA_Y()))));
 
                 holder.numeroPonto.setText(String.valueOf(ponto.get(5).getPONTO()));
 
@@ -258,8 +278,11 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
                 holder.coordItem7.setVisibility(View.VISIBLE);
 
                 holder.item7.setText(dao.descricaoIndicador(ponto.get(6).getID_ATIVIDADE(), ponto.get(6).getID_INDICADOR()));
-                if (ponto.get(6).getNC_TRATADA() == 1) holder.editItem7.setChecked(true);
-                holder.coordItem7.setText("X " + String.valueOf(ponto.get(6).getCOORDENADA_X()) + "\n Y " + String.valueOf(ponto.get(6).getCOORDENADA_Y()));
+                if (ponto.get(6).getNC_TRATADA() == 1) {
+                    holder.editItem7.setChecked(true);
+                    holder.editItem7.setEnabled(false);
+                }
+                holder.coordItem7.setText("Lat: " + formataLatLong(String.valueOf((ponto.get(6).getCOORDENADA_X()))) + "\n Long: " + formataLatLong(String.valueOf((ponto.get(6).getCOORDENADA_Y()))));
 
                 holder.numeroPonto.setText(String.valueOf(ponto.get(6).getPONTO()));
 
@@ -285,8 +308,11 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
                 holder.coordItem8.setVisibility(View.VISIBLE);
 
                 holder.item8.setText(dao.descricaoIndicador(ponto.get(7).getID_ATIVIDADE(), ponto.get(7).getID_INDICADOR()));
-                if (ponto.get(7).getNC_TRATADA() == 1) holder.editItem8.setChecked(true);
-                holder.coordItem8.setText("X " + String.valueOf(ponto.get(7).getCOORDENADA_X()) + "\n Y " + String.valueOf(ponto.get(7).getCOORDENADA_Y()));
+                if (ponto.get(7).getNC_TRATADA() == 1) {
+                    holder.editItem8.setChecked(true);
+                    holder.editItem8.setEnabled(false);
+                    }
+                holder.coordItem8.setText("Lat: " + formataLatLong(String.valueOf((ponto.get(7).getCOORDENADA_X()))) + "\n Long: " + formataLatLong(String.valueOf((ponto.get(7).getCOORDENADA_Y()))));
 
 
                 holder.numeroPonto.setText(String.valueOf(ponto.get(7).getPONTO()));
@@ -313,8 +339,11 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
                 holder.coordItem9.setVisibility(View.VISIBLE);
 
                 holder.item9.setText(dao.descricaoIndicador(ponto.get(8).getID_ATIVIDADE(), ponto.get(8).getID_INDICADOR()));
-                if (ponto.get(8).getNC_TRATADA() == 1) holder.editItem9.setChecked(true);
-                holder.coordItem9.setText(String.valueOf("X " + ponto.get(8).getCOORDENADA_X()) + "\n Y " + String.valueOf(ponto.get(8).getCOORDENADA_Y()));
+                if (ponto.get(8).getNC_TRATADA() == 1) {
+                    holder.editItem9.setChecked(true);
+                    holder.editItem9.setEnabled(false);
+                }
+                holder.coordItem9.setText(formataLatLong(String.valueOf("Lat: " + ponto.get(8).getCOORDENADA_X())) + "\n Long: " + formataLatLong(String.valueOf((ponto.get(8).getCOORDENADA_Y()))));
 
                 holder.numeroPonto.setText(String.valueOf(ponto.get(8).getPONTO()));
 
@@ -339,8 +368,11 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
 
 
                 holder.item10.setText(String.valueOf(dao.descricaoIndicador(ponto.get(9).getID_ATIVIDADE(), ponto.get(9).getID_INDICADOR())));
-                if (ponto.get(9).getNC_TRATADA() == 1) holder.editItem10.setChecked(true);
-                holder.coordItem10.setText("X " + String.valueOf(ponto.get(9).getCOORDENADA_X()) + "\n Y " + String.valueOf(ponto.get(9).getCOORDENADA_Y()));
+                if (ponto.get(9).getNC_TRATADA() == 1) {
+                    holder.editItem10.setChecked(true);
+                    holder.editItem10.setEnabled(false);
+                    }
+                holder.coordItem10.setText("Lat: " + formataLatLong(String.valueOf((ponto.get(9).getCOORDENADA_X()))) + "\n Long: " + formataLatLong(String.valueOf((ponto.get(9).getCOORDENADA_Y()))));
 
                 holder.numeroPonto.setText(String.valueOf(ponto.get(9).getPONTO()));
 
@@ -355,7 +387,13 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
         }
     }
 
-
+public String formataLatLong(String s){
+        String[] antesDaVirgula = s.replace('.', ',').split(",");
+        String aux1 = antesDaVirgula[0];
+        String aux2 = antesDaVirgula[1].substring(0, 4);
+    aux1+=","+aux2+"°";
+        return aux1;
+}
     @Override
     public int getItemCount() {
         return pontos.size();

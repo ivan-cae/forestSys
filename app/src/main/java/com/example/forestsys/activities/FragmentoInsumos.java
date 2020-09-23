@@ -149,12 +149,14 @@ public class FragmentoInsumos extends Fragment {
                 @Override
                 public void onItemClick(Join_OS_INSUMOS joinOsInsumos) {
                     String auxArea = area;
-                    if(area.contains(",")) auxArea = auxArea.replace(",", ".");
+                    if(auxArea != null ){
+                        if(!auxArea.isEmpty() && auxArea.contains(",")) auxArea = auxArea.replace(",", ".");
+                    }
 
-                    if(auxArea.isEmpty() || auxArea=="" || Double.valueOf(auxArea)==0 || Double.valueOf(auxArea)==null){
+                    if(auxArea == null || auxArea.isEmpty() || auxArea=="" || Double.valueOf(auxArea)==0 || Double.valueOf(auxArea)==null){
                         AlertDialog dialog = new AlertDialog.Builder(getActivity())
                                 .setTitle("Erro")
-                                .setMessage("É Necessário preencher Corretamente a Área Antes de Adicionar Insumos.")
+                                .setMessage("É Necessário Preencher Corretamente a Área Antes de Adicionar Insumos.")
                                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -162,6 +164,7 @@ public class FragmentoInsumos extends Fragment {
                                 }).create();
                         dialog.show();
                 }else{
+                        abreDialogoQtdAplicada(joinOsInsumos);/*
                         AlertDialog dialog = new AlertDialog.Builder(getActivity())
                                 .setTitle("Editar")
                                 .setMessage("Deseja Adicionar a Quantidade Aplicada para " + joinOsInsumos.getDESCRICAO() + "?")
@@ -176,6 +179,7 @@ public class FragmentoInsumos extends Fragment {
                                     }
                                 }).create();
                         dialog.show();
+                    */
                     }
                 }
             });
@@ -383,7 +387,7 @@ public class FragmentoInsumos extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        if (osSelecionada.getSTATUS_NUM() != 2) {
+        if (osSelecionada != null && osSelecionada.getSTATUS_NUM() != 2) {
             super.onSaveInstanceState(outState);
             String str1 = obsInsumo1.getText().toString();
             String str2 = obsInsumo2.getText().toString();

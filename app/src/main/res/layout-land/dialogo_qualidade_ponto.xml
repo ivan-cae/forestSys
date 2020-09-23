@@ -2,15 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="950dp"
+    android:layout_height="600dp"
     android:minWidth="550dp">
 
     <CheckBox
         android:id="@+id/dialogo_qualidade_ponto_edit_item8"
         style="@android:style/Widget.Material.Light.CompoundButton.CheckBox"
         android:layout_width="wrap_content"
-        android:layout_height="33dp"
+        android:layout_height="wrap_content"
         android:buttonTint="#1C53EC"
         android:checked="false"
         android:imeOptions="actionNext"
@@ -23,7 +23,7 @@
         android:id="@+id/dialogo_qualidade_ponto_edit_item7"
         style="@android:style/Widget.Material.Light.CompoundButton.CheckBox"
         android:layout_width="wrap_content"
-        android:layout_height="33dp"
+        android:layout_height="wrap_content"
         android:buttonTint="#1C53EC"
         android:checked="false"
         android:imeOptions="actionNext"
@@ -36,7 +36,7 @@
         android:id="@+id/dialogo_qualidade_ponto_botao_registrar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:background="#616161"
         android:text="Registrar"
@@ -50,7 +50,7 @@
         android:id="@+id/dialogo_qualidade_ponto_letra_item7"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/dialogo_qualidade_ponto_letra_item6"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item7" />
@@ -60,7 +60,7 @@
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/dialogo_qualidade_ponto_letra_item7"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item8" />
@@ -69,7 +69,7 @@
         android:id="@+id/dialogo_qualidade_ponto_letra_item5"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/dialogo_qualidade_ponto_letra_item4"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item5" />
@@ -79,7 +79,7 @@
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_edit_item10"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item10" />
@@ -88,7 +88,7 @@
         android:id="@+id/dialogo_qualidade_ponto_letra_item9"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/dialogo_qualidade_ponto_letra_item8"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item9" />
@@ -97,7 +97,7 @@
         android:id="@+id/dialogo_qualidade_ponto_edit_item9"
         style="@android:style/Widget.Material.Light.CompoundButton.CheckBox"
         android:layout_width="wrap_content"
-        android:layout_height="33dp"
+        android:layout_height="wrap_content"
         android:buttonTint="#1C53EC"
         android:checked="false"
         android:imeOptions="actionNext"
@@ -110,7 +110,7 @@
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_edit_item6"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item6" />
@@ -120,7 +120,7 @@
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_edit_item3"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item3" />
@@ -130,7 +130,7 @@
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_edit_item4"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item4" />
@@ -140,14 +140,14 @@
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_edit_item2"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item2" />
 
     <EditText
         android:id="@+id/dialogo_qualidade_ponto_edit_item10"
-        android:layout_width="100dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:digits="1 2 3 4 5 6 7 8 9 0 ,"
@@ -155,14 +155,14 @@
         android:imeOptions="actionNext"
         android:inputType="numberDecimal"
         android:maxLength="9"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/dialogo_qualidade_ponto_item10"
         app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_item10"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item10" />
 
     <EditText
         android:id="@+id/dialogo_qualidade_ponto_edit_item6"
-        android:layout_width="100dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:digits="1 2 3 4 5 6 7 8 9 0 ,"
@@ -170,14 +170,14 @@
         android:imeOptions="actionNext"
         android:inputType="numberDecimal"
         android:maxLength="9"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/dialogo_qualidade_ponto_item6"
         app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_item6"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item6" />
 
     <EditText
         android:id="@+id/dialogo_qualidade_ponto_edit_item4"
-        android:layout_width="100dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:digits="1 2 3 4 5 6 7 8 9 0 ,"
@@ -185,14 +185,14 @@
         android:imeOptions="actionNext"
         android:inputType="numberDecimal"
         android:maxLength="9"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/dialogo_qualidade_ponto_item4"
         app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_item4"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item4" />
 
     <EditText
         android:id="@+id/dialogo_qualidade_ponto_edit_item2"
-        android:layout_width="100dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:digits="1 2 3 4 5 6 7 8 9 0 ,"
@@ -200,14 +200,14 @@
         android:imeOptions="actionNext"
         android:inputType="numberDecimal"
         android:maxLength="9"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/dialogo_qualidade_ponto_item2"
         app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_item2"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item2" />
 
     <EditText
         android:id="@+id/dialogo_qualidade_ponto_edit_item3"
-        android:layout_width="100dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:digits="1 2 3 4 5 6 7 8 9 0 ,"
@@ -215,127 +215,127 @@
         android:imeOptions="actionNext"
         android:inputType="numberDecimal"
         android:maxLength="9"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/dialogo_qualidade_ponto_item3"
         app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_item3"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item3" />
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_item10"
-        android:layout_width="425dp"
+        android:layout_width="700dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:textAllCaps="true"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_item9" />
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_item9"
-        android:layout_width="425dp"
+        android:layout_width="700dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:textAllCaps="true"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_item8" />
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_item5"
-        android:layout_width="425dp"
+        android:layout_width="700dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:textAllCaps="true"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_item4" />
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_item6"
-        android:layout_width="425dp"
+        android:layout_width="700dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:textAllCaps="true"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_item5" />
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_item8"
-        android:layout_width="425dp"
+        android:layout_width="700dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:textAllCaps="true"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_item7" />
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_item7"
-        android:layout_width="425dp"
+        android:layout_width="700dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:textAllCaps="true"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_item6" />
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_item4"
-        android:layout_width="425dp"
+        android:layout_width="700dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:textAllCaps="true"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_item3" />
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_item2"
-        android:layout_width="425dp"
+        android:layout_width="700dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:textAllCaps="true"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_item1" />
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_item1"
-        android:layout_width="425dp"
+        android:layout_width="700dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:textAllCaps="true"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView133" />
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_item3"
-        android:layout_width="425dp"
+        android:layout_width="700dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:textAllCaps="true"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_item2" />
@@ -345,7 +345,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="Ponto: "
         android:textSize="30sp"
         android:textStyle="bold"
@@ -356,7 +356,7 @@
         android:id="@+id/dialogo_qualidade_ponto_numero"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -366,7 +366,7 @@
 
     <EditText
         android:id="@+id/dialogo_qualidade_ponto_edit_item1"
-        android:layout_width="100dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:digits="1 2 3 4 5 6 7 8 9 0 ,"
@@ -374,7 +374,7 @@
         android:imeOptions="actionNext"
         android:inputType="numberDecimal"
         android:maxLength="9"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/dialogo_qualidade_ponto_item1"
         app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_item1"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item1" />
@@ -385,7 +385,7 @@
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_edit_item1"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item1" />
@@ -394,7 +394,7 @@
         android:id="@+id/dialogo_qualidade_ponto_edit_item5"
         style="@android:style/Widget.Material.Light.CompoundButton.CheckBox"
         android:layout_width="wrap_content"
-        android:layout_height="33dp"
+        android:layout_height="wrap_content"
         android:buttonTint="#1C53EC"
         android:checked="false"
         android:imeOptions="actionNext"

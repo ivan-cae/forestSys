@@ -309,8 +309,9 @@ public abstract class BaseDeDados extends RoomDatabase {
                 int LIMITE_INFERIOR = obj.getInt("LIMITE_INFERIOR");
                 int LIMITE_SUPERIOR = obj.getInt("LIMITE_SUPERIOR");
                 int CASAS_DECIMAIS = obj.getInt("CASAS_DECIMAIS");
+                String FORMULA = obj.getString("FORMULA");
 
-                daoInsere.insert(new ATIVIDADE_INDICADORES(ID_INDICADOR, ID_ATIVIDADE, ORDEM_INDICADOR, REFERENCIA, DESCRICAO, ATIVO, VERION, LIMITE_SUPERIOR, LIMITE_INFERIOR, CASAS_DECIMAIS, INDICADOR_CORRIGIVEL));
+                daoInsere.insert(new ATIVIDADE_INDICADORES(ID_INDICADOR, ID_ATIVIDADE, ORDEM_INDICADOR, REFERENCIA, DESCRICAO, ATIVO, VERION, LIMITE_SUPERIOR, LIMITE_INFERIOR, CASAS_DECIMAIS, INDICADOR_CORRIGIVEL, FORMULA));
             }
         } catch (JSONException e) {
             e.printStackTrace();

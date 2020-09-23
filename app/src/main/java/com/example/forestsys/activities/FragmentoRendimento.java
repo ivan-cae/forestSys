@@ -213,11 +213,11 @@ public class FragmentoRendimento extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
+                obs = s.toString();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                obs = s.toString();
             }
         });
 
@@ -257,7 +257,6 @@ public class FragmentoRendimento extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 
@@ -316,7 +315,6 @@ public class FragmentoRendimento extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 
@@ -334,7 +332,6 @@ public class FragmentoRendimento extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 

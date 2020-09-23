@@ -69,13 +69,13 @@
 
         <TextView
             android:id="@+id/textView105"
-            android:layout_width="60dp"
+            android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="Madeira"
             android:textAlignment="center"
             android:textColor="#8fad7a"
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/main_status"
@@ -89,20 +89,20 @@
             android:text="Status"
             android:textAlignment="center"
             android:textColor="#8fad7a"
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/main_prioridade"
             app:layout_constraintTop_toTopOf="@+id/main_data" />
 
         <TextView
             android:id="@+id/main_prioridade"
-            android:layout_width="75dp"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:text="Prioridade"
             android:textAlignment="center"
             android:textColor="#8fad7a"
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/textView123"
             app:layout_constraintTop_toTopOf="@+id/main_data" />
@@ -114,7 +114,7 @@
             android:text="Manejo"
             android:textAlignment="center"
             android:textColor="#8fad7a"
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/textView122"
             app:layout_constraintTop_toTopOf="@+id/main_data" />
@@ -126,20 +126,20 @@
             android:text="Área(ha)"
             android:textAlignment="center"
             android:textColor="#8fad7a"
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/main_talhao"
             app:layout_constraintTop_toTopOf="@+id/main_data" />
 
         <TextView
             android:id="@+id/main_talhao"
-            android:layout_width="50dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:text="Talhão"
             android:textAlignment="center"
             android:textColor="#8fad7a"
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/main_setor"
             app:layout_constraintTop_toTopOf="@+id/main_data" />
@@ -152,7 +152,7 @@
             android:text="Setor"
             android:textAlignment="center"
             android:textColor="#8fad7a"
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/main_data"
             app:layout_constraintTop_toTopOf="@+id/main_data" />
@@ -167,7 +167,7 @@
             android:text="Período Prog."
             android:textAlignment="center"
             android:textColor="#8fad7a"
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/searchview" />

@@ -185,7 +185,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
             android:clickable="true"
-            android:text="Período Programado"
+            android:text="Período Prog."
             android:textAlignment="center"
             android:textColor="#8fad7a"
             android:textSize="20sp"
