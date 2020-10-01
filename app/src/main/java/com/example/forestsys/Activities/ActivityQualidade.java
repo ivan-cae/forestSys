@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -164,6 +165,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     private AdaptadorCorrecaoQualidade adaptador;
     private int qtdPontos = 0;
 
+    public static TextView naoHaNCNaoTratada;
+    public static Button botaoCorrecaoRegistrar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -375,7 +378,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             if (dialogoCorrecaoAberto == true) abreDialogoCorrecao();
         }
 
-        if(dialogoPontoAberto ==false && dialogoVerionAberto == false && dialogoCorrecaoAberto==false){
+        if (dialogoPontoAberto == false && dialogoVerionAberto == false && dialogoCorrecaoAberto == false) {
             savedInstanceState = null;
             auxSavedInstanceState = null;
         }
@@ -421,19 +424,22 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             botaoCorrecoes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    List<AVAL_PONTO_SUBSOLAGEM> listaAux = new ArrayList<>();
-                    if (auxSavedInstanceState != null) {
-                        listaCorrecoes = listaPontosCorrecaoAux;
-                    }else {
-                        for (int i = 1; i < qtdPontos+1; i++) {
-                            listaAux = dao.listaPontoCorrecoes(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), osSelecionada.getID_ATIVIDADE(), i);
-                            if(!listaCorrecoes.contains(listaAux))listaCorrecoes.add(listaAux);
+
+                        List<AVAL_PONTO_SUBSOLAGEM> listaAux = new ArrayList<>();
+                        if (auxSavedInstanceState != null) {
+                            listaCorrecoes = listaPontosCorrecaoAux;
+                        } else {
+                            for (int i = 1; i < qtdPontos + 1; i++) {
+                                listaAux = dao.listaPontoCorrecoes(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), osSelecionada.getID_ATIVIDADE(), i);
+                                if (!listaCorrecoes.contains(listaAux))
+                                    listaCorrecoes.add(listaAux);
+                            }
                         }
+                        abreDialogoCorrecao();
                     }
-                    abreDialogoCorrecao();
-                }
             });
         } else botaoCorrecoes.setVisibility(View.GONE);
+
 
         botaoVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -631,79 +637,79 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         });
 
         if (auxSavedInstanceState == null) {
-        mediaEditP1.addTextChangedListener(new TextWatcher() {
+            mediaEditP1.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mascaraVirgula(mediaEditP1, 0, s);
-            }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    mascaraVirgula(mediaEditP1, 0, s);
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                @Override
+                public void afterTextChanged(Editable s) {
 
-            }
-        });
+                }
+            });
 
-        desvioEditP1.addTextChangedListener(new TextWatcher() {
+            desvioEditP1.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mascaraVirgula(desvioEditP1, 1, s);
-            }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    mascaraVirgula(desvioEditP1, 1, s);
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
 
-        });
+            });
 
-        mediaEditP2.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            mediaEditP2.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mascaraVirgula(mediaEditP2, 2, s);
-            }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    mascaraVirgula(mediaEditP2, 2, s);
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                @Override
+                public void afterTextChanged(Editable s) {
 
-            }
-        });
+                }
+            });
 
-        desvioEditP2.addTextChangedListener(new TextWatcher() {
+            desvioEditP2.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mascaraVirgula(desvioEditP2, 3, s);
-            }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    mascaraVirgula(desvioEditP2, 3, s);
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                @Override
+                public void afterTextChanged(Editable s) {
 
-            }
-        });
+                }
+            });
 
-        mediaEditP1.requestFocus();
-    }
+            mediaEditP1.requestFocus();
+        }
 
         if (dialogoVerionAberto == true && auxSavedInstanceState != null) {
             ultimoFocus = auxSavedInstanceState.getInt("ultimoFocus");
@@ -845,7 +851,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                     listaMediaP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
                     listaDesvioP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
 
-                    if(osSelecionada.getSTATUS_NUM()==0) {
+                    if (osSelecionada.getSTATUS_NUM() == 0) {
                         osSelecionada.setSTATUS("Andamento");
                         osSelecionada.setSTATUS_NUM(1);
                         osSelecionada.setDATA_INICIAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
@@ -882,12 +888,12 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_correcao_ponto, null);
-        Button botaoCorrecaoRegistrar;
         Button botaoCorrecaoCancelar;
         mBuilder.setView(mView);
 
+        naoHaNCNaoTratada = mView.findViewById(R.id.dialogo_correcao_nao_ha_nc);
         botaoCorrecaoRegistrar = mView.findViewById(R.id.dialogo_correcao_salvar);
-        botaoCorrecaoCancelar  = mView.findViewById(R.id.dialogo_correcao_cancelar);
+        botaoCorrecaoCancelar = mView.findViewById(R.id.dialogo_correcao_cancelar);
 
         recyclerView = mView.findViewById(R.id.lista_correcao_ponto);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -895,7 +901,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         adaptador = new AdaptadorCorrecaoQualidade();
 
         recyclerView.setAdapter(adaptador);
-        if(auxSavedInstanceState == null)listaCorrecoes = checaCorrecoes(listaCorrecoes);
+        if (auxSavedInstanceState == null) listaCorrecoes = checaCorrecoes(listaCorrecoes);
 
         if (listaCorrecoes.isEmpty()) {
             AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
@@ -1178,112 +1184,112 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
 
         if (auxSavedInstanceState == null) {
-        editItem1.addTextChangedListener(new TextWatcher() {
+            editItem1.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mascaraVirgula(editItem1, 0, s);
-            }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    mascaraVirgula(editItem1, 0, s);
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
 
-        editItem2.addTextChangedListener(new TextWatcher() {
+            editItem2.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mascaraVirgula(editItem2, 1, s);
-            }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    mascaraVirgula(editItem2, 1, s);
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
 
-        editItem3.addTextChangedListener(new TextWatcher() {
+            editItem3.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mascaraVirgula(editItem3, 2, s);
-            }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    mascaraVirgula(editItem3, 2, s);
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
 
-        editItem4.addTextChangedListener(new TextWatcher() {
+            editItem4.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mascaraVirgula(editItem4, 3, s);
-            }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    mascaraVirgula(editItem4, 3, s);
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
 
-        editItem6.addTextChangedListener(new TextWatcher() {
+            editItem6.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mascaraVirgula(editItem6, 5, s);
-            }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    mascaraVirgula(editItem6, 5, s);
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                @Override
+                public void afterTextChanged(Editable s) {
 
 
-            }
-        });
+                }
+            });
 
-        editItem10.addTextChangedListener(new TextWatcher() {
+            editItem10.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mascaraVirgula(editItem10, 9, s);
-            }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    mascaraVirgula(editItem10, 9, s);
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
 
-        editItem1.requestFocus();
-    }
+            editItem1.requestFocus();
+        }
 
         if (dialogoPontoAberto == true && auxSavedInstanceState != null) {
             ultimoFocus = auxSavedInstanceState.getInt("ultimoFocus");
@@ -1448,12 +1454,18 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             public void onClick(View view) {
                 boolean todosEditCorretos = true;
 
-                if (converteuPonto(editItem1, atividadeIndicadores.get(0).getLIMITE_INFERIOR(), atividadeIndicadores.get(0).getLIMITE_SUPERIOR()) == false) todosEditCorretos = false;
-                if (converteuPonto(editItem2, atividadeIndicadores.get(1).getLIMITE_INFERIOR(), atividadeIndicadores.get(1).getLIMITE_SUPERIOR()) == false) todosEditCorretos = false;
-                if (converteuPonto(editItem3, atividadeIndicadores.get(2).getLIMITE_INFERIOR(), atividadeIndicadores.get(2).getLIMITE_SUPERIOR()) == false) todosEditCorretos = false;
-                if (converteuPonto(editItem4, atividadeIndicadores.get(3).getLIMITE_INFERIOR(), atividadeIndicadores.get(3).getLIMITE_SUPERIOR()) == false) todosEditCorretos = false;
-                if (converteuPonto(editItem6, atividadeIndicadores.get(5).getLIMITE_INFERIOR(), atividadeIndicadores.get(5).getLIMITE_SUPERIOR()) == false) todosEditCorretos = false;
-                if (converteuPonto(editItem10, atividadeIndicadores.get(9).getLIMITE_INFERIOR(), atividadeIndicadores.get(9).getLIMITE_SUPERIOR()) == false) todosEditCorretos = false;
+                if (converteuPonto(editItem1, atividadeIndicadores.get(0).getLIMITE_INFERIOR(), atividadeIndicadores.get(0).getLIMITE_SUPERIOR()) == false)
+                    todosEditCorretos = false;
+                if (converteuPonto(editItem2, atividadeIndicadores.get(1).getLIMITE_INFERIOR(), atividadeIndicadores.get(1).getLIMITE_SUPERIOR()) == false)
+                    todosEditCorretos = false;
+                if (converteuPonto(editItem3, atividadeIndicadores.get(2).getLIMITE_INFERIOR(), atividadeIndicadores.get(2).getLIMITE_SUPERIOR()) == false)
+                    todosEditCorretos = false;
+                if (converteuPonto(editItem4, atividadeIndicadores.get(3).getLIMITE_INFERIOR(), atividadeIndicadores.get(3).getLIMITE_SUPERIOR()) == false)
+                    todosEditCorretos = false;
+                if (converteuPonto(editItem6, atividadeIndicadores.get(5).getLIMITE_INFERIOR(), atividadeIndicadores.get(5).getLIMITE_SUPERIOR()) == false)
+                    todosEditCorretos = false;
+                if (converteuPonto(editItem10, atividadeIndicadores.get(9).getLIMITE_INFERIOR(), atividadeIndicadores.get(9).getLIMITE_SUPERIOR()) == false)
+                    todosEditCorretos = false;
 
                 if (todosEditCorretos == false) {
                     AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
@@ -1583,7 +1595,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(9).getID_INDICADOR(),
                 Double.valueOf(editItem10.getText().toString().replace(',', '.')), latitude, longitude, 0));
 
-        if(osSelecionada.getSTATUS_NUM()==0) {
+        if (osSelecionada.getSTATUS_NUM() == 0) {
             osSelecionada.setSTATUS("Andamento");
             osSelecionada.setSTATUS_NUM(1);
             osSelecionada.setDATA_INICIAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
@@ -1605,8 +1617,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             valor.setError("Valor Inválido");
             return false;
         }
-        if(teste>limiteSup || teste<limiteInf){
-            valor.setError("Valor Fora da Faixa:\nMínimo: "+ String.valueOf(limiteInf)+"\nMáximo: "+String.valueOf(limiteSup));
+        if (teste > limiteSup || teste < limiteInf) {
+            valor.setError("Valor Fora da Faixa:\nMínimo: " + String.valueOf(limiteInf) + "\nMáximo: " + String.valueOf(limiteSup));
             return false;
         }
         return true;

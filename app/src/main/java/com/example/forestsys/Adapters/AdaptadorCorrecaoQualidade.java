@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
@@ -23,6 +24,8 @@ import java.util.List;
 
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
 import static com.example.forestsys.Activities.ActivityAtividades.listaPontosCorrecaoAux;
+import static com.example.forestsys.Activities.ActivityQualidade.botaoCorrecaoRegistrar;
+import static com.example.forestsys.Activities.ActivityQualidade.naoHaNCNaoTratada;
 
 public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCorrecaoQualidade.CorrecaoQualidadeHolder> {
     private DAO dao;
@@ -79,6 +82,9 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
 
         if (nc1 == true) {
             if (dao.indicadorCorrigivel(ponto.get(0).getID_ATIVIDADE(), ponto.get(0).getID_INDICADOR()) == 1 && ponto.get(0).getNC_TRATADA() == 0) {
+                naoHaNCNaoTratada.setVisibility(View.GONE);
+                botaoCorrecaoRegistrar.setVisibility(View.VISIBLE);
+
                 holder.numeroPonto.setVisibility(View.VISIBLE);
                 holder.textViewPonto.setVisibility(View.VISIBLE);
                 holder.textViewCorrecao.setVisibility(View.VISIBLE);
@@ -111,6 +117,9 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
 
         if (nc2 == true) {
             if (dao.indicadorCorrigivel(ponto.get(1).getID_ATIVIDADE(), ponto.get(1).getID_INDICADOR()) == 1 && ponto.get(1).getNC_TRATADA() == 0) {
+                naoHaNCNaoTratada.setVisibility(View.GONE);
+                botaoCorrecaoRegistrar.setVisibility(View.VISIBLE);
+
                 holder.numeroPonto.setVisibility(View.VISIBLE);
                 holder.textViewPonto.setVisibility(View.VISIBLE);
                 holder.textViewCorrecao.setVisibility(View.VISIBLE);
@@ -142,6 +151,9 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
 
         if (nc3 == true) {
             if (dao.indicadorCorrigivel(ponto.get(2).getID_ATIVIDADE(), ponto.get(2).getID_INDICADOR()) == 1 && ponto.get(2).getNC_TRATADA() == 0) {
+                naoHaNCNaoTratada.setVisibility(View.GONE);
+                botaoCorrecaoRegistrar.setVisibility(View.VISIBLE);
+
                 holder.numeroPonto.setVisibility(View.VISIBLE);
                 holder.textViewPonto.setVisibility(View.VISIBLE);
                 holder.textViewCorrecao.setVisibility(View.VISIBLE);
@@ -172,6 +184,9 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
 
         if (nc4 == true) {
             if (dao.indicadorCorrigivel(ponto.get(3).getID_ATIVIDADE(), ponto.get(3).getID_INDICADOR()) == 1 && ponto.get(3).getNC_TRATADA() == 0) {
+                naoHaNCNaoTratada.setVisibility(View.GONE);
+                botaoCorrecaoRegistrar.setVisibility(View.VISIBLE);
+
                 holder.numeroPonto.setVisibility(View.VISIBLE);
                 holder.textViewPonto.setVisibility(View.VISIBLE);
                 holder.textViewCorrecao.setVisibility(View.VISIBLE);
@@ -202,6 +217,9 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
 
         if (nc5 == true) {
             if (dao.indicadorCorrigivel(ponto.get(4).getID_ATIVIDADE(), ponto.get(4).getID_INDICADOR()) == 1 && ponto.get(4).getNC_TRATADA() == 0) {
+                naoHaNCNaoTratada.setVisibility(View.GONE);
+                botaoCorrecaoRegistrar.setVisibility(View.VISIBLE);
+
                 holder.numeroPonto.setVisibility(View.VISIBLE);
                 holder.textViewPonto.setVisibility(View.VISIBLE);
                 holder.textViewCorrecao.setVisibility(View.VISIBLE);
@@ -232,6 +250,9 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
 
         if (nc6 == true) {
             if (dao.indicadorCorrigivel(ponto.get(5).getID_ATIVIDADE(), ponto.get(5).getID_INDICADOR()) == 1  && ponto.get(5).getNC_TRATADA() == 0) {
+                naoHaNCNaoTratada.setVisibility(View.GONE);
+                botaoCorrecaoRegistrar.setVisibility(View.VISIBLE);
+
                 holder.numeroPonto.setVisibility(View.VISIBLE);
                 holder.textViewPonto.setVisibility(View.VISIBLE);
                 holder.textViewCorrecao.setVisibility(View.VISIBLE);
@@ -262,6 +283,9 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
 
         if (nc7 == true) {
             if (dao.indicadorCorrigivel(ponto.get(6).getID_ATIVIDADE(), ponto.get(6).getID_INDICADOR()) == 1 && ponto.get(6).getNC_TRATADA() == 0) {
+                naoHaNCNaoTratada.setVisibility(View.GONE);
+                botaoCorrecaoRegistrar.setVisibility(View.VISIBLE);
+
                 holder.numeroPonto.setVisibility(View.VISIBLE);
                 holder.textViewPonto.setVisibility(View.VISIBLE);
                 holder.textViewCorrecao.setVisibility(View.VISIBLE);
@@ -292,6 +316,9 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
 
         if (nc8 == true) {
             if (dao.indicadorCorrigivel(ponto.get(7).getID_ATIVIDADE(), ponto.get(7).getID_INDICADOR()) == 1 && ponto.get(7).getNC_TRATADA() == 0) {
+                naoHaNCNaoTratada.setVisibility(View.GONE);
+                botaoCorrecaoRegistrar.setVisibility(View.VISIBLE);
+
                 holder.numeroPonto.setVisibility(View.VISIBLE);
                 holder.textViewPonto.setVisibility(View.VISIBLE);
                 holder.textViewCorrecao.setVisibility(View.VISIBLE);
@@ -323,6 +350,9 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
 
         if (nc9 == true) {
             if (dao.indicadorCorrigivel(ponto.get(8).getID_ATIVIDADE(), ponto.get(8).getID_INDICADOR()) == 1 && ponto.get(8).getNC_TRATADA() == 0) {
+                naoHaNCNaoTratada.setVisibility(View.GONE);
+                botaoCorrecaoRegistrar.setVisibility(View.VISIBLE);
+
                 holder.numeroPonto.setVisibility(View.VISIBLE);
                 holder.textViewPonto.setVisibility(View.VISIBLE);
                 holder.textViewCorrecao.setVisibility(View.VISIBLE);
@@ -353,6 +383,9 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
 
         if (nc10 == true) {
             if (dao.indicadorCorrigivel(ponto.get(9).getID_ATIVIDADE(), ponto.get(9).getID_INDICADOR()) == 1 && ponto.get(9).getNC_TRATADA() == 0) {
+                naoHaNCNaoTratada.setVisibility(View.GONE);
+                botaoCorrecaoRegistrar.setVisibility(View.VISIBLE);
+
                 holder.numeroPonto.setVisibility(View.VISIBLE);
                 holder.textViewPonto.setVisibility(View.VISIBLE);
                 holder.textViewCorrecao.setVisibility(View.VISIBLE);
@@ -382,6 +415,7 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
     }
 
 public String formataLatLong(String s){
+        if(s.length()<5) return s.replace(".", ",")+"°";
         String[] antesDaVirgula = s.replace('.', ',').split(",");
         String aux1 = antesDaVirgula[0];
         String aux2 = antesDaVirgula[1].substring(0, 4);
