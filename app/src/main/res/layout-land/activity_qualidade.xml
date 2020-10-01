@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:visibility="visible"
-    tools:context=".activities.ActivityQualidade"
+    tools:context=".Activities.ActivityQualidade"
     tools:openDrawer="start">
 
 

@@ -9,16 +9,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.forestsys.assets.ApplicationTodos;
-import com.example.forestsys.assets.BaseDeDados;
-import com.example.forestsys.assets.DAO;
-import com.example.forestsys.assets.Ferramentas;
+import com.example.forestsys.Assets.ApplicationTodos;
+import com.example.forestsys.Assets.BaseDeDados;
+import com.example.forestsys.Assets.DAO;
+import com.example.forestsys.Assets.Ferramentas;
 import com.example.forestsys.R;
-import com.example.forestsys.classes.CALIBRAGEM_SUBSOLAGEM;
-import com.example.forestsys.classes.IMPLEMENTOS;
-import com.example.forestsys.classes.MAQUINAS;
-import com.example.forestsys.classes.MAQUINA_IMPLEMENTO;
-import com.example.forestsys.classes.OPERADORES;
+import com.example.forestsys.Classes.CALIBRAGEM_SUBSOLAGEM;
+import com.example.forestsys.Classes.IMPLEMENTOS;
+import com.example.forestsys.Classes.MAQUINAS;
+import com.example.forestsys.Classes.MAQUINA_IMPLEMENTO;
+import com.example.forestsys.Classes.OPERADORES;
 
 import java.util.ArrayList;
 import java.util.List;

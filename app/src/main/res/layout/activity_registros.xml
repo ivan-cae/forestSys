@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
-        tools:context=".activities.ActivityRegistros">
+        tools:context=".Activities.ActivityRegistros">
 
         <Button
             android:id="@+id/botao_prosseguir_continuar"

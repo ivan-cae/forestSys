@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:visibility="visible"
-    tools:context=".activities.ActivityAtividades"
+    tools:context=".Activities.ActivityAtividades"
     tools:openDrawer="start">
 
     <androidx.constraintlayout.widget.ConstraintLayout

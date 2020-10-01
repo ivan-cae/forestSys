@@ -1,7 +1,6 @@
 package com.example.forestsys.Adapters;
 
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +8,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.forestsys.R;
-import com.example.forestsys.classes.join.Join_OS_INSUMOS;
+import com.example.forestsys.Classes.Joins.Join_OS_INSUMOS;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import static com.example.forestsys.activities.ActivityAtividades.area;
+import static com.example.forestsys.Activities.ActivityAtividades.area;
 import static java.sql.Types.NULL;
 
 public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFragmentoInsumos.FragmentoInsumosHolder> {

@@ -6,24 +6,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".activities.ActivityLogin"
+    tools:context=".Activities.ActivityLogin"
     tools:menu="@menu/menu_login_lateral">
 
 
     <ImageView
         android:id="@+id/imagem_login"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="580dp"
+        android:layout_height="250dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginBottom="62dp"
         android:adjustViewBounds="false"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        android:background="@mipmap/logo_gelf_completo"
+        android:scaleType="centerInside"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/logo_gelf_completo" />
+        app:layout_constraintTop_toBottomOf="@+id/botao_config" />
 
     <ImageButton
         android:id="@+id/botao_config"
@@ -31,24 +31,23 @@
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:visibility="gone"
+        android:background="@drawable/ic_config"
+        android:scaleType="fitXY"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_config" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="74dp"
-        android:layout_marginTop="62dp"
         android:layout_marginEnd="74dp"
         android:layout_marginBottom="200dp"
         android:background="#75A9EB"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imagem_login">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/textView28"

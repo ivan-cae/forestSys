@@ -9,20 +9,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.forestsys.assets.ApplicationTodos;
-import com.example.forestsys.assets.BaseDeDados;
-import com.example.forestsys.assets.DAO;
-import com.example.forestsys.assets.Ferramentas;
+import com.example.forestsys.Assets.ApplicationTodos;
+import com.example.forestsys.Assets.BaseDeDados;
+import com.example.forestsys.Assets.DAO;
+import com.example.forestsys.Assets.Ferramentas;
 import com.example.forestsys.R;
-import com.example.forestsys.classes.GGF_USUARIOS;
-import com.example.forestsys.classes.O_S_ATIVIDADES_DIA;
-import com.example.forestsys.classes.O_S_ATIVIDADE_INSUMOS;
-import com.example.forestsys.classes.PRESTADORES;
+import com.example.forestsys.Classes.GGF_USUARIOS;
+import com.example.forestsys.Classes.O_S_ATIVIDADES_DIA;
+import com.example.forestsys.Classes.O_S_ATIVIDADE_INSUMOS;
+import com.example.forestsys.Classes.PRESTADORES;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.forestsys.activities.ActivityMain.osSelecionada;
+import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
 
 public class AdaptadorApontamentos extends RecyclerView.Adapter<AdaptadorApontamentos.ApontamentosHolder>{
 

@@ -6,35 +6,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".activities.ActivityLogin"
+    tools:context=".Activities.ActivityLogin"
     tools:menu="@menu/menu_login_lateral">
 
 
     <ImageView
         android:id="@+id/imagem_login"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="30dp"
+        android:layout_width="580dp"
+        android:layout_height="180dp"
         android:layout_marginBottom="24dp"
         android:adjustViewBounds="false"
+        android:background="@mipmap/logo_gelf_completo"
+        android:scaleType="centerInside"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/logo_gelf_completo" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/botao_config"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:visibility="gone"
+        android:background="@drawable/ic_config"
+        android:scaleType="fitXY"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_config" />
+        app:layout_constraintTop_toTopOf="@+id/imagem_login" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -42,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="250dp"
         android:layout_marginEnd="250dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="60dp"
         android:background="#75A9EB"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

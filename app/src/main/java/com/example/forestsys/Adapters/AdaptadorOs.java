@@ -12,12 +12,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.forestsys.assets.ApplicationTodos;
-import com.example.forestsys.assets.BaseDeDados;
-import com.example.forestsys.assets.DAO;
-import com.example.forestsys.assets.Ferramentas;
+import com.example.forestsys.Assets.ApplicationTodos;
+import com.example.forestsys.Assets.BaseDeDados;
+import com.example.forestsys.Assets.DAO;
+import com.example.forestsys.Assets.Ferramentas;
 import com.example.forestsys.R;
-import com.example.forestsys.classes.O_S_ATIVIDADES;
+import com.example.forestsys.Classes.O_S_ATIVIDADES;
 
 import java.util.ArrayList;
 import java.util.List;

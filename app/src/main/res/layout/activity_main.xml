@@ -11,7 +11,7 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    tools:context=".activities.ActivityMain"
+    tools:context=".Activities.ActivityMain"
     tools:openDrawer="start">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -172,7 +172,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/searchview" />
 
-        <com.example.forestsys.assets.NDSpinner
+        <com.example.forestsys.Assets.NDSpinner
             android:id="@+id/main_spinner_prioridade"
             android:layout_width="200dp"
             android:layout_height="wrap_content"

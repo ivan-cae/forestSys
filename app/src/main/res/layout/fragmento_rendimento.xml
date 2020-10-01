@@ -5,7 +5,7 @@
     android:layout_width="295dp"
     android:layout_height="385dp"
     android:background="@drawable/bordas"
-    tools:context=".activities.FragmentoRendimento">
+    tools:context=".Activities.FragmentoRendimento">
 
     <TextView
         android:id="@+id/textView18"
@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.example.forestsys.assets.NDSpinner
+    <com.example.forestsys.Assets.NDSpinner
         android:id="@+id/spinner_prestador_apontamento"
         android:layout_width="150dp"
         android:layout_height="25dp"
@@ -28,7 +28,7 @@
         app:layout_constraintStart_toEndOf="@+id/textView18"
         app:layout_constraintTop_toTopOf="@+id/textView18" />
 
-    <com.example.forestsys.assets.NDSpinner
+    <com.example.forestsys.Assets.NDSpinner
         android:id="@+id/spinner_responsavel_apontamento"
         android:layout_width="150dp"
         android:layout_height="25dp"

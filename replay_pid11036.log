@@ -1215,7 +1215,7 @@ instanceKlass com/android/build/gradle/internal/tasks/DexMergingTask$CreationAct
 instanceKlass kotlin/jvm/internal/TypeIntrinsics
 instanceKlass com/android/build/gradle/internal/tasks/DexArchiveBuilderTask$CreationAction$6
 instanceKlass com/android/build/gradle/internal/tasks/DexArchiveBuilderTask$CreationAction$1
-instanceKlass com/android/build/gradle/internal/tasks/DexArchiveBuilderTask$CreationAction$classesFilter$1
+instanceKlass com/android/build/gradle/internal/tasks/DexArchiveBuilderTask$CreationAction$ClassesFilter$1
 instanceKlass com/android/build/gradle/internal/pipeline/StreamFilter
 instanceKlass com/android/build/gradle/internal/scope/ArtifactTypeUtil
 instanceKlass kotlin/jvm/internal/SpreadBuilder
@@ -2719,7 +2719,7 @@ instanceKlass com/android/build/gradle/internal/attribution/AttributionListenerI
 instanceKlass com/android/build/gradle/api/AndroidBasePlugin
 instanceKlass org/gradle/configuration/internal/DefaultListenerBuildOperationDecorator$BuildOperationEmittingInvocationHandler
 instanceKlass org/apache/commons/lang/ClassUtils
-instanceKlass org/gradle/api/internal/GeneratedSubclasses
+instanceKlass org/gradle/api/internal/GeneratedSubClasses
 instanceKlass org/gradle/api/internal/plugins/DslObject
 instanceKlass com/android/build/gradle/internal/DependencyResolutionChecks
 instanceKlass com/android/build/gradle/internal/crash/CrashReporting
@@ -4333,7 +4333,7 @@ instanceKlass org/codehaus/groovy/reflection/CachedClass$CachedMethodComparatorB
 instanceKlass org/codehaus/groovy/reflection/CachedMethod$MyComparator
 instanceKlass org/codehaus/groovy/runtime/memoize/MemoizeCache
 instanceKlass org/codehaus/groovy/reflection/CachedClass$3$1
-instanceKlass org/codehaus/groovy/reflection/stdclasses/CachedSAMClass$1
+instanceKlass org/codehaus/groovy/reflection/stdClasses/CachedSAMClass$1
 instanceKlass java/util/stream/IntStream
 instanceKlass org/codehaus/groovy/transform/trait/Traits$Implemented
 instanceKlass org/codehaus/groovy/util/ReferenceType$HardRef

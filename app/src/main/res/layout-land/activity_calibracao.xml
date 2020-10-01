@@ -7,14 +7,14 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:fitsSystemWindows="true"
-    tools:context=".activities.ActivityAtividades"
+    tools:context=".Activities.ActivityAtividades"
     tools:openDrawer="start">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
-        tools:context=".activities.ActivityCalibracao">
+        tools:context=".Activities.ActivityCalibracao">
 
         <TextView
             android:id="@+id/textView61"
@@ -28,7 +28,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinner_implemento_calibragem" />
 
-        <com.example.forestsys.assets.NDSpinner
+        <com.example.forestsys.Assets.NDSpinner
             android:id="@+id/spinner_operador_calibragem"
             android:layout_width="300dp"
             android:layout_height="20dp"
@@ -36,7 +36,7 @@
             app:layout_constraintStart_toStartOf="@+id/textView61"
             app:layout_constraintTop_toBottomOf="@+id/textView61" />
 
-        <com.example.forestsys.assets.NDSpinner
+        <com.example.forestsys.Assets.NDSpinner
             android:id="@+id/spinner_maquina_calibragem"
             android:layout_width="300dp"
             android:layout_height="20dp"
@@ -238,7 +238,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinner_maquina_calibragem" />
 
-        <com.example.forestsys.assets.NDSpinner
+        <com.example.forestsys.Assets.NDSpinner
             android:id="@+id/spinner_implemento_calibragem"
             android:layout_width="300dp"
             android:layout_height="20sp"

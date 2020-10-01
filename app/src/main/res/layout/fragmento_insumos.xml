@@ -5,7 +5,7 @@
     android:layout_width="300dp"
     android:layout_height="280dp"
     android:background="@drawable/bordas"
-    tools:context=".activities.FragmentoInsumos">
+    tools:context=".Activities.FragmentoInsumos">
 
     <EditText
         android:id="@+id/obs_insumo1"
