@@ -1,7 +1,9 @@
 package com.example.forestsys.Assets;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -9,6 +11,10 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.forestsys.Classes.ClassesAuxiliares.Configs;
 import com.example.forestsys.R;
 import com.example.forestsys.Classes.ATIVIDADES;
@@ -38,6 +44,7 @@ import com.example.forestsys.Classes.O_S_ATIVIDADE_INSUMOS;
 import com.example.forestsys.Classes.O_S_ATIVIDADE_INSUMOS_DIA;
 import com.example.forestsys.Classes.PRESTADORES;
 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,6 +53,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 @Database(entities = {MANEJO.class, MAQUINAS.class, IMPLEMENTOS.class, INSUMOS.class, INDICADORES_SUBSOLAGEM.class, AVAL_PONTO_SUBSOLAGEM.class,
@@ -65,6 +75,8 @@ public abstract class BaseDeDados extends RoomDatabase {
 
     public static Ferramentas ferramentas = new Ferramentas();
 
+    private static JSONObject resposta = null;
+    private static String HOST_PORTA = "http://sateliteinfo.ddns.net:3333/";
     public static synchronized BaseDeDados getInstance(Context context) {
         activity = context.getApplicationContext();
         if (instance == null) {
@@ -103,16 +115,64 @@ public abstract class BaseDeDados extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            populaBdComJson(activity);
+            try {
+                populaBdComJson(activity);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return null;
         }
     }
 
-    private static void populaBdComJson(Context context) {
+    private static void populaBdComJson(Context context) throws IOException {
 
         DAO daoInsere = getInstance(context).dao();
 
-        JSONArray dados = carregaJsonUsuarios(context);
+        JSONArray dados = null;
+
+        try {
+            dados = carregaJsonFuncoes(context);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            for (int i = 0; i < dados.length(); i++) {
+                JSONObject obj = dados.getJSONObject(i);
+                int ID_FUNCAO = obj.getInt("ID_FUNCAO");
+                String DESCRICAO = obj.getString("DESCRICAO");
+                int ATIVO = obj.getInt("ATIVO");
+                Log.e("FUNCAO:", DESCRICAO);
+                daoInsere.insert(new GGF_FUNCOES( ID_FUNCAO, DESCRICAO, ATIVO));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        try {
+            dados = carregaJsonDepartamentos(context);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            for (int i = 0; i < dados.length(); i++) {
+                JSONObject obj = dados.getJSONObject(i);
+                int ID_DEPARTAMENTO = obj.getInt("ID_DEPARTAMENTO");
+                String DESCRICAO = obj.getString("DESCRICAO");
+                int ATIVO = obj.getInt("ATIVO");
+                Log.e("DEPARTAMENTO:", DESCRICAO);
+                daoInsere.insert(new GGF_DEPARTAMENTOS( ID_DEPARTAMENTO, DESCRICAO, ATIVO));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        try {
+            dados = carregaJsonUsuarios(context);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         try {
             for (int i = 0; i < dados.length(); i++) {
                 JSONObject obj = dados.getJSONObject(i);
@@ -122,7 +182,12 @@ public abstract class BaseDeDados extends RoomDatabase {
                 String DESCRICAO = obj.getString("DESCRICAO");
                 int NIVEL_ACESSO = obj.getInt("NIVEL_ACESSO");
                 int ATIVO = obj.getInt("ATIVO");
-                daoInsere.insert(new GGF_USUARIOS(ID_USUARIO, EMAIL, SENHA, DESCRICAO, NIVEL_ACESSO, ATIVO));
+                int ID_DEPARTAMENTO = obj.getInt("ID_DEPARTAMENTO");
+                int ID_FUNCAO = obj.getInt("ID_FUNCAO");
+                Log.e("Login:", DESCRICAO);
+                Log.e("Senha", SENHA);
+                Log.e("Nivel", String.valueOf(NIVEL_ACESSO));
+                daoInsere.insert(new GGF_USUARIOS( ID_USUARIO,  ID_DEPARTAMENTO,  ID_FUNCAO,  SENHA,  ATIVO,  EMAIL,  DESCRICAO,  NIVEL_ACESSO));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -431,10 +496,12 @@ public abstract class BaseDeDados extends RoomDatabase {
         }
     }
 
+
     //Carrega dados de um json para a classe correspondente
-    private static JSONArray carregaJsonUsuarios(Context context) {
+    private static JSONArray carregaJsonFuncoes(Context context) throws IOException, JSONException {
         StringBuilder builder = new StringBuilder();
-        InputStream in = context.getResources().openRawResource(R.raw.usuarios);
+        InputStream in = new URL(HOST_PORTA+"ggffuncoes").openConnection().getInputStream();
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         String linha;
 
@@ -442,8 +509,50 @@ public abstract class BaseDeDados extends RoomDatabase {
             while ((linha = reader.readLine()) != null) {
                 builder.append(linha);
             }
-            JSONObject json = new JSONObject(builder.toString());
-            return json.getJSONArray("GGF_USUARIOS");
+            JSONArray json = new JSONArray(builder.toString());
+            return json;
+
+        } catch (IOException | JSONException exception) {
+            exception.printStackTrace();
+        }
+        return null;
+    }
+
+    //Carrega dados de um json para a classe correspondente
+    private static JSONArray carregaJsonDepartamentos(Context context) throws IOException, JSONException {
+        StringBuilder builder = new StringBuilder();
+        InputStream in = new URL(HOST_PORTA+"ggfdepartamentos").openConnection().getInputStream();
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        String linha;
+
+        try {
+            while ((linha = reader.readLine()) != null) {
+                builder.append(linha);
+            }
+            JSONArray json = new JSONArray(builder.toString());
+            return json;
+
+        } catch (IOException | JSONException exception) {
+            exception.printStackTrace();
+        }
+        return null;
+    }
+
+    //Carrega dados de um json para a classe correspondente
+    private static JSONArray carregaJsonUsuarios(Context context) throws IOException, JSONException {
+        StringBuilder builder = new StringBuilder();
+        InputStream in = new URL(HOST_PORTA+"ggfusuarios").openConnection().getInputStream();
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        String linha;
+
+        try {
+            while ((linha = reader.readLine()) != null) {
+                builder.append(linha);
+            }
+            JSONArray json = new JSONArray(builder.toString());
+            return json;
 
         } catch (IOException | JSONException exception) {
             exception.printStackTrace();
@@ -790,4 +899,25 @@ public abstract class BaseDeDados extends RoomDatabase {
         }
         return null;
     }
+
+    private static JSONObject operacaoGET(String url) {
+    resposta = null;
+    JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+            new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    // display response
+                    Log.e("Response", response.toString());
+                    resposta = response;
+                }
+            },
+            new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("Error.Response", String.valueOf(error));
+                }
+            }
+    );
+return resposta;
+}
 }

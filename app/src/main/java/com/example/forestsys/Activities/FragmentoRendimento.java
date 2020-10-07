@@ -114,6 +114,16 @@ public class FragmentoRendimento extends Fragment {
                     spinnerPrestador.setAdapter(adapterPrestadores);
                     spinnerPrestador.setSelection(posicaoPrestador);
                 }
+            }else{
+                areaRealizadaApontamento.getText().clear();
+                HOEscavadeiraApontamento.getText().clear();
+                HOApontamento.getText().clear();
+                HMApontamento.getText().clear();
+                HHApontamento.getText().clear();
+                HMEscavadeiraApontamento.getText().clear();
+                obsApontamento.getText().clear();
+                posicaoPrestador = -1;
+                posicaoResponsavel = -1;
             }
         }
     }

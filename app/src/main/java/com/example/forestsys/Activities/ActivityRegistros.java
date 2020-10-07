@@ -61,8 +61,11 @@ import static com.example.forestsys.Activities.FragmentoInsumos.obsInsumo1;
 import static com.example.forestsys.Activities.FragmentoInsumos.obsInsumo2;
 import static com.example.forestsys.Activities.FragmentoRendimento.HHApontamento;
 import static com.example.forestsys.Activities.FragmentoRendimento.HMApontamento;
+import static com.example.forestsys.Activities.FragmentoRendimento.HMEscavadeiraApontamento;
 import static com.example.forestsys.Activities.FragmentoRendimento.HOApontamento;
+import static com.example.forestsys.Activities.FragmentoRendimento.HOEscavadeiraApontamento;
 import static com.example.forestsys.Activities.FragmentoRendimento.areaRealizadaApontamento;
+import static com.example.forestsys.Activities.FragmentoRendimento.obsApontamento;
 import static com.example.forestsys.Activities.FragmentoRendimento.posicaoPrestador;
 import static com.example.forestsys.Activities.FragmentoRendimento.posicaoResponsavel;
 
@@ -632,7 +635,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     temErro = true;
                     AlertDialog dialog = new AlertDialog.Builder(getContext())
                             .setTitle("Erro!")
-                            .setMessage("A data selecionada não pode ser antes da data programada da atividade.")
+                            .setMessage("A data selecionada deve ser posterior a data programada da atividade.")
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -945,32 +948,34 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         if (posicaoResponsavel != -1) return true;
         if (posicaoPrestador != -1) return true;
 
-        if (area != null) {
-            if (area.length()!=0) return true;
+
+        if (areaRealizadaApontamento != null) {
+            if (areaRealizadaApontamento.length()!=0) return true;
         }
-        if (ho != null) {
-            if (ho.length()!=0) return true;
+        if (HOApontamento != null) {
+            if (HOApontamento.length()!=0) return true;
         }
-        if (hm != null) {
-            if (hm.length()!=0) return true;
+        if (HMApontamento != null) {
+            if (HMApontamento.length()!=0) return true;
         }
-        if (hh != null) {
-            if (hh.length()!=0) return true;
+        if (HHApontamento != null) {
+            if (HHApontamento.length()!=0) return true;
         }
-        if (hoe != null) {
-            if (hoe.length()!=0) return true;
+        if (HOEscavadeiraApontamento != null) {
+            if (HOEscavadeiraApontamento.length()!=0) return true;
         }
-        if (hme != null) {
-            if (hme.length()!=0) return true;
+        if (HMEscavadeiraApontamento != null) {
+            if (HMEscavadeiraApontamento.length()!=0) return true;
         }
-        if (obs != null) {
-            if (obs.length()!=0) return true;
+        if (obsApontamento != null) {
+            if (obsApontamento.length()!=0) return true;
         }
 
         if(listaJoinOsInsumosSelecionados.size()>0) {
             if (listaJoinOsInsumosSelecionados.get(0).getQTD_APLICADO() != 0) return true;
             if (listaJoinOsInsumosSelecionados.get(1).getQTD_APLICADO() != 0) return true;
         }
+
         return false;
     }
 

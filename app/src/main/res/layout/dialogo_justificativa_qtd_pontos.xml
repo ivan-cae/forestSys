@@ -10,7 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Justifique por que foram registrados menos de seis pontos"
+        android:text="Justifique a finalização da atividade com registros insuficientes"
         android:textAlignment="center"
         android:textSize="25sp"
         android:textStyle="bold"

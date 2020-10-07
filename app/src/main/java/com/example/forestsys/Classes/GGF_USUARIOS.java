@@ -2,12 +2,13 @@ package com.example.forestsys.Classes;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
-@Entity(/*
+@Entity(
         foreignKeys = {
                 @ForeignKey(entity = GGF_DEPARTAMENTOS.class,
                         parentColumns = "ID_DEPARTAMENTO",
@@ -20,7 +21,7 @@ import java.io.Serializable;
                         childColumns = "ID_FUNCAO",
                         onDelete = ForeignKey.NO_ACTION,
                         onUpdate = ForeignKey.NO_ACTION)},
-*/
+
         indices = {@Index(value = "DESCRICAO",unique = true)})
 
 public class GGF_USUARIOS implements Serializable {
@@ -44,14 +45,17 @@ public class GGF_USUARIOS implements Serializable {
 
     private int NIVEL_ACESSO;
 
-    public GGF_USUARIOS(int ID_USUARIO, String EMAIL, String SENHA, String DESCRICAO, int NIVEL_ACESSO, int ATIVO) {
+    public GGF_USUARIOS(int ID_USUARIO, int ID_DEPARTAMENTO, int ID_FUNCAO, String SENHA, int ATIVO, String EMAIL, String DESCRICAO, int NIVEL_ACESSO) {
         this.ID_USUARIO = ID_USUARIO;
+        this.ID_DEPARTAMENTO = ID_DEPARTAMENTO;
+        this.ID_FUNCAO = ID_FUNCAO;
         this.SENHA = SENHA;
         this.ATIVO = ATIVO;
         this.EMAIL = EMAIL;
         this.DESCRICAO = DESCRICAO;
         this.NIVEL_ACESSO = NIVEL_ACESSO;
     }
+
 
     public int getID_USUARIO() {
         return ID_USUARIO;

@@ -18,6 +18,8 @@ import com.example.forestsys.Classes.ClassesAuxiliares.Configs;
 import com.example.forestsys.Classes.ESPACAMENTOS;
 import com.example.forestsys.Classes.GEO_REGIONAIS;
 import com.example.forestsys.Classes.GEO_SETORES;
+import com.example.forestsys.Classes.GGF_DEPARTAMENTOS;
+import com.example.forestsys.Classes.GGF_FUNCOES;
 import com.example.forestsys.Classes.GGF_USUARIOS;
 import com.example.forestsys.Classes.IMPLEMENTOS;
 import com.example.forestsys.Classes.INDICADORES_SUBSOLAGEM;
@@ -112,6 +114,13 @@ public interface DAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Configs configs);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(GGF_FUNCOES ggf_funcoes);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(GGF_DEPARTAMENTOS ggf_departamentos);
+
+
     @Update
     void update(GGF_USUARIOS GGFUSUARIOS);
 
@@ -183,6 +192,13 @@ public interface DAO {
 
     @Update
     void update(Configs configs);
+
+    @Update
+    void update(GGF_FUNCOES ggf_funcoes);
+
+    @Update
+    void update(GGF_DEPARTAMENTOS ggf_departamentos);
+
 
     @Delete
     void delete(GGF_USUARIOS GGFUSUARIOS);
@@ -256,6 +272,13 @@ public interface DAO {
     @Delete
     void delete(Configs configs);
 
+    @Delete
+    void delete(GGF_FUNCOES ggf_funcoes);
+
+    @Delete
+    void delete(GGF_DEPARTAMENTOS ggf_departamentos);
+
+
     //Scripts Configurações
 @Query("SELECT * FROM Configs WHERE idConfig=1")
 Configs selecionaConfigs();
@@ -267,7 +290,7 @@ Configs selecionaConfigs();
     @Query("SELECT * FROM GGF_USUARIOS WHERE ID_USUARIO=:taskId")
     GGF_USUARIOS selecionaUser(int taskId);
 
-    @Query("SELECT * FROM GGF_USUARIOS WHERE EMAIL=:taskLogin AND senha=:taskSenha")
+    @Query("SELECT * FROM GGF_USUARIOS WHERE DESCRICAO=:taskLogin AND senha=:taskSenha")
     GGF_USUARIOS valida(String taskLogin, String taskSenha);
 
     @Query("SELECT * FROM GGF_USUARIOS WHERE EMAIL=:taskLogin")
