@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey;
 import java.io.Serializable;
 
 @Entity(
-        foreignKeys = {
+        /*foreignKeys = {
                 @ForeignKey(entity = GGF_DEPARTAMENTOS.class,
                         parentColumns = "ID_DEPARTAMENTO",
                         childColumns = "ID_DEPARTAMENTO",
@@ -21,7 +21,7 @@ import java.io.Serializable;
                         childColumns = "ID_FUNCAO",
                         onDelete = ForeignKey.NO_ACTION,
                         onUpdate = ForeignKey.NO_ACTION)},
-
+*/
         indices = {@Index(value = "DESCRICAO",unique = true)})
 
 public class GGF_USUARIOS implements Serializable {

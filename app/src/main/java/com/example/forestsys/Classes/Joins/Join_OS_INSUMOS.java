@@ -1,6 +1,8 @@
 package com.example.forestsys.Classes.Joins;
 
-public class Join_OS_INSUMOS {
+import java.io.Serializable;
+
+public class Join_OS_INSUMOS implements Serializable {
     int ID_PROGRAMACAO_ATIVIDADE;
 
     int ID_INSUMO;

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -829,7 +830,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         }
     }
 
-    //Persiste os dados nos EditTexts no DB ?
+    //Persiste os dados no DB
     public void salva() {
 
         if (oSAtividadesDiaAtual != null && oSAtividadesDiaAtual.getDATA() != dataDoApontamento) {
@@ -889,15 +890,37 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             listaJoinOsInsumosSelecionados.get(0).setOBSERVACAO(obsInsumo1.getText().toString());
             listaJoinOsInsumosSelecionados.get(1).setOBSERVACAO(obsInsumo2.getText().toString());
         }
-
-        for (int i = 0; i < listaJoinOsInsumosSelecionados.size(); i++) {
-            Join_OS_INSUMOS persiste = listaJoinOsInsumosSelecionados.get(i);
-            dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), ferramentas.formataDataDb(dataDoApontamento),
-                    persiste.getID_INSUMO(), persiste.getQTD_APLICADO(), null, '0', persiste.getOBSERVACAO()));
-        }
-
+try {
+    for (int i = 0; i < listaJoinOsInsumosSelecionados.size(); i++) {
+        Join_OS_INSUMOS persiste = listaJoinOsInsumosSelecionados.get(i);
+        dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), ferramentas.formataDataDb(dataDoApontamento),
+                persiste.getID_INSUMO(), persiste.getQTD_APLICADO(), null, '0', persiste.getOBSERVACAO()));
+    }
+}catch(SQLiteConstraintException | NullPointerException ex){
+    AlertDialog dialogoErro = new AlertDialog.Builder(ActivityRegistros.this)
+            .setTitle("Erro 101")
+            .setMessage("Houve um problema ao salvar a calibração.")
+            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                }
+            }).create();
+    dialogoErro.show();
+}
         dao.update(osSelecionada);
-        viewModelOSAtividadesDia.insert(oSAtividadesDiaAtual);
+        try{
+            viewModelOSAtividadesDia.insert(oSAtividadesDiaAtual);
+        }catch(SQLiteConstraintException | NullPointerException ex){
+            AlertDialog dialogoErro = new AlertDialog.Builder(ActivityRegistros.this)
+                    .setTitle("Erro 101")
+                    .setMessage("Houve um problema ao salvar a calibração.")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    }).create();
+            dialogoErro.show();
+        }
 
         if (osSelecionada.getSTATUS_NUM() == 0) {
             osSelecionada.setSTATUS("Andamento");

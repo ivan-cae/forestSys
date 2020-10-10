@@ -2,7 +2,9 @@ package com.example.forestsys.Classes.Joins;
 
 import androidx.annotation.NonNull;
 
-public class Join_MAQUINA_IMPLEMENTO {
+import java.io.Serializable;
+
+public class Join_MAQUINA_IMPLEMENTO implements Serializable {
     int ID_MAQUINA_IMPLEMENTO;
     int ID_MAQUINA;
     int ID_IMPLEMENTO;

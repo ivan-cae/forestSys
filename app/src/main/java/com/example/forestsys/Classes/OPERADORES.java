@@ -5,10 +5,12 @@ import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(
         indices = {@Index(value = "DESCRICAO", unique = true)}
 )
-public class OPERADORES {
+public class OPERADORES implements Serializable {
     @PrimaryKey
     private int ID_OPERADORES;
 

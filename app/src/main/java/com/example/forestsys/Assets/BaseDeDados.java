@@ -1,20 +1,29 @@
 package com.example.forestsys.Assets;
 
-import android.app.ProgressDialog;
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.forestsys.Activities.ActivityConfiguracoes;
+import com.example.forestsys.Activities.ActivityLogin;
 import com.example.forestsys.Classes.ClassesAuxiliares.Configs;
 import com.example.forestsys.R;
 import com.example.forestsys.Classes.ATIVIDADES;
@@ -53,9 +62,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
+
+import static java.sql.Types.NULL;
 
 
 @Database(entities = {MANEJO.class, MAQUINAS.class, IMPLEMENTOS.class, INSUMOS.class, INDICADORES_SUBSOLAGEM.class, AVAL_PONTO_SUBSOLAGEM.class,
@@ -67,16 +77,22 @@ import java.net.URL;
 
 public abstract class BaseDeDados extends RoomDatabase {
 
+    public static int qtdRequisicoes;
+
     private static BaseDeDados instance;
 
     private static Context activity;
 
     public abstract DAO dao();
 
-    public static Ferramentas ferramentas = new Ferramentas();
+    private static DAO daoInsere;
 
-    private static JSONObject resposta = null;
-    private static String HOST_PORTA = "http://sateliteinfo.ddns.net:3333/";
+    private static Ferramentas ferramentas = new Ferramentas();
+
+    private static RequestQueue filaDeRequisicoes;
+
+    private static String HOST_PORTA;
+
     public static synchronized BaseDeDados getInstance(Context context) {
         activity = context.getApplicationContext();
         if (instance == null) {
@@ -95,26 +111,33 @@ public abstract class BaseDeDados extends RoomDatabase {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
-            new InsereDados1(instance).execute();
+
+            qtdRequisicoes = 0;
+            //new InsereDados(instance).execute();
         }
 
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
-            new InsereDados1(instance).execute();
+
+            qtdRequisicoes = 0;
+            //new InsereDados(instance).execute();
         }
     };
 
 
-    private static class InsereDados1 extends AsyncTask<Void, Void, Void> {
-        private DAO auxDao;
+    private static class InsereDados extends AsyncTask<Void, Void, Void> {
 
-        private InsereDados1(BaseDeDados db) {
-            auxDao = db.dao();
+        private InsereDados(BaseDeDados db) {
+            db.dao();
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
+
+            //populaBdComWebService(activity);
+
+
             try {
                 populaBdComJson(activity);
             } catch (IOException e) {
@@ -124,74 +147,146 @@ public abstract class BaseDeDados extends RoomDatabase {
         }
     }
 
-    private static void populaBdComJson(Context context) throws IOException {
+    public static void populaBdComWebService(Context context) {
+        daoInsere = getInstance(context).dao();
 
-        DAO daoInsere = getInstance(context).dao();
+        Configs configs = daoInsere.selecionaConfigs();
+
+        if (configs == null) {
+            daoInsere.insert(new Configs(1, "GELF", "http://sateliteinfo.ddns.net", "3333"));
+            configs = daoInsere.selecionaConfigs();
+        }
+
+        HOST_PORTA = configs.getEndereçoHost()+":"+configs.getPortaDeComunicacao()+"/";
+
+        filaDeRequisicoes = Volley.newRequestQueue(context);
+
+        JsonArrayRequest requisicaoFuncoes = new JsonArrayRequest(
+                Request.Method.GET,
+                HOST_PORTA + "ggffuncoes",
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject obj = response.getJSONObject(i);
+                                int ID_FUNCAO = obj.getInt("ID_FUNCAO");
+                                String DESCRICAO = obj.getString("DESCRICAO");
+                                int ATIVO = obj.getInt("ATIVO");
+                                Log.e("FUNCAO:", DESCRICAO);
+                                try {
+                                    daoInsere.insert(new GGF_FUNCOES(ID_FUNCAO, DESCRICAO, ATIVO));
+                                } catch (SQLiteConstraintException e) {
+                                    Log.e("Função na id", String.valueOf(ID_FUNCAO));
+                                }
+                            }
+                        } catch (JSONException ex) {
+                            Log.e("S1", "Sem resposta nas funcs,json");
+                            ex.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("S1", "Sem resposta nas funcs,conexao");
+                    }
+                }
+        );
+        //filaDeRequisicoes.add(requisicaoFuncoes);
+
+
+        JsonArrayRequest requisicaoDepartamentos = new JsonArrayRequest(
+                Request.Method.GET,
+                HOST_PORTA + "ggfdepartamentos",
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject obj = response.getJSONObject(i);
+                                int ID_DEPARTAMENTO = obj.getInt("ID_DEPARTAMENTO");
+                                String DESCRICAO = obj.getString("DESCRICAO");
+                                int ATIVO = obj.getInt("ATIVO");
+                                Log.e("DEPARTAMENTO:", DESCRICAO);
+                                try{daoInsere.insert(new GGF_DEPARTAMENTOS(ID_DEPARTAMENTO, DESCRICAO, ATIVO));
+                                } catch (SQLiteConstraintException e) {
+                                    Log.e("Departamento na id", String.valueOf(ID_DEPARTAMENTO));
+                                }}
+                        } catch (JSONException ex) {
+                            Log.e("S2", "Sem resposta nos deps,json");
+                            ex.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("S2", "Sem resposta nos deps,conexao");
+                    }
+                }
+        );
+       // filaDeRequisicoes.add(requisicaoDepartamentos);
+
+
+        JsonArrayRequest requisicaoUsuarios = new JsonArrayRequest(
+                Request.Method.GET,
+                HOST_PORTA + "ggfusuarios",
+                null,
+                new Response.Listener<JSONArray>() {
+                    @SuppressLint("LongLogTag")
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject obj = response.getJSONObject(i);
+                                int ID_USUARIO = obj.getInt("ID_USUARIO");
+                                String EMAIL = obj.getString("EMAIL");
+                                String SENHA = obj.getString("SENHA");
+                                String DESCRICAO = obj.getString("DESCRICAO");
+                                Integer NIVEL_ACESSO = 0;
+                                try{ NIVEL_ACESSO = obj.getInt("NIVEL_ACESSO");}
+                                catch(JSONException e){
+                                    Log.e("Erro ao converter nivel de acesso", "");
+                                    NIVEL_ACESSO = 0;
+                                }
+                                int ATIVO = obj.getInt("ATIVO");
+                                int ID_DEPARTAMENTO = obj.getInt("ID_DEPARTAMENTO");
+                                int ID_FUNCAO = obj.getInt("ID_FUNCAO");
+                                Log.e("Login:", DESCRICAO);
+                                Log.e("Senha", SENHA);
+                                Log.e("Nivel", String.valueOf(NIVEL_ACESSO));
+                                try {
+                                    daoInsere.insert(new GGF_USUARIOS(ID_USUARIO, ID_DEPARTAMENTO, ID_FUNCAO, SENHA, ATIVO, EMAIL, DESCRICAO, NIVEL_ACESSO));
+                                } catch (SQLiteConstraintException e) {
+                                    Log.e("Usuario na id", String.valueOf(ID_USUARIO));
+                                }
+                            }
+                        } catch (JSONException ex) {
+                            Log.e("S3", "Sem resposta nos users:json");
+                            Log.e("Erro Users", String.valueOf(ex));
+                            ex.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("S3", "Sem resposta nos users,conexao");
+                        Log.e("Erro Users", String.valueOf(error));
+                    }
+                }
+        );
+        filaDeRequisicoes.add(requisicaoUsuarios);
+    }
+
+    @SuppressLint("LongLogTag")
+    public static void populaBdComJson(Context context) throws IOException {
+        daoInsere = getInstance(context).dao();
 
         JSONArray dados = null;
-
-        try {
-            dados = carregaJsonFuncoes(context);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            for (int i = 0; i < dados.length(); i++) {
-                JSONObject obj = dados.getJSONObject(i);
-                int ID_FUNCAO = obj.getInt("ID_FUNCAO");
-                String DESCRICAO = obj.getString("DESCRICAO");
-                int ATIVO = obj.getInt("ATIVO");
-                Log.e("FUNCAO:", DESCRICAO);
-                daoInsere.insert(new GGF_FUNCOES( ID_FUNCAO, DESCRICAO, ATIVO));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-        try {
-            dados = carregaJsonDepartamentos(context);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            for (int i = 0; i < dados.length(); i++) {
-                JSONObject obj = dados.getJSONObject(i);
-                int ID_DEPARTAMENTO = obj.getInt("ID_DEPARTAMENTO");
-                String DESCRICAO = obj.getString("DESCRICAO");
-                int ATIVO = obj.getInt("ATIVO");
-                Log.e("DEPARTAMENTO:", DESCRICAO);
-                daoInsere.insert(new GGF_DEPARTAMENTOS( ID_DEPARTAMENTO, DESCRICAO, ATIVO));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-        try {
-            dados = carregaJsonUsuarios(context);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            for (int i = 0; i < dados.length(); i++) {
-                JSONObject obj = dados.getJSONObject(i);
-                int ID_USUARIO = obj.getInt("ID_USUARIO");
-                String EMAIL = obj.getString("EMAIL");
-                String SENHA = obj.getString("SENHA");
-                String DESCRICAO = obj.getString("DESCRICAO");
-                int NIVEL_ACESSO = obj.getInt("NIVEL_ACESSO");
-                int ATIVO = obj.getInt("ATIVO");
-                int ID_DEPARTAMENTO = obj.getInt("ID_DEPARTAMENTO");
-                int ID_FUNCAO = obj.getInt("ID_FUNCAO");
-                Log.e("Login:", DESCRICAO);
-                Log.e("Senha", SENHA);
-                Log.e("Nivel", String.valueOf(NIVEL_ACESSO));
-                daoInsere.insert(new GGF_USUARIOS( ID_USUARIO,  ID_DEPARTAMENTO,  ID_FUNCAO,  SENHA,  ATIVO,  EMAIL,  DESCRICAO,  NIVEL_ACESSO));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
         dados = carregaJsonImplementos(context);
         try {
@@ -201,8 +296,12 @@ public abstract class BaseDeDados extends RoomDatabase {
                 int ID_IMPLEMENTO = obj.getInt("ID_IMPLEMENTO");
                 String DESCRICAO = obj.getString("DESCRICAO");
                 int ATIVO = obj.getInt("ATIVO");
+                try {
+                    daoInsere.insert(new IMPLEMENTOS(ID_IMPLEMENTO, DESCRICAO, ATIVO));
+                } catch (SQLiteConstraintException e) {
+                    Log.e("Implementp na id", String.valueOf(ID_IMPLEMENTO));
+                }
 
-                daoInsere.insert(new IMPLEMENTOS(ID_IMPLEMENTO, DESCRICAO, ATIVO));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -216,8 +315,11 @@ public abstract class BaseDeDados extends RoomDatabase {
                 int ID_MAQUINA = obj.getInt("ID_MAQUINA");
                 String DESCRICAO = obj.getString("DESCRICAO");
                 int ATIVO = obj.getInt("ATIVO");
-
-                daoInsere.insert(new MAQUINAS(ID_MAQUINA, DESCRICAO, ATIVO));
+                try {
+                    daoInsere.insert(new MAQUINAS(ID_MAQUINA, DESCRICAO, ATIVO));
+                } catch (SQLiteConstraintException e) {
+                    Log.e("Maquina na id", String.valueOf(ID_MAQUINA));
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -231,8 +333,11 @@ public abstract class BaseDeDados extends RoomDatabase {
                 int ID_PRESTADORES = obj.getInt("ID_PRESTADORES");
                 String DESCRICAO = obj.getString("DESCRICAO");
                 int ATIVO = obj.getInt("ATIVO");
-
-                daoInsere.insert(new PRESTADORES(ID_PRESTADORES, DESCRICAO, ATIVO));
+                try {
+                    daoInsere.insert(new PRESTADORES(ID_PRESTADORES, DESCRICAO, ATIVO));
+                } catch (SQLiteConstraintException e) {
+                    Log.e("Prestador na id", String.valueOf(ID_PRESTADORES));
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -246,8 +351,11 @@ public abstract class BaseDeDados extends RoomDatabase {
                 int ID_OPERADORES = obj.getInt("ID_OPERADORES");
                 String DESCRICAO = obj.getString("DESCRICAO");
                 int ATIVO = obj.getInt("ATIVO");
-
-                daoInsere.insert(new OPERADORES(ID_OPERADORES, DESCRICAO, ATIVO));
+                try {
+                    daoInsere.insert(new OPERADORES(ID_OPERADORES, DESCRICAO, ATIVO));
+                } catch (SQLiteConstraintException e) {
+                    Log.e("Operador na id", String.valueOf(ID_OPERADORES));
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -260,8 +368,11 @@ public abstract class BaseDeDados extends RoomDatabase {
                 int ID_ATIVIDADE = obj.getInt("ID_ATIVIDADE");
                 String DESCRICAO = obj.getString("DESCRICAO");
                 int ATIVO = obj.getInt("ATIVO");
-
-                daoInsere.insert(new ATIVIDADES(ID_ATIVIDADE, DESCRICAO, ATIVO));
+                try {
+                    daoInsere.insert(new ATIVIDADES(ID_ATIVIDADE, DESCRICAO, ATIVO));
+                } catch (SQLiteConstraintException e) {
+                    Log.e("Atividade na id", String.valueOf(ID_ATIVIDADE));
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -292,7 +403,12 @@ public abstract class BaseDeDados extends RoomDatabase {
 
                 DATA_PROGRAMADA = ferramentas.formataDataDb(DATA_PROGRAMADA);
 
-                daoInsere.insert(new O_S_ATIVIDADES(ID_PROGRAMACAO_ATIVIDADE, ID_REGIONAL, ID_SETOR, TALHAO, CICLO, ID_MANEJO, ID_ATIVIDADE, ID_RESPONSAVEL, DATA_PROGRAMADA, AREA_PROGRAMADA, PRIORIDADE, EXPERIMENTO, MADEIRA_NO_TALHAO, OBSERVACAO, DATA_INICIAL, DATA_FINAL, AREA_REALIZADA, "Aberto", 0, false));
+                try {
+                    daoInsere.insert(new O_S_ATIVIDADES(ID_PROGRAMACAO_ATIVIDADE, ID_REGIONAL, ID_SETOR, TALHAO, CICLO, ID_MANEJO,
+                            ID_ATIVIDADE, ID_RESPONSAVEL, DATA_PROGRAMADA, AREA_PROGRAMADA, PRIORIDADE, EXPERIMENTO, MADEIRA_NO_TALHAO, OBSERVACAO, DATA_INICIAL, DATA_FINAL, AREA_REALIZADA, "Aberto", 0, false));
+                } catch (SQLiteConstraintException e) {
+                    Log.e("Os Atividade na id", String.valueOf(ID_PROGRAMACAO_ATIVIDADE));
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -320,10 +436,13 @@ public abstract class BaseDeDados extends RoomDatabase {
                 double NUTRIENTE_MN = obj.getDouble("NUTRIENTE_MN");
                 int ATIVO = obj.getInt("ATIVO");
                 String UND_MEDIDA = obj.getString("UND_MEDIDA");
-
-                daoInsere.insert(new INSUMOS(ID_INSUMO, ID_INSUMO_RM, CLASSE, DESCRICAO, NUTRIENTE_N,
-                        NUTRIENTE_P2O5, NUTRIENTE_K2O, NUTRIENTE_CAO, NUTRIENTE_MGO, NUTRIENTE_B, NUTRIENTE_ZN, NUTRIENTE_S, NUTRIENTE_CU,
-                        NUTRIENTE_AF, NUTRIENTE_MN, ATIVO, UND_MEDIDA));
+                try {
+                    daoInsere.insert(new INSUMOS(ID_INSUMO, ID_INSUMO_RM, CLASSE, DESCRICAO, NUTRIENTE_N,
+                            NUTRIENTE_P2O5, NUTRIENTE_K2O, NUTRIENTE_CAO, NUTRIENTE_MGO, NUTRIENTE_B, NUTRIENTE_ZN, NUTRIENTE_S, NUTRIENTE_CU,
+                            NUTRIENTE_AF, NUTRIENTE_MN, ATIVO, UND_MEDIDA));
+                } catch (SQLiteConstraintException e) {
+                    Log.e("Insumo na id", String.valueOf(ID_INSUMO));
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -339,8 +458,11 @@ public abstract class BaseDeDados extends RoomDatabase {
                 int RECOMENDACAO = obj.getInt("RECOMENDACAO");
                 double QTD_HA_RECOMENDADO = obj.getDouble("QTD_HA_RECOMENDADO");
                 double QTD_HA_APLICADO = obj.getDouble("QTD_HA_APLICADO");
-
-                daoInsere.insert(new O_S_ATIVIDADE_INSUMOS(ID_INSUMO, ID_PROGRAMACAO_ATIVIDADE, RECOMENDACAO, QTD_HA_RECOMENDADO, QTD_HA_APLICADO));
+                try {
+                    daoInsere.insert(new O_S_ATIVIDADE_INSUMOS(ID_INSUMO, ID_PROGRAMACAO_ATIVIDADE, RECOMENDACAO, QTD_HA_RECOMENDADO, QTD_HA_APLICADO));
+                } catch (SQLiteConstraintException e) {
+                    Log.e("Atividade Insumos na id", String.valueOf(ID_INSUMO) + " , " + String.valueOf(ID_PROGRAMACAO_ATIVIDADE));
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -353,8 +475,11 @@ public abstract class BaseDeDados extends RoomDatabase {
                 int ID_MAQUINA_IMPLEMENTO = obj.getInt("ID_MAQUINA_IMPLEMENTO");
                 int ID_MAQUINA = obj.getInt("ID_MAQUINA");
                 int ID_IMPLEMENTO = obj.getInt("ID_IMPLEMENTO");
-
-                daoInsere.insert(new MAQUINA_IMPLEMENTO(ID_MAQUINA_IMPLEMENTO, ID_MAQUINA, ID_IMPLEMENTO));
+                try {
+                    daoInsere.insert(new MAQUINA_IMPLEMENTO(ID_MAQUINA_IMPLEMENTO, ID_MAQUINA, ID_IMPLEMENTO));
+                } catch (SQLiteConstraintException e) {
+                    Log.e("Maquina Implemento na id", String.valueOf(ID_MAQUINA_IMPLEMENTO));
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -376,8 +501,11 @@ public abstract class BaseDeDados extends RoomDatabase {
                 int LIMITE_SUPERIOR = obj.getInt("LIMITE_SUPERIOR");
                 int CASAS_DECIMAIS = obj.getInt("CASAS_DECIMAIS");
                 String FORMULA = obj.getString("FORMULA");
-
-                daoInsere.insert(new ATIVIDADE_INDICADORES(ID_INDICADOR, ID_ATIVIDADE, ORDEM_INDICADOR, REFERENCIA, DESCRICAO, ATIVO, VERION, LIMITE_SUPERIOR, LIMITE_INFERIOR, CASAS_DECIMAIS, INDICADOR_CORRIGIVEL, FORMULA));
+                try {
+                    daoInsere.insert(new ATIVIDADE_INDICADORES(ID_INDICADOR, ID_ATIVIDADE, ORDEM_INDICADOR, REFERENCIA, DESCRICAO, ATIVO, VERION, LIMITE_SUPERIOR, LIMITE_INFERIOR, CASAS_DECIMAIS, INDICADOR_CORRIGIVEL, FORMULA));
+                } catch (SQLiteConstraintException e) {
+                    Log.e("Atividade Indicadores na id", String.valueOf(ID_INDICADOR) + " , " + String.valueOf(ID_ATIVIDADE));
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -390,7 +518,11 @@ public abstract class BaseDeDados extends RoomDatabase {
                 int ID_ESPACAMENTO = obj.getInt("ID_ESPACAMENTO");
                 String DESCRICAO = obj.getString("DESCRICAO");
                 int ATIVO = obj.getInt("ATIVO");
-                daoInsere.insert(new ESPACAMENTOS(ID_ESPACAMENTO, DESCRICAO, ATIVO));
+                try {
+                    daoInsere.insert(new ESPACAMENTOS(ID_ESPACAMENTO, DESCRICAO, ATIVO));
+                } catch (SQLiteConstraintException e) {
+                    Log.e("Espacamentos na id", String.valueOf(ID_ESPACAMENTO));
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -400,18 +532,23 @@ public abstract class BaseDeDados extends RoomDatabase {
         try {
             for (int i = 0; i < dados.length(); i++) {
                 JSONObject obj = dados.getJSONObject(i);
-                 int ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
-                 double PROFUNDIDADE = obj.getDouble("PROFUNDIDADE");
-                 double ESTRONDAMENTO_LATERAL_INFERIOR = obj.getDouble("ESTRONDAMENTO_LATERAL_INFERIOR");
-                 double ESTRONDAMENTO_LATERAL_SUPERIOR = obj.getDouble("ESTRONDAMENTO_LATERAL_SUPERIOR");
-                 double FAIXA_SOLO_PREPARADA = obj.getDouble("FAIXA_SOLO_PREPARADA");
-                 double PROFUNDIDADE_ADUBO_INFERIOR = obj.getDouble("PROFUNDIDADE_ADUBO_INFERIOR");
-                 double PROFUNDIDADE_ADUBO_SUPERIOR = obj.getDouble("PROFUNDIDADE_ADUBO_SUPERIOR");
-                 double LOCALIZACAO_INSUMO_INFERIOR = obj.getDouble("LOCALIZACAO_INSUMO_INFERIOR");
-                 double LOCALIZACAO_INSUMO_SUPERIOR = obj.getDouble("LOCALIZACAO_INSUMO_SUPERIOR");
-                daoInsere.insert(new AVAL_SUBSOLAGEM(ID_PROGRAMACAO_ATIVIDADE, PROFUNDIDADE, ESTRONDAMENTO_LATERAL_INFERIOR,
-                        ESTRONDAMENTO_LATERAL_SUPERIOR, FAIXA_SOLO_PREPARADA, PROFUNDIDADE_ADUBO_INFERIOR,
-                        PROFUNDIDADE_ADUBO_SUPERIOR, LOCALIZACAO_INSUMO_INFERIOR, LOCALIZACAO_INSUMO_SUPERIOR));
+                int ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
+                double PROFUNDIDADE = obj.getDouble("PROFUNDIDADE");
+                double ESTRONDAMENTO_LATERAL_INFERIOR = obj.getDouble("ESTRONDAMENTO_LATERAL_INFERIOR");
+                double ESTRONDAMENTO_LATERAL_SUPERIOR = obj.getDouble("ESTRONDAMENTO_LATERAL_SUPERIOR");
+                double FAIXA_SOLO_PREPARADA = obj.getDouble("FAIXA_SOLO_PREPARADA");
+                double PROFUNDIDADE_ADUBO_INFERIOR = obj.getDouble("PROFUNDIDADE_ADUBO_INFERIOR");
+                double PROFUNDIDADE_ADUBO_SUPERIOR = obj.getDouble("PROFUNDIDADE_ADUBO_SUPERIOR");
+                double LOCALIZACAO_INSUMO_INFERIOR = obj.getDouble("LOCALIZACAO_INSUMO_INFERIOR");
+                double LOCALIZACAO_INSUMO_SUPERIOR = obj.getDouble("LOCALIZACAO_INSUMO_SUPERIOR");
+
+                try {
+                    daoInsere.insert(new AVAL_SUBSOLAGEM(ID_PROGRAMACAO_ATIVIDADE, PROFUNDIDADE, ESTRONDAMENTO_LATERAL_INFERIOR,
+                            ESTRONDAMENTO_LATERAL_SUPERIOR, FAIXA_SOLO_PREPARADA, PROFUNDIDADE_ADUBO_INFERIOR,
+                            PROFUNDIDADE_ADUBO_SUPERIOR, LOCALIZACAO_INSUMO_INFERIOR, LOCALIZACAO_INSUMO_SUPERIOR));
+                } catch (SQLiteConstraintException e) {
+                    Log.e("Aval Sbsolagem na id", String.valueOf(ID_PROGRAMACAO_ATIVIDADE));
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -425,7 +562,11 @@ public abstract class BaseDeDados extends RoomDatabase {
                 String DESCRICAO = obj.getString("DESCRICAO");
                 int SETOR_TODOS = obj.getInt("SETOR_TODOS");
                 int ATIVO = obj.getInt("ATIVO");
-                daoInsere.insert(new GEO_REGIONAIS(ID_REGIONAL, DESCRICAO, SETOR_TODOS, ATIVO));
+                try {
+                    daoInsere.insert(new GEO_REGIONAIS(ID_REGIONAL, DESCRICAO, SETOR_TODOS, ATIVO));
+                } catch (SQLiteConstraintException e) {
+                    Log.e("Regionais na id", String.valueOf(ID_REGIONAL));
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -439,7 +580,11 @@ public abstract class BaseDeDados extends RoomDatabase {
                 int ID_SETOR = obj.getInt("ID_SETOR");
                 String DESCRICAO = obj.getString("DESCRICAO");
                 int ATIVO = obj.getInt("ATIVO");
-                daoInsere.insert(new GEO_SETORES(ID_REGIONAL, ID_SETOR, DESCRICAO,ATIVO));
+                try {
+                    daoInsere.insert(new GEO_SETORES(ID_REGIONAL, ID_SETOR, DESCRICAO, ATIVO));
+                } catch (SQLiteConstraintException e) {
+                    Log.e("Geo Setores na id", String.valueOf(ID_REGIONAL) + " , " + String.valueOf(ID_SETOR));
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -452,7 +597,11 @@ public abstract class BaseDeDados extends RoomDatabase {
                 int ID_MANEJO = obj.getInt("ID_MANEJO");
                 String DESCRICAO = obj.getString("DESCRICAO");
                 int ATIVO = obj.getInt("ATIVO");
-                daoInsere.insert(new MANEJO(ID_MANEJO, DESCRICAO,ATIVO));
+                try {
+                    daoInsere.insert(new MANEJO(ID_MANEJO, DESCRICAO, ATIVO));
+                } catch (SQLiteConstraintException e) {
+                    Log.e("Manejo na id", String.valueOf(ID_MANEJO));
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -466,7 +615,11 @@ public abstract class BaseDeDados extends RoomDatabase {
                 int ID_MATERIAL_GENETICO = obj.getInt("ID_MATERIAL_GENETICO");
                 String DESCRICAO = obj.getString("DESCRICAO");
                 int ATIVO = obj.getInt("ATIVO");
-                daoInsere.insert(new MATERIAL_GENETICO(ID_MATERIAL_GENETICO, DESCRICAO,ATIVO));
+                try {
+                    daoInsere.insert(new MATERIAL_GENETICO(ID_MATERIAL_GENETICO, DESCRICAO, ATIVO));
+                } catch (SQLiteConstraintException e) {
+                    Log.e("Material Genetico na id", String.valueOf(ID_MATERIAL_GENETICO));
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -488,8 +641,12 @@ public abstract class BaseDeDados extends RoomDatabase {
                 String OBSERVACAO = obj.getString("OBSERVACAO");
                 int ATIVO = obj.getInt("ATIVO");
 
-                daoInsere.insert(new CADASTRO_FLORESTAL(ID_REGIONAL, ID_SETOR, TALHAO, CICLO, ID_MANEJO,
-                        DATA_MANEJO, DATA_PROGRAMACAO_REFORMA, ID_MATERIAL_GENETICO, ID_ESPACAMENTO, OBSERVACAO, ATIVO));
+                try {
+                    daoInsere.insert(new CADASTRO_FLORESTAL(ID_REGIONAL, ID_SETOR, TALHAO, CICLO, ID_MANEJO,
+                            DATA_MANEJO, DATA_PROGRAMACAO_REFORMA, ID_MATERIAL_GENETICO, ID_ESPACAMENTO, OBSERVACAO, ATIVO));
+                } catch (SQLiteConstraintException e) {
+                    Log.e("Cad Florestal na id", String.valueOf(ID_REGIONAL) + " , " + String.valueOf(ID_SETOR));
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -498,9 +655,10 @@ public abstract class BaseDeDados extends RoomDatabase {
 
 
     //Carrega dados de um json para a classe correspondente
-    private static JSONArray carregaJsonFuncoes(Context context) throws IOException, JSONException {
+    private static JSONArray carregaJsonFuncoes(Context context) throws
+            IOException, JSONException {
         StringBuilder builder = new StringBuilder();
-        InputStream in = new URL(HOST_PORTA+"ggffuncoes").openConnection().getInputStream();
+        InputStream in = new URL(HOST_PORTA + "ggffuncoes").openConnection().getInputStream();
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         String linha;
@@ -519,9 +677,10 @@ public abstract class BaseDeDados extends RoomDatabase {
     }
 
     //Carrega dados de um json para a classe correspondente
-    private static JSONArray carregaJsonDepartamentos(Context context) throws IOException, JSONException {
+    private static JSONArray carregaJsonDepartamentos(Context context) throws
+            IOException, JSONException {
         StringBuilder builder = new StringBuilder();
-        InputStream in = new URL(HOST_PORTA+"ggfdepartamentos").openConnection().getInputStream();
+        InputStream in = new URL(HOST_PORTA + "ggfdepartamentos").openConnection().getInputStream();
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         String linha;
@@ -540,9 +699,10 @@ public abstract class BaseDeDados extends RoomDatabase {
     }
 
     //Carrega dados de um json para a classe correspondente
-    private static JSONArray carregaJsonUsuarios(Context context) throws IOException, JSONException {
+    private static JSONArray carregaJsonUsuarios(Context context) throws
+            IOException, JSONException {
         StringBuilder builder = new StringBuilder();
-        InputStream in = new URL(HOST_PORTA+"ggfusuarios").openConnection().getInputStream();
+        InputStream in = new URL(HOST_PORTA + "ggfusuarios").openConnection().getInputStream();
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         String linha;
@@ -899,25 +1059,4 @@ public abstract class BaseDeDados extends RoomDatabase {
         }
         return null;
     }
-
-    private static JSONObject operacaoGET(String url) {
-    resposta = null;
-    JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-            new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    // display response
-                    Log.e("Response", response.toString());
-                    resposta = response;
-                }
-            },
-            new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("Error.Response", String.valueOf(error));
-                }
-            }
-    );
-return resposta;
-}
 }

@@ -5,6 +5,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 
+import java.io.Serializable;
+
 
 @Entity(
         foreignKeys = {@ForeignKey(entity = MAQUINA_IMPLEMENTO.class,
@@ -24,7 +26,7 @@ import androidx.room.ForeignKey;
                         onUpdate = ForeignKey.NO_ACTION)},
         primaryKeys = {"ID_PROGRAMACAO_ATIVIDADE", "DATA", "TURNO", "ID_MAQUINA_IMPLEMENTO"})
 
-public class CALIBRAGEM_SUBSOLAGEM {
+public class CALIBRAGEM_SUBSOLAGEM implements Serializable {
 
     @ColumnInfo(name = "ID_PROGRAMACAO_ATIVIDADE")
     @NonNull

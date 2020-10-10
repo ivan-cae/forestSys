@@ -6,6 +6,8 @@ import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import java.io.Serializable;
+
 @Entity(
         foreignKeys = {
         @ForeignKey(entity = GGF_USUARIOS.class,
@@ -18,14 +20,14 @@ import androidx.room.TypeConverters;
                         childColumns = "ID_ATIVIDADE",
                         onDelete = ForeignKey.NO_ACTION,
                         onUpdate = ForeignKey.NO_ACTION)})
-/*        @ForeignKey(entity = CADASTRO_FLORESTAL.class,
+        @ForeignKey(entity = CADASTRO_FLORESTAL.class,
                 parentColumns = {"ID_REGIONAL", "ID_SETOR", "TALHAO", "CICLO", "ID_MANEJO"},
                 childColumns = {"ID_REGIONAL", "ID_SETOR", "TALHAO", "CICLO", "ID_MANEJO"},
                 onDelete = ForeignKey.NO_ACTION,
                 onUpdate = ForeignKey.NO_ACTION)
-                */
 
-public class O_S_ATIVIDADES {
+
+public class O_S_ATIVIDADES implements Serializable {
 
     @PrimaryKey
     @ColumnInfo(name = "ID_PROGRAMACAO_ATIVIDADE")

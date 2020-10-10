@@ -3,8 +3,10 @@ package com.example.forestsys.Classes;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity
-public class MANEJO {
+public class MANEJO implements Serializable {
     @PrimaryKey
     private int ID_MANEJO;
 	private String DESCRICAO;

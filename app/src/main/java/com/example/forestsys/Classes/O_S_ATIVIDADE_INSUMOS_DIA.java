@@ -5,6 +5,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 
+import java.io.Serializable;
+
 @Entity(
         foreignKeys = {@ForeignKey(entity = INSUMOS.class,
                 parentColumns = "ID_INSUMO",
@@ -19,7 +21,7 @@ import androidx.room.ForeignKey;
                         onUpdate = ForeignKey.NO_ACTION)},
         primaryKeys = {"ID_PROGRAMACAO_ATIVIDADE", "ID_INSUMO", "DATA"})
 
-public class O_S_ATIVIDADE_INSUMOS_DIA {
+public class O_S_ATIVIDADE_INSUMOS_DIA implements Serializable {
 
     @ColumnInfo(name = "ID_PROGRAMACAO_ATIVIDADE")
     @NonNull

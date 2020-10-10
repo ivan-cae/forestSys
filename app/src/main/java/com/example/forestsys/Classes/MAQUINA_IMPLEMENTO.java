@@ -5,6 +5,8 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(
         foreignKeys = {@ForeignKey(entity = MAQUINAS.class,
                 parentColumns = "ID_MAQUINA",
@@ -18,7 +20,7 @@ import androidx.room.PrimaryKey;
                         onDelete = ForeignKey.NO_ACTION,
                         onUpdate = ForeignKey.NO_ACTION)})
 
-public class MAQUINA_IMPLEMENTO {
+public class MAQUINA_IMPLEMENTO implements Serializable {
     @PrimaryKey
     private int ID_MAQUINA_IMPLEMENTO;
 

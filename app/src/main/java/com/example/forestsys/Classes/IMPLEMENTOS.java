@@ -6,10 +6,12 @@ import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(
         indices = {@Index(value = "DESCRICAO_IMPLEMENTO", unique = true)}
 )
-public class IMPLEMENTOS {
+public class IMPLEMENTOS implements Serializable {
 
     @PrimaryKey
     private int ID_IMPLEMENTO;

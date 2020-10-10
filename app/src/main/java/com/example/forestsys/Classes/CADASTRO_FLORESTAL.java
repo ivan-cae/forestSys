@@ -5,6 +5,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 
+import java.io.Serializable;
+
 @Entity(
         foreignKeys = {@ForeignKey(entity = GEO_REGIONAIS.class,
                 parentColumns = "ID_REGIONAL",
@@ -34,7 +36,7 @@ import androidx.room.ForeignKey;
 
         primaryKeys = {"ID_REGIONAL", "ID_SETOR", "TALHAO", "CICLO", "ID_MANEJO"})
 
-public class CADASTRO_FLORESTAL {
+public class CADASTRO_FLORESTAL implements Serializable {
     @NonNull
     @ColumnInfo (name = "ID_REGIONAL")
     private int ID_REGIONAL;

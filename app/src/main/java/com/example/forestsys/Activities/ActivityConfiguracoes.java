@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -42,27 +43,54 @@ public class ActivityConfiguracoes extends AppCompatActivity {
         DAO dao = baseDeDados.dao();
         Configs configs = dao.selecionaConfigs();
 
-        if(configs != null) {
-            if(configs.getNomeEmpresa()!=null) editNomeEmpresa.setText(configs.getNomeEmpresa());
-            else editNomeEmpresa.setText("GELF");
-            if(configs.getEndereçoHost() != null) editHost.setText(configs.getEndereçoHost());
-            if(configs.getPortaDeComunicacao() != null) editPorta.setText(configs.getPortaDeComunicacao());
-        }
+        if (configs.getNomeEmpresa() != null) editNomeEmpresa.setText(configs.getNomeEmpresa());
+        else editNomeEmpresa.setText("GELF");
+        if (configs.getEndereçoHost() != null) editHost.setText(configs.getEndereçoHost());
+        if (configs.getPortaDeComunicacao() != null)
+            editPorta.setText(configs.getPortaDeComunicacao());
+
 
         botaoSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String empresa = null;
-                String host = null;
-                String porta = null;
-                if(editNomeEmpresa.length()>0) empresa = editNomeEmpresa.getText().toString();
-                if(editHost.length()>0) host = editHost.getText().toString();
-                if(editPorta.length()>0) porta = editPorta.getText().toString();
-
-                dao.insert(new Configs(1, empresa, host, porta));
-                Toast.makeText(getApplicationContext(), "Configurações Salvas com Sucesso!", Toast.LENGTH_LONG).show();
+                AlertDialog dialog = new AlertDialog.Builder(ActivityConfiguracoes.this)
+                        .setTitle("Salvar essas informações irá reiniciar o aplicativo")
+                        .setMessage("Deseja continuar?")
+                        .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                String empresa = null;
+                                String host = null;
+                                String porta = null;
+                                if (editNomeEmpresa.length() > 0)
+                                    empresa = editNomeEmpresa.getText().toString();
+                                if (editHost.length() > 0) host = editHost.getText().toString();
+                                if (editPorta.length() > 0) porta = editPorta.getText().toString();
+                                try {
+                                    dao.insert(new Configs(1, empresa, host, porta));
+                                    Intent it = new Intent(ActivityConfiguracoes.this, ActivityInicializacao.class);
+                                    startActivity(it);
+                                } catch (SQLiteConstraintException | NullPointerException ex) {
+                                    AlertDialog dialogoErro = new AlertDialog.Builder(ActivityConfiguracoes.this)
+                                            .setTitle("Erro 101")
+                                            .setMessage("Houve um problema ao salvar as configurações.")
+                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                }
+                                            }).create();
+                                    dialogoErro.show();
+                                }
+                            }
+                        })
+                        .setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                            }
+                        }).create();
+                dialog.show();
             }
-        });
+            });
 
         botaoVoltar.setOnClickListener(new View.OnClickListener() {
             @Override

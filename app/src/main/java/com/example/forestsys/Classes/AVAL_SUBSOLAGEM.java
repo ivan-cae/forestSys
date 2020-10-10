@@ -5,6 +5,8 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(
         foreignKeys = {@ForeignKey(entity = O_S_ATIVIDADES.class,
                 parentColumns = "ID_PROGRAMACAO_ATIVIDADE",
@@ -12,7 +14,7 @@ import androidx.room.PrimaryKey;
                 onDelete = ForeignKey.NO_ACTION,
                 onUpdate = ForeignKey.NO_ACTION)})
 
-public class AVAL_SUBSOLAGEM {
+public class AVAL_SUBSOLAGEM implements Serializable {
     @ColumnInfo(name = "ID_PROGRAMACAO_ATIVIDADE")
     @PrimaryKey
     private int ID_PROGRAMACAO_ATIVIDADE;

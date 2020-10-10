@@ -6,6 +6,8 @@ import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(
         indices = @Index(value = "ID_INDICADOR", unique = true),
         foreignKeys = {@ForeignKey(entity = ATIVIDADES.class,
@@ -15,7 +17,7 @@ import androidx.room.PrimaryKey;
                 onUpdate = ForeignKey.NO_ACTION)},
         primaryKeys = {"ID_INDICADOR", "ID_ATIVIDADE"})
 
-public class ATIVIDADE_INDICADORES {
+public class ATIVIDADE_INDICADORES implements Serializable {
 
     @ColumnInfo(name = "ID_ATIVIDADE")
     private int ID_ATIVIDADE;

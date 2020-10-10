@@ -4,10 +4,13 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
+
+import java.io.Serializable;
+
 @Entity(
         indices = {@Index(value = "ID_INSUMO_RM", unique = true)}
 )
-public class INSUMOS {
+public class INSUMOS implements Serializable {
 
     @PrimaryKey
     private int ID_INSUMO;

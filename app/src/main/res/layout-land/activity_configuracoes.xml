@@ -75,6 +75,7 @@
         android:ems="10"
         android:textSize="18sp"
         android:visibility="gone"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView23" />
@@ -89,6 +90,7 @@
         android:text="Salvar"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/configs_edit_porta" />
 
@@ -99,9 +101,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:digits="1 2 3 4 5 6 7 8 9 ."
         android:ems="10"
-        android:inputType="number"
+        android:inputType="text"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -114,9 +115,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:digits="1 2 3 4 5 6 7 8 9 ."
         android:ems="10"
-        android:inputType="number"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

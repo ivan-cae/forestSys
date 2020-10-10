@@ -4,11 +4,13 @@ import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(
         indices = {@Index(value = "DESCRICAO", unique = true),
         @Index(value = "ID_ATIVIDADE", unique =true)})
 
-public class ATIVIDADES {
+public class ATIVIDADES implements Serializable {
     @PrimaryKey
     @ColumnInfo (name = "ID_ATIVIDADE")
     private int ID_ATIVIDADE;

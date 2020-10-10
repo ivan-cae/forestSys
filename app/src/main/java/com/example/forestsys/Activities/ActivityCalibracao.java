@@ -15,12 +15,14 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteConstraintException;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -1506,9 +1508,19 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                                         CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem = new CALIBRAGEM_SUBSOLAGEM(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
                                                 ferramentas.formataDataDb(ferramentas.dataAtual()), checaTurno(), idMaquinaImplemento,
                                                 idOperador, mediaP1, desvioP1, mediaP2, desvioP2);
-
-                                        dao.insert(calibragem_subsolagem);
-
+                                        try {
+                                            dao.insert(calibragem_subsolagem);
+                                        }catch(SQLiteConstraintException | NullPointerException ex) {
+                                            AlertDialog dialogoErro = new AlertDialog.Builder(ActivityCalibracao.this)
+                                                    .setTitle("Erro 101")
+                                                    .setMessage("Houve um problema ao salvar a calibração.")
+                                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                                        }
+                                                    }).create();
+                                            dialogoErro.show();
+                                        }
                                         if (osSelecionada.getSTATUS_NUM() == 0) {
                                             osSelecionada.setSTATUS("Andamento");
                                             osSelecionada.setSTATUS_NUM(1);

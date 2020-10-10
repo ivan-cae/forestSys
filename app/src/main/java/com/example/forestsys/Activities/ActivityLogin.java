@@ -1,11 +1,13 @@
 package com.example.forestsys.Activities;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -24,9 +26,12 @@ import com.example.forestsys.Classes.ClassesAuxiliares.Configs;
 import com.example.forestsys.R;
 import com.example.forestsys.Classes.GGF_USUARIOS;
 
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 
-public class ActivityLogin extends AppCompatActivity{
+public class ActivityLogin extends AppCompatActivity {
 
     private final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
@@ -40,19 +45,16 @@ public class ActivityLogin extends AppCompatActivity{
     private EditText passwordEditText;
     private Button loginButton;
     private ImageButton configButton;
+private Configs configs;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_login);
         super.onCreate(savedInstanceState);
         Intent it = getIntent();
-        if(it.hasExtra("fechar")){
+        if (it.hasExtra("fechar")) {
             finishAffinity();
             moveTaskToBack(true);
-        }
-
-        if(it.hasExtra("deslogar")){
-            usuarioLogado=null;
         }
 
         usernameEditText = findViewById(R.id.username);
@@ -74,13 +76,25 @@ public class ActivityLogin extends AppCompatActivity{
         DAO dao = baseDeDados.dao();
 
         nomeEmpresaPref = null;
-        Configs configs = dao.selecionaConfigs();
-        if(configs != null){
-            if(configs.getNomeEmpresa()!=null) nomeEmpresaPref = configs.getNomeEmpresa();
+
+        configs = dao.selecionaConfigs();
+
+        if (configs.getNomeEmpresa() != null) nomeEmpresaPref = configs.getNomeEmpresa();
+
+        if (nomeEmpresaPref == null) nomeEmpresaPref = "GELF";
+
+        if (it.hasExtra("deslogar")) {
+            usuarioLogado = null;
         }
-
-        if(nomeEmpresaPref == null) nomeEmpresaPref = "GELF";
-
+        else{
+        if(conectadoAoServidor()==true) {
+            try {
+                baseDeDados.populaBdComJson(getApplicationContext());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        }
         List<GGF_USUARIOS> listaUsers = dao.todosUsers();
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,14 +103,15 @@ public class ActivityLogin extends AppCompatActivity{
                 nomeUsuario = usernameEditText.getText().toString();
                 senhaUsuario = passwordEditText.getText().toString();
                 usuarioLogado = dao.valida(nomeUsuario, senhaUsuario);
-                if(usuarioLogado!=null) tem=true;
-                if(tem==false){
+                if (usuarioLogado != null) tem = true;
+                if (tem == false) {
                     Toast.makeText(ActivityLogin.this, "Credenciais Inválidas", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     Intent it = new Intent(ActivityLogin.this, ActivityMain.class);
                     startActivity(it);
                 }
-            }});
+            }
+        });
 
         /*botaoVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,9 +139,29 @@ public class ActivityLogin extends AppCompatActivity{
     }
 
 
+    private boolean conectadoAoServidor() {
+        try{
+            URL myUrl = new URL(configs.getEndereçoHost()+":"+configs.getPortaDeComunicacao()+"/");
+            URLConnection connection = myUrl.openConnection();
+            connection.connect();
+            return true;
+        } catch (Exception e) {
+            AlertDialog dialog = new AlertDialog.Builder(ActivityLogin.this)
+                    .setTitle("Erro de conexão com o servidor:")
+                    .setMessage(String.valueOf(e))
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    }).create();
+            dialog.show();
+            return false;
+        }
+    }
+
     //checa as permissões de localização
     //retorna true se a permissão for concedida e false se não for
-    public boolean checarPermissaodeLocalizacao(){
+    public boolean checarPermissaodeLocalizacao() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -174,9 +209,10 @@ public class ActivityLogin extends AppCompatActivity{
                         startActivity(it);
                     }
                 })
-                .setNegativeButton("NÃO",  new DialogInterface.OnClickListener() {
+                .setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {}
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
                 })
                 .create()
                 .show();
