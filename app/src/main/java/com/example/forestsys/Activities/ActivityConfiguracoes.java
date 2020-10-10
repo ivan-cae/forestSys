@@ -102,6 +102,7 @@ public class ActivityConfiguracoes extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 Intent it = new Intent(ActivityConfiguracoes.this, ActivityLogin.class);
+                                it.putExtra("deslogar", true);
                                 startActivity(it);
                             }
                         })
