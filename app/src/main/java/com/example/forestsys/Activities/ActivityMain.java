@@ -2,6 +2,7 @@ package com.example.forestsys.Activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.forestsys.Adapters.AdaptadorOs;
+import com.example.forestsys.Classes.ClassesAuxiliares.Configs;
 import com.example.forestsys.R;
 import com.example.forestsys.Assets.BaseDeDados;
 import com.example.forestsys.Assets.DAO;
@@ -308,7 +310,22 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.atualizar:
-
+                AlertDialog dialog = new AlertDialog.Builder(ActivityMain.this)
+                        .setTitle("Sincronizar com o servidor irá reiniciar o aplicativo")
+                        .setMessage("Deseja continuar?")
+                        .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent it = new Intent(ActivityMain.this, ActivityInicializacao.class);
+                                startActivity(it);
+                            }
+                        })
+                        .setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                            }
+                        }).create();
+                dialog.show();
                 return true;
             case R.id.logout:
                 new AlertDialog.Builder(this)

@@ -19,11 +19,11 @@ import java.io.Serializable;
                         childColumns = "ID_OPERADOR",
                         onDelete = ForeignKey.NO_ACTION,
                         onUpdate = ForeignKey.NO_ACTION),
-                @ForeignKey(entity = O_S_ATIVIDADES.class,
+                /*@ForeignKey(entity = O_S_ATIVIDADES.class,
                         parentColumns = "ID_PROGRAMACAO_ATIVIDADE",
                         childColumns = "ID_PROGRAMACAO_ATIVIDADE",
                         onDelete = ForeignKey.NO_ACTION,
-                        onUpdate = ForeignKey.NO_ACTION)},
+                        onUpdate = ForeignKey.NO_ACTION)*/},
         primaryKeys = {"ID_PROGRAMACAO_ATIVIDADE", "DATA", "TURNO", "ID_MAQUINA_IMPLEMENTO"})
 
 public class CALIBRAGEM_SUBSOLAGEM implements Serializable {
@@ -53,7 +53,9 @@ public class CALIBRAGEM_SUBSOLAGEM implements Serializable {
     private Double P2_MEDIA;
     private Double P2_DESVIO;
 
-    public CALIBRAGEM_SUBSOLAGEM(int ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, @NonNull String TURNO, int ID_MAQUINA_IMPLEMENTO, int ID_OPERADOR, Double P1_MEDIA, Double P1_DESVIO, Double P2_MEDIA, Double P2_DESVIO) {
+    public CALIBRAGEM_SUBSOLAGEM(int ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, @NonNull String TURNO,
+                                 int ID_MAQUINA_IMPLEMENTO, int ID_OPERADOR, Double P1_MEDIA, Double P1_DESVIO,
+                                 Double P2_MEDIA, Double P2_DESVIO) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.DATA = DATA;
         this.TURNO = TURNO;
@@ -64,6 +66,7 @@ public class CALIBRAGEM_SUBSOLAGEM implements Serializable {
         this.P2_MEDIA = P2_MEDIA;
         this.P2_DESVIO = P2_DESVIO;
     }
+
 
     public int getID_PROGRAMACAO_ATIVIDADE() {
         return ID_PROGRAMACAO_ATIVIDADE;

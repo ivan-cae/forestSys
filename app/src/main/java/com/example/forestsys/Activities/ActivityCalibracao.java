@@ -1141,9 +1141,9 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             Date date2 = sdf.parse(meioDia);
 
             if (date1.before(date2)) {
-                return "Manha";
+                return "MANHA";
             } else {
-                return "Tarde";
+                return "TARDE";
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -1509,6 +1509,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                                                 ferramentas.formataDataDb(ferramentas.dataAtual()), checaTurno(), idMaquinaImplemento,
                                                 idOperador, mediaP1, desvioP1, mediaP2, desvioP2);
                                         try {
+                                            Log.e("DATA CALIBRAÇÃO", ferramentas.formataDataDb(ferramentas.dataAtual()));
                                             dao.insert(calibragem_subsolagem);
                                         }catch(SQLiteConstraintException | NullPointerException ex) {
                                             AlertDialog dialogoErro = new AlertDialog.Builder(ActivityCalibracao.this)

@@ -84,7 +84,7 @@ public interface DAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(OPERADORES operadores);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(O_S_ATIVIDADES_DIA oSAtividadesDia);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -93,7 +93,7 @@ public interface DAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(O_S_ATIVIDADE_INSUMOS o_s_atividade_insumos);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(O_S_ATIVIDADE_INSUMOS_DIA o_s_atividade_insumos_dia);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -280,8 +280,8 @@ public interface DAO {
 
 
     //Scripts Configurações
-@Query("SELECT * FROM Configs WHERE idConfig=1")
-Configs selecionaConfigs();
+    @Query("SELECT * FROM Configs WHERE idConfig=1")
+    Configs selecionaConfigs();
 
     //Scripts GGF_USUARIOS
     @Query("SELECT * FROM GGF_USUARIOS ORDER BY ID_USUARIO asc")
@@ -290,7 +290,7 @@ Configs selecionaConfigs();
     @Query("SELECT * FROM GGF_USUARIOS WHERE ID_USUARIO=:taskId")
     GGF_USUARIOS selecionaUser(int taskId);
 
-    @Query("SELECT * FROM GGF_USUARIOS WHERE DESCRICAO=:taskLogin AND senha=:taskSenha")
+    @Query("SELECT * FROM GGF_USUARIOS WHERE EMAIL=:taskLogin AND senha=:taskSenha")
     GGF_USUARIOS valida(String taskLogin, String taskSenha);
 
     @Query("SELECT * FROM GGF_USUARIOS WHERE EMAIL=:taskLogin")
@@ -432,6 +432,9 @@ Configs selecionaConfigs();
 
     @Query("SELECT * FROM CALIBRAGEM_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg ORDER BY strftime('%d-%m-%Y') DESC")
     List<CALIBRAGEM_SUBSOLAGEM> listaCalibragem(int idProg);
+
+    @Query("SELECT * FROM CALIBRAGEM_SUBSOLAGEM")
+    List<CALIBRAGEM_SUBSOLAGEM> todasCalibragens();
 
 
     //Scripts MAQUINA_IMPLEMENTO
@@ -636,5 +639,5 @@ Configs selecionaConfigs();
             "WHERE AVAL_PONTO_SUBSOLAGEM.ID_ATIVIDADE=:idAtv AND AVAL_PONTO_SUBSOLAGEM.ID_PROGRAMACAO_ATIVIDADE=:idProg AND " +
             "ATIVIDADE_INDICADORES.INDICADOR_CORRIGIVEL=1 AND " +
             "AVAL_PONTO_SUBSOLAGEM.NC_TRATADA=0")
-    int NCNaoTratadas (int idAtv, int idProg);
+    int NCNaoTratadas(int idAtv, int idProg);
 }

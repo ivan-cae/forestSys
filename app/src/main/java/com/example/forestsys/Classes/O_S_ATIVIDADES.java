@@ -1,5 +1,6 @@
 package com.example.forestsys.Classes;
 
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -10,56 +11,57 @@ import java.io.Serializable;
 
 @Entity(
         foreignKeys = {
-        @ForeignKey(entity = GGF_USUARIOS.class,
+                @ForeignKey(entity = GGF_USUARIOS.class,
                         parentColumns = "ID_USUARIO",
                         childColumns = "ID_RESPONSAVEL",
                         onDelete = ForeignKey.NO_ACTION,
                         onUpdate = ForeignKey.NO_ACTION),
-                @ForeignKey(entity = ATIVIDADES.class,
+                /*@ForeignKey(entity = ATIVIDADES.class,
                         parentColumns = "ID_ATIVIDADE",
                         childColumns = "ID_ATIVIDADE",
                         onDelete = ForeignKey.NO_ACTION,
+                        onUpdate = ForeignKey.NO_ACTION),*/
+                @ForeignKey(entity = CADASTRO_FLORESTAL.class,
+                        parentColumns = {"ID_REGIONAL", "ID_SETOR", "TALHAO", "CICLO", "ID_MANEJO"},
+                        childColumns = {"ID_REGIONAL", "ID_SETOR", "TALHAO", "CICLO", "ID_MANEJO"},
+                        onDelete = ForeignKey.NO_ACTION,
                         onUpdate = ForeignKey.NO_ACTION)})
-        @ForeignKey(entity = CADASTRO_FLORESTAL.class,
-                parentColumns = {"ID_REGIONAL", "ID_SETOR", "TALHAO", "CICLO", "ID_MANEJO"},
-                childColumns = {"ID_REGIONAL", "ID_SETOR", "TALHAO", "CICLO", "ID_MANEJO"},
-                onDelete = ForeignKey.NO_ACTION,
-                onUpdate = ForeignKey.NO_ACTION)
 
 
 public class O_S_ATIVIDADES implements Serializable {
 
     @PrimaryKey
     @ColumnInfo(name = "ID_PROGRAMACAO_ATIVIDADE")
-    private int ID_PROGRAMACAO_ATIVIDADE;
+    private Integer ID_PROGRAMACAO_ATIVIDADE;
 
     @ColumnInfo(name = "ID_REGIONAL")
-    private int ID_REGIONAL;
+    private Integer ID_REGIONAL;
 
     @ColumnInfo(name = "ID_SETOR")
-    private int ID_SETOR;
+    private Integer ID_SETOR;
 
     @ColumnInfo(name = "TALHAO")
     private String TALHAO;
 
     @ColumnInfo(name = "CICLO")
-    private int CICLO;
+    private Integer CICLO;
 
     @ColumnInfo(name = "ID_MANEJO")
-    private int ID_MANEJO;
+    private Integer ID_MANEJO;
 
     @ColumnInfo(name = "ID_ATIVIDADE")
-    private int ID_ATIVIDADE;
+    private Integer ID_ATIVIDADE;
 
+    @Nullable
     @ColumnInfo(name = "ID_RESPONSAVEL")
-    private int ID_RESPONSAVEL;
+    private Integer ID_RESPONSAVEL;
 
     private String DATA_PROGRAMADA;
 
     private double AREA_PROGRAMADA;
-    private int PRIORIDADE;
-    private int EXPERIMENTO;
-    private int MADEIRA_NO_TALHAO;
+    private Integer PRIORIDADE;
+    private Integer EXPERIMENTO;
+    private Integer MADEIRA_NO_TALHAO;
     private String OBSERVACAO;
 
     private String DATA_INICIAL;
@@ -70,11 +72,11 @@ public class O_S_ATIVIDADES implements Serializable {
 
     private String STATUS;
 
-    private int STATUS_NUM;
+    private Integer STATUS_NUM;
 
     private boolean EDITOU;
 
-    public O_S_ATIVIDADES(int ID_PROGRAMACAO_ATIVIDADE, int ID_REGIONAL, int ID_SETOR, String TALHAO, int CICLO, int ID_MANEJO, int ID_ATIVIDADE, int ID_RESPONSAVEL, String DATA_PROGRAMADA, double AREA_PROGRAMADA, int PRIORIDADE, int EXPERIMENTO, int MADEIRA_NO_TALHAO, String OBSERVACAO, String DATA_INICIAL, String DATA_FINAL, double AREA_REALIZADA, String STATUS, int STATUS_NUM, boolean EDITOU) {
+    public O_S_ATIVIDADES(Integer ID_PROGRAMACAO_ATIVIDADE, Integer ID_REGIONAL, Integer ID_SETOR, String TALHAO, Integer CICLO, Integer ID_MANEJO, Integer ID_ATIVIDADE, Integer ID_RESPONSAVEL, String DATA_PROGRAMADA, double AREA_PROGRAMADA, Integer PRIORIDADE, Integer EXPERIMENTO, Integer MADEIRA_NO_TALHAO, String OBSERVACAO, String DATA_INICIAL, String DATA_FINAL, double AREA_REALIZADA, String STATUS, Integer STATUS_NUM, boolean EDITOU) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.ID_REGIONAL = ID_REGIONAL;
         this.ID_SETOR = ID_SETOR;
@@ -97,27 +99,27 @@ public class O_S_ATIVIDADES implements Serializable {
         this.EDITOU = EDITOU;
     }
 
-    public int getID_PROGRAMACAO_ATIVIDADE() {
+    public Integer getID_PROGRAMACAO_ATIVIDADE() {
         return ID_PROGRAMACAO_ATIVIDADE;
     }
 
-    public void setID_PROGRAMACAO_ATIVIDADE(int ID_PROGRAMACAO_ATIVIDADE) {
+    public void setID_PROGRAMACAO_ATIVIDADE(Integer ID_PROGRAMACAO_ATIVIDADE) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
     }
 
-    public int getID_REGIONAL() {
+    public Integer getID_REGIONAL() {
         return ID_REGIONAL;
     }
 
-    public void setID_REGIONAL(int ID_REGIONAL) {
+    public void setID_REGIONAL(Integer ID_REGIONAL) {
         this.ID_REGIONAL = ID_REGIONAL;
     }
 
-    public int getID_SETOR() {
+    public Integer getID_SETOR() {
         return ID_SETOR;
     }
 
-    public void setID_SETOR(int ID_SETOR) {
+    public void setID_SETOR(Integer ID_SETOR) {
         this.ID_SETOR = ID_SETOR;
     }
 
@@ -129,35 +131,35 @@ public class O_S_ATIVIDADES implements Serializable {
         this.TALHAO = TALHAO;
     }
 
-    public int getCICLO() {
+    public Integer getCICLO() {
         return CICLO;
     }
 
-    public void setCICLO(int CICLO) {
+    public void setCICLO(Integer CICLO) {
         this.CICLO = CICLO;
     }
 
-    public int getID_MANEJO() {
+    public Integer getID_MANEJO() {
         return ID_MANEJO;
     }
 
-    public void setID_MANEJO(int ID_MANEJO) {
+    public void setID_MANEJO(Integer ID_MANEJO) {
         this.ID_MANEJO = ID_MANEJO;
     }
 
-    public int getID_ATIVIDADE() {
+    public Integer getID_ATIVIDADE() {
         return ID_ATIVIDADE;
     }
 
-    public void setID_ATIVIDADE(int ID_ATIVIDADE) {
+    public void setID_ATIVIDADE(Integer ID_ATIVIDADE) {
         this.ID_ATIVIDADE = ID_ATIVIDADE;
     }
 
-    public int getID_RESPONSAVEL() {
+    public Integer getID_RESPONSAVEL() {
         return ID_RESPONSAVEL;
     }
 
-    public void setID_RESPONSAVEL(int ID_RESPONSAVEL) {
+    public void setID_RESPONSAVEL(Integer ID_RESPONSAVEL) {
         this.ID_RESPONSAVEL = ID_RESPONSAVEL;
     }
 
@@ -177,27 +179,27 @@ public class O_S_ATIVIDADES implements Serializable {
         this.AREA_PROGRAMADA = AREA_PROGRAMADA;
     }
 
-    public int getPRIORIDADE() {
+    public Integer getPRIORIDADE() {
         return PRIORIDADE;
     }
 
-    public void setPRIORIDADE(int PRIORIDADE) {
+    public void setPRIORIDADE(Integer PRIORIDADE) {
         this.PRIORIDADE = PRIORIDADE;
     }
 
-    public int getEXPERIMENTO() {
+    public Integer getEXPERIMENTO() {
         return EXPERIMENTO;
     }
 
-    public void setEXPERIMENTO(int EXPERIMENTO) {
+    public void setEXPERIMENTO(Integer EXPERIMENTO) {
         this.EXPERIMENTO = EXPERIMENTO;
     }
 
-    public int getMADEIRA_NO_TALHAO() {
+    public Integer getMADEIRA_NO_TALHAO() {
         return MADEIRA_NO_TALHAO;
     }
 
-    public void setMADEIRA_NO_TALHAO(int MADEIRA_NO_TALHAO) {
+    public void setMADEIRA_NO_TALHAO(Integer MADEIRA_NO_TALHAO) {
         this.MADEIRA_NO_TALHAO = MADEIRA_NO_TALHAO;
     }
 
@@ -241,11 +243,11 @@ public class O_S_ATIVIDADES implements Serializable {
         this.STATUS = STATUS;
     }
 
-    public int getSTATUS_NUM() {
+    public Integer getSTATUS_NUM() {
         return STATUS_NUM;
     }
 
-    public void setSTATUS_NUM(int STATUS_NUM) {
+    public void setSTATUS_NUM(Integer STATUS_NUM) {
         this.STATUS_NUM = STATUS_NUM;
     }
 
