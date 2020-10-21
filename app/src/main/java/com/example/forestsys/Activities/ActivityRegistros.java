@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -55,7 +56,7 @@ import static com.example.forestsys.Activities.ActivityAtividades.editouRegistro
 import static com.example.forestsys.Activities.ActivityAtividades.joinOsInsumos;
 import static com.example.forestsys.Activities.ActivityAtividades.listaJoinOsInsumosSelecionados;
 import static com.example.forestsys.Activities.ActivityAtividades.oSAtividadesDiaAtual;
-import static com.example.forestsys.Activities.ActivityLogin.nomeEmpresaPref;
+import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresaPref;
 import static com.example.forestsys.Activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
 import static com.example.forestsys.Activities.FragmentoInsumos.obsInsumo1;
@@ -93,7 +94,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     public static ViewModelO_S_ATIVIDADES_DIA viewModelOSAtividadesDia;
     private Ferramentas ferramentas;
     public static String dataDoApontamento;
-    private String acaoInativoAtividade = null;
+    private String acaoInativo = null;
 
     private BaseDeDados baseDeDados;
     private static DAO dao;
@@ -144,6 +145,9 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     private boolean erroGeral = false;
     private boolean edicaoReg = false;
 
+    private Integer idOriginalApontamentoEditado;
+    private String regDescarregado;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -154,7 +158,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         if (savedInstanceState != null) {
             dataDoApontamento = savedInstanceState.getString("data");
             dataApontamento.setText(dataDoApontamento);
-            acaoInativoAtividade = savedInstanceState.getString("acaoInativoAtividade");
+            acaoInativo = savedInstanceState.getString("acaoInativo");
             abriuDialogoEdicao = savedInstanceState.getBoolean("abriuDialogoEdicao");
             editouRegistro = savedInstanceState.getBoolean("editouRegistro");
             if (abriuDialogoEdicao == true) abreDialogoEdicaoReg();
@@ -823,21 +827,20 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
             if (!hme.isEmpty() && !hme.equals(oSAtividadesDiaAtual.getHM_ESCAVADEIRA()))
                 edicaoReg = true;
-
-            if (edicaoReg == true) {
-                acaoInativoAtividade = "EDICAO";
-            }
         }
     }
 
     //Persiste os dados no DB
     public void salva() {
+        O_S_ATIVIDADES_DIA aux = new O_S_ATIVIDADES_DIA();
+        aux = null;
+
+        if(editouRegistro == true) aux = oSAtividadesDiaAtual;
 
         if (oSAtividadesDiaAtual != null && oSAtividadesDiaAtual.getDATA() != dataDoApontamento) {
-            O_S_ATIVIDADES_DIA aux = oSAtividadesDiaAtual;
+            aux = oSAtividadesDiaAtual;
 
             dao.apagaOsAtividadeInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), aux.getDATA());
-
             viewModelOSAtividadesDia.delete(aux);
         }
 
@@ -879,40 +882,53 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         oSAtividadesDiaAtual.setID_RESPONSAVEL(posicaoResponsavel);
         oSAtividadesDiaAtual.setID_PROGRAMACAO_ATIVIDADE(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
         oSAtividadesDiaAtual.setDATA(ferramentas.formataDataDb(dataDoApontamento));
-        if (acaoInativoAtividade != null)
-            oSAtividadesDiaAtual.setACAO_INATIVO(acaoInativoAtividade);
 
+        if (editouRegistro == true) {
+            acaoInativo = "EDICAO";
+        }
+
+        oSAtividadesDiaAtual.setACAO_INATIVO(acaoInativo);
         if (obs != null) {
             if (!obs.isEmpty()) oSAtividadesDiaAtual.setOBSERVACAO(obs);
+        }
+
+        oSAtividadesDiaAtual.setREGISTRO_DESCARREGADO("N");
+        oSAtividadesDiaAtual.setSTATUS("A");
+
+        if (aux != null) {
+            if (aux.getID() != null) oSAtividadesDiaAtual.setID(aux.getID());
+            if (aux.getREGISTRO_DESCARREGADO() != null) oSAtividadesDiaAtual.setREGISTRO_DESCARREGADO(aux.getREGISTRO_DESCARREGADO());
         }
 
         if (editouRegistro == false) {
             listaJoinOsInsumosSelecionados.get(0).setOBSERVACAO(obsInsumo1.getText().toString());
             listaJoinOsInsumosSelecionados.get(1).setOBSERVACAO(obsInsumo2.getText().toString());
         }
-try {
-    for (int i = 0; i < listaJoinOsInsumosSelecionados.size(); i++) {
-        Join_OS_INSUMOS persiste = listaJoinOsInsumosSelecionados.get(i);
-        dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), ferramentas.formataDataDb(dataDoApontamento),
-                persiste.getID_INSUMO(), persiste.getQTD_APLICADO(), null, '0', persiste.getOBSERVACAO()));
-    }
-}catch(SQLiteConstraintException | NullPointerException ex){
-    AlertDialog dialogoErro = new AlertDialog.Builder(ActivityRegistros.this)
-            .setTitle("Erro 101")
-            .setMessage("Houve um problema ao salvar a calibração.")
-            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                }
-            }).create();
-    dialogoErro.show();
-}
-        dao.update(osSelecionada);
-        try{
-            viewModelOSAtividadesDia.insert(oSAtividadesDiaAtual);
-        }catch(SQLiteConstraintException | NullPointerException ex){
+        try {
+            for (int i = 0; i < listaJoinOsInsumosSelecionados.size(); i++) {
+                Join_OS_INSUMOS persiste = listaJoinOsInsumosSelecionados.get(i);
+                dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), ferramentas.formataDataDb(dataDoApontamento),
+                        persiste.getID_INSUMO(), persiste.getQTD_APLICADO(), null, '0', persiste.getOBSERVACAO()));
+            }
+        } catch (SQLiteConstraintException | NullPointerException ex) {
             AlertDialog dialogoErro = new AlertDialog.Builder(ActivityRegistros.this)
                     .setTitle("Erro 101")
+                    .setMessage("Houve um problema ao salvar a calibração.")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    }).create();
+            dialogoErro.show();
+        }
+        dao.update(osSelecionada);
+        try {
+            viewModelOSAtividadesDia.insert(oSAtividadesDiaAtual);
+            Log.e("AcaoInatividade", oSAtividadesDiaAtual.getACAO_INATIVO());
+
+        } catch (SQLiteConstraintException | NullPointerException ex) {
+            AlertDialog dialogoErro = new AlertDialog.Builder(ActivityRegistros.this)
+                    .setTitle("Erro")
                     .setMessage("Houve um problema ao salvar a calibração.")
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
@@ -966,35 +982,35 @@ try {
 
     //Retorna false se não houver nenhum item preenchido ou true se houver
     public boolean algumItemPreenchido() {
-        if(osSelecionada.getSTATUS_NUM() == 2) return false;
+        if (osSelecionada.getSTATUS_NUM() == 2) return false;
 
         if (posicaoResponsavel != -1) return true;
         if (posicaoPrestador != -1) return true;
 
 
         if (areaRealizadaApontamento != null) {
-            if (areaRealizadaApontamento.length()!=0) return true;
+            if (areaRealizadaApontamento.length() != 0) return true;
         }
         if (HOApontamento != null) {
-            if (HOApontamento.length()!=0) return true;
+            if (HOApontamento.length() != 0) return true;
         }
         if (HMApontamento != null) {
-            if (HMApontamento.length()!=0) return true;
+            if (HMApontamento.length() != 0) return true;
         }
         if (HHApontamento != null) {
-            if (HHApontamento.length()!=0) return true;
+            if (HHApontamento.length() != 0) return true;
         }
         if (HOEscavadeiraApontamento != null) {
-            if (HOEscavadeiraApontamento.length()!=0) return true;
+            if (HOEscavadeiraApontamento.length() != 0) return true;
         }
         if (HMEscavadeiraApontamento != null) {
-            if (HMEscavadeiraApontamento.length()!=0) return true;
+            if (HMEscavadeiraApontamento.length() != 0) return true;
         }
         if (obsApontamento != null) {
-            if (obsApontamento.length()!=0) return true;
+            if (obsApontamento.length() != 0) return true;
         }
 
-        if(listaJoinOsInsumosSelecionados.size()>0) {
+        if (listaJoinOsInsumosSelecionados.size() > 0) {
             if (listaJoinOsInsumosSelecionados.get(0).getQTD_APLICADO() != 0) return true;
             if (listaJoinOsInsumosSelecionados.get(1).getQTD_APLICADO() != 0) return true;
         }
@@ -1128,7 +1144,7 @@ try {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("data", dataDoApontamento);
-        outState.putString("acaoInativoAtividade", acaoInativoAtividade);
+        outState.putString("acaoInativo", acaoInativo);
 
         outState.putBoolean("abriuDialogoEdicao", abriuDialogoEdicao);
         outState.putBoolean("editouRegistro", editouRegistro);

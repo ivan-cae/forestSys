@@ -1,8 +1,14 @@
 package com.example.forestsys.Activities;
 
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -26,6 +33,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.forestsys.Adapters.AdaptadorOs;
+import com.example.forestsys.Assets.ClienteWeb;
 import com.example.forestsys.Classes.ClassesAuxiliares.Configs;
 import com.example.forestsys.R;
 import com.example.forestsys.Assets.BaseDeDados;
@@ -35,11 +43,17 @@ import com.example.forestsys.Calculadora.CalculadoraMain;
 import com.example.forestsys.Classes.O_S_ATIVIDADES;
 import com.google.android.material.navigation.NavigationView;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.util.List;
 
-import static com.example.forestsys.Activities.ActivityLogin.nomeEmpresaPref;
+import static com.example.forestsys.Activities.ActivityInicializacao.HOST_PORTA;
+import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresaPref;
 import static com.example.forestsys.Activities.ActivityLogin.usuarioLogado;
-
+import static com.example.forestsys.Assets.ClienteWeb.contadorDeErros;
+import static com.example.forestsys.Assets.ClienteWeb.finalizouSinc;
+import static com.example.forestsys.Activities.ActivityInicializacao.conectado;
 
 public class ActivityMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -60,11 +74,12 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
     private boolean ordenaTalhaoBool = false;
     private SearchView sv = null;
     private NDSpinner spinnerPrioridade;
-    private String[] filtragemPrioridade = new String[]{"Nenhuma", "Baixa", "Média", "Alta"};
+    private String[] filtragemPrioridade = new String[]{"Todas", "Baixa", "Média", "Alta", "Nenhuma"};
     private int posicaoSpinnerPrioridade;
     private String dadosSearchView;
-    String setaAsc = " ▲";
-    String setaDesc = " ▼";
+    private String setaAsc = " ▲";
+    private String setaDesc = " ▼";
+    private ProgressDialog dialogoProgresso;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +87,12 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
 
         setContentView(R.layout.activity_main);
         setTitle(nomeEmpresaPref);
+
+        dialogoProgresso = new ProgressDialog(ActivityMain.this);
+        dialogoProgresso.setTitle("Sincronizando com o servidor");
+        dialogoProgresso.setMessage("Aguarde um momento...");
+        dialogoProgresso.setCancelable(false);
+        dialogoProgresso.setCanceledOnTouchOutside(false);
 
         osSelecionada = null;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
@@ -274,6 +295,8 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                 dialogoVoltar();
             }
         });
+
+
     }
 
     //Abre caixa de diálogo perguntando se o usuário deseja realmente voltar para a tela anterior
@@ -306,18 +329,100 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    @SuppressLint("StaticFieldLeak")
+    private void checaFimDaSinc(){
+        if (temRede() == true) {
+
+            dialogoProgresso.show();
+
+            new AsyncTask<Void, Void, Void>() {
+
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
+                }
+
+                @Override
+                protected Void doInBackground(Void... params) {
+                    while (finalizouSinc==false){}
+                    return null;
+                }
+
+                @SuppressLint("StaticFieldLeak")
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    if(conectado == true){
+                        if(dialogoProgresso.isShowing()) {
+                            dialogoProgresso.dismiss();
+                        }
+                        String s = "Sincronizado com " + HOST_PORTA;
+                        if(contadorDeErros>0) s = "Houveram erros na sincronização, favor comunicar ao responsável.";
+                        Toast.makeText(ActivityMain.this,s , Toast.LENGTH_LONG).show();
+                        Intent it = new Intent(ActivityMain.this, ActivityMain.class);
+                        startActivity(it);
+                    }else{
+                        if(dialogoProgresso.isShowing()) {
+                            dialogoProgresso.dismiss();
+                        }
+                        @SuppressLint("StaticFieldLeak") AlertDialog dialog = new AlertDialog.Builder(ActivityMain.this)
+                                .setTitle("Erro de conexão com o host.")
+                                .setMessage("Possíveis causas:\n" +
+                                        "Dispositivo offline\n" +
+                                        "Servidor offline\n" +
+                                        "Host Não encontrado\n" +
+                                        "Porta não encontrada")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                }).create();
+                        dialog.show();
+                    }                    super.onPostExecute(aVoid);
+                }
+            }.execute();
+
+        }else{
+            AlertDialog dialog = new AlertDialog.Builder(ActivityMain.this)
+                    .setTitle("Erro de rede.")
+                    .setMessage("Não há conexão com a internet.")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    }).create();
+            dialog.show();
+        }
+    }
+    private boolean temRede() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.atualizar:
                 AlertDialog dialog = new AlertDialog.Builder(ActivityMain.this)
-                        .setTitle("Sincronizar com o servidor irá reiniciar o aplicativo")
-                        .setMessage("Deseja continuar?")
+                        .setTitle("Sincronizar")
+                        .setMessage("Deseja sincronizar com o servidor ?")
                         .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent it = new Intent(ActivityMain.this, ActivityInicializacao.class);
-                                startActivity(it);
+                                ClienteWeb clienteWeb = new ClienteWeb(getApplicationContext());
+                                try {
+                                    clienteWeb.sincronizaWebService();
+                                } catch (JSONException | IOException e) {
+                                    finalizouSinc = true;
+                                    conectado = false;
+                                    e.printStackTrace();
+                                }
+
+                                checaFimDaSinc();
                             }
                         })
                         .setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
@@ -381,6 +486,14 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(dialogoProgresso.isShowing()) {
+            dialogoProgresso.dismiss();
         }
     }
 

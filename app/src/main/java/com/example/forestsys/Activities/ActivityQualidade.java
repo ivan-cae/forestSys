@@ -59,7 +59,7 @@ import static android.view.View.GONE;
 import static com.example.forestsys.Activities.ActivityAtividades.joinOsInsumos;
 import static com.example.forestsys.Activities.ActivityAtividades.listaCorrecoes;
 import static com.example.forestsys.Activities.ActivityAtividades.listaPontosCorrecaoAux;
-import static com.example.forestsys.Activities.ActivityLogin.nomeEmpresaPref;
+import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresaPref;
 import static com.example.forestsys.Activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
 

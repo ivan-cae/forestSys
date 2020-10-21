@@ -38,13 +38,17 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
+
+import static com.example.forestsys.Activities.ActivityInicializacao.conectado;
+import static com.example.forestsys.Assets.ClienteWeb.contadorDeErros;
 import static com.example.forestsys.Assets.ClienteWeb.finalizouSinc;
+import static com.example.forestsys.Activities.ActivityInicializacao.HOST_PORTA;
+import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresaPref;
 
 public class ActivityLogin extends AppCompatActivity {
 
     private final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
-    public static String nomeEmpresaPref;
     public static GGF_USUARIOS usuarioLogado = null;
 
     private String nomeUsuario;
@@ -56,10 +60,7 @@ public class ActivityLogin extends AppCompatActivity {
     private ImageButton configButton;
     private DAO dao;
     private BaseDeDados baseDeDados;
-    public static boolean conectado;
-    public static String HOST_PORTA;
 
-    private ClienteWeb clienteWeb;
 
 private ProgressDialog dialogoProgresso;
     @Override
@@ -71,6 +72,11 @@ private ProgressDialog dialogoProgresso;
             finishAffinity();
             moveTaskToBack(true);
         }
+        dialogoProgresso = new ProgressDialog(ActivityLogin.this);
+        dialogoProgresso.setTitle("Sincronizando com o servidor");
+        dialogoProgresso.setMessage("Aguarde um momento...");
+        dialogoProgresso.setCancelable(false);
+        dialogoProgresso.setCanceledOnTouchOutside(false);
 
         usernameEditText = findViewById(R.id.username);
         passwordEditText = findViewById(R.id.password);
@@ -78,17 +84,15 @@ private ProgressDialog dialogoProgresso;
         configButton = findViewById(R.id.botao_config);
         checarPermissaodeLocalizacao();
 
-        baseDeDados = BaseDeDados.getInstance(getApplicationContext());
-        dao = baseDeDados.dao();
+            baseDeDados = BaseDeDados.getInstance(getApplicationContext());
+            dao = baseDeDados.dao();
 
-        if (dao.selecionaConfigs() == null) {
-            dao.insert(new Configs(1, "GELF", "http://sateliteinfo.ddns.net", "3333"));
-        }
-        Configs configs = dao.selecionaConfigs();
-        HOST_PORTA = configs.getEndereçoHost() + ":" + configs.getPortaDeComunicacao() + "/";
+            if (dao.selecionaConfigs() == null) {
+                dao.insert(new Configs(1, "GELF", "http://sateliteinfo.ddns.net", "3333"));
+            }
+            Configs configs = dao.selecionaConfigs();
+            HOST_PORTA = configs.getEndereçoHost() + ":" + configs.getPortaDeComunicacao() + "/";
         nomeEmpresaPref = configs.getNomeEmpresa();
-
-        clienteWeb = new ClienteWeb(getApplicationContext());
 
         configButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,10 +119,6 @@ private ProgressDialog dialogoProgresso;
             }
         });
 
-        if (it.hasExtra("deslogar")) {
-            usuarioLogado = null;
-        }
-
         /*botaoVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,20 +142,17 @@ private ProgressDialog dialogoProgresso;
                         .show();
             }
         });*/
-        if (temRede() == true) {
-            try {
-                clienteWeb.sincronizaWebService();
-            } catch (JSONException | IOException e) {
-                finalizouSinc = true;
-                conectado = false;
-                e.printStackTrace();
-            }
+        if (it.hasExtra("deslogar")) {
+            usuarioLogado = null;
+        }else {
+            checaFimDaSinc();
+        }
+        }
 
-            dialogoProgresso = new ProgressDialog(ActivityLogin.this);
-            dialogoProgresso.setTitle("Sincronizando com o servidor");
-            dialogoProgresso.setMessage("Aguarde um momento...");
-            dialogoProgresso.setCancelable(false);
-            dialogoProgresso.setCanceledOnTouchOutside(false);
+    @SuppressLint("StaticFieldLeak")
+    private void checaFimDaSinc(){
+        if (temRede() == true) {
+
             dialogoProgresso.show();
 
             new AsyncTask<Void, Void, Void>() {
@@ -171,12 +168,15 @@ private ProgressDialog dialogoProgresso;
                     return null;
                 }
 
+                @SuppressLint("StaticFieldLeak")
                 @Override
                 protected void onPostExecute(Void aVoid) {
                     if(conectado == true){
                         dialogoProgresso.dismiss();
-                        Toast.makeText(ActivityLogin.this, "Sincronizado com " +
-                                HOST_PORTA, Toast.LENGTH_LONG).show();
+                        String s = "Sincronizado com " + HOST_PORTA;
+                        if(contadorDeErros>0) s = "Houveram erros na sincronização, favor comunicar ao responsável.";
+
+                        Toast.makeText(ActivityLogin.this, s, Toast.LENGTH_LONG).show();
                     }else{
                         dialogoProgresso.dismiss();
                         @SuppressLint("StaticFieldLeak") AlertDialog dialog = new AlertDialog.Builder(ActivityLogin.this)
@@ -209,8 +209,7 @@ private ProgressDialog dialogoProgresso;
         }
     }
 
-
-    public boolean temRede() {
+    private boolean temRede() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnectedOrConnecting()) {

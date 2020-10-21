@@ -1,6 +1,7 @@
 package com.example.forestsys.Adapters;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,7 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
             if(auxString.contains(",")) auxString = auxString.replace(",", ".");
 
             double auxDouble = NULL;
+            Log.e("Valor auxString area", area);
             auxDouble = Double.valueOf(auxString);
             if(auxDouble != NULL) {
                 holder.QTDRec.setText(String.valueOf(insumo.getQTD_HA_RECOMENDADO() * auxDouble).replace('.', ','));

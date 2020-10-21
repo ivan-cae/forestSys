@@ -74,9 +74,11 @@ public class O_S_ATIVIDADES implements Serializable {
 
     private Integer STATUS_NUM;
 
-    private boolean EDITOU;
-
-    public O_S_ATIVIDADES(Integer ID_PROGRAMACAO_ATIVIDADE, Integer ID_REGIONAL, Integer ID_SETOR, String TALHAO, Integer CICLO, Integer ID_MANEJO, Integer ID_ATIVIDADE, Integer ID_RESPONSAVEL, String DATA_PROGRAMADA, double AREA_PROGRAMADA, Integer PRIORIDADE, Integer EXPERIMENTO, Integer MADEIRA_NO_TALHAO, String OBSERVACAO, String DATA_INICIAL, String DATA_FINAL, double AREA_REALIZADA, String STATUS, Integer STATUS_NUM, boolean EDITOU) {
+    public O_S_ATIVIDADES(Integer ID_PROGRAMACAO_ATIVIDADE, Integer ID_REGIONAL, Integer ID_SETOR, String TALHAO,
+                          Integer CICLO, Integer ID_MANEJO, Integer ID_ATIVIDADE, Integer ID_RESPONSAVEL,
+                          String DATA_PROGRAMADA, double AREA_PROGRAMADA, Integer PRIORIDADE, Integer EXPERIMENTO,
+                          Integer MADEIRA_NO_TALHAO, String OBSERVACAO, String DATA_INICIAL, String DATA_FINAL,
+                          double AREA_REALIZADA, String STATUS, Integer STATUS_NUM) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.ID_REGIONAL = ID_REGIONAL;
         this.ID_SETOR = ID_SETOR;
@@ -96,7 +98,6 @@ public class O_S_ATIVIDADES implements Serializable {
         this.AREA_REALIZADA = AREA_REALIZADA;
         this.STATUS = STATUS;
         this.STATUS_NUM = STATUS_NUM;
-        this.EDITOU = EDITOU;
     }
 
     public Integer getID_PROGRAMACAO_ATIVIDADE() {
@@ -249,13 +250,5 @@ public class O_S_ATIVIDADES implements Serializable {
 
     public void setSTATUS_NUM(Integer STATUS_NUM) {
         this.STATUS_NUM = STATUS_NUM;
-    }
-
-    public boolean isEDITOU() {
-        return EDITOU;
-    }
-
-    public void setEDITOU(boolean EDITOU) {
-        this.EDITOU = EDITOU;
     }
 }

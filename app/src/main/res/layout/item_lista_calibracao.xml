@@ -11,7 +11,7 @@
         android:layout_width="70dp"
         android:layout_height="15dp"
         android:textAlignment="center"
-        android:textSize="12sp"
+        android:textSize="10sp"
         android:textStyle="normal"
         app:layout_constraintStart_toEndOf="@+id/item_calibragem_implemento"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,7 +21,7 @@
         android:layout_width="40dp"
         android:layout_height="15dp"
         android:textAlignment="center"
-        android:textSize="12sp"
+        android:textSize="10sp"
         android:textStyle="normal"
         app:layout_constraintStart_toEndOf="@+id/item_calibragem_data"
         app:layout_constraintTop_toTopOf="parent" />
@@ -31,7 +31,7 @@
         android:layout_width="88dp"
         android:layout_height="15dp"
         android:textAlignment="center"
-        android:textSize="12sp"
+        android:textSize="10sp"
         android:textStyle="normal"
         app:layout_constraintStart_toEndOf="@+id/item_calibragem_maquina"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +41,7 @@
         android:layout_width="65dp"
         android:layout_height="15dp"
         android:textAlignment="center"
-        android:textSize="12sp"
+        android:textSize="10sp"
         android:textStyle="normal"
         app:layout_constraintStart_toEndOf="@+id/item_calibragem_operador"
         app:layout_constraintTop_toTopOf="parent" />
@@ -51,7 +51,7 @@
         android:layout_width="65dp"
         android:layout_height="15dp"
         android:textAlignment="center"
-        android:textSize="12sp"
+        android:textSize="10sp"
         android:textStyle="normal"
         app:layout_constraintStart_toEndOf="@+id/item_calibragem_p1_media"
         app:layout_constraintTop_toTopOf="parent" />
@@ -61,7 +61,7 @@
         android:layout_width="65dp"
         android:layout_height="15dp"
         android:textAlignment="center"
-        android:textSize="12sp"
+        android:textSize="10sp"
         android:textStyle="normal"
         app:layout_constraintStart_toEndOf="@+id/item_calibragem_p2_media"
         app:layout_constraintTop_toTopOf="parent" />
@@ -72,7 +72,7 @@
         android:layout_height="15dp"
         android:layout_marginEnd="9dp"
         android:textAlignment="center"
-        android:textSize="12sp"
+        android:textSize="10sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/item_calibragem_p1_desvio"
@@ -83,7 +83,7 @@
         android:layout_width="60dp"
         android:layout_height="15dp"
         android:textAlignment="center"
-        android:textSize="12sp"
+        android:textSize="10sp"
         android:textStyle="normal"
         app:layout_constraintStart_toEndOf="@+id/item_calibragem_turno"
         app:layout_constraintTop_toTopOf="parent" />
@@ -94,7 +94,7 @@
         android:layout_height="15dp"
         android:layout_marginStart="8dp"
         android:textAlignment="center"
-        android:textSize="12sp"
+        android:textSize="10sp"
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

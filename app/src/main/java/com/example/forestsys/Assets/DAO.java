@@ -60,7 +60,7 @@ public interface DAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(MATERIAL_GENETICO material_genetico);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(O_S_ATIVIDADES o_s_atividades);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -84,7 +84,7 @@ public interface DAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(OPERADORES operadores);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(O_S_ATIVIDADES_DIA oSAtividadesDia);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -466,6 +466,8 @@ public interface DAO {
     @Query("SELECT * FROM O_S_ATIVIDADES_DIA")
     List<O_S_ATIVIDADES_DIA> todasOsAtividadesDia();
 
+    @Query("SELECT * FROM O_S_ATIVIDADES_DIA WHERE ID=:idOracle")
+    O_S_ATIVIDADES_DIA selecionaAtvDiaOracle(int idOracle);
 
     //Scritps INSUMOS
     @Query("SELECT * FROM INSUMOS WHERE ID_INSUMO=:id")

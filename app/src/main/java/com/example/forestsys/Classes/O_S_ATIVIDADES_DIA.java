@@ -30,19 +30,19 @@ import java.io.Serializable;
 public class O_S_ATIVIDADES_DIA implements Serializable {
     @NonNull
     @ColumnInfo(name="ID_PROGRAMACAO_ATIVIDADE")
-    private int ID_PROGRAMACAO_ATIVIDADE;
+    private Integer ID_PROGRAMACAO_ATIVIDADE;
 
     @NonNull
     @ColumnInfo(name = "DATA")
     private String DATA;
 
     @ColumnInfo(name = "ID_PRESTADOR")
-    private int ID_PRESTADOR;
+    private Integer ID_PRESTADOR;
 
     @ColumnInfo(name = "ID_RESPONSAVEL")
-    private int ID_RESPONSAVEL;
+    private Integer ID_RESPONSAVEL;
 
-    private char STATUS;
+    private String STATUS;
     private String AREA_REALIZADA;
     private String HH;
     private String HM;
@@ -50,18 +50,19 @@ public class O_S_ATIVIDADES_DIA implements Serializable {
     private String HM_ESCAVADEIRA;
     private String HO_ESCAVADEIRA;
     private String OBSERVACAO;
-    private char REGISTRO_DESCARREGADO;
+    private String REGISTRO_DESCARREGADO;
     private String ACAO_INATIVO;
+    private Integer ID;
 
     public O_S_ATIVIDADES_DIA() {
     }
 
     @NonNull
-    public int getID_PROGRAMACAO_ATIVIDADE() {
+    public Integer getID_PROGRAMACAO_ATIVIDADE() {
         return ID_PROGRAMACAO_ATIVIDADE;
     }
 
-    public void setID_PROGRAMACAO_ATIVIDADE(@NonNull int ID_PROGRAMACAO_ATIVIDADE) {
+    public void setID_PROGRAMACAO_ATIVIDADE(@NonNull Integer ID_PROGRAMACAO_ATIVIDADE) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
     }
 
@@ -74,27 +75,27 @@ public class O_S_ATIVIDADES_DIA implements Serializable {
         this.DATA = DATA;
     }
 
-    public int getID_PRESTADOR() {
+    public Integer getID_PRESTADOR() {
         return ID_PRESTADOR;
     }
 
-    public void setID_PRESTADOR(int ID_PRESTADOR) {
+    public void setID_PRESTADOR(Integer ID_PRESTADOR) {
         this.ID_PRESTADOR = ID_PRESTADOR;
     }
 
-    public int getID_RESPONSAVEL() {
+    public Integer getID_RESPONSAVEL() {
         return ID_RESPONSAVEL;
     }
 
-    public void setID_RESPONSAVEL(int ID_RESPONSAVEL) {
+    public void setID_RESPONSAVEL(Integer ID_RESPONSAVEL) {
         this.ID_RESPONSAVEL = ID_RESPONSAVEL;
     }
 
-    public char getSTATUS() {
+    public String getSTATUS() {
         return STATUS;
     }
 
-    public void setSTATUS(char STATUS) {
+    public void setSTATUS(String STATUS) {
         this.STATUS = STATUS;
     }
 
@@ -154,11 +155,11 @@ public class O_S_ATIVIDADES_DIA implements Serializable {
         this.OBSERVACAO = OBSERVACAO;
     }
 
-    public char getREGISTRO_DESCARREGADO() {
+    public String getREGISTRO_DESCARREGADO() {
         return REGISTRO_DESCARREGADO;
     }
 
-    public void setREGISTRO_DESCARREGADO(char REGISTRO_DESCARREGADO) {
+    public void setREGISTRO_DESCARREGADO(String REGISTRO_DESCARREGADO) {
         this.REGISTRO_DESCARREGADO = REGISTRO_DESCARREGADO;
     }
 
@@ -168,5 +169,13 @@ public class O_S_ATIVIDADES_DIA implements Serializable {
 
     public void setACAO_INATIVO(String ACAO_INATIVO) {
         this.ACAO_INATIVO = ACAO_INATIVO;
+    }
+
+    public Integer getID() {
+        return ID;
+    }
+
+    public void setID(Integer ID) {
+        this.ID = ID;
     }
 }

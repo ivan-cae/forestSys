@@ -25,7 +25,7 @@ import com.google.android.material.navigation.NavigationView;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import static com.example.forestsys.Activities.ActivityLogin.nomeEmpresaPref;
+import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresaPref;
 import static com.example.forestsys.Activities.ActivityLogin.usuarioLogado;
 
 public class ActivityDashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {

@@ -40,6 +40,7 @@ import static com.example.forestsys.Activities.ActivityAtividades.oSAtividadesDi
 import static com.example.forestsys.Activities.ActivityAtividades.obs;
 import static com.example.forestsys.Activities.ActivityAtividades.area;
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
+import static com.example.forestsys.Activities.ActivityRegistros.auxSavedInstanceState;
 import static com.example.forestsys.Activities.ActivityRegistros.viewModelOSAtividadesDia;
 
 public class FragmentoRendimento extends Fragment {
@@ -114,7 +115,7 @@ public class FragmentoRendimento extends Fragment {
                     spinnerPrestador.setAdapter(adapterPrestadores);
                     spinnerPrestador.setSelection(posicaoPrestador);
                 }
-            }else{
+            }if(auxSavedInstanceState==null && editouRegistro==false){
                 areaRealizadaApontamento.getText().clear();
                 HOEscavadeiraApontamento.getText().clear();
                 HOApontamento.getText().clear();
@@ -206,7 +207,7 @@ public class FragmentoRendimento extends Fragment {
             }
         });
 
-       obsApontamento.addTextChangedListener(new TextWatcher() {
+        obsApontamento.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start,
                                           int count, int after) {

@@ -57,7 +57,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.forestsys.Activities.ActivityCalibracao.checaTurno;
-import static com.example.forestsys.Activities.ActivityLogin.nomeEmpresaPref;
+import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresaPref;
 import static com.example.forestsys.Activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
 
@@ -133,7 +133,7 @@ public class ActivityAtividades extends AppCompatActivity
 
     private List<AVAL_PONTO_SUBSOLAGEM> listaPonto;
     private int qtdPontos;
-
+    public static Integer idAtividadesDiaOriginal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,10 +148,10 @@ public class ActivityAtividades extends AppCompatActivity
         ferramentas = new Ferramentas();
         oSAtividadesDiaAtual = null;
         editouRegistro = false;
+        idAtividadesDiaOriginal = null;
         editouInsumo1 = false;
         editouInsumo2 = false;
         insumoInsere = null;
-
 
         listaJoinOsInsumosSelecionados = new ArrayList<Join_OS_INSUMOS>();
 
@@ -228,18 +228,10 @@ public class ActivityAtividades extends AppCompatActivity
             if (abriuDialogoQtdPontos == true) abreDialogoJustificativaQtdPontos();
         }
 
-        if (osSelecionada.isEDITOU() == false) checaCalibracao();
+        checaCalibracao();
 
         if (osSelecionada.getSTATUS_NUM() != 2) {
-            if (osSelecionada.isEDITOU() == false) checaCalibragemRegistro();
-        }
-
-        if (osSelecionada.getSTATUS_NUM() == 2) {
-            if (osSelecionada.isEDITOU() == false) {
-                botaoFinalizarOs.setVisibility(View.VISIBLE);
-                botaoFinalizarOs.setEnabled(true);
-                botaoFinalizarOs.setBackgroundColor(Color.parseColor("#32CD32"));
-            }
+            checaCalibragemRegistro();
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detalhes);
@@ -259,20 +251,6 @@ public class ActivityAtividades extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        if (osSelecionada.isEDITOU() == true) {
-            botaoQualidade.setEnabled(true);
-            botaoQualidade.setBackgroundColor(Color.parseColor("#75A9EB"));
-
-            botaoCalibracao.setEnabled(true);
-            botaoCalibracao.setBackgroundColor(Color.parseColor("#75A9EB"));
-
-            botaoRegistros.setEnabled(true);
-            botaoRegistros.setBackgroundColor(Color.parseColor("#75A9EB"));
-
-            botaoFinalizarOs.setVisibility(View.VISIBLE);
-            botaoFinalizarOs.setEnabled(true);
-            botaoFinalizarOs.setBackgroundColor(Color.parseColor("#32CD32"));
-        }
 
         if (osSelecionada.getSTATUS_NUM() == 2) {
             botaoQualidade.setEnabled(true);
@@ -486,7 +464,6 @@ public class ActivityAtividades extends AppCompatActivity
         osSelecionada.setSTATUS_NUM(2);
         osSelecionada.setSTATUS("Finalizado");
         osSelecionada.setDATA_FINAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
-        osSelecionada.setEDITOU(false);
         dao.update(osSelecionada);
         Toast.makeText(ActivityAtividades.this, "Atividade Finalizada Com Sucesso!", Toast.LENGTH_LONG).show();
         Intent it = new Intent(ActivityAtividades.this, ActivityMain.class);
@@ -528,7 +505,6 @@ public class ActivityAtividades extends AppCompatActivity
                     osSelecionada.setOBSERVACAO(obs);
                     osSelecionada.setSTATUS("Andamento");
                     osSelecionada.setSTATUS_NUM(1);
-                    osSelecionada.setEDITOU(true);
                     dao.update(osSelecionada);
 
                     startActivity(new Intent(ActivityAtividades.this, ActivityAtividades.class));

@@ -25,6 +25,7 @@ android {
         includeInApk true
         includeInBundle true
     }
+    ndkVersion '20.1.5948944'
 }
 
 dependencies {

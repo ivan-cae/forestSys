@@ -38,6 +38,7 @@ public class O_S_ATIVIDADE_INSUMOS_DIA implements Serializable {
     private String ACAO_INATIVO;
     private char REGISTRO_DESCARREGADO;
     private String OBSERVACAO;
+    private int ID;
 
     public O_S_ATIVIDADE_INSUMOS_DIA(int ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, int ID_INSUMO, double QTD_APLICADO, String ACAO_INATIVO, char REGISTRO_DESCARREGADO, String OBSERVACAO) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
@@ -106,6 +107,12 @@ public class O_S_ATIVIDADE_INSUMOS_DIA implements Serializable {
         this.QTD_APLICADO = QTD_APLICADO;
     }
 
+    public int getID() {
+        return ID;
+    }
 
+    public void setID(int ID) {
+        this.ID = ID;
+    }
 }
 

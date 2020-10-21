@@ -162,7 +162,7 @@ public class FragmentoInsumos extends Fragment {
                                     }
                                 }).create();
                         dialog.show();
-                }else{
+                    }else{
                         abreDialogoQtdAplicada(joinOsInsumos);/*
                         AlertDialog dialog = new AlertDialog.Builder(getActivity())
                                 .setTitle("Editar")
@@ -348,7 +348,8 @@ public class FragmentoInsumos extends Fragment {
                     insumoInsere.setQTD_APLICADO(valor);
                     String obs = listaJoinOsInsumosSelecionados.get(id).getOBSERVACAO();
                     String pegaObs = "";
-                    if (!obs.isEmpty() || obs != null) pegaObs = obs + "\n";
+                    if(obs != null)
+                        if (!obs.isEmpty()) pegaObs = obs + "\n";
                     obs = pegaObs.concat("Editado em " + ferramentas.dataAtual() + " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorDialogoEdicao.getText().toString()));
                     insumoInsere.setOBSERVACAO(obs);
                     insumoInsere.setACAO_INATIVO("EDICAO");
