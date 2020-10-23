@@ -1,5 +1,6 @@
 package com.example.forestsys.Classes;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -25,19 +26,22 @@ import java.io.Serializable;
         primaryKeys = {"ID_PROGRAMACAO_ATIVIDADE", "ID_ATIVIDADE", "ID_INDICADOR"})
 public class INDICADORES_SUBSOLAGEM implements Serializable {
     @ColumnInfo(name="ID_PROGRAMACAO_ATIVIDADE")
-    private int ID_PROGRAMACAO_ATIVIDADE;
+    @NonNull
+    private Integer ID_PROGRAMACAO_ATIVIDADE;
 
+    @NonNull
     @ColumnInfo(name="ID_ATIVIDADE")
-    private int ID_ATIVIDADE;
+    private Integer ID_ATIVIDADE;
 
+    @NonNull
     @ColumnInfo(name="ID_INDICADOR")
-    private int ID_INDICADOR;
+    private Integer ID_INDICADOR;
 
     private String DATA;
 
     private double VALOR_INDICADOR;
 
-    public INDICADORES_SUBSOLAGEM(int ID_PROGRAMACAO_ATIVIDADE, int ID_ATIVIDADE, int ID_INDICADOR, String DATA, double VALOR_INDICADOR) {
+    public INDICADORES_SUBSOLAGEM(Integer ID_PROGRAMACAO_ATIVIDADE, Integer ID_ATIVIDADE, Integer ID_INDICADOR, String DATA, double VALOR_INDICADOR) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.ID_ATIVIDADE = ID_ATIVIDADE;
         this.ID_INDICADOR = ID_INDICADOR;
@@ -45,27 +49,27 @@ public class INDICADORES_SUBSOLAGEM implements Serializable {
         this.VALOR_INDICADOR = VALOR_INDICADOR;
     }
 
-    public int getID_PROGRAMACAO_ATIVIDADE() {
+    public Integer getID_PROGRAMACAO_ATIVIDADE() {
         return ID_PROGRAMACAO_ATIVIDADE;
     }
 
-    public void setID_PROGRAMACAO_ATIVIDADE(int ID_PROGRAMACAO_ATIVIDADE) {
+    public void setID_PROGRAMACAO_ATIVIDADE(Integer ID_PROGRAMACAO_ATIVIDADE) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
     }
 
-    public int getID_ATIVIDADE() {
+    public Integer getID_ATIVIDADE() {
         return ID_ATIVIDADE;
     }
 
-    public void setID_ATIVIDADE(int ID_ATIVIDADE) {
+    public void setID_ATIVIDADE(Integer ID_ATIVIDADE) {
         this.ID_ATIVIDADE = ID_ATIVIDADE;
     }
 
-    public int getID_INDICADOR() {
+    public Integer getID_INDICADOR() {
         return ID_INDICADOR;
     }
 
-    public void setID_INDICADOR(int ID_INDICADOR) {
+    public void setID_INDICADOR(Integer ID_INDICADOR) {
         this.ID_INDICADOR = ID_INDICADOR;
     }
 

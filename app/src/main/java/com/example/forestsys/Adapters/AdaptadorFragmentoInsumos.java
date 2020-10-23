@@ -43,7 +43,6 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
             if(auxString.contains(",")) auxString = auxString.replace(",", ".");
 
             double auxDouble = NULL;
-            Log.e("Valor auxString area", area);
             auxDouble = Double.valueOf(auxString);
             if(auxDouble != NULL) {
                 holder.QTDRec.setText(String.valueOf(insumo.getQTD_HA_RECOMENDADO() * auxDouble).replace('.', ','));

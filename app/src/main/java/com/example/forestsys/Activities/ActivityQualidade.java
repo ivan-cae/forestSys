@@ -847,7 +847,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                         dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.'))));
                     } catch (SQLiteConstraintException | NullPointerException ex) {
                         AlertDialog dialogoErro = new AlertDialog.Builder(ActivityQualidade.this)
-                                .setTitle("Erro 101")
+                                .setTitle("Erro")
                                 .setMessage("Houve um problema ao salvar a calibração.")
                                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
@@ -1623,7 +1623,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             dialogoPonto.dismiss();
         } catch (SQLiteConstraintException | NullPointerException ex) {
             AlertDialog dialogoErro = new AlertDialog.Builder(ActivityQualidade.this)
-                    .setTitle("Erro 101")
+                    .setTitle("Erro")
                     .setMessage("Houve um problema ao salvar a calibração.")
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override

@@ -5,13 +5,13 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 
 public class Join_MAQUINA_IMPLEMENTO implements Serializable {
-    int ID_MAQUINA_IMPLEMENTO;
-    int ID_MAQUINA;
-    int ID_IMPLEMENTO;
+    Integer ID_MAQUINA_IMPLEMENTO;
+    Integer ID_MAQUINA;
+    Integer ID_IMPLEMENTO;
     String DESCRICAO_MAQUINA;
     String DESCRICAO_IMPLEMENTO;
 
-    public Join_MAQUINA_IMPLEMENTO(int ID_MAQUINA_IMPLEMENTO, int ID_MAQUINA, int ID_IMPLEMENTO, String DESCRICAO_MAQUINA, String DESCRICAO_IMPLEMENTO) {
+    public Join_MAQUINA_IMPLEMENTO(Integer ID_MAQUINA_IMPLEMENTO, Integer ID_MAQUINA, Integer ID_IMPLEMENTO, String DESCRICAO_MAQUINA, String DESCRICAO_IMPLEMENTO) {
         this.ID_MAQUINA_IMPLEMENTO = ID_MAQUINA_IMPLEMENTO;
         this.ID_MAQUINA = ID_MAQUINA;
         this.ID_IMPLEMENTO = ID_IMPLEMENTO;
@@ -19,27 +19,27 @@ public class Join_MAQUINA_IMPLEMENTO implements Serializable {
         this.DESCRICAO_IMPLEMENTO = DESCRICAO_IMPLEMENTO;
     }
 
-    public int getID_MAQUINA_IMPLEMENTO() {
+    public Integer getID_MAQUINA_IMPLEMENTO() {
         return ID_MAQUINA_IMPLEMENTO;
     }
 
-    public void setID_MAQUINA_IMPLEMENTO(int ID_MAQUINA_IMPLEMENTO) {
+    public void setID_MAQUINA_IMPLEMENTO(Integer ID_MAQUINA_IMPLEMENTO) {
         this.ID_MAQUINA_IMPLEMENTO = ID_MAQUINA_IMPLEMENTO;
     }
 
-    public int getID_MAQUINA() {
+    public Integer getID_MAQUINA() {
         return ID_MAQUINA;
     }
 
-    public void setID_MAQUINA(int ID_MAQUINA) {
+    public void setID_MAQUINA(Integer ID_MAQUINA) {
         this.ID_MAQUINA = ID_MAQUINA;
     }
 
-    public int getID_IMPLEMENTO() {
+    public Integer getID_IMPLEMENTO() {
         return ID_IMPLEMENTO;
     }
 
-    public void setID_IMPLEMENTO(int ID_IMPLEMENTO) {
+    public void setID_IMPLEMENTO(Integer ID_IMPLEMENTO) {
         this.ID_IMPLEMENTO = ID_IMPLEMENTO;
     }
 

@@ -24,6 +24,7 @@ import com.example.forestsys.Classes.GGF_USUARIOS;
 import com.example.forestsys.Classes.IMPLEMENTOS;
 import com.example.forestsys.Classes.INDICADORES_SUBSOLAGEM;
 import com.example.forestsys.Classes.INSUMOS;
+import com.example.forestsys.Classes.INSUMO_ATIVIDADES;
 import com.example.forestsys.Classes.MANEJO;
 import com.example.forestsys.Classes.MAQUINAS;
 import com.example.forestsys.Classes.MAQUINA_IMPLEMENTO;
@@ -72,7 +73,7 @@ public interface DAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(IMPLEMENTOS implementos);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -90,10 +91,10 @@ public interface DAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(INSUMOS insumos);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(O_S_ATIVIDADE_INSUMOS o_s_atividade_insumos);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(O_S_ATIVIDADE_INSUMOS_DIA o_s_atividade_insumos_dia);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -102,7 +103,7 @@ public interface DAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(ATIVIDADE_INDICADORES atividade_indicadores);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(AVAL_PONTO_SUBSOLAGEM aval_ponto_subsolagem);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -119,6 +120,9 @@ public interface DAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(GGF_DEPARTAMENTOS ggf_departamentos);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(INSUMO_ATIVIDADES insumoAtividades);
 
 
     @Update
@@ -199,6 +203,9 @@ public interface DAO {
     @Update
     void update(GGF_DEPARTAMENTOS ggf_departamentos);
 
+    @Update
+    void update(INSUMO_ATIVIDADES insumoAtividades);
+
 
     @Delete
     void delete(GGF_USUARIOS GGFUSUARIOS);
@@ -277,6 +284,9 @@ public interface DAO {
 
     @Delete
     void delete(GGF_DEPARTAMENTOS ggf_departamentos);
+
+    @Delete
+    void delete(INSUMO_ATIVIDADES insumoAtividades);
 
 
     //Scripts Configurações
@@ -469,6 +479,10 @@ public interface DAO {
     @Query("SELECT * FROM O_S_ATIVIDADES_DIA WHERE ID=:idOracle")
     O_S_ATIVIDADES_DIA selecionaAtvDiaOracle(int idOracle);
 
+    @Query("SELECT SUM(CAST(AREA_REALIZADA AS DOUBLE)) FROM O_S_ATIVIDADES_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg")
+    double somaAreaRealizada(int idProg);
+
+
     //Scritps INSUMOS
     @Query("SELECT * FROM INSUMOS WHERE ID_INSUMO=:id")
     INSUMOS selecionaInsumo(int id);
@@ -488,13 +502,16 @@ public interface DAO {
     List<O_S_ATIVIDADE_INSUMOS> selecionaOsAtividadeInsumo(int idProg, int idInsumo);
 
     @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS")
-    LiveData<List<O_S_ATIVIDADE_INSUMOS>> todosOsAtividadeInsumos();
+    List<O_S_ATIVIDADE_INSUMOS> todosOsAtividadeInsumos();
 
     @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg ORDER BY ID_INSUMO")
     List<O_S_ATIVIDADE_INSUMOS> listaInsumosatividade(int idProg);
 
 
     //Scripts O_S_ATIVIDADE_INSUMOS_DIA
+    @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_INSUMO=:idIns ")
+    O_S_ATIVIDADE_INSUMOS selecionaAtividadeInsumos(int idProg, int idIns);
+
     @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND DATA=:data ORDER BY ID_INSUMO")
     List<O_S_ATIVIDADE_INSUMOS_DIA> listaOsAtividadeInsumosDia(int idProg, String data);
 
@@ -512,6 +529,9 @@ public interface DAO {
 
     @Query("SELECT SUM(QTD_APLICADO) FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_INSUMO=:idIns")
     double qtdAplicadaTodosInsumos(int idProg, int idIns);
+
+    @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS_DIA")
+    List<O_S_ATIVIDADE_INSUMOS_DIA> todasOsAtvInsumosDia();
 
 
     //Scripts ATIVIDADES

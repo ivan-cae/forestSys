@@ -27,9 +27,10 @@ public class Join_OS_INSUMOS implements Serializable {
     private String DATA;
 
     private String ACAO_INATIVO;
-    private char REGISTRO_DESCARREGADO;
+    private String REGISTRO_DESCARREGADO;
     private String OBSERVACAO;
     private String ID_INSUMO_RM;
+    private int ID;
 
     public Join_OS_INSUMOS() {
     }
@@ -194,11 +195,11 @@ public class Join_OS_INSUMOS implements Serializable {
         this.ACAO_INATIVO = ACAO_INATIVO;
     }
 
-    public char getREGISTRO_DESCARREGADO() {
+    public String getREGISTRO_DESCARREGADO() {
         return REGISTRO_DESCARREGADO;
     }
 
-    public void setREGISTRO_DESCARREGADO(char REGISTRO_DESCARREGADO) {
+    public void setREGISTRO_DESCARREGADO(String REGISTRO_DESCARREGADO) {
         this.REGISTRO_DESCARREGADO = REGISTRO_DESCARREGADO;
     }
 
@@ -216,6 +217,14 @@ public class Join_OS_INSUMOS implements Serializable {
 
     public void setID_INSUMO_RM(String ID_INSUMO_RM) {
         this.ID_INSUMO_RM = ID_INSUMO_RM;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     @Override

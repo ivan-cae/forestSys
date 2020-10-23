@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -456,8 +457,6 @@ public class ActivityAtividades extends AppCompatActivity
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(talhao, 16));
             }
         });
-
-
     }
 
     public void salvar() {

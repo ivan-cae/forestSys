@@ -25,22 +25,22 @@ public class O_S_ATIVIDADE_INSUMOS_DIA implements Serializable {
 
     @ColumnInfo(name = "ID_PROGRAMACAO_ATIVIDADE")
     @NonNull
-    private int ID_PROGRAMACAO_ATIVIDADE;
+    private Integer ID_PROGRAMACAO_ATIVIDADE;
 
     @NonNull
     private String DATA;
 
     @ColumnInfo(name = "ID_INSUMO")
     @NonNull
-    private int ID_INSUMO;
+    private Integer ID_INSUMO;
 
     private double QTD_APLICADO;
     private String ACAO_INATIVO;
-    private char REGISTRO_DESCARREGADO;
+    private String REGISTRO_DESCARREGADO;
     private String OBSERVACAO;
-    private int ID;
+    private Integer ID;
 
-    public O_S_ATIVIDADE_INSUMOS_DIA(int ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, int ID_INSUMO, double QTD_APLICADO, String ACAO_INATIVO, char REGISTRO_DESCARREGADO, String OBSERVACAO) {
+    public O_S_ATIVIDADE_INSUMOS_DIA(Integer ID, Integer ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, Integer ID_INSUMO, double QTD_APLICADO, String ACAO_INATIVO, String REGISTRO_DESCARREGADO, String OBSERVACAO) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.DATA = DATA;
         this.ID_INSUMO = ID_INSUMO;
@@ -48,13 +48,14 @@ public class O_S_ATIVIDADE_INSUMOS_DIA implements Serializable {
         this.ACAO_INATIVO = ACAO_INATIVO;
         this.REGISTRO_DESCARREGADO = REGISTRO_DESCARREGADO;
         this.OBSERVACAO = OBSERVACAO;
+        this.ID = ID;
     }
 
-    public int getID_PROGRAMACAO_ATIVIDADE() {
+    public Integer getID_PROGRAMACAO_ATIVIDADE() {
         return ID_PROGRAMACAO_ATIVIDADE;
     }
 
-    public void setID_PROGRAMACAO_ATIVIDADE(int ID_PROGRAMACAO_ATIVIDADE) {
+    public void setID_PROGRAMACAO_ATIVIDADE(Integer ID_PROGRAMACAO_ATIVIDADE) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
     }
 
@@ -67,11 +68,11 @@ public class O_S_ATIVIDADE_INSUMOS_DIA implements Serializable {
         this.DATA = DATA;
     }
 
-    public int getID_INSUMO() {
+    public Integer getID_INSUMO() {
         return ID_INSUMO;
     }
 
-    public void setID_INSUMO(int ID_INSUMO) {
+    public void setID_INSUMO(Integer ID_INSUMO) {
         this.ID_INSUMO = ID_INSUMO;
     }
 
@@ -87,11 +88,11 @@ public class O_S_ATIVIDADE_INSUMOS_DIA implements Serializable {
         this.ACAO_INATIVO = ACAO_INATIVO;
     }
 
-    public char getREGISTRO_DESCARREGADO() {
+    public String getREGISTRO_DESCARREGADO() {
         return REGISTRO_DESCARREGADO;
     }
 
-    public void setREGISTRO_DESCARREGADO(char REGISTRO_DESCARREGADO) {
+    public void setREGISTRO_DESCARREGADO(String REGISTRO_DESCARREGADO) {
         this.REGISTRO_DESCARREGADO = REGISTRO_DESCARREGADO;
     }
 
@@ -107,11 +108,11 @@ public class O_S_ATIVIDADE_INSUMOS_DIA implements Serializable {
         this.QTD_APLICADO = QTD_APLICADO;
     }
 
-    public int getID() {
+    public Integer getID() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(Integer ID) {
         this.ID = ID;
     }
 }

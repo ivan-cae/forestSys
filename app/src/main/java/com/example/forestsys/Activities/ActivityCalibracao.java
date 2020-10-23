@@ -1513,7 +1513,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                                             dao.insert(calibragem_subsolagem);
                                         }catch(SQLiteConstraintException | NullPointerException ex) {
                                             AlertDialog dialogoErro = new AlertDialog.Builder(ActivityCalibracao.this)
-                                                    .setTitle("Erro 101")
+                                                    .setTitle("Erro")
                                                     .setMessage("Houve um problema ao salvar a calibração.")
                                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                         @Override

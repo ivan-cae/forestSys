@@ -12,6 +12,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -52,6 +53,7 @@ import java.util.Date;
 import java.util.List;
 
 import static android.view.View.GONE;
+import static com.example.forestsys.Activities.ActivityAtividades.editouInsumo1;
 import static com.example.forestsys.Activities.ActivityAtividades.editouRegistro;
 import static com.example.forestsys.Activities.ActivityAtividades.joinOsInsumos;
 import static com.example.forestsys.Activities.ActivityAtividades.listaJoinOsInsumosSelecionados;
@@ -124,7 +126,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     private TextView insumo2;
     public static String[] pegaDescInsumos;
     private List<O_S_ATIVIDADES_DIA> listaAtividades;
-    private List<O_S_ATIVIDADE_INSUMOS> insumos_dia = new ArrayList<O_S_ATIVIDADE_INSUMOS>();
+    private List<O_S_ATIVIDADE_INSUMOS> atividade_insumos = new ArrayList<O_S_ATIVIDADE_INSUMOS>();
 
     private FragmentoInsumos fragmentoInsumos;
     private FragmentoRendimento fragmentoRendimento;
@@ -145,8 +147,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     private boolean erroGeral = false;
     private boolean edicaoReg = false;
 
-    private Integer idOriginalApontamentoEditado;
-    private String regDescarregado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,8 +179,8 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     areaAux += checaConversao(listaAtividades.get(i).getAREA_REALIZADA());
                 }
 
-                double ins1 = dao.qtdAplicadaTodosInsumos(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), insumos_dia.get(0).getID_INSUMO());
-                double ins2 = dao.qtdAplicadaTodosInsumos(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), insumos_dia.get(1).getID_INSUMO());
+                double ins1 = dao.qtdAplicadaTodosInsumos(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), atividade_insumos.get(0).getID_INSUMO());
+                double ins2 = dao.qtdAplicadaTodosInsumos(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), atividade_insumos.get(1).getID_INSUMO());
 
                 totalHh.setText(String.valueOf(hhAux).replace(".", ","));
                 totalHo.setText(String.valueOf(hoAux).replace(".", ","));
@@ -202,8 +202,8 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                         difInsumo2.setBackgroundColor(Color.parseColor("#FF0000"));
                     else difInsumo2.setBackgroundColor(Color.parseColor("#BDB8B8"));
                     */
-                    difInsumo1.setText(String.valueOf(diferencaPercentual(insumos_dia.get(0).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins1)));
-                    difInsumo2.setText(String.valueOf(diferencaPercentual(insumos_dia.get(1).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins2)));
+                    difInsumo1.setText(String.valueOf(diferencaPercentual(atividade_insumos.get(0).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins1)));
+                    difInsumo2.setText(String.valueOf(diferencaPercentual(atividade_insumos.get(1).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins2)));
                 }
             }
         };
@@ -259,7 +259,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
         listaAtividades = dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
-        insumos_dia = dao.listaInsumosatividade(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+        atividade_insumos = dao.listaInsumosatividade(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
         insumo1 = findViewById(R.id.registros_insumo1);
         insumo2 = findViewById(R.id.registros_insumo2);
@@ -831,11 +831,15 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     }
 
     //Persiste os dados no DB
+    @SuppressLint("LongLogTag")
     public void salva() {
         O_S_ATIVIDADES_DIA aux = new O_S_ATIVIDADES_DIA();
         aux = null;
 
-        if(editouRegistro == true) aux = oSAtividadesDiaAtual;
+        double somaQtdApl;
+        double somaAreaRealizada;
+
+        if (editouRegistro == true) aux = oSAtividadesDiaAtual;
 
         if (oSAtividadesDiaAtual != null && oSAtividadesDiaAtual.getDATA() != dataDoApontamento) {
             aux = oSAtividadesDiaAtual;
@@ -844,7 +848,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             viewModelOSAtividadesDia.delete(aux);
         }
 
-        auxAreaRealizadaOs = osSelecionada.getAREA_REALIZADA();
+       /* auxAreaRealizadaOs = osSelecionada.getAREA_REALIZADA();
 
         if (oSAtividadesDiaAtual != null && oSAtividadesDiaAtual.getAREA_REALIZADA() != null && testeAreaRealizada == 0 || testeAreaRealizada == NULL) {
             if (oSAtividadesDiaAtual != null) {
@@ -855,6 +859,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 osSelecionada.setAREA_REALIZADA(auxAreaRealizadaOs - auxAreaRealizadaDia);
             }
         } else osSelecionada.setAREA_REALIZADA(auxAreaRealizadaOs + novaArea);
+*/
 
         oSAtividadesDiaAtual = new O_S_ATIVIDADES_DIA();
 
@@ -897,46 +902,65 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
         if (aux != null) {
             if (aux.getID() != null) oSAtividadesDiaAtual.setID(aux.getID());
-            if (aux.getREGISTRO_DESCARREGADO() != null) oSAtividadesDiaAtual.setREGISTRO_DESCARREGADO(aux.getREGISTRO_DESCARREGADO());
+            if (aux.getREGISTRO_DESCARREGADO() != null)
+                oSAtividadesDiaAtual.setREGISTRO_DESCARREGADO(aux.getREGISTRO_DESCARREGADO());
         }
+
 
         if (editouRegistro == false) {
             listaJoinOsInsumosSelecionados.get(0).setOBSERVACAO(obsInsumo1.getText().toString());
             listaJoinOsInsumosSelecionados.get(1).setOBSERVACAO(obsInsumo2.getText().toString());
         }
-        try {
-            for (int i = 0; i < listaJoinOsInsumosSelecionados.size(); i++) {
-                Join_OS_INSUMOS persiste = listaJoinOsInsumosSelecionados.get(i);
-                dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), ferramentas.formataDataDb(dataDoApontamento),
-                        persiste.getID_INSUMO(), persiste.getQTD_APLICADO(), null, '0', persiste.getOBSERVACAO()));
-            }
-        } catch (SQLiteConstraintException | NullPointerException ex) {
-            AlertDialog dialogoErro = new AlertDialog.Builder(ActivityRegistros.this)
-                    .setTitle("Erro 101")
-                    .setMessage("Houve um problema ao salvar a calibração.")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                        }
-                    }).create();
-            dialogoErro.show();
-        }
-        dao.update(osSelecionada);
+
+
         try {
             viewModelOSAtividadesDia.insert(oSAtividadesDiaAtual);
-            Log.e("AcaoInatividade", oSAtividadesDiaAtual.getACAO_INATIVO());
-
-        } catch (SQLiteConstraintException | NullPointerException ex) {
-            AlertDialog dialogoErro = new AlertDialog.Builder(ActivityRegistros.this)
-                    .setTitle("Erro")
-                    .setMessage("Houve um problema ao salvar a calibração.")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                        }
-                    }).create();
-            dialogoErro.show();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
+
+        try {
+            for (int i = 0; i < listaJoinOsInsumosSelecionados.size(); i++) {
+                Join_OS_INSUMOS persisteInsumosDia = listaJoinOsInsumosSelecionados.get(i);
+                O_S_ATIVIDADE_INSUMOS editaAtividadeInsumos =
+                        dao.selecionaAtividadeInsumos(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), persisteInsumosDia.getID_INSUMO());
+
+                if(persisteInsumosDia.getREGISTRO_DESCARREGADO() == null){
+                    persisteInsumosDia.setREGISTRO_DESCARREGADO("N");
+                }
+                dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(persisteInsumosDia.getID(), osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), ferramentas.formataDataDb(dataDoApontamento),
+                        persisteInsumosDia.getID_INSUMO(), persisteInsumosDia.getQTD_APLICADO(), persisteInsumosDia.getACAO_INATIVO(),
+                        persisteInsumosDia.getREGISTRO_DESCARREGADO(), persisteInsumosDia.getOBSERVACAO()));
+
+                somaQtdApl = dao.qtdAplicadaTodosInsumos(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), persisteInsumosDia.getID_INSUMO());
+                somaAreaRealizada = dao.somaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+
+                DecimalFormat format = new DecimalFormat(".##");
+                double qtdHaAplicado;
+
+                String s = format.format(somaQtdApl).replace(',', '.');
+                somaQtdApl = Double.parseDouble(s);
+
+                s = format.format(somaAreaRealizada).replace(',', '.');
+                somaAreaRealizada = Double.parseDouble(s);
+
+                qtdHaAplicado = somaQtdApl / somaAreaRealizada;
+                s = format.format(qtdHaAplicado).replace(',', '.');
+                qtdHaAplicado = Double.parseDouble(s);
+
+                editaAtividadeInsumos.setQTD_HA_APLICADO(qtdHaAplicado);
+
+                Log.e("QTD_HA_APLICADO Total para o insumo: " + persisteInsumosDia.getDESCRICAO()+ " ->",
+                        String.valueOf(editaAtividadeInsumos.getQTD_HA_APLICADO()));
+
+                dao.update(editaAtividadeInsumos);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        somaAreaRealizada = dao.somaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+        osSelecionada.setAREA_REALIZADA(somaAreaRealizada);
 
         if (osSelecionada.getSTATUS_NUM() == 0) {
             osSelecionada.setSTATUS("Andamento");
@@ -944,6 +968,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             osSelecionada.setDATA_INICIAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
             dao.update(osSelecionada);
         }
+        dao.update(osSelecionada);
 
         edicaoReg = false;
         editouRegistro = false;

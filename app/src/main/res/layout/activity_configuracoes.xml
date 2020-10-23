@@ -12,7 +12,7 @@
         android:layout_width="120dp"
         android:layout_height="60dp"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="360dp"
         android:background="#75A9EB"
         android:text="Voltar"
         android:textColor="#FFFFFF"
@@ -84,7 +84,7 @@
         android:id="@+id/botao_salvar_configs"
         android:layout_width="120dp"
         android:layout_height="60dp"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="360dp"
         android:layout_marginEnd="60dp"
         android:background="#75A9EB"
         android:text="Salvar"
@@ -134,5 +134,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView108"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="65dp"
+        android:text="Selecione quantos dias os dados permanecerão no sistema"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/configs_edit_porta" />
+
+    <com.example.forestsys.Assets.NDSpinner
+        android:id="@+id/configs_spinner_permanecia_dos_dados"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView108" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

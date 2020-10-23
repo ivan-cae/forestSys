@@ -12,24 +12,24 @@ import java.io.Serializable;
 )
 public class ESPACAMENTOS implements Serializable {
     @PrimaryKey
-    private int ID_ESPACAMENTO;
+    private Integer ID_ESPACAMENTO;
 
     @ColumnInfo(name = "DESCRICAO")
     private String DESCRICAO;
 
-    private int ATIVO;
+    private Integer ATIVO;
 
-    public ESPACAMENTOS(int ID_ESPACAMENTO, String DESCRICAO, int ATIVO) {
+    public ESPACAMENTOS(Integer ID_ESPACAMENTO, String DESCRICAO, Integer ATIVO) {
         this.ID_ESPACAMENTO = ID_ESPACAMENTO;
         this.DESCRICAO = DESCRICAO;
         this.ATIVO = ATIVO;
     }
 
-    public int getID_ESPACAMENTO() {
+    public Integer getID_ESPACAMENTO() {
         return ID_ESPACAMENTO;
     }
 
-    public void setID_ESPACAMENTO(int ID_ESPACAMENTO) {
+    public void setID_ESPACAMENTO(Integer ID_ESPACAMENTO) {
         this.ID_ESPACAMENTO = ID_ESPACAMENTO;
     }
 
@@ -41,11 +41,11 @@ public class ESPACAMENTOS implements Serializable {
         this.DESCRICAO = DESCRICAO;
     }
 
-    public int getATIVO() {
+    public Integer getATIVO() {
         return ATIVO;
     }
 
-    public void setATIVO(int ATIVO) {
+    public void setATIVO(Integer ATIVO) {
         this.ATIVO = ATIVO;
     }
 }

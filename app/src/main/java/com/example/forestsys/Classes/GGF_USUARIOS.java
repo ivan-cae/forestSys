@@ -26,26 +26,26 @@ import java.io.Serializable;
 
 public class GGF_USUARIOS implements Serializable {
     @PrimaryKey
-    private int ID_USUARIO;
+    private Integer ID_USUARIO;
 
     @ColumnInfo(name = "ID_DEPARTAMENTO")
-    private int ID_DEPARTAMENTO;
+    private Integer ID_DEPARTAMENTO;
 
     @ColumnInfo(name = "ID_FUNCAO")
-    private int ID_FUNCAO;
+    private Integer ID_FUNCAO;
 
     private String SENHA;
 
-    private int ATIVO;
+    private Integer ATIVO;
 
     private String EMAIL;
 
     @ColumnInfo(name = "DESCRICAO")
     private String DESCRICAO;
 
-    private int NIVEL_ACESSO;
+    private Integer NIVEL_ACESSO;
 
-    public GGF_USUARIOS(int ID_USUARIO, int ID_DEPARTAMENTO, int ID_FUNCAO, String SENHA, int ATIVO, String EMAIL, String DESCRICAO, int NIVEL_ACESSO) {
+    public GGF_USUARIOS(Integer ID_USUARIO, Integer ID_DEPARTAMENTO, Integer ID_FUNCAO, String SENHA, Integer ATIVO, String EMAIL, String DESCRICAO, Integer NIVEL_ACESSO) {
         this.ID_USUARIO = ID_USUARIO;
         this.ID_DEPARTAMENTO = ID_DEPARTAMENTO;
         this.ID_FUNCAO = ID_FUNCAO;
@@ -57,27 +57,27 @@ public class GGF_USUARIOS implements Serializable {
     }
 
 
-    public int getID_USUARIO() {
+    public Integer getID_USUARIO() {
         return ID_USUARIO;
     }
 
-    public void setID_USUARIO(int ID_USUARIO) {
+    public void setID_USUARIO(Integer ID_USUARIO) {
         this.ID_USUARIO = ID_USUARIO;
     }
 
-    public int getID_DEPARTAMENTO() {
+    public Integer getID_DEPARTAMENTO() {
         return ID_DEPARTAMENTO;
     }
 
-    public void setID_DEPARTAMENTO(int ID_DEPARTAMENTO) {
+    public void setID_DEPARTAMENTO(Integer ID_DEPARTAMENTO) {
         this.ID_DEPARTAMENTO = ID_DEPARTAMENTO;
     }
 
-    public int getID_FUNCAO() {
+    public Integer getID_FUNCAO() {
         return ID_FUNCAO;
     }
 
-    public void setID_FUNCAO(int ID_FUNCAO) {
+    public void setID_FUNCAO(Integer ID_FUNCAO) {
         this.ID_FUNCAO = ID_FUNCAO;
     }
 
@@ -89,11 +89,11 @@ public class GGF_USUARIOS implements Serializable {
         this.SENHA = SENHA;
     }
 
-    public int getATIVO() {
+    public Integer getATIVO() {
         return ATIVO;
     }
 
-    public void setATIVO(int ATIVO) {
+    public void setATIVO(Integer ATIVO) {
         this.ATIVO = ATIVO;
     }
 
@@ -113,11 +113,11 @@ public class GGF_USUARIOS implements Serializable {
         this.DESCRICAO = DESCRICAO;
     }
 
-    public int getNIVEL_ACESSO() {
+    public Integer getNIVEL_ACESSO() {
         return NIVEL_ACESSO;
     }
 
-    public void setNIVEL_ACESSO(int NIVEL_ACESSO) {
+    public void setNIVEL_ACESSO(Integer NIVEL_ACESSO) {
         this.NIVEL_ACESSO = NIVEL_ACESSO;
     }
 

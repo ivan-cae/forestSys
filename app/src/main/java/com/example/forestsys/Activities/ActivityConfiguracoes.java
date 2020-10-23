@@ -8,12 +8,15 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.forestsys.Assets.BaseDeDados;
 import com.example.forestsys.Assets.DAO;
+import com.example.forestsys.Assets.NDSpinner;
 import com.example.forestsys.Classes.ClassesAuxiliares.Configs;
 import com.example.forestsys.R;
 
@@ -28,6 +31,12 @@ public class ActivityConfiguracoes extends AppCompatActivity {
     private EditText editHost;
     private EditText editPorta;
 
+    private String[] opçõesPermanencia = new String[]{"15", "30", "45",
+            "60", "75", "90"};
+    private NDSpinner spinnerPermanencia;
+    private Integer posicaoSpinnerPermanencia;
+    private Integer diasPermanencia;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +47,7 @@ public class ActivityConfiguracoes extends AppCompatActivity {
         editPorta = findViewById(R.id.configs_edit_porta);
         botaoSalvar = findViewById(R.id.botao_salvar_configs);
         botaoVoltar = findViewById(R.id.botao_configs_voltar);
+        spinnerPermanencia = findViewById(R.id.configs_spinner_permanecia_dos_dados);
 
         BaseDeDados baseDeDados = BaseDeDados.getInstance(getApplicationContext());
         DAO dao = baseDeDados.dao();
@@ -48,6 +58,24 @@ public class ActivityConfiguracoes extends AppCompatActivity {
         if (configs.getEndereçoHost() != null) editHost.setText(configs.getEndereçoHost());
         if (configs.getPortaDeComunicacao() != null)
             editPorta.setText(configs.getPortaDeComunicacao());
+
+        ArrayAdapter adapterPioridade = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, opçõesPermanencia);
+        adapterPioridade.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPermanencia.setAdapter(adapterPioridade);
+
+        spinnerPermanencia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                posicaoSpinnerPermanencia=position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        spinnerPermanencia.setSelection(configs.getPosicaoNoSpinner());
 
 
         botaoSalvar.setOnClickListener(new View.OnClickListener() {
@@ -67,12 +95,12 @@ public class ActivityConfiguracoes extends AppCompatActivity {
                                 if (editHost.length() > 0) host = editHost.getText().toString();
                                 if (editPorta.length() > 0) porta = editPorta.getText().toString();
                                 try {
-                                    dao.insert(new Configs(1, empresa, host, porta));
+                                    dao.insert(new Configs(1, empresa, host, porta, Integer.valueOf(opçõesPermanencia[posicaoSpinnerPermanencia]), posicaoSpinnerPermanencia));
                                     Intent it = new Intent(ActivityConfiguracoes.this, ActivityInicializacao.class);
                                     startActivity(it);
                                 } catch (SQLiteConstraintException | NullPointerException ex) {
                                     AlertDialog dialogoErro = new AlertDialog.Builder(ActivityConfiguracoes.this)
-                                            .setTitle("Erro 101")
+                                            .setTitle("Erro")
                                             .setMessage("Houve um problema ao salvar as configurações.")
                                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                 @Override

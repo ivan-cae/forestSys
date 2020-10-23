@@ -88,7 +88,8 @@ private ProgressDialog dialogoProgresso;
             dao = baseDeDados.dao();
 
             if (dao.selecionaConfigs() == null) {
-                dao.insert(new Configs(1, "GELF", "http://sateliteinfo.ddns.net", "3333"));
+                dao.insert(new Configs(1, "GELF", "http://sateliteinfo.ddns.net",
+                        "3333", 90, 5));
             }
             Configs configs = dao.selecionaConfigs();
             HOST_PORTA = configs.getEndereçoHost() + ":" + configs.getPortaDeComunicacao() + "/";

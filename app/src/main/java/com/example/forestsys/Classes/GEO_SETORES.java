@@ -1,5 +1,6 @@
 package com.example.forestsys.Classes;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -23,36 +24,38 @@ import java.io.Serializable;
 public class GEO_SETORES implements Serializable {
 
     @ColumnInfo(name = "ID_REGIONAL")
-    private int ID_REGIONAL;
+    @NonNull
+    private Integer ID_REGIONAL;
 
     @ColumnInfo(name = "ID_SETOR")
-    private int ID_SETOR;
+    @NonNull
+    private Integer ID_SETOR;
 
     @ColumnInfo(name = "DESCRICAO")
     private String DESCRICAO;
 
-    private int ATIVO;
+    private Integer ATIVO;
 
-    public GEO_SETORES(int ID_REGIONAL, int ID_SETOR, String DESCRICAO, int ATIVO) {
+    public GEO_SETORES(Integer ID_REGIONAL, Integer ID_SETOR, String DESCRICAO, Integer ATIVO) {
         this.ID_REGIONAL = ID_REGIONAL;
         this.ID_SETOR = ID_SETOR;
         this.DESCRICAO = DESCRICAO;
         this.ATIVO = ATIVO;
     }
 
-    public int getID_REGIONAL() {
+    public Integer getID_REGIONAL() {
         return ID_REGIONAL;
     }
 
-    public void setID_REGIONAL(int ID_REGIONAL) {
+    public void setID_REGIONAL(Integer ID_REGIONAL) {
         this.ID_REGIONAL = ID_REGIONAL;
     }
 
-    public int getID_SETOR() {
+    public Integer getID_SETOR() {
         return ID_SETOR;
     }
 
-    public void setID_SETOR(int ID_SETOR) {
+    public void setID_SETOR(Integer ID_SETOR) {
         this.ID_SETOR = ID_SETOR;
     }
 
@@ -64,11 +67,11 @@ public class GEO_SETORES implements Serializable {
         this.DESCRICAO = DESCRICAO;
     }
 
-    public int getATIVO() {
+    public Integer getATIVO() {
         return ATIVO;
     }
 
-    public void setATIVO(int ATIVO) {
+    public void setATIVO(Integer ATIVO) {
         this.ATIVO = ATIVO;
     }
 }

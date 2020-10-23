@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,9 +107,12 @@ public class FragmentoInsumos extends Fragment {
             if (editouRegistro && savedInstanceState == null)
                 listaJoinOsInsumosSelecionados = dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), ferramentas.formataDataDb(dataDoApontamento));
 
+            nomeInsumo1.setText("OBS: "+pegaDescInsumos[0]);
+            nomeInsumo2.setText("OBS: "+pegaDescInsumos[1]);
 
-            nomeInsumo1.setText("Observação - " + pegaDescInsumos[0] + ":");
-            nomeInsumo2.setText("Observação - " + pegaDescInsumos[1] + ":");
+            nomeInsumo1.setMovementMethod(new ScrollingMovementMethod());
+            nomeInsumo2.setMovementMethod(new ScrollingMovementMethod());
+
 
             if (!listaJoinOsInsumosSelecionados.isEmpty()) {
                 if (listaJoinOsInsumosSelecionados.size() >= 1)
@@ -125,6 +129,7 @@ public class FragmentoInsumos extends Fragment {
                 listaJoinOsInsumosSelecionados.get(1).setID_INSUMO(dao.selecionaInsumoPorRm(listaJoinOsInsumos.get(1).getID_INSUMO_RM()));
             }
 
+
             setInsumos();
 
             adapterInsumos = new ArrayAdapter<Join_OS_INSUMOS>(getActivity(),
@@ -139,9 +144,12 @@ public class FragmentoInsumos extends Fragment {
                 abriuDialogoEdicao = savedInstanceState.getBoolean("abriuDialogoEdicao");
 
                 if (abriuDialogo == true) abreDialogoQtdAplicada(insumoInsere);
-                if (abriuDialogoEdicao == true)
-                    abreDialogoEdicaoIns(savedInstanceState.getDouble("auxValorDialogoQtd"));
-            }
+                if (abriuDialogoEdicao == true) {
+                    double d;
+                    d = Double.valueOf(savedInstanceState.getDouble("auxValorDialogoQtd"));
+                    abreDialogoEdicaoIns(d);
+                }
+                }
 
 
             adaptador.setOnItemClickListener(new AdaptadorFragmentoInsumos.OnItemClickListener() {
@@ -182,6 +190,8 @@ public class FragmentoInsumos extends Fragment {
                     }
                 }
             });
+            if(obsInsumo2.length()==0) obsInsumo1.setHint("Digite as observações aqui");
+            if(obsInsumo2.length()==0) obsInsumo2.setHint("Digite as observações aqui");
         }
     }
 
@@ -285,7 +295,9 @@ public class FragmentoInsumos extends Fragment {
 
 
                     if (editouRegistro == true) {
-                        abreDialogoEdicaoIns(Double.valueOf(str));
+                        double d;
+                        d = Double.valueOf(str.replace(',', '.'));
+                        abreDialogoEdicaoIns(d);
                     }
 
                     abriuDialogo = false;

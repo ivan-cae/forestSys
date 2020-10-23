@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class INSUMOS implements Serializable {
 
     @PrimaryKey
-    private int ID_INSUMO;
+    private Integer ID_INSUMO;
 
     @ColumnInfo (name = "ID_INSUMO_RM")
 	private String ID_INSUMO_RM;
@@ -31,13 +31,13 @@ public class INSUMOS implements Serializable {
     private double NUTRIENTE_CU;
     private double NUTRIENTE_AF;
     private double NUTRIENTE_MN;
-	private int ATIVO;
+	private Integer ATIVO;
 	private String UND_MEDIDA;
 
-    public INSUMOS(int ID_INSUMO, String ID_INSUMO_RM, String CLASSE, String DESCRICAO, double NUTRIENTE_N,
+    public INSUMOS(Integer ID_INSUMO, String ID_INSUMO_RM, String CLASSE, String DESCRICAO, double NUTRIENTE_N,
                    double NUTRIENTE_P2O5, double NUTRIENTE_K2O, double NUTRIENTE_CAO, double NUTRIENTE_MGO,
                    double NUTRIENTE_B, double NUTRIENTE_ZN, double NUTRIENTE_S, double NUTRIENTE_CU,
-                   double NUTRIENTE_AF, double NUTRIENTE_MN, int ATIVO, String UND_MEDIDA) {
+                   double NUTRIENTE_AF, double NUTRIENTE_MN, Integer ATIVO, String UND_MEDIDA) {
         this.ID_INSUMO = ID_INSUMO;
         this.ID_INSUMO_RM = ID_INSUMO_RM;
         this.CLASSE = CLASSE;
@@ -57,11 +57,11 @@ public class INSUMOS implements Serializable {
         this.UND_MEDIDA = UND_MEDIDA;
     }
 
-    public int getID_INSUMO() {
+    public Integer getID_INSUMO() {
         return ID_INSUMO;
     }
 
-    public void setID_INSUMO(int ID_INSUMO) {
+    public void setID_INSUMO(Integer ID_INSUMO) {
         this.ID_INSUMO = ID_INSUMO;
     }
 
@@ -93,7 +93,7 @@ public class INSUMOS implements Serializable {
         return NUTRIENTE_N;
     }
 
-    public void setNUTRIENTE_N(int NUTRIENTE_N) {
+    public void setNUTRIENTE_N(Integer NUTRIENTE_N) {
         this.NUTRIENTE_N = NUTRIENTE_N;
     }
 
@@ -177,11 +177,11 @@ public class INSUMOS implements Serializable {
         this.NUTRIENTE_MN = NUTRIENTE_MN;
     }
 
-    public int getATIVO() {
+    public Integer getATIVO() {
         return ATIVO;
     }
 
-    public void setATIVO(int ATIVO) {
+    public void setATIVO(Integer ATIVO) {
         this.ATIVO = ATIVO;
     }
 

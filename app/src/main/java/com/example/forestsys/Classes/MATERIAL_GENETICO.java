@@ -8,22 +8,22 @@ import java.io.Serializable;
 @Entity
 public class MATERIAL_GENETICO implements Serializable {
     @PrimaryKey
-    private int ID_MATERIAL_GENETICO;
+    private Integer ID_MATERIAL_GENETICO;
 
     private String DESCRICAO;
-    private int ATIVO;
+    private Integer ATIVO;
 
-    public MATERIAL_GENETICO(int ID_MATERIAL_GENETICO, String DESCRICAO, int ATIVO) {
+    public MATERIAL_GENETICO(Integer ID_MATERIAL_GENETICO, String DESCRICAO, Integer ATIVO) {
         this.ID_MATERIAL_GENETICO = ID_MATERIAL_GENETICO;
         this.DESCRICAO = DESCRICAO;
         this.ATIVO = ATIVO;
     }
 
-    public int getID_MATERIAL_GENETICO() {
+    public Integer getID_MATERIAL_GENETICO() {
         return ID_MATERIAL_GENETICO;
     }
 
-    public void setID_MATERIAL_GENETICO(int ID_MATERIAL_GENETICO) {
+    public void setID_MATERIAL_GENETICO(Integer ID_MATERIAL_GENETICO) {
         this.ID_MATERIAL_GENETICO = ID_MATERIAL_GENETICO;
     }
 
@@ -35,11 +35,11 @@ public class MATERIAL_GENETICO implements Serializable {
         this.DESCRICAO = DESCRICAO;
     }
 
-    public int getATIVO() {
+    public Integer getATIVO() {
         return ATIVO;
     }
 
-    public void setATIVO(int ATIVO) {
+    public void setATIVO(Integer ATIVO) {
         this.ATIVO = ATIVO;
     }
 }

@@ -474,7 +474,7 @@ public class FragmentoRendimento extends Fragment {
         } else hoe = "";
 
         if (osAtv.getOBSERVACAO() != null) {
-            obsApontamento.setText(osAtv.getOBSERVACAO());
+            if(osAtv.getOBSERVACAO()!=null) obsApontamento.setText(osAtv.getOBSERVACAO());
             obs = obsApontamento.getText().toString();
         } else obs = "";
     }

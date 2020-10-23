@@ -1,5 +1,6 @@
 package com.example.forestsys.Classes;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -20,28 +21,30 @@ import java.io.Serializable;
 public class ATIVIDADE_INDICADORES implements Serializable {
 
     @ColumnInfo(name = "ID_ATIVIDADE")
-    private int ID_ATIVIDADE;
+    @NonNull
+    private Integer ID_ATIVIDADE;
 
     @ColumnInfo(name = "ID_INDICADOR")
-    private int ID_INDICADOR;
+    @NonNull
+    private Integer ID_INDICADOR;
 
-    private int ORDEM_INDICADOR;
+    private Integer ORDEM_INDICADOR;
 
     private String REFERENCIA;
 
     @ColumnInfo(name = "DESCRICAO")
     private String DESCRICAO;
 
-    private int ATIVO;
+    private Integer ATIVO;
     private String VERION;
     private String FORMULA;
-    private int INDICADOR_CORRIGIVEL;
-    private int LIMITE_INFERIOR;
-    private int LIMITE_SUPERIOR;
-    private int CASAS_DECIMAIS;
+    private Integer INDICADOR_CORRIGIVEL;
+    private Integer LIMITE_INFERIOR;
+    private Integer LIMITE_SUPERIOR;
+    private Integer CASAS_DECIMAIS;
 
-    public ATIVIDADE_INDICADORES(int ID_INDICADOR, int ID_ATIVIDADE, int ORDEM_INDICADOR, String REFERENCIA, String DESCRICAO,
-                                 int ATIVO, String VERION, int LIMITE_SUPERIOR, int LIMITE_INFERIOR, int CASAS_DECIMAIS, int INDICADOR_CORRIGIVEL, String FORMULA) {
+    public ATIVIDADE_INDICADORES(Integer ID_INDICADOR, Integer ID_ATIVIDADE, Integer ORDEM_INDICADOR, String REFERENCIA, String DESCRICAO,
+                                 Integer ATIVO, String VERION, Integer LIMITE_SUPERIOR, Integer LIMITE_INFERIOR, Integer CASAS_DECIMAIS, Integer INDICADOR_CORRIGIVEL, String FORMULA) {
         this.ID_ATIVIDADE = ID_ATIVIDADE;
         this.ID_INDICADOR = ID_INDICADOR;
         this.ORDEM_INDICADOR = ORDEM_INDICADOR;
@@ -56,27 +59,27 @@ public class ATIVIDADE_INDICADORES implements Serializable {
         this.FORMULA = FORMULA;
     }
 
-    public int getID_ATIVIDADE() {
+    public Integer getID_ATIVIDADE() {
         return ID_ATIVIDADE;
     }
 
-    public void setID_ATIVIDADE(int ID_ATIVIDADE) {
+    public void setID_ATIVIDADE(Integer ID_ATIVIDADE) {
         this.ID_ATIVIDADE = ID_ATIVIDADE;
     }
 
-    public int getID_INDICADOR() {
+    public Integer getID_INDICADOR() {
         return ID_INDICADOR;
     }
 
-    public void setID_INDICADOR(int ID_INDICADOR) {
+    public void setID_INDICADOR(Integer ID_INDICADOR) {
         this.ID_INDICADOR = ID_INDICADOR;
     }
 
-    public int getORDEM_INDICADOR() {
+    public Integer getORDEM_INDICADOR() {
         return ORDEM_INDICADOR;
     }
 
-    public void setORDEM_INDICADOR(int ORDEM_INDICADOR) {
+    public void setORDEM_INDICADOR(Integer ORDEM_INDICADOR) {
         this.ORDEM_INDICADOR = ORDEM_INDICADOR;
     }
 
@@ -96,11 +99,11 @@ public class ATIVIDADE_INDICADORES implements Serializable {
         this.DESCRICAO = DESCRICAO;
     }
 
-    public int getATIVO() {
+    public Integer getATIVO() {
         return ATIVO;
     }
 
-    public void setATIVO(int ATIVO) {
+    public void setATIVO(Integer ATIVO) {
         this.ATIVO = ATIVO;
     }
 
@@ -120,35 +123,35 @@ public class ATIVIDADE_INDICADORES implements Serializable {
         this.FORMULA = FORMULA;
     }
 
-    public int getINDICADOR_CORRIGIVEL() {
+    public Integer getINDICADOR_CORRIGIVEL() {
         return INDICADOR_CORRIGIVEL;
     }
 
-    public void setINDICADOR_CORRIGIVEL(int INDICADOR_CORRIGIVEL) {
+    public void setINDICADOR_CORRIGIVEL(Integer INDICADOR_CORRIGIVEL) {
         this.INDICADOR_CORRIGIVEL = INDICADOR_CORRIGIVEL;
     }
 
-    public int getLIMITE_INFERIOR() {
+    public Integer getLIMITE_INFERIOR() {
         return LIMITE_INFERIOR;
     }
 
-    public void setLIMITE_INFERIOR(int LIMITE_INFERIOR) {
+    public void setLIMITE_INFERIOR(Integer LIMITE_INFERIOR) {
         this.LIMITE_INFERIOR = LIMITE_INFERIOR;
     }
 
-    public int getLIMITE_SUPERIOR() {
+    public Integer getLIMITE_SUPERIOR() {
         return LIMITE_SUPERIOR;
     }
 
-    public void setLIMITE_SUPERIOR(int LIMITE_SUPERIOR) {
+    public void setLIMITE_SUPERIOR(Integer LIMITE_SUPERIOR) {
         this.LIMITE_SUPERIOR = LIMITE_SUPERIOR;
     }
 
-    public int getCASAS_DECIMAIS() {
+    public Integer getCASAS_DECIMAIS() {
         return CASAS_DECIMAIS;
     }
 
-    public void setCASAS_DECIMAIS(int CASAS_DECIMAIS) {
+    public void setCASAS_DECIMAIS(Integer CASAS_DECIMAIS) {
         this.CASAS_DECIMAIS = CASAS_DECIMAIS;
     }
 }

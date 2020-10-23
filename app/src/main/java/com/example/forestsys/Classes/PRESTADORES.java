@@ -12,24 +12,24 @@ import java.io.Serializable;
 )
 public class PRESTADORES implements Serializable {
     @PrimaryKey
-    private int ID_PRESTADOR;
+    private Integer ID_PRESTADOR;
 
     @ColumnInfo(name = "DESCRICAO")
     private String DESCRICAO;
 
-    private int ATIVO;
+    private Integer ATIVO;
 
-    public PRESTADORES(int ID_PRESTADOR, String DESCRICAO, int ATIVO) {
+    public PRESTADORES(Integer ID_PRESTADOR, String DESCRICAO, Integer ATIVO) {
         this.ID_PRESTADOR = ID_PRESTADOR;
         this.DESCRICAO = DESCRICAO;
         this.ATIVO = ATIVO;
     }
 
-    public int getID_PRESTADOR() {
+    public Integer getID_PRESTADOR() {
         return ID_PRESTADOR;
     }
 
-    public void setID_PRESTADOR(int ID_PRESTADOR) {
+    public void setID_PRESTADOR(Integer ID_PRESTADOR) {
         this.ID_PRESTADOR = ID_PRESTADOR;
     }
 
@@ -41,11 +41,11 @@ public class PRESTADORES implements Serializable {
         this.DESCRICAO = DESCRICAO;
     }
 
-    public int getATIVO() {
+    public Integer getATIVO() {
         return ATIVO;
     }
 
-    public void setATIVO(int ATIVO) {
+    public void setATIVO(Integer ATIVO) {
         this.ATIVO = ATIVO;
     }
 

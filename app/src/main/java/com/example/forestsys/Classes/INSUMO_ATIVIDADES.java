@@ -1,5 +1,6 @@
 package com.example.forestsys.Classes;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -22,40 +23,42 @@ import java.io.Serializable;
 
 public class INSUMO_ATIVIDADES implements Serializable {
     @ColumnInfo(name = "ID_INSUMO")
-    private int ID_INSUMO;
+    @NonNull
+    private Integer ID_INSUMO;
 
     @ColumnInfo(name = "ID_ATIVIDADE")
-    private int ID_ATIVIDADE;
+    @NonNull
+    private Integer ID_ATIVIDADE;
 
-    private int ATIVO;
+    private Integer ATIVO;
 
-    public INSUMO_ATIVIDADES(int ID_INSUMO, int ID_ATIVIDADE, int ATIVO) {
+    public INSUMO_ATIVIDADES(Integer ID_INSUMO, Integer ID_ATIVIDADE, Integer ATIVO) {
         this.ID_INSUMO = ID_INSUMO;
         this.ID_ATIVIDADE = ID_ATIVIDADE;
         this.ATIVO = ATIVO;
     }
 
-    public int getID_INSUMO() {
+    public Integer getID_INSUMO() {
         return ID_INSUMO;
     }
 
-    public void setID_INSUMO(int ID_INSUMO) {
+    public void setID_INSUMO(Integer ID_INSUMO) {
         this.ID_INSUMO = ID_INSUMO;
     }
 
-    public int getID_ATIVIDADE() {
+    public Integer getID_ATIVIDADE() {
         return ID_ATIVIDADE;
     }
 
-    public void setID_ATIVIDADE(int ID_ATIVIDADE) {
+    public void setID_ATIVIDADE(Integer ID_ATIVIDADE) {
         this.ID_ATIVIDADE = ID_ATIVIDADE;
     }
 
-    public int getATIVO() {
+    public Integer getATIVO() {
         return ATIVO;
     }
 
-    public void setATIVO(int ATIVO) {
+    public void setATIVO(Integer ATIVO) {
         this.ATIVO = ATIVO;
     }
 }

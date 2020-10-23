@@ -16,11 +16,11 @@ import java.io.Serializable;
                         childColumns = "ID_RESPONSAVEL",
                         onDelete = ForeignKey.NO_ACTION,
                         onUpdate = ForeignKey.NO_ACTION),
-                /*@ForeignKey(entity = ATIVIDADES.class,
+                @ForeignKey(entity = ATIVIDADES.class,
                         parentColumns = "ID_ATIVIDADE",
                         childColumns = "ID_ATIVIDADE",
                         onDelete = ForeignKey.NO_ACTION,
-                        onUpdate = ForeignKey.NO_ACTION),*/
+                        onUpdate = ForeignKey.NO_ACTION),
                 @ForeignKey(entity = CADASTRO_FLORESTAL.class,
                         parentColumns = {"ID_REGIONAL", "ID_SETOR", "TALHAO", "CICLO", "ID_MANEJO"},
                         childColumns = {"ID_REGIONAL", "ID_SETOR", "TALHAO", "CICLO", "ID_MANEJO"},

@@ -83,7 +83,7 @@ Other Threads:
   0x0000000016a36000 VMThread [stack: 0x0000000017ad0000,0x0000000017bd0000] [id=5804]
   0x0000000016ace000 WatcherThread [stack: 0x00000000188e0000,0x00000000189e0000] [id=5784]
 
-VM state:not at safepoint (normal execution)
+VM state:not at safepoInteger (normal execution)
 
 VM Mutex/Monitor currently owned by a thread: None
 

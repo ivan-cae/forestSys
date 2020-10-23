@@ -14,24 +14,24 @@ import java.io.Serializable;
 public class IMPLEMENTOS implements Serializable {
 
     @PrimaryKey
-    private int ID_IMPLEMENTO;
+    private Integer ID_IMPLEMENTO;
 
     @ColumnInfo(name = "DESCRICAO_IMPLEMENTO")
     private String DESCRICAO;
 
-    private int ATIVO;
+    private Integer ATIVO;
 
-    public IMPLEMENTOS(int ID_IMPLEMENTO, String DESCRICAO, int ATIVO) {
+    public IMPLEMENTOS(Integer ID_IMPLEMENTO, String DESCRICAO, Integer ATIVO) {
         this.ID_IMPLEMENTO = ID_IMPLEMENTO;
         this.DESCRICAO = DESCRICAO;
         this.ATIVO = ATIVO;
     }
 
-    public int getID_IMPLEMENTO() {
+    public Integer getID_IMPLEMENTO() {
         return ID_IMPLEMENTO;
     }
 
-    public void setID_IMPLEMENTO(int ID_IMPLEMENTO) {
+    public void setID_IMPLEMENTO(Integer ID_IMPLEMENTO) {
         this.ID_IMPLEMENTO = ID_IMPLEMENTO;
     }
 
@@ -43,11 +43,11 @@ public class IMPLEMENTOS implements Serializable {
         this.DESCRICAO = DESCRICAO;
     }
 
-    public int getATIVO() {
+    public Integer getATIVO() {
         return ATIVO;
     }
 
-    public void setATIVO(int ATIVO) {
+    public void setATIVO(Integer ATIVO) {
         this.ATIVO = ATIVO;
     }
 

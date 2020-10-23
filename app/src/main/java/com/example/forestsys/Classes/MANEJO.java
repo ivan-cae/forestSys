@@ -8,21 +8,21 @@ import java.io.Serializable;
 @Entity
 public class MANEJO implements Serializable {
     @PrimaryKey
-    private int ID_MANEJO;
+    private Integer ID_MANEJO;
 	private String DESCRICAO;
-	private int ATIVO;
+	private Integer ATIVO;
 
-    public MANEJO(int ID_MANEJO, String DESCRICAO, int ATIVO) {
+    public MANEJO(Integer ID_MANEJO, String DESCRICAO, Integer ATIVO) {
         this.ID_MANEJO = ID_MANEJO;
         this.DESCRICAO = DESCRICAO;
         this.ATIVO = ATIVO;
     }
 
-    public int getID_MANEJO() {
+    public Integer getID_MANEJO() {
         return ID_MANEJO;
     }
 
-    public void setID_MANEJO(int ID_MANEJO) {
+    public void setID_MANEJO(Integer ID_MANEJO) {
         this.ID_MANEJO = ID_MANEJO;
     }
 
@@ -34,11 +34,11 @@ public class MANEJO implements Serializable {
         this.DESCRICAO = DESCRICAO;
     }
 
-    public int getATIVO() {
+    public Integer getATIVO() {
         return ATIVO;
     }
 
-    public void setATIVO(int ATIVO) {
+    public void setATIVO(Integer ATIVO) {
         this.ATIVO = ATIVO;
     }
 }

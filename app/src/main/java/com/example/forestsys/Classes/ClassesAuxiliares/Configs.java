@@ -8,23 +8,28 @@ import java.io.Serializable;
 @Entity
 public class Configs implements Serializable {
     @PrimaryKey
-    private int idConfig;
+    private Integer idConfig;
     private String nomeEmpresa;
     private String endereçoHost;
     private String portaDeComunicacao;
+    private Integer permanenciaDosDados;
+    private Integer posicaoNoSpinner;
 
-    public Configs(int idConfig, String nomeEmpresa, String endereçoHost, String portaDeComunicacao) {
+    public Configs(Integer idConfig, String nomeEmpresa, String endereçoHost, String portaDeComunicacao,
+                   Integer permanenciaDosDados, Integer posicaoNoSpinner) {
         this.idConfig = idConfig;
         this.nomeEmpresa = nomeEmpresa;
         this.endereçoHost = endereçoHost;
         this.portaDeComunicacao = portaDeComunicacao;
+        this.permanenciaDosDados = permanenciaDosDados;
+        this.posicaoNoSpinner = posicaoNoSpinner;
     }
 
-    public int getIdConfig() {
+    public Integer getIdConfig() {
         return idConfig;
     }
 
-    public void setIdConfig(int idConfig) {
+    public void setIdConfig(Integer idConfig) {
         this.idConfig = idConfig;
     }
 
@@ -50,5 +55,21 @@ public class Configs implements Serializable {
 
     public void setPortaDeComunicacao(String portaDeComunicacao) {
         this.portaDeComunicacao = portaDeComunicacao;
+    }
+
+    public Integer getPermanenciaDosDados() {
+        return permanenciaDosDados;
+    }
+
+    public void setPermanenciaDosDados(Integer permanenciaDosDados) {
+        this.permanenciaDosDados = permanenciaDosDados;
+    }
+
+    public Integer getPosicaoNoSpinner() {
+        return posicaoNoSpinner;
+    }
+
+    public void setPosicaoNoSpinner(Integer posicaoNoSpinner) {
+        this.posicaoNoSpinner = posicaoNoSpinner;
     }
 }

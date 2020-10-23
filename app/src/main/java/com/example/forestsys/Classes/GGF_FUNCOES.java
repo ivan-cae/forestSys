@@ -12,24 +12,24 @@ import java.io.Serializable;
 
 public class GGF_FUNCOES implements Serializable {
     @PrimaryKey
-    private int ID_FUNCAO;
+    private Integer ID_FUNCAO;
 
     @ColumnInfo(name = "DESCRICAO")
     private String DESCRICAO;
 
-    private int ATIVO;
+    private Integer ATIVO;
 
-    public GGF_FUNCOES(int ID_FUNCAO, String DESCRICAO, int ATIVO) {
+    public GGF_FUNCOES(Integer ID_FUNCAO, String DESCRICAO, Integer ATIVO) {
         this.ID_FUNCAO = ID_FUNCAO;
         this.DESCRICAO = DESCRICAO;
         this.ATIVO = ATIVO;
     }
 
-    public int getID_FUNCAO() {
+    public Integer getID_FUNCAO() {
         return ID_FUNCAO;
     }
 
-    public void setID_FUNCAO(int ID_FUNCAO) {
+    public void setID_FUNCAO(Integer ID_FUNCAO) {
         this.ID_FUNCAO = ID_FUNCAO;
     }
 
@@ -41,11 +41,11 @@ public class GGF_FUNCOES implements Serializable {
         this.DESCRICAO = DESCRICAO;
     }
 
-    public int getATIVO() {
+    public Integer getATIVO() {
         return ATIVO;
     }
 
-    public void setATIVO(int ATIVO) {
+    public void setATIVO(Integer ATIVO) {
         this.ATIVO = ATIVO;
     }
 }

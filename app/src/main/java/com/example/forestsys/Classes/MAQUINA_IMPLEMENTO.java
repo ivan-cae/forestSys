@@ -22,41 +22,41 @@ import java.io.Serializable;
 
 public class MAQUINA_IMPLEMENTO implements Serializable {
     @PrimaryKey
-    private int ID_MAQUINA_IMPLEMENTO;
+    private Integer ID_MAQUINA_IMPLEMENTO;
 
     @ColumnInfo (name = "ID_MAQUINA")
-    private int ID_MAQUINA;
+    private Integer ID_MAQUINA;
 
     @ColumnInfo (name = "ID_IMPLEMENTO")
-	private int ID_IMPLEMENTO;
+	private Integer ID_IMPLEMENTO;
 
-    public MAQUINA_IMPLEMENTO(int ID_MAQUINA_IMPLEMENTO, int ID_MAQUINA, int ID_IMPLEMENTO) {
+    public MAQUINA_IMPLEMENTO(Integer ID_MAQUINA_IMPLEMENTO, Integer ID_MAQUINA, Integer ID_IMPLEMENTO) {
         this.ID_MAQUINA_IMPLEMENTO = ID_MAQUINA_IMPLEMENTO;
         this.ID_MAQUINA = ID_MAQUINA;
         this.ID_IMPLEMENTO = ID_IMPLEMENTO;
     }
 
-    public int getID_MAQUINA_IMPLEMENTO() {
+    public Integer getID_MAQUINA_IMPLEMENTO() {
         return ID_MAQUINA_IMPLEMENTO;
     }
 
-    public void setID_MAQUINA_IMPLEMENTO(int ID_MAQUINA_IMPLEMENTO) {
+    public void setID_MAQUINA_IMPLEMENTO(Integer ID_MAQUINA_IMPLEMENTO) {
         this.ID_MAQUINA_IMPLEMENTO = ID_MAQUINA_IMPLEMENTO;
     }
 
-    public int getID_MAQUINA() {
+    public Integer getID_MAQUINA() {
         return ID_MAQUINA;
     }
 
-    public void setID_MAQUINA(int ID_MAQUINA) {
+    public void setID_MAQUINA(Integer ID_MAQUINA) {
         this.ID_MAQUINA = ID_MAQUINA;
     }
 
-    public int getID_IMPLEMENTO() {
+    public Integer getID_IMPLEMENTO() {
         return ID_IMPLEMENTO;
     }
 
-    public void setID_IMPLEMENTO(int ID_IMPLEMENTO) {
+    public void setID_IMPLEMENTO(Integer ID_IMPLEMENTO) {
         this.ID_IMPLEMENTO = ID_IMPLEMENTO;
     }
 }

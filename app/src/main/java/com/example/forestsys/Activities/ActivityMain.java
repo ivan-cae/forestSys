@@ -75,7 +75,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
     private SearchView sv = null;
     private NDSpinner spinnerPrioridade;
     private String[] filtragemPrioridade = new String[]{"Todas", "Baixa", "Média", "Alta", "Nenhuma"};
-    private int posicaoSpinnerPrioridade;
+    private Integer posicaoSpinnerPrioridade;
     private String dadosSearchView;
     private String setaAsc = " ▲";
     private String setaDesc = " ▼";

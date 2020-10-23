@@ -28,20 +28,24 @@ import java.io.Serializable;
 public class AVAL_PONTO_SUBSOLAGEM implements Serializable {
 
     @ColumnInfo(name="ID_PROGRAMACAO_ATIVIDADE")
-    private int ID_PROGRAMACAO_ATIVIDADE;
+    @NonNull
+    private Integer ID_PROGRAMACAO_ATIVIDADE;
 
     @ColumnInfo(name="DATA")
     @NonNull
     private String DATA;
 
     @ColumnInfo(name="PONTO")
-    private int PONTO;
+    @NonNull
+    private Integer PONTO;
 
     @ColumnInfo(name="ID_ATIVIDADE")
-    private int ID_ATIVIDADE;
+    @NonNull
+    private Integer ID_ATIVIDADE;
 
     @ColumnInfo(name="ID_INDICADOR")
-    private int ID_INDICADOR;
+    @NonNull
+    private Integer ID_INDICADOR;
 
     private double VALOR_INDICADOR;
 
@@ -49,11 +53,11 @@ public class AVAL_PONTO_SUBSOLAGEM implements Serializable {
 
     private double COORDENADA_Y;
 
-    private int NC_TRATADA;
+    private Integer NC_TRATADA;
 
 
 
-    public AVAL_PONTO_SUBSOLAGEM(int ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, int PONTO, int ID_ATIVIDADE, int ID_INDICADOR, double VALOR_INDICADOR, double COORDENADA_X, double COORDENADA_Y, int NC_TRATADA) {
+    public AVAL_PONTO_SUBSOLAGEM(Integer ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, Integer PONTO, Integer ID_ATIVIDADE, Integer ID_INDICADOR, double VALOR_INDICADOR, double COORDENADA_X, double COORDENADA_Y, Integer NC_TRATADA) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.DATA = DATA;
         this.PONTO = PONTO;
@@ -65,11 +69,11 @@ public class AVAL_PONTO_SUBSOLAGEM implements Serializable {
         this.NC_TRATADA = NC_TRATADA;
     }
 
-    public int getID_PROGRAMACAO_ATIVIDADE() {
+    public Integer getID_PROGRAMACAO_ATIVIDADE() {
         return ID_PROGRAMACAO_ATIVIDADE;
     }
 
-    public void setID_PROGRAMACAO_ATIVIDADE(int ID_PROGRAMACAO_ATIVIDADE) {
+    public void setID_PROGRAMACAO_ATIVIDADE(Integer ID_PROGRAMACAO_ATIVIDADE) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
     }
 
@@ -82,27 +86,27 @@ public class AVAL_PONTO_SUBSOLAGEM implements Serializable {
         this.DATA = DATA;
     }
 
-    public int getPONTO() {
+    public Integer getPONTO() {
         return PONTO;
     }
 
-    public void setPONTO(int PONTO) {
+    public void setPONTO(Integer PONTO) {
         this.PONTO = PONTO;
     }
 
-    public int getID_ATIVIDADE() {
+    public Integer getID_ATIVIDADE() {
         return ID_ATIVIDADE;
     }
 
-    public void setID_ATIVIDADE(int ID_ATIVIDADE) {
+    public void setID_ATIVIDADE(Integer ID_ATIVIDADE) {
         this.ID_ATIVIDADE = ID_ATIVIDADE;
     }
 
-    public int getID_INDICADOR() {
+    public Integer getID_INDICADOR() {
         return ID_INDICADOR;
     }
 
-    public void setID_INDICADOR(int ID_INDICADOR) {
+    public void setID_INDICADOR(Integer ID_INDICADOR) {
         this.ID_INDICADOR = ID_INDICADOR;
     }
 
@@ -130,11 +134,11 @@ public class AVAL_PONTO_SUBSOLAGEM implements Serializable {
         this.COORDENADA_Y = COORDENADA_Y;
     }
 
-    public int getNC_TRATADA() {
+    public Integer getNC_TRATADA() {
         return NC_TRATADA;
     }
 
-    public void setNC_TRATADA(int NC_TRATADA) {
+    public void setNC_TRATADA(Integer NC_TRATADA) {
         this.NC_TRATADA = NC_TRATADA;
     }
 }
