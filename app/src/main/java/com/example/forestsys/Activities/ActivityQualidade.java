@@ -269,10 +269,26 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             listaInsumoP1.setText(joinOsInsumos.get(0).getDESCRICAO());
             listaInsumoP2.setText(joinOsInsumos.get(1).getDESCRICAO());
 
-            listaMediaP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
-            listaDesvioP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
-            listaMediaP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
-            listaDesvioP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
+            if(listaVerion.size()==1) {
+                listaMediaP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
+            }
+            if(listaVerion.size()==2){
+                listaMediaP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
+                listaDesvioP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
+
+            }
+            if(listaVerion.size()==3){
+                listaMediaP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
+                listaDesvioP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
+                listaMediaP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
+
+            }
+            if(listaVerion.size()==4){
+                listaMediaP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
+                listaDesvioP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
+                listaMediaP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
+                listaDesvioP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
+            }
         }
         listaPonto = dao.listaAvalPontoSubsolagem(idProg);
 

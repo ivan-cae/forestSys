@@ -41,9 +41,9 @@ import com.example.forestsys.Classes.O_S_ATIVIDADES_DIA;
 import com.example.forestsys.Classes.O_S_ATIVIDADE_INSUMOS;
 import com.example.forestsys.Classes.O_S_ATIVIDADE_INSUMOS_DIA;
 import com.example.forestsys.Classes.Joins.Join_OS_INSUMOS;
-import com.example.forestsys.ViewModels.ViewModelO_S_ATIVIDADES_DIA;
 import com.google.android.material.navigation.NavigationView;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -93,7 +93,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     private ImageButton voltar;
     private Button botaoSalvar;
     private ImageButton botaoDatePicker;
-    public static ViewModelO_S_ATIVIDADES_DIA viewModelOSAtividadesDia;
     private Ferramentas ferramentas;
     public static String dataDoApontamento;
     private String acaoInativo = null;
@@ -308,7 +307,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         recyclerView.setHasFixedSize(true);
 
         //if (editouRegistro) botaoDatePicker.setEnabled(false);
-        viewModelOSAtividadesDia = new ViewModelO_S_ATIVIDADES_DIA(getApplication());
 
         if (editouRegistro == false) {
             Calendar c = Calendar.getInstance();
@@ -845,7 +843,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             aux = oSAtividadesDiaAtual;
 
             dao.apagaOsAtividadeInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), aux.getDATA());
-            viewModelOSAtividadesDia.delete(aux);
+            dao.delete(aux);
         }
 
        /* auxAreaRealizadaOs = osSelecionada.getAREA_REALIZADA();
@@ -876,12 +874,12 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             if (hoe.contains(",")) hoe = hoe.replace(',', '.');
         }
 
-        oSAtividadesDiaAtual.setAREA_REALIZADA(area);
-        oSAtividadesDiaAtual.setHH(hh);
-        oSAtividadesDiaAtual.setHM(hm);
-        oSAtividadesDiaAtual.setHO(ho);
-        oSAtividadesDiaAtual.setHM_ESCAVADEIRA(hme);
-        oSAtividadesDiaAtual.setHO_ESCAVADEIRA(hoe);
+        oSAtividadesDiaAtual.setAREA_REALIZADA(area.replace(',', '.'));
+        oSAtividadesDiaAtual.setHH(hh.replace(',', '.'));
+        oSAtividadesDiaAtual.setHM(hm.replace(',', '.'));
+        oSAtividadesDiaAtual.setHO(ho.replace(',', '.'));
+        oSAtividadesDiaAtual.setHM_ESCAVADEIRA(hme.replace(',', '.'));
+        oSAtividadesDiaAtual.setHO_ESCAVADEIRA(hoe.replace(',', '.'));
 
         oSAtividadesDiaAtual.setID_PRESTADOR(posicaoPrestador);
         oSAtividadesDiaAtual.setID_RESPONSAVEL(posicaoResponsavel);
@@ -914,8 +912,9 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
 
         try {
-            viewModelOSAtividadesDia.insert(oSAtividadesDiaAtual);
+            dao.insert(oSAtividadesDiaAtual);
         } catch (Exception ex) {
+            Log.e("Erro ao inserir registro", "");
             ex.printStackTrace();
         }
 
@@ -925,32 +924,46 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 O_S_ATIVIDADE_INSUMOS editaAtividadeInsumos =
                         dao.selecionaAtividadeInsumos(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), persisteInsumosDia.getID_INSUMO());
 
-                if(persisteInsumosDia.getREGISTRO_DESCARREGADO() == null){
+                if (persisteInsumosDia.getREGISTRO_DESCARREGADO() == null) {
                     persisteInsumosDia.setREGISTRO_DESCARREGADO("N");
                 }
+
                 dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(persisteInsumosDia.getID(), osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), ferramentas.formataDataDb(dataDoApontamento),
                         persisteInsumosDia.getID_INSUMO(), persisteInsumosDia.getQTD_APLICADO(), persisteInsumosDia.getACAO_INATIVO(),
                         persisteInsumosDia.getREGISTRO_DESCARREGADO(), persisteInsumosDia.getOBSERVACAO()));
 
-                somaQtdApl = dao.qtdAplicadaTodosInsumos(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), persisteInsumosDia.getID_INSUMO());
-                somaAreaRealizada = dao.somaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
-
                 DecimalFormat format = new DecimalFormat(".##");
-                double qtdHaAplicado;
+                BigDecimal qtdHaAplicado;
+                somaAreaRealizada = dao.selecionaOs(osSelecionada.getID_ATIVIDADE()).getAREA_REALIZADA();
 
+                somaQtdApl = dao.qtdAplicadaTodosInsumos(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), persisteInsumosDia.getID_INSUMO());
                 String s = format.format(somaQtdApl).replace(',', '.');
-                somaQtdApl = Double.parseDouble(s);
 
-                s = format.format(somaAreaRealizada).replace(',', '.');
-                somaAreaRealizada = Double.parseDouble(s);
+                Log.e("Valor somaAreaRealizada", String.valueOf(somaAreaRealizada));
 
-                qtdHaAplicado = somaQtdApl / somaAreaRealizada;
-                s = format.format(qtdHaAplicado).replace(',', '.');
-                qtdHaAplicado = Double.parseDouble(s);
+                try {
+                    somaQtdApl = Double.parseDouble(s);
+                    Log.e("Valor somaQtdApl", s);
+                } catch (Exception e) {
+                    Log.e("Erro ao obter qtd aplicada", e.getMessage());
+                    somaQtdApl = 1;
+                }
 
-                editaAtividadeInsumos.setQTD_HA_APLICADO(qtdHaAplicado);
+                qtdHaAplicado = new BigDecimal(somaQtdApl / somaAreaRealizada);
 
-                Log.e("QTD_HA_APLICADO Total para o insumo: " + persisteInsumosDia.getDESCRICAO()+ " ->",
+                s = new DecimalFormat(".##").format(qtdHaAplicado).replace(',', '.');
+                Log.e("Qtd_ha_aplicado", s);
+
+                double converteQtdHaApl;
+                try {
+                    converteQtdHaApl = Double.parseDouble(s);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    converteQtdHaApl = 1;
+                }
+                editaAtividadeInsumos.setQTD_HA_APLICADO(converteQtdHaApl);
+
+                Log.e("QTD_HA_APLICADO Total para o insumo: " + persisteInsumosDia.getDESCRICAO() + " ->",
                         String.valueOf(editaAtividadeInsumos.getQTD_HA_APLICADO()));
 
                 dao.update(editaAtividadeInsumos);

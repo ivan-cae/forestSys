@@ -300,13 +300,13 @@ public interface DAO {
     @Query("SELECT * FROM GGF_USUARIOS WHERE ID_USUARIO=:taskId")
     GGF_USUARIOS selecionaUser(int taskId);
 
-    @Query("SELECT * FROM GGF_USUARIOS WHERE EMAIL=:taskLogin AND senha=:taskSenha")
+    @Query("SELECT * FROM GGF_USUARIOS WHERE EMAIL=:taskLogin AND senha=:taskSenha AND ATIVO=1")
     GGF_USUARIOS valida(String taskLogin, String taskSenha);
 
     @Query("SELECT * FROM GGF_USUARIOS WHERE EMAIL=:taskLogin")
     LiveData<GGF_USUARIOS> validaLogin(String taskLogin);
 
-    @Query("SELECT * FROM GGF_USUARIOS ORDER BY ID_USUARIO asc")
+    @Query("SELECT * FROM GGF_USUARIOS WHERE ATIVO=1 ORDER BY ID_USUARIO asc")
     List<GGF_USUARIOS> listaUsuarios();
 
 
@@ -410,7 +410,7 @@ public interface DAO {
     @Query("SELECT * FROM MAQUINAS WHERE ID_MAQUINA=:id")
     MAQUINAS selecionaMaquina(int id);
 
-    @Query("SELECT * FROM MAQUINAS")
+    @Query("SELECT * FROM MAQUINAS WHERE ATIVO=1")
     List<MAQUINAS> listaMaquinas();
 
     @Query("SELECT * FROM MAQUINAS")
@@ -424,7 +424,7 @@ public interface DAO {
     @Query("SELECT * FROM PRESTADORES WHERE ID_PRESTADOR=:id")
     PRESTADORES selecionaPrestador(int id);
 
-    @Query("SELECT * FROM PRESTADORES")
+    @Query("SELECT * FROM PRESTADORES WHERE ATIVO=1")
     List<PRESTADORES> listaPrestadores();
 
     @Query("SELECT * FROM PRESTADORES")
@@ -459,7 +459,7 @@ public interface DAO {
 
 
     //Scripts OPERADORES
-    @Query("SELECT * FROM OPERADORES")
+    @Query("SELECT * FROM OPERADORES WHERE ATIVO=1")
     List<OPERADORES> todosOperadores();
 
     @Query("SELECT * FROM OPERADORES WHERE ID_OPERADORES=:id")
@@ -479,7 +479,7 @@ public interface DAO {
     @Query("SELECT * FROM O_S_ATIVIDADES_DIA WHERE ID=:idOracle")
     O_S_ATIVIDADES_DIA selecionaAtvDiaOracle(int idOracle);
 
-    @Query("SELECT SUM(CAST(AREA_REALIZADA AS DOUBLE)) FROM O_S_ATIVIDADES_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg")
+    @Query("SELECT SUM(AREA_REALIZADA) FROM O_S_ATIVIDADES_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg")
     double somaAreaRealizada(int idProg);
 
 
@@ -585,6 +585,9 @@ public interface DAO {
     @Query("SELECT * FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idAtv AND ID_INDICADOR=:idInd AND VALOR_INDICADOR NOT BETWEEN (:valor1) AND (:valor2)  AND PONTO=:ponto")
     boolean valorNaoConformeForaDaFaixa(int idAtv, int idInd, double valor1, double valor2, int ponto);
 
+@Query("SELECT * FROM AVAL_PONTO_SUBSOLAGEM")
+List<AVAL_PONTO_SUBSOLAGEM> todosPontos();
+
 
     //Scripts ESPACAMENTOS
     @Query("SELECT * FROM ESPACAMENTOS WHERE ID_ESPACAMENTO=:idEspacamento")
@@ -605,6 +608,9 @@ public interface DAO {
     //Scripts INDICADORES_SUBSOLAGEM
     @Query("SELECT * FROM INDICADORES_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_ATIVIDADE=:idAtv ORDER BY ID_INDICADOR")
     List<INDICADORES_SUBSOLAGEM> listaIndicadoresSubsolagem(int idProg, int idAtv);
+
+    @Query("SELECT * FROM INDICADORES_SUBSOLAGEM")
+    List<INDICADORES_SUBSOLAGEM> todosIndicadoresSubsolagem();
 
 
     //Scripts MANEJO

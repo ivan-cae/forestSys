@@ -1,6 +1,7 @@
 package com.example.forestsys.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -415,12 +416,17 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
     }
 
 public String formataLatLong(String s){
+Log.e("LatLong", s);
         if(s.length()<5) return s.replace(".", ",")+"°";
-        String[] antesDaVirgula = s.replace('.', ',').split(",");
-        String aux1 = antesDaVirgula[0];
-        String aux2 = antesDaVirgula[1].substring(0, 4);
-    aux1+=","+aux2+"°";
-        return aux1;
+        if(s.length()>5) {
+            String[] antesDaVirgula = s.replace('.', ',').split(",");
+            String aux1 = antesDaVirgula[0];
+            String aux2 = antesDaVirgula[1];
+            if(aux2.length()>4) aux2 = antesDaVirgula[1].substring(0, 4);
+            aux1 += "," + aux2 + "°";
+            return aux1;
+        }
+        return s;
 }
     @Override
     public int getItemCount() {

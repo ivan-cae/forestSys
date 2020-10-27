@@ -560,7 +560,7 @@
         <TextView
             android:id="@+id/qualidade_insumo_p1"
             android:layout_width="120dp"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:textAlignment="center"
             android:textSize="14sp"
             android:textStyle="normal"
@@ -570,7 +570,7 @@
         <TextView
             android:id="@+id/qualidade_media_p2"
             android:layout_width="80dp"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="normal"
@@ -580,7 +580,7 @@
         <TextView
             android:id="@+id/qualidade_desvio_padrao_p2"
             android:layout_width="130dp"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="normal"
@@ -590,7 +590,7 @@
         <TextView
             android:id="@+id/qualidade_insumo_p2"
             android:layout_width="120dp"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:textAlignment="center"
             android:textSize="14sp"
             android:textStyle="normal"
@@ -600,7 +600,7 @@
         <TextView
             android:id="@+id/qualidade_media_p1"
             android:layout_width="80dp"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="normal"
@@ -610,7 +610,7 @@
         <TextView
             android:id="@+id/qualidade_desvio_padrao_p1"
             android:layout_width="130dp"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="normal"
@@ -791,7 +791,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <FrameLayout
             android:id="@+id/fragment_container_qualidade"
@@ -818,7 +818,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:maxWidth="220dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:menu="@menu/menu_main_lateral" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

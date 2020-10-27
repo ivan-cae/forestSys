@@ -55,9 +55,11 @@ public class AVAL_PONTO_SUBSOLAGEM implements Serializable {
 
     private Integer NC_TRATADA;
 
+    private String UPDATED_AT;
 
 
-    public AVAL_PONTO_SUBSOLAGEM(Integer ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, Integer PONTO, Integer ID_ATIVIDADE, Integer ID_INDICADOR, double VALOR_INDICADOR, double COORDENADA_X, double COORDENADA_Y, Integer NC_TRATADA) {
+    public AVAL_PONTO_SUBSOLAGEM(Integer ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, Integer PONTO, Integer ID_ATIVIDADE,
+                                 Integer ID_INDICADOR, double VALOR_INDICADOR, double COORDENADA_X, double COORDENADA_Y, Integer NC_TRATADA) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.DATA = DATA;
         this.PONTO = PONTO;
@@ -140,5 +142,13 @@ public class AVAL_PONTO_SUBSOLAGEM implements Serializable {
 
     public void setNC_TRATADA(Integer NC_TRATADA) {
         this.NC_TRATADA = NC_TRATADA;
+    }
+
+    public String getUPDATED_AT() {
+        return UPDATED_AT;
+    }
+
+    public void setUPDATED_AT(String UPDATED_AT) {
+        this.UPDATED_AT = UPDATED_AT;
     }
 }

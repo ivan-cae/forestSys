@@ -19,14 +19,13 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.forestsys.Assets.BaseDeDados;
+import com.example.forestsys.Assets.DAO;
 import com.example.forestsys.Assets.NDSpinner;
 import com.example.forestsys.R;
 import com.example.forestsys.Classes.GGF_USUARIOS;
 import com.example.forestsys.Classes.O_S_ATIVIDADES_DIA;
 import com.example.forestsys.Classes.PRESTADORES;
-import com.example.forestsys.Repositorios.RepositorioPrestadores;
-import com.example.forestsys.Repositorios.RepositorioUsers;
-import com.example.forestsys.ViewModels.ViewModelO_S_ATIVIDADES_DIA;
 
 import java.util.ArrayList;
 
@@ -41,7 +40,6 @@ import static com.example.forestsys.Activities.ActivityAtividades.obs;
 import static com.example.forestsys.Activities.ActivityAtividades.area;
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
 import static com.example.forestsys.Activities.ActivityRegistros.auxSavedInstanceState;
-import static com.example.forestsys.Activities.ActivityRegistros.viewModelOSAtividadesDia;
 
 public class FragmentoRendimento extends Fragment {
     public static NDSpinner spinnerResponsavel;
@@ -58,15 +56,16 @@ public class FragmentoRendimento extends Fragment {
     public static int posicaoResponsavel = -1;
     public static int posicaoPrestador = -1;
 
-    private RepositorioUsers repositorioUsers;
-    private RepositorioPrestadores repositorioPrestadores;
     private ArrayList<PRESTADORES> prestadores;
     private ArrayList<GGF_USUARIOS> usuarios;
-    ArrayAdapter<PRESTADORES> adapterPrestadores;
-    ArrayAdapter<GGF_USUARIOS> adapterUsuarios;
+    private ArrayAdapter<PRESTADORES> adapterPrestadores;
+    private ArrayAdapter<GGF_USUARIOS> adapterUsuarios;
 
-    int contSpinnerPrestador = 0;
-    int contSpinnerResponsavel = 0;
+    private int contSpinnerPrestador = 0;
+    private int contSpinnerResponsavel = 0;
+
+    private BaseDeDados baseDeDados;
+    private DAO dao;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragmento_rendimento, container, false);
@@ -172,14 +171,12 @@ public class FragmentoRendimento extends Fragment {
         HMEscavadeiraApontamento = getView().findViewById(R.id.hora_maquina_escavadeira_apontamento);
         obsApontamento = getView().findViewById(R.id.obs_apontamento);
 
-        repositorioUsers = new RepositorioUsers(getActivity().getApplication());
+        baseDeDados = BaseDeDados.getInstance(getContext());
+        dao = baseDeDados.dao();
 
-        repositorioPrestadores = new RepositorioPrestadores(getActivity().getApplication());
+        prestadores = new ArrayList<>(dao.listaPrestadores());
 
-        viewModelOSAtividadesDia = new ViewModelO_S_ATIVIDADES_DIA(getActivity().getApplication());
-        prestadores = new ArrayList<>(repositorioPrestadores.listaPrestadores());
-
-        usuarios = new ArrayList<>(repositorioUsers.listaUsuarios());
+        usuarios = new ArrayList<>(dao.listaUsuarios());
 
 
         adapterPrestadores = new ArrayAdapter<PRESTADORES>(getActivity(),
