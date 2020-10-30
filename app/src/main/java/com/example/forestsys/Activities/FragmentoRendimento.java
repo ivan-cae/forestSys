@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -138,7 +139,7 @@ public class FragmentoRendimento extends Fragment {
         tamanho = edit.length();
         input = s.toString();
 
-        if (!input.isEmpty()) {
+        if (input.length()>0) {
 
             edit.setFilters(new InputFilter[]{
                     new InputFilter.LengthFilter(antesDaVirgula + 3)});
@@ -170,6 +171,8 @@ public class FragmentoRendimento extends Fragment {
         HHApontamento = getView().findViewById(R.id.hora_homem_apontamento);
         HMEscavadeiraApontamento = getView().findViewById(R.id.hora_maquina_escavadeira_apontamento);
         obsApontamento = getView().findViewById(R.id.obs_apontamento);
+
+        obsApontamento.setMovementMethod(new ScrollingMovementMethod());
 
         baseDeDados = BaseDeDados.getInstance(getContext());
         dao = baseDeDados.dao();
@@ -399,7 +402,7 @@ public class FragmentoRendimento extends Fragment {
     //parâmetro de saída: null se o valor não puder ser convertido, a própria string se o valor puder ser convertido
     public String checaTextView(TextView t, String str, double limite) {
         String s1 = t.getText().toString().trim();
-        if (s1.isEmpty()) return null;
+        if (s1.length()==0) return null;
         char[] c = s1.toCharArray();
         if (s1.length() > 0) {
             if (s1 == "," || c[s1.length() - 1] == ',' || c[0] == ',' || contaVirgula(s1, ',') > 1) {

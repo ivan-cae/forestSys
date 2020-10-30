@@ -9,7 +9,7 @@
     <TextView
         android:id="@+id/dialogo_qualidade_verion_nome_media_p2"
         android:layout_width="350dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView142"
@@ -18,7 +18,7 @@
     <TextView
         android:id="@+id/dialogo_qualidade_verion_nome_desvio_padrao_p2"
         android:layout_width="275dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView144"
@@ -139,7 +139,7 @@
     <TextView
         android:id="@+id/dialogo_qualidade_verion_nome_media_p1"
         android:layout_width="350dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView131"
@@ -148,7 +148,7 @@
     <TextView
         android:id="@+id/dialogo_qualidade_verion_nome_desvio_padrao_p1"
         android:layout_width="275dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView132"

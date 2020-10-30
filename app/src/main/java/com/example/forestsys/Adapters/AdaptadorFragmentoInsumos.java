@@ -40,7 +40,7 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
         if(insumo.getQTD_APLICADO()!=0.0) holder.QTDApl.setText(String.valueOf(insumo.getQTD_APLICADO()).replace(".", ","));
 
         holder.descricao.setText(String.valueOf(insumo.getDESCRICAO()));
-        if(area!=null && area!="" && !area.isEmpty()){
+        if(area!=null && area!="" && area.length()>0){
             String auxString = area;
             if(auxString.contains(",")) auxString = auxString.replace(",", ".");
 
@@ -54,13 +54,13 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
                 holder.QTDRec.setText(s);
                 if(diferencaPercentual((insumo.getQTD_HA_RECOMENDADO() * auxDouble), insumo.getQTD_APLICADO()) > 5.0000 ||
                         diferencaPercentual((insumo.getQTD_HA_RECOMENDADO() * auxDouble), insumo.getQTD_APLICADO()) < -5.0000){
-                    if(!holder.QTDApl.getText().toString().isEmpty()){
+                    if(holder.QTDApl.getText().toString().length()>0){
                         holder.QTDApl.setBackgroundColor(Color.parseColor("#FF0000"));
                         holder.QTDApl.setTextColor(Color.parseColor("#FFFFFFFF"));
                     }
                 }
                 else{
-                    if(!holder.QTDApl.getText().toString().isEmpty()){
+                    if(holder.QTDApl.getText().toString().length()>0){
                         holder.QTDApl.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
                         holder.QTDApl.setTextColor(holder.descricao.getCurrentTextColor());
 

@@ -16,6 +16,7 @@ import com.example.forestsys.Classes.CADASTRO_FLORESTAL;
 import com.example.forestsys.Classes.CALIBRAGEM_SUBSOLAGEM;
 import com.example.forestsys.Classes.ClassesAuxiliares.Configs;
 import com.example.forestsys.Classes.ESPACAMENTOS;
+import com.example.forestsys.Classes.GEO_LOCALIZACAO;
 import com.example.forestsys.Classes.GEO_REGIONAIS;
 import com.example.forestsys.Classes.GEO_SETORES;
 import com.example.forestsys.Classes.GGF_DEPARTAMENTOS;
@@ -124,6 +125,9 @@ public interface DAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(INSUMO_ATIVIDADES insumoAtividades);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(GEO_LOCALIZACAO geoLocalizacao);
+
 
     @Update
     void update(GGF_USUARIOS GGFUSUARIOS);
@@ -205,6 +209,9 @@ public interface DAO {
 
     @Update
     void update(INSUMO_ATIVIDADES insumoAtividades);
+
+    @Update
+    void update(GEO_LOCALIZACAO geoLocalizacao);
 
 
     @Delete
@@ -288,6 +295,16 @@ public interface DAO {
     @Delete
     void delete(INSUMO_ATIVIDADES insumoAtividades);
 
+    @Delete
+    void delete(GEO_LOCALIZACAO geoLocalizacao);
+
+
+    //Scripts GEO_LOCALIZACAO
+    @Query("SELECT * FROM GEO_LOCALIZACAO WHERE TALHAO=:talhao")
+    GEO_LOCALIZACAO selecionaGeoLocal(String talhao);
+
+@Query("DELETE FROM GEO_LOCALIZACAO")
+void apagaTodasGeoLocal();
 
     //Scripts Configurações
     @Query("SELECT * FROM Configs WHERE idConfig=1")
@@ -298,7 +315,7 @@ public interface DAO {
     List<GGF_USUARIOS> todosUsers();
 
     @Query("SELECT * FROM GGF_USUARIOS WHERE ID_USUARIO=:taskId")
-    GGF_USUARIOS selecionaUser(int taskId);
+    GGF_USUARIOS selecionaUser(Integer taskId);
 
     @Query("SELECT * FROM GGF_USUARIOS WHERE EMAIL=:taskLogin AND senha=:taskSenha AND ATIVO=1")
     GGF_USUARIOS valida(String taskLogin, String taskSenha);
@@ -315,10 +332,10 @@ public interface DAO {
     List<GEO_SETORES> todosSetores();
 
     @Query("SELECT * FROM GEO_SETORES WHERE ID_SETOR=:taskId")
-    GEO_SETORES selecionaSetor(int taskId);
+    GEO_SETORES selecionaSetor(Integer taskId);
 
     @Query("SELECT DESCRICAO FROM GEO_SETORES WHERE ID_SETOR=:taskId")
-    String selecionaDescSetor(int taskId);
+    String selecionaDescSetor(Integer taskId);
 
 
     //Scripts GEO_REGIONAIS
@@ -326,7 +343,7 @@ public interface DAO {
     LiveData<List<GEO_REGIONAIS>> todosRegionais();
 
     @Query("SELECT * FROM GEO_REGIONAIS WHERE ID_REGIONAL=:taskId")
-    LiveData<GEO_REGIONAIS> selecionaRegional(int taskId);
+    LiveData<GEO_REGIONAIS> selecionaRegional(Integer taskId);
 
 
     //Scripts O_S_ATIVIDADES
@@ -337,10 +354,10 @@ public interface DAO {
     List<O_S_ATIVIDADES> listaOsDataSemPrioridadeDesc();
 
     @Query("SELECT * FROM O_S_ATIVIDADES WHERE PRIORIDADE =:prioridade ORDER BY DATE(DATA_PROGRAMADA) ASC")
-    List<O_S_ATIVIDADES> listaOsDataAsc(int prioridade);
+    List<O_S_ATIVIDADES> listaOsDataAsc(Integer prioridade);
 
     @Query("SELECT * FROM O_S_ATIVIDADES WHERE PRIORIDADE =:prioridade  ORDER BY DATE(DATA_PROGRAMADA) DESC")
-    List<O_S_ATIVIDADES> listaOsDataDesc(int prioridade);
+    List<O_S_ATIVIDADES> listaOsDataDesc(Integer prioridade);
 
 
     @Query("SELECT * FROM O_S_ATIVIDADES JOIN GEO_SETORES WHERE O_S_ATIVIDADES.ID_SETOR = GEO_SETORES.ID_SETOR" +
@@ -353,11 +370,11 @@ public interface DAO {
 
     @Query("SELECT * FROM O_S_ATIVIDADES JOIN GEO_SETORES WHERE O_S_ATIVIDADES.ID_SETOR = GEO_SETORES.ID_SETOR AND PRIORIDADE =:prioridade" +
             " ORDER BY GEO_SETORES.DESCRICAO ASC")
-    List<O_S_ATIVIDADES> listaOsSetorAsc(int prioridade);
+    List<O_S_ATIVIDADES> listaOsSetorAsc(Integer prioridade);
 
     @Query("SELECT * FROM O_S_ATIVIDADES JOIN GEO_SETORES WHERE O_S_ATIVIDADES.ID_SETOR = GEO_SETORES.ID_SETOR AND PRIORIDADE =:prioridade" +
             " ORDER BY GEO_SETORES.DESCRICAO DESC")
-    List<O_S_ATIVIDADES> listaOsSetorDesc(int prioridade);
+    List<O_S_ATIVIDADES> listaOsSetorDesc(Integer prioridade);
 
 
     @Query("SELECT * FROM O_S_ATIVIDADES ORDER BY CAST(TALHAO AS INTEGER) ASC")
@@ -367,26 +384,26 @@ public interface DAO {
     List<O_S_ATIVIDADES> listaOsTalhaoSemPrioridadeDesc();
 
     @Query("SELECT * FROM O_S_ATIVIDADES WHERE PRIORIDADE =:prioridade  ORDER BY CAST(TALHAO AS INTEGER) ASC")
-    List<O_S_ATIVIDADES> listaOsTalhaoAsc(int prioridade);
+    List<O_S_ATIVIDADES> listaOsTalhaoAsc(Integer prioridade);
 
     @Query("SELECT * FROM O_S_ATIVIDADES WHERE PRIORIDADE =:prioridade  ORDER BY CAST(TALHAO AS INTEGER) DESC")
-    List<O_S_ATIVIDADES> listaOsTalhaoDesc(int prioridade);
+    List<O_S_ATIVIDADES> listaOsTalhaoDesc(Integer prioridade);
 
 
     @Query("SELECT * FROM O_S_ATIVIDADES WHERE ID_PROGRAMACAO_ATIVIDADE=:taskId")
-    O_S_ATIVIDADES selecionaOs(int taskId);
+    O_S_ATIVIDADES selecionaOs(Integer taskId);
 
     @Query("SELECT * FROM O_S_ATIVIDADES")
     List<O_S_ATIVIDADES> todasOs();
 
     @Query("SELECT * FROM O_S_ATIVIDADES WHERE PRIORIDADE=:prioridade")
-    List<O_S_ATIVIDADES> filtraPrioridade(int prioridade);
+    List<O_S_ATIVIDADES> filtraPrioridade(Integer prioridade);
 
 
     //Scripts CADASTRO_FLORESTAL
     @Query("SELECT * FROM CADASTRO_FLORESTAL WHERE ID_REGIONAL =:idReg AND ID_SETOR=:idSet AND TALHAO=:talhao" +
             " AND CICLO=:ciclo AND ID_MANEJO=:idManejo")
-    CADASTRO_FLORESTAL selecionaCadFlorestal(int idReg, int idSet, String talhao, int ciclo, int idManejo);
+    CADASTRO_FLORESTAL selecionaCadFlorestal(Integer idReg, Integer idSet, String talhao, Integer ciclo, Integer idManejo);
 
     @Query("SELECT * FROM CADASTRO_FLORESTAL")
     List<CADASTRO_FLORESTAL> listaCadFlorestal();
@@ -397,7 +414,7 @@ public interface DAO {
 
     //Scripts IMPLEMENTOS
     @Query("SELECT * FROM IMPLEMENTOS WHERE ID_IMPLEMENTO=:id")
-    IMPLEMENTOS selecionaImplemento(int id);
+    IMPLEMENTOS selecionaImplemento(Integer id);
 
     @Query("SELECT * FROM IMPLEMENTOS")
     List<IMPLEMENTOS> listaImplementos();
@@ -408,7 +425,7 @@ public interface DAO {
 
     //Scripts MAQUINAS
     @Query("SELECT * FROM MAQUINAS WHERE ID_MAQUINA=:id")
-    MAQUINAS selecionaMaquina(int id);
+    MAQUINAS selecionaMaquina(Integer id);
 
     @Query("SELECT * FROM MAQUINAS WHERE ATIVO=1")
     List<MAQUINAS> listaMaquinas();
@@ -417,12 +434,12 @@ public interface DAO {
     LiveData<List<MAQUINAS>> todasMaquinas();
 
     @Query("SELECT ID_MAQUINA FROM MAQUINAS WHERE DESCRICAO_MAQUINA=:desc")
-    int selecionaIdMaquina(String desc);
+    Integer selecionaIdMaquina(String desc);
 
 
     //Scripts PRESTADORES
     @Query("SELECT * FROM PRESTADORES WHERE ID_PRESTADOR=:id")
-    PRESTADORES selecionaPrestador(int id);
+    PRESTADORES selecionaPrestador(Integer id);
 
     @Query("SELECT * FROM PRESTADORES WHERE ATIVO=1")
     List<PRESTADORES> listaPrestadores();
@@ -434,14 +451,14 @@ public interface DAO {
     //Scripts CALIBRAGEM_SUBSOLAGEM
     @Query("SELECT * FROM CALIBRAGEM_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND DATA=:data AND " +
             "TURNO=:turno AND ID_MAQUINA_IMPLEMENTO=:idMaqImp")
-    LiveData<CALIBRAGEM_SUBSOLAGEM> selecionaCalibragem(int idProg, String data, String turno, int idMaqImp);
+    LiveData<CALIBRAGEM_SUBSOLAGEM> selecionaCalibragem(Integer idProg, String data, String turno, Integer idMaqImp);
 
     @Query("SELECT * FROM CALIBRAGEM_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND DATA=:data AND " +
             "TURNO=:turno")
-    CALIBRAGEM_SUBSOLAGEM checaCalibragem(int idProg, String data, String turno);
+    CALIBRAGEM_SUBSOLAGEM checaCalibragem(Integer idProg, String data, String turno);
 
     @Query("SELECT * FROM CALIBRAGEM_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg ORDER BY strftime('%d-%m-%Y') DESC")
-    List<CALIBRAGEM_SUBSOLAGEM> listaCalibragem(int idProg);
+    List<CALIBRAGEM_SUBSOLAGEM> listaCalibragem(Integer idProg);
 
     @Query("SELECT * FROM CALIBRAGEM_SUBSOLAGEM")
     List<CALIBRAGEM_SUBSOLAGEM> todasCalibragens();
@@ -452,7 +469,7 @@ public interface DAO {
     LiveData<List<MAQUINA_IMPLEMENTO>> todosMaquinaImplementos();
 
     @Query("SELECT * FROM MAQUINA_IMPLEMENTO WHERE ID_MAQUINA_IMPLEMENTO=:id")
-    MAQUINA_IMPLEMENTO selecionaMaquinaImplemento(int id);
+    MAQUINA_IMPLEMENTO selecionaMaquinaImplemento(Integer id);
 
     @Query("SELECT * FROM MAQUINA_IMPLEMENTO")
     List<MAQUINA_IMPLEMENTO> listaMaquinaImplemento();
@@ -463,80 +480,83 @@ public interface DAO {
     List<OPERADORES> todosOperadores();
 
     @Query("SELECT * FROM OPERADORES WHERE ID_OPERADORES=:id")
-    OPERADORES selecionaOperador(int id);
+    OPERADORES selecionaOperador(Integer id);
 
 
     //Scripts O_S_ATIVIDADES_DIA
     @Query("SELECT * FROM O_S_ATIVIDADES_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND DATA=:data")
-    O_S_ATIVIDADES_DIA selecionaOsAtividadesDia(int idProg, String data);
+    O_S_ATIVIDADES_DIA selecionaOsAtividadesDia(Integer idProg, String data);
 
     @Query("SELECT * FROM O_S_ATIVIDADES_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg ORDER BY DATE(DATA) DESC")
-    List<O_S_ATIVIDADES_DIA> listaAtividadesDia(int idProg);
+    List<O_S_ATIVIDADES_DIA> listaAtividadesDia(Integer idProg);
 
     @Query("SELECT * FROM O_S_ATIVIDADES_DIA")
     List<O_S_ATIVIDADES_DIA> todasOsAtividadesDia();
 
     @Query("SELECT * FROM O_S_ATIVIDADES_DIA WHERE ID=:idOracle")
-    O_S_ATIVIDADES_DIA selecionaAtvDiaOracle(int idOracle);
+    O_S_ATIVIDADES_DIA selecionaAtvDiaOracle(Integer idOracle);
 
     @Query("SELECT SUM(AREA_REALIZADA) FROM O_S_ATIVIDADES_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg")
-    double somaAreaRealizada(int idProg);
+    double somaAreaRealizada(Integer idProg);
 
 
     //Scritps INSUMOS
     @Query("SELECT * FROM INSUMOS WHERE ID_INSUMO=:id")
-    INSUMOS selecionaInsumo(int id);
+    INSUMOS selecionaInsumo(Integer id);
 
     @Query("SELECT * FROM INSUMOS")
     LiveData<List<INSUMOS>> todosInsumos();
 
     @Query("SELECT ID_INSUMO FROM INSUMOS WHERE DESCRICAO=:desc")
-    int consultaDesc(String desc);
+    Integer consultaDesc(String desc);
 
     @Query("SELECT ID_INSUMO FROM INSUMOS WHERE ID_INSUMO_RM=:idInsRm")
-    int selecionaInsumoPorRm(String idInsRm);
+    Integer selecionaInsumoPorRm(String idInsRm);
 
 
     //Scritps O_S_ATIVIDADE_INSUMOS
     @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_INSUMO=:idInsumo")
-    List<O_S_ATIVIDADE_INSUMOS> selecionaOsAtividadeInsumo(int idProg, int idInsumo);
+    List<O_S_ATIVIDADE_INSUMOS> selecionaOsAtividadeInsumo(Integer idProg, Integer idInsumo);
 
     @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS")
     List<O_S_ATIVIDADE_INSUMOS> todosOsAtividadeInsumos();
 
     @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg ORDER BY ID_INSUMO")
-    List<O_S_ATIVIDADE_INSUMOS> listaInsumosatividade(int idProg);
+    List<O_S_ATIVIDADE_INSUMOS> listaInsumosatividade(Integer idProg);
+
+    @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_INSUMO=:idIns ")
+    O_S_ATIVIDADE_INSUMOS selecionaAtividadeInsumos(Integer idProg, Integer idIns);
 
 
     //Scripts O_S_ATIVIDADE_INSUMOS_DIA
-    @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_INSUMO=:idIns ")
-    O_S_ATIVIDADE_INSUMOS selecionaAtividadeInsumos(int idProg, int idIns);
-
     @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND DATA=:data ORDER BY ID_INSUMO")
-    List<O_S_ATIVIDADE_INSUMOS_DIA> listaOsAtividadeInsumosDia(int idProg, String data);
+    List<O_S_ATIVIDADE_INSUMOS_DIA> listaOsAtividadeInsumosDia(Integer idProg, String data);
 
-    @Query("DELETE FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND DATA=:data")
-    void apagaOsAtividadeInsumosDia(int idProg, String data);
+    @Query("DELETE FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND DATA=:data AND ID_INSUMO=:idIns")
+    void apagaOsAtividadeInsumosDia(Integer idProg, String data, Integer idIns);
 
     @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg GROUP BY DATA")
-    List<O_S_ATIVIDADE_INSUMOS_DIA> checaOsInsumosDia(int idProg);
+    List<O_S_ATIVIDADE_INSUMOS_DIA> checaOsInsumosDia(Integer idProg);
 
     @Query("SELECT QTD_APLICADO FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_INSUMO=:idIns")
-    List<Double> todosQTDApl(int idProg, int idIns);
+    List<Double> todosQTDApl(Integer idProg, Integer idIns);
 
     @Query("SELECT QTD_APLICADO FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_INSUMO=:idIns AND DATA=:data")
-    double qtdAplInsDia(int idProg, int idIns, String data);
+    double qtdAplInsDia(Integer idProg, Integer idIns, String data);
 
     @Query("SELECT SUM(QTD_APLICADO) FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_INSUMO=:idIns")
-    double qtdAplicadaTodosInsumos(int idProg, int idIns);
+    double qtdAplicadaTodosInsumos(Integer idProg, Integer idIns);
 
     @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS_DIA")
     List<O_S_ATIVIDADE_INSUMOS_DIA> todasOsAtvInsumosDia();
 
+    @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND DATA=:data AND ID_INSUMO=:idIns")
+    O_S_ATIVIDADE_INSUMOS_DIA selecionaAtvInsDia(Integer idProg, Integer idIns, String data);
+
 
     //Scripts ATIVIDADES
     @Query("SELECT * FROM ATIVIDADES WHERE ID_ATIVIDADE=:idAtv")
-    ATIVIDADES selecionaAtividade(int idAtv);
+    ATIVIDADES selecionaAtividade(Integer idAtv);
 
     @Query("SELECT * FROM ATIVIDADES ORDER BY ID_ATIVIDADE")
     List<ATIVIDADES> todasAtividades();
@@ -544,54 +564,54 @@ public interface DAO {
 
     //Scripts ATIVIDADE_INDICADORES
     @Query(("SELECT * FROM ATIVIDADE_INDICADORES WHERE ID_ATIVIDADE=:idAtv AND VERION=:verion ORDER BY ORDEM_INDICADOR"))
-    List<ATIVIDADE_INDICADORES> listaAtividadeIndicadores(int idAtv, String verion);
+    List<ATIVIDADE_INDICADORES> listaAtividadeIndicadores(Integer idAtv, String verion);
 
     @Query("SELECT DESCRICAO FROM ATIVIDADE_INDICADORES WHERE ID_ATIVIDADE=:idAtv AND ID_INDICADOR=:idInd")
-    String descricaoIndicador(int idAtv, int idInd);
+    String descricaoIndicador(Integer idAtv, Integer idInd);
 
     @Query("SELECT INDICADOR_CORRIGIVEL FROM ATIVIDADE_INDICADORES WHERE ID_ATIVIDADE=:idAtv AND ID_INDICADOR=:idInd")
-    int indicadorCorrigivel(int idAtv, int idInd);
+    Integer indicadorCorrigivel(Integer idAtv, Integer idInd);
 
     @Query("SELECT * FROM ATIVIDADE_INDICADORES WHERE REFERENCIA=:ref")
     ATIVIDADE_INDICADORES selecionaIndicadorPeloRef(String ref);
 
     //Scripts AVAL_PONTO_SUBSOLAGEM
     @Query("SELECT *FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idAtv GROUP BY PONTO ORDER BY PONTO")
-    List<AVAL_PONTO_SUBSOLAGEM> listaAvalPontoSubsolagem(int idAtv);
+    List<AVAL_PONTO_SUBSOLAGEM> listaAvalPontoSubsolagem(Integer idAtv);
 
     @Query("SELECT DISTINCT * FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_ATIVIDADE=:idAtv AND PONTO=:ponto")
-    List<AVAL_PONTO_SUBSOLAGEM> listaPontoCorrecoes(int idProg, int idAtv, int ponto);
+    List<AVAL_PONTO_SUBSOLAGEM> listaPontoCorrecoes(Integer idProg, Integer idAtv, Integer ponto);
 
     //Checa quantidade de cada indicador não conforme
     @Query("SELECT COUNT(*) FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idAtv AND ID_INDICADOR=:idInd AND VALOR_INDICADOR<:valor")
-    int qtdNaoConformeMenor(int idAtv, int idInd, double valor);
+    Integer qtdNaoConformeMenor(Integer idAtv, Integer idInd, double valor);
 
     @Query("SELECT COUNT(*) FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idAtv AND ID_INDICADOR=:idInd AND VALOR_INDICADOR=1")
-    int qtdNaoConformebool(int idAtv, int idInd);
+    Integer qtdNaoConformebool(Integer idAtv, Integer idInd);
 
     @Query("SELECT COUNT(*) FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idAtv AND ID_INDICADOR=:idInd AND VALOR_INDICADOR NOT BETWEEN (:valor1) AND (:valor2)")
-    int qtdNaoConformeForaDaFaixa(int idAtv, int idInd, double valor1, double valor2);
+    Integer qtdNaoConformeForaDaFaixa(Integer idAtv, Integer idInd, double valor1, double valor2);
 
     @Query("SELECT COUNT(*) FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_INDICADOR=:idInd")
-    int qtdIndicador(int idProg, int idInd);
+    Integer qtdIndicador(Integer idProg, Integer idInd);
 
     //checa qual indicador não está conforme para cada ponto
     @Query("SELECT * FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idAtv AND ID_INDICADOR=:idInd AND VALOR_INDICADOR<:valor AND PONTO=:ponto")
-    boolean valorNaoConformeMenor(int idAtv, int idInd, double valor, int ponto);
+    boolean valorNaoConformeMenor(Integer idAtv, Integer idInd, double valor, Integer ponto);
 
     @Query("SELECT * FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idAtv AND ID_INDICADOR=:idInd AND VALOR_INDICADOR=1 AND PONTO=:ponto")
-    boolean valorNaoConformebool(int idAtv, int idInd, int ponto);
+    boolean valorNaoConformebool(Integer idAtv, Integer idInd, Integer ponto);
 
     @Query("SELECT * FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idAtv AND ID_INDICADOR=:idInd AND VALOR_INDICADOR NOT BETWEEN (:valor1) AND (:valor2)  AND PONTO=:ponto")
-    boolean valorNaoConformeForaDaFaixa(int idAtv, int idInd, double valor1, double valor2, int ponto);
+    boolean valorNaoConformeForaDaFaixa(Integer idAtv, Integer idInd, double valor1, double valor2, Integer ponto);
 
-@Query("SELECT * FROM AVAL_PONTO_SUBSOLAGEM")
-List<AVAL_PONTO_SUBSOLAGEM> todosPontos();
+    @Query("SELECT * FROM AVAL_PONTO_SUBSOLAGEM")
+    List<AVAL_PONTO_SUBSOLAGEM> todosPontos();
 
 
     //Scripts ESPACAMENTOS
     @Query("SELECT * FROM ESPACAMENTOS WHERE ID_ESPACAMENTO=:idEspacamento")
-    ESPACAMENTOS selecionaEspacamento(int idEspacamento);
+    ESPACAMENTOS selecionaEspacamento(Integer idEspacamento);
 
     @Query("SELECT * FROM ESPACAMENTOS")
     List<ESPACAMENTOS> listaEspacamentos();
@@ -599,7 +619,7 @@ List<AVAL_PONTO_SUBSOLAGEM> todosPontos();
 
     //Scripts AVAL_SUBSOLAGEM
     @Query("SELECT * FROM AVAL_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg")
-    AVAL_SUBSOLAGEM selecionaAvalSubsolagem(int idProg);
+    AVAL_SUBSOLAGEM selecionaAvalSubsolagem(Integer idProg);
 
     @Query("SELECT * FROM AVAL_SUBSOLAGEM")
     List<AVAL_SUBSOLAGEM> listaAvalPontoSubsolagem();
@@ -607,7 +627,7 @@ List<AVAL_PONTO_SUBSOLAGEM> todosPontos();
 
     //Scripts INDICADORES_SUBSOLAGEM
     @Query("SELECT * FROM INDICADORES_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_ATIVIDADE=:idAtv ORDER BY ID_INDICADOR")
-    List<INDICADORES_SUBSOLAGEM> listaIndicadoresSubsolagem(int idProg, int idAtv);
+    List<INDICADORES_SUBSOLAGEM> listaIndicadoresSubsolagem(Integer idProg, Integer idAtv);
 
     @Query("SELECT * FROM INDICADORES_SUBSOLAGEM")
     List<INDICADORES_SUBSOLAGEM> todosIndicadoresSubsolagem();
@@ -615,12 +635,12 @@ List<AVAL_PONTO_SUBSOLAGEM> todosPontos();
 
     //Scripts MANEJO
     @Query("SELECT * FROM MANEJO WHERE ID_MANEJO=:idManejo")
-    MANEJO selecionaManejo(int idManejo);
+    MANEJO selecionaManejo(Integer idManejo);
 
 
     //Scripts MATERIAL_GENETICO
     @Query("SELECT * FROM MATERIAL_GENETICO WHERE ID_MATERIAL_GENETICO=:idMatGen")
-    MATERIAL_GENETICO selecionaMaterialGenetico(int idMatGen);
+    MATERIAL_GENETICO selecionaMaterialGenetico(Integer idMatGen);
 
 
     //JOINS
@@ -628,44 +648,46 @@ List<AVAL_PONTO_SUBSOLAGEM> todosPontos();
             "LEFT JOIN O_S_ATIVIDADE_INSUMOS_DIA ON O_S_ATIVIDADE_INSUMOS.ID_INSUMO = O_S_ATIVIDADE_INSUMOS_DIA.ID_INSUMO" +
             " AND O_S_ATIVIDADE_INSUMOS.ID_PROGRAMACAO_ATIVIDADE = O_S_ATIVIDADE_INSUMOS_DIA.ID_PROGRAMACAO_ATIVIDADE" +
             " WHERE O_S_ATIVIDADE_INSUMOS.ID_PROGRAMACAO_ATIVIDADE=:idProg GROUP BY INSUMOS.ID_INSUMO ORDER BY ID_INSUMO")
-    List<Join_OS_INSUMOS> listaJoinInsumoAtividades(int idProg);
+    List<Join_OS_INSUMOS> listaJoinInsumoAtividades(Integer idProg);
 
     @Query("SELECT DISTINCT * FROM INSUMOS INNER JOIN O_S_ATIVIDADE_INSUMOS_DIA ON INSUMOS.ID_INSUMO = O_S_ATIVIDADE_INSUMOS_DIA.ID_INSUMO " +
             "LEFT JOIN O_S_ATIVIDADE_INSUMOS" +
             " ON O_S_ATIVIDADE_INSUMOS_DIA.ID_INSUMO = O_S_ATIVIDADE_INSUMOS.ID_INSUMO " +
             "AND O_S_ATIVIDADE_INSUMOS.ID_PROGRAMACAO_ATIVIDADE = O_S_ATIVIDADE_INSUMOS_DIA.ID_PROGRAMACAO_ATIVIDADE " +
-            "WHERE O_S_ATIVIDADE_INSUMOS_DIA.ID_PROGRAMACAO_ATIVIDADE=:idProg AND O_S_ATIVIDADE_INSUMOS_DIA.DATA=:data ORDER BY ID_INSUMO")
-    List<Join_OS_INSUMOS> listaJoinInsumoAtividadesdia(int idProg, String data);
+            "WHERE O_S_ATIVIDADE_INSUMOS_DIA.ID_PROGRAMACAO_ATIVIDADE=:idProg " +
+            "AND O_S_ATIVIDADE_INSUMOS.ID_PROGRAMACAO_ATIVIDADE=:idProg" +
+            " AND O_S_ATIVIDADE_INSUMOS_DIA.DATA=:data ORDER BY ID_INSUMO")
+    List<Join_OS_INSUMOS> listaJoinInsumoAtividadesdia(Integer idProg, String data);
 
     @Query("SELECT QTD_APLICADO FROM INSUMOS LEFT JOIN O_S_ATIVIDADE_INSUMOS_DIA" +
             " ON INSUMOS.ID_INSUMO = O_S_ATIVIDADE_INSUMOS_DIA.ID_INSUMO " +
             "WHERE O_S_ATIVIDADE_INSUMOS_DIA.ID_PROGRAMACAO_ATIVIDADE=:idProg " +
             "AND O_S_ATIVIDADE_INSUMOS_DIA.DATA=:data " +
             "AND O_S_ATIVIDADE_INSUMOS_DIA.ID_INSUMO=:idInsumo")
-    double retornaQtdApl(int idProg, String data, int idInsumo);
+    double retornaQtdApl(Integer idProg, String data, Integer idInsumo);
 
     @Query("SELECT * FROM MAQUINA_IMPLEMENTO JOIN MAQUINAS " +
             "ON MAQUINA_IMPLEMENTO.ID_MAQUINA = MAQUINAS.ID_MAQUINA " +
             "JOIN IMPLEMENTOS ON MAQUINA_IMPLEMENTO.ID_IMPLEMENTO = IMPLEMENTOS.ID_IMPLEMENTO " +
             "WHERE MAQUINA_IMPLEMENTO.ID_MAQUINA =:idMaq")
-    List<Join_MAQUINA_IMPLEMENTO> listaJoinMaquinaImplemento(int idMaq);
+    List<Join_MAQUINA_IMPLEMENTO> listaJoinMaquinaImplemento(Integer idMaq);
 
     @Query("SELECT * FROM MAQUINA_IMPLEMENTO JOIN MAQUINAS " +
             "ON MAQUINA_IMPLEMENTO.ID_MAQUINA = MAQUINAS.ID_MAQUINA " +
             "JOIN IMPLEMENTOS ON MAQUINA_IMPLEMENTO.ID_IMPLEMENTO = IMPLEMENTOS.ID_IMPLEMENTO " +
             "WHERE MAQUINA_IMPLEMENTO.ID_MAQUINA_IMPLEMENTO =:idMaqImpl")
-    Join_MAQUINA_IMPLEMENTO selecionaJoinMaquinaImplemento(int idMaqImpl);
+    Join_MAQUINA_IMPLEMENTO selecionaJoinMaquinaImplemento(Integer idMaqImpl);
 
     @Query("SELECT CALIBRAGEM_SUBSOLAGEM.ID_MAQUINA_IMPLEMENTO FROM CALIBRAGEM_SUBSOLAGEM " +
             "WHERE CALIBRAGEM_SUBSOLAGEM.ID_PROGRAMACAO_ATIVIDADE=:idProg AND " +
             "CALIBRAGEM_SUBSOLAGEM.DATA=:data AND CALIBRAGEM_SUBSOLAGEM.TURNO=:turno AND" +
             " ID_MAQUINA_IMPLEMENTO =:idMaqImp")
-    int checaMaquinaImplemento(int idProg, String data, String turno, int idMaqImp);
+    Integer checaMaquinaImplemento(Integer idProg, String data, String turno, Integer idMaqImp);
 
     @Query("SELECT DISTINCT COUNT(*) FROM AVAL_PONTO_SUBSOLAGEM INNER JOIN ATIVIDADE_INDICADORES ON AVAL_PONTO_SUBSOLAGEM.ID_INDICADOR = " +
             "ATIVIDADE_INDICADORES.ID_INDICADOR AND AVAL_PONTO_SUBSOLAGEM.ID_ATIVIDADE = ATIVIDADE_INDICADORES.ID_ATIVIDADE " +
             "WHERE AVAL_PONTO_SUBSOLAGEM.ID_ATIVIDADE=:idAtv AND AVAL_PONTO_SUBSOLAGEM.ID_PROGRAMACAO_ATIVIDADE=:idProg AND " +
             "ATIVIDADE_INDICADORES.INDICADOR_CORRIGIVEL=1 AND " +
             "AVAL_PONTO_SUBSOLAGEM.NC_TRATADA=0")
-    int NCNaoTratadas(int idAtv, int idProg);
+    Integer NCNaoTratadas(Integer idAtv, Integer idProg);
 }

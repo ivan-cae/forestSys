@@ -102,10 +102,14 @@ public class FragmentoInsumos extends Fragment {
                 obsInsumo1.setFocusable(false);
             }
 
+            obsInsumo1.setMovementMethod(new ScrollingMovementMethod());
+            obsInsumo2.setMovementMethod(new ScrollingMovementMethod());
+
             listaJoinOsInsumos = dao.listaJoinInsumoAtividades(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
-            if (editouRegistro && savedInstanceState == null)
+            if (editouRegistro && savedInstanceState == null) {
                 listaJoinOsInsumosSelecionados = dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), ferramentas.formataDataDb(dataDoApontamento));
+            }
 
             nomeInsumo1.setText("OBS: "+pegaDescInsumos[0]);
             nomeInsumo2.setText("OBS: "+pegaDescInsumos[1]);
@@ -114,7 +118,7 @@ public class FragmentoInsumos extends Fragment {
             nomeInsumo2.setMovementMethod(new ScrollingMovementMethod());
 
 
-            if (!listaJoinOsInsumosSelecionados.isEmpty()) {
+            if (listaJoinOsInsumosSelecionados.size()>0) {
                 if (listaJoinOsInsumosSelecionados.size() >= 1)
                     obsInsumo1.setText(listaJoinOsInsumosSelecionados.get(0).getOBSERVACAO());
                 if (listaJoinOsInsumosSelecionados.size() >= 2)
@@ -157,10 +161,10 @@ public class FragmentoInsumos extends Fragment {
                 public void onItemClick(Join_OS_INSUMOS joinOsInsumos) {
                     String auxArea = area;
                     if(auxArea != null ){
-                        if(!auxArea.isEmpty() && auxArea.contains(",")) auxArea = auxArea.replace(",", ".");
+                        if(auxArea.length()>0 && auxArea.contains(",")) auxArea = auxArea.replace(",", ".");
                     }
 
-                    if(auxArea == null || auxArea.isEmpty() || auxArea=="" || Double.valueOf(auxArea)==0 || Double.valueOf(auxArea)==null){
+                    if(auxArea == null || auxArea.length()==0 || auxArea=="" || Double.valueOf(auxArea)==0 || Double.valueOf(auxArea)==null){
                         AlertDialog dialog = new AlertDialog.Builder(getActivity())
                                 .setTitle("Erro")
                                 .setMessage("É Necessário Preencher Corretamente a Área Antes de Adicionar Insumos.")
@@ -190,8 +194,8 @@ public class FragmentoInsumos extends Fragment {
                     }
                 }
             });
-            if(obsInsumo2.length()==0) obsInsumo1.setHint("Digite as observações aqui");
-            if(obsInsumo2.length()==0) obsInsumo2.setHint("Digite as observações aqui");
+            if(obsInsumo2.length()==0 && editouRegistro ==false) obsInsumo1.setHint("Digite as observações aqui");
+            if(obsInsumo2.length()==0 && editouRegistro ==false) obsInsumo2.setHint("Digite as observações aqui");
         }
     }
 
@@ -205,7 +209,7 @@ public class FragmentoInsumos extends Fragment {
         tamanho = edit.length();
         input = s.toString();
 
-        if (!input.isEmpty()) {
+        if (input.length()>0) {
 
             String qtdrec = String.valueOf(Double.valueOf(area.replace(',', '.')) * qtd_ha_rec);
 
@@ -261,7 +265,7 @@ public class FragmentoInsumos extends Fragment {
 
         if (auxSavedInstanceState != null) {
             if (auxSavedInstanceState.getString("valorDialogoQtd") != null) {
-                if (!auxSavedInstanceState.getString("valorDialogoQtd").isEmpty()) {
+                if (auxSavedInstanceState.getString("valorDialogoQtd").length()>0) {
                     valorDialogoQtd.setText(auxSavedInstanceState.getString("valorDialogoQtd"));
                 }
             }
@@ -283,7 +287,7 @@ public class FragmentoInsumos extends Fragment {
                 for (int i = 0; i < s.length; i++) {
                     if (s[i] == '.') contador++;
                 }
-                if (str == null || str.isEmpty() || contador > 1 || s[s.length - 1] == '.' || s[0] == '.' || Double.valueOf(str.replace(',', '.')) == 0.0) {
+                if (str == null || str.length()==0 || contador > 1 || s[s.length - 1] == '.' || s[0] == '.' || Double.valueOf(str.replace(',', '.')) == 0.0) {
                     valorDialogoQtd.setError("Valor inválido");
                 } else {
                     int id = listaJoinOsInsumosSelecionados.indexOf(insumoInsere);
@@ -336,7 +340,7 @@ public class FragmentoInsumos extends Fragment {
 
         if (auxSavedInstanceState != null) {
             if (auxSavedInstanceState.getString("valorDialogoEdicao") != null) {
-                if (!auxSavedInstanceState.getString("valorDialogoEdicao").isEmpty()) {
+                if (auxSavedInstanceState.getString("valorDialogoEdicao").length()>0) {
                     valorDialogoEdicao.setText(auxSavedInstanceState.getString("valorDialogoEdicao"));
                 }
             }
@@ -361,7 +365,7 @@ public class FragmentoInsumos extends Fragment {
                     String obs = listaJoinOsInsumosSelecionados.get(id).getOBSERVACAO();
                     String pegaObs = "";
                     if(obs != null)
-                        if (!obs.isEmpty()) pegaObs = obs + "\n";
+                        if (obs.length()>0) pegaObs = obs + "\n";
                     obs = pegaObs.concat("Editado em " + ferramentas.dataAtual() + " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorDialogoEdicao.getText().toString()));
                     insumoInsere.setOBSERVACAO(obs);
                     insumoInsere.setACAO_INATIVO("EDICAO");
@@ -404,10 +408,10 @@ public class FragmentoInsumos extends Fragment {
             String str1 = obsInsumo1.getText().toString();
             String str2 = obsInsumo2.getText().toString();
 
-            if (str1.isEmpty() || str1 == null) str1 = "";
+            if (str1.length()==0 || str1 == null) str1 = "";
             outState.putString("obsInsumo1", str1);
 
-            if (str2.isEmpty() || str2 == null) str2 = "";
+            if (str2.length()==0 || str2 == null) str2 = "";
             outState.putString("obsInsumo2", str2);
 
             outState.putBoolean("abriuDialogoEdicao", abriuDialogoEdicao);

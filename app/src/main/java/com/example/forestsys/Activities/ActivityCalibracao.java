@@ -146,9 +146,9 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     private AdaptadorCalibracao adaptador;
     private List<CALIBRAGEM_SUBSOLAGEM> calibragens;
 
-    private int idMaquina;
-    private int idOperador;
-    private int idMaquinaImplemento;
+    private Integer idMaquina;
+    private Integer idOperador;
+    private Integer idMaquinaImplemento;
 
     private int contSpinnerOperador;
     private int contSpinnerMaquina;
@@ -416,7 +416,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     //Retorna false se não houver nenhum item preenchido ou true se houver
     public boolean algumItemPreenchido() {
         if(osSelecionada.getSTATUS_NUM()==2) return false;
-        if (p1_a1.getText().toString().isEmpty() && p2_a1.getText().toString().isEmpty() && idMaquinaImplemento == -1 && idMaquina == -1
+        if (p1_a1.getText().toString().length()==0 && p2_a1.getText().toString().length()==0 && idMaquinaImplemento == -1 && idMaquina == -1
                 && idOperador == -1) return false;
 
         return true;
@@ -529,7 +529,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
                 String input = s.toString();
 
-                if (!input.isEmpty()) {
+                if (input.length()>0) {
                     DecimalFormat format = new DecimalFormat("##,###");
                     input = input.replace(",", "");
                     String novoValor = format.format(Double.parseDouble(input));
@@ -565,25 +565,25 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                 boolean naoPermiteCentena = false;
                 int cont = 0;
 
-                if (aux.isEmpty()) valor.setError("Valor não pode ser vazio!");
-                if (!aux.isEmpty() && !aux.contains(",") && aux.length() > 2) {
+                if (aux.length()==0) valor.setError("Valor não pode ser vazio!");
+                if (aux.length()>0 && !aux.contains(",") && aux.length() > 2) {
                     naoPermiteCentena = true;
                 }
-                if (!aux.isEmpty() && !aux.contains(",")) {
+                if (aux.length()>0 && !aux.contains(",")) {
                     aux = aux.concat(",000");
 
                 }
 
-                if (!aux.isEmpty() && aux.length() < 5 && aux.contains(","))
+                if (aux.length()>0 && aux.length() < 5 && aux.contains(","))
                     valor.setError("Digite 3 Casas Decimais!");
-                //else if (!aux.isEmpty() && aux.length() > 5) valor.setError("Digite 3 Casas Decimais!");
-                if (!aux.isEmpty() && aux.length() >= 5) {
+                //else if (aux.length()>0 && aux.length() > 5) valor.setError("Digite 3 Casas Decimais!");
+                if (aux.length()>0 && aux.length() >= 5) {
                     for (int i = 0; i < aux.length(); i++) {
                         char[] c = aux.toCharArray();
                         if (c[i] == ',') cont++;
                     }
                 }
-                if (!aux.isEmpty() && aux.length() >= 5 && aux.contains(",") && cont == 1 && naoPermiteCentena == false) {
+                if (aux.length()>0 && aux.length() >= 5 && aux.contains(",") && cont == 1 && naoPermiteCentena == false) {
                     s = aux.split("\\,");
                     if (s[1].length() < 3 || s[1].length() > 3) {
                         valor.setError("Digite 3 Casas Decimais!");
@@ -789,7 +789,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
                 String input = s.toString();
 
-                if (!input.isEmpty()) {
+                if (input.length()>0) {
                     DecimalFormat format = new DecimalFormat("##,###");
                     input = input.replace(",", "");
                     String novoValor = format.format(Double.parseDouble(input));
@@ -825,24 +825,24 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                 boolean naoPermiteCentena = false;
                 int cont = 0;
 
-                if (aux.isEmpty()) valor.setError("Valor não pode ser vazio!");
-                if (!aux.isEmpty() && !aux.contains(",") && aux.length() > 2) {
+                if (aux.length()==0) valor.setError("Valor não pode ser vazio!");
+                if (aux.length()>0 && !aux.contains(",") && aux.length() > 2) {
                     naoPermiteCentena = true;
                 }
-                if (!aux.isEmpty() && !aux.contains(",")) {
+                if (aux.length()>0 && !aux.contains(",")) {
                     aux = aux.concat(",000");
                 }
 
-                if (!aux.isEmpty() && aux.length() < 5 && aux.contains(","))
+                if (aux.length()>0 && aux.length() < 5 && aux.contains(","))
                     valor.setError("Digite 3 Casas Decimais!");
-                //else if (!aux.isEmpty() && aux.length() > 5) valor.setError("Digite 3 Casas Decimais!");
-                if (!aux.isEmpty() && aux.length() >= 5) {
+                //else if (aux.length()>0 && aux.length() > 5) valor.setError("Digite 3 Casas Decimais!");
+                if (aux.length()>0 && aux.length() >= 5) {
                     for (int i = 0; i < aux.length(); i++) {
                         char[] c = aux.toCharArray();
                         if (c[i] == ',') cont++;
                     }
                 }
-                if (!aux.isEmpty() && aux.length() >= 5 && aux.contains(",") && cont == 1 && naoPermiteCentena == false) {
+                if (aux.length()>0 && aux.length() >= 5 && aux.contains(",") && cont == 1 && naoPermiteCentena == false) {
                     s = aux.split("\\,");
                     if (s[1].length() < 3 || s[1].length() > 3) {
                         valor.setError("Digite 3 Casas Decimais!");
@@ -1035,11 +1035,12 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
     //Checa se há uma calibração para a máquina selecionada na data e turno atuais
     //Parâmetro de entrada: Descrição da máquina selecionada
-    public boolean checaMaquinaImplemento(int s) {
-        int checagem = dao.checaMaquinaImplemento(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
+    public boolean checaMaquinaImplemento(Integer s) {
+        Integer checagem = dao.checaMaquinaImplemento(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
                 ferramentas.formataDataDb(ferramentas.dataAtual()), checaTurno(), s);
-        if (checagem > 0) return true;
-        return false;
+        if(checagem!=null) {
+            if (checagem > 0) return true;
+        }return false;
     }
 
     //Cria uma animação pulsante no botão de conclusão da calibragem
@@ -1373,7 +1374,8 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (contSpinnerMaquinaImplemento > 0) {
-                    if (checaMaquinaImplemento(implementos.get(position).getID_MAQUINA_IMPLEMENTO()) == true) {
+                    Integer posicao = position;
+                    if (checaMaquinaImplemento(implementos.get(posicao).getID_MAQUINA_IMPLEMENTO()) == true) {
                         spinnerMaquinaImplemento.setAdapter(null);
                         contSpinnerMaquinaImplemento = -1;
                         idMaquinaImplemento = -1;

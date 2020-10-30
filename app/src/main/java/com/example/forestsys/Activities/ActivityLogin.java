@@ -82,7 +82,6 @@ private ProgressDialog dialogoProgresso;
         passwordEditText = findViewById(R.id.password);
         loginButton = findViewById(R.id.botao_login);
         configButton = findViewById(R.id.botao_config);
-        checarPermissaodeLocalizacao();
 
             baseDeDados = BaseDeDados.getInstance(getApplicationContext());
             dao = baseDeDados.dao();
@@ -208,6 +207,8 @@ private ProgressDialog dialogoProgresso;
                     }).create();
             dialog.show();
         }
+
+        checarPermissaodeLocalizacao();
     }
 
     private boolean temRede() {

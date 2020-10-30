@@ -52,6 +52,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -265,34 +266,35 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         indicador9.setText(atividadeIndicadores.get(8).getDESCRICAO());
         indicador10.setText(atividadeIndicadores.get(9).getDESCRICAO());
 
-        if (!listaVerion.isEmpty()) {
+        if (listaVerion.size()>0) {
             listaInsumoP1.setText(joinOsInsumos.get(0).getDESCRICAO());
             listaInsumoP2.setText(joinOsInsumos.get(1).getDESCRICAO());
 
-            if(listaVerion.size()==1) {
+            if (listaVerion.size() == 1) {
                 listaMediaP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
             }
-            if(listaVerion.size()==2){
+            if (listaVerion.size() == 2) {
                 listaMediaP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
                 listaDesvioP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
 
             }
-            if(listaVerion.size()==3){
+            if (listaVerion.size() == 3) {
                 listaMediaP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
                 listaDesvioP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
                 listaMediaP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
 
             }
-            if(listaVerion.size()==4){
+            if (listaVerion.size() == 4) {
                 listaMediaP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
                 listaDesvioP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
                 listaMediaP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
                 listaDesvioP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
             }
         }
+
         listaPonto = dao.listaAvalPontoSubsolagem(idProg);
 
-        if (listaPonto.isEmpty()) pontosRealizados.setText("0");
+        if (listaPonto.size()==0) pontosRealizados.setText("0");
         else {
 
             pontosRealizados.setText(String.valueOf(listaPonto.get(listaPonto.size() - 1).getPONTO()));
@@ -401,11 +403,14 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             auxSavedInstanceState = null;
         }
 
+        if(listaVerion.size()>3){
+            botaoVerion.setVisibility(View.GONE);
+        }
 
         botaoVerion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!listaVerion.isEmpty()) {
+                if (listaVerion.size()>0) {
                     jaTemVerion = true;
                     AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
                             .setTitle("Aviso!")
@@ -434,11 +439,11 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             }
         });
 
-        if (!listaPonto.isEmpty()) {
+        if (listaPonto.size()>0) {
             qtdPontos = listaPonto.get(listaPonto.size() - 1).getPONTO();
         }
 
-        if(osSelecionada.getSTATUS_NUM()==1) {
+        if (osSelecionada.getSTATUS_NUM() == 1) {
             if (qtdPontos > 0) {
                 botaoCorrecoes.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -458,7 +463,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                     }
                 });
             } else botaoCorrecoes.setVisibility(View.GONE);
-        }else botaoCorrecoes.setVisibility(View.GONE);
+        } else botaoCorrecoes.setVisibility(View.GONE);
 
         botaoVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -525,7 +530,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         tamanho = edit.getText().toString().length();
         input = s.toString();
 
-        if (!input.isEmpty()) {
+        if (input.length()>0) {
 
             antesDaVirgula = String.valueOf(atividadeIndicadores.get(i).getLIMITE_SUPERIOR())
                     .replace('.', ',').split(",");
@@ -620,11 +625,31 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
 
         if (jaTemVerion == true) {
+            if (listaVerion.size()>0) {
+                listaInsumoP1.setText(joinOsInsumos.get(0).getDESCRICAO());
+                listaInsumoP2.setText(joinOsInsumos.get(1).getDESCRICAO());
 
-            mediaEditP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
-            desvioEditP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
-            mediaEditP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
-            desvioEditP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
+                if (listaVerion.size() == 1) {
+                    mediaEditP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
+                }
+                if (listaVerion.size() == 2) {
+                    mediaEditP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
+                    desvioEditP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
+
+                }
+                if (listaVerion.size() == 3) {
+                    mediaEditP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
+                    desvioEditP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
+                    mediaEditP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
+
+                }
+                if (listaVerion.size() == 4) {
+                    mediaEditP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
+                    desvioEditP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
+                    mediaEditP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
+                    desvioEditP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
+                }
+            }
         }
 
         mediaEditP1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -741,19 +766,19 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             desvioEditP2 = mView.findViewById(R.id.dialogo_qualidade_verion_desvio_padrao_p2);
 
             if (auxSavedInstanceState.getString("mediaEditP1") != null)
-                if (!auxSavedInstanceState.getString("mediaEditP1").isEmpty())
+                if (auxSavedInstanceState.getString("mediaEditP1").length()>0)
                     mediaEditP1.setText(auxSavedInstanceState.getString("mediaEditP1"));
 
             if (auxSavedInstanceState.getString("mediaEditP2") != null)
-                if (!auxSavedInstanceState.getString("mediaEditP2").isEmpty())
+                if (auxSavedInstanceState.getString("mediaEditP2").length()>0)
                     mediaEditP2.setText(auxSavedInstanceState.getString("mediaEditP2"));
 
             if (auxSavedInstanceState.getString("desvioEditP1") != null)
-                if (!auxSavedInstanceState.getString("desvioEditP1").isEmpty())
+                if (auxSavedInstanceState.getString("desvioEditP1").length()>0)
                     desvioEditP1.setText(auxSavedInstanceState.getString("desvioEditP1"));
 
             if (auxSavedInstanceState.getString("desvioEditP2") != null)
-                if (!auxSavedInstanceState.getString("desvioEditP2").isEmpty())
+                if (auxSavedInstanceState.getString("desvioEditP2").length()>0)
                     desvioEditP2.setText(auxSavedInstanceState.getString("desvioEditP2"));
 
             mediaEditP1.addTextChangedListener(new TextWatcher() {
@@ -882,6 +907,10 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                     listaMediaP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
                     listaDesvioP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
 
+                    if(listaVerion.size()>3){
+                        botaoVerion.setVisibility(View.GONE);
+                    }
+
                     if (osSelecionada.getSTATUS_NUM() == 0) {
                         osSelecionada.setSTATUS("Andamento");
                         osSelecionada.setSTATUS_NUM(1);
@@ -934,7 +963,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         recyclerView.setAdapter(adaptador);
         if (auxSavedInstanceState == null) listaCorrecoes = checaCorrecoes(listaCorrecoes);
 
-        if (listaCorrecoes.isEmpty()) {
+        if (listaCorrecoes.size()==0) {
             AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
                     .setTitle("Erro")
                     .setMessage("Não há correções para serem feitas.")
@@ -1448,27 +1477,27 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             if (auxSavedInstanceState.getBoolean("editItem9") == true) editItem9.setChecked(true);
 
             if (auxSavedInstanceState.getString("editItem1") != null)
-                if (!auxSavedInstanceState.getString("editItem1").isEmpty())
+                if (auxSavedInstanceState.getString("editItem1").length()>0)
                     editItem1.setText(auxSavedInstanceState.getString("editItem1"));
 
             if (auxSavedInstanceState.getString("editItem2") != null)
-                if (!auxSavedInstanceState.getString("editItem2").isEmpty())
+                if (auxSavedInstanceState.getString("editItem2").length()>0)
                     editItem2.setText(auxSavedInstanceState.getString("editItem2"));
 
             if (auxSavedInstanceState.getString("editItem3") != null)
-                if (!auxSavedInstanceState.getString("editItem3").isEmpty())
+                if (auxSavedInstanceState.getString("editItem3").length()>0)
                     editItem3.setText(auxSavedInstanceState.getString("editItem3"));
 
             if (auxSavedInstanceState.getString("editItem4") != null)
-                if (!auxSavedInstanceState.getString("editItem4").isEmpty())
+                if (auxSavedInstanceState.getString("editItem4").length()>0)
                     editItem4.setText(auxSavedInstanceState.getString("editItem4"));
 
             if (auxSavedInstanceState.getString("editItem6") != null)
-                if (!auxSavedInstanceState.getString("editItem6").isEmpty())
+                if (auxSavedInstanceState.getString("editItem6").length()>0)
                     editItem6.setText(auxSavedInstanceState.getString("editItem6"));
 
             if (auxSavedInstanceState.getString("editItem10") != null)
-                if (!auxSavedInstanceState.getString("editItem10").isEmpty())
+                if (auxSavedInstanceState.getString("editItem10").length()>0)
                     editItem10.setText(auxSavedInstanceState.getString("editItem10"));
         }
 
@@ -1539,7 +1568,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                     if (location != null) {
                         longitude = location.getLongitude();
-                        latitude = (location.getLatitude());
+                        latitude = location.getLatitude();
                     }
 
                     if (location == null) {
@@ -1578,9 +1607,24 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     public void salvaPonto() {
         double check = 0;
         try {
-            dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
+            /*DecimalFormat df = new DecimalFormat(".####");
+            String s = df.format(String.valueOf(latitude));
+            latitude = Double.valueOf(s);
+
+            s = df.format(String.valueOf(longitude));
+            longitude = Double.valueOf(s);
+*/
+            Log.e("Latitude", String.valueOf(latitude));
+            Log.e("Longitude", String.valueOf(longitude));
+
+            AVAL_PONTO_SUBSOLAGEM insere;
+            insere = new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
                     listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(0).getID_INDICADOR(),
-                    Double.valueOf(editItem1.getText().toString().replace(',', '.')), latitude, longitude, 0));
+                    Double.valueOf(editItem1.getText().toString().replace(',', '.')), latitude, longitude, 0);
+
+            dao.insert(insere);
+
+
 
             dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
                     listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(1).getID_INDICADOR(),

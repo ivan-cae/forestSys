@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 
 import java.io.Serializable;
 
@@ -13,48 +14,48 @@ import java.io.Serializable;
                 childColumns = "ID_REGIONAL",
                 onDelete = ForeignKey.NO_ACTION,
                 onUpdate = ForeignKey.NO_ACTION),
-        @ForeignKey(entity = GEO_SETORES.class,
-                parentColumns = "ID_SETOR",
-                childColumns = "ID_SETOR",
-                onDelete = ForeignKey.NO_ACTION,
-                onUpdate = ForeignKey.NO_ACTION),
-        @ForeignKey(entity = MANEJO.class,
-                parentColumns = "ID_MANEJO",
-                childColumns = "ID_MANEJO",
-                onDelete = ForeignKey.NO_ACTION,
-                onUpdate = ForeignKey.NO_ACTION),
-        @ForeignKey(entity = MATERIAL_GENETICO.class,
-                parentColumns = "ID_MATERIAL_GENETICO",
-                childColumns = "ID_MATERIAL_GENETICO",
-                onDelete = ForeignKey.NO_ACTION,
-                onUpdate = ForeignKey.NO_ACTION),
-        @ForeignKey(entity = ESPACAMENTOS.class,
-                parentColumns = "ID_ESPACAMENTO",
-                childColumns = "ID_ESPACAMENTO",
-                onDelete = ForeignKey.NO_ACTION,
-                onUpdate = ForeignKey.NO_ACTION)},
+                @ForeignKey(entity = GEO_SETORES.class,
+                        parentColumns = "ID_SETOR",
+                        childColumns = "ID_SETOR",
+                        onDelete = ForeignKey.NO_ACTION,
+                        onUpdate = ForeignKey.NO_ACTION),
+                @ForeignKey(entity = MANEJO.class,
+                        parentColumns = "ID_MANEJO",
+                        childColumns = "ID_MANEJO",
+                        onDelete = ForeignKey.NO_ACTION,
+                        onUpdate = ForeignKey.NO_ACTION),
+                @ForeignKey(entity = MATERIAL_GENETICO.class,
+                        parentColumns = "ID_MATERIAL_GENETICO",
+                        childColumns = "ID_MATERIAL_GENETICO",
+                        onDelete = ForeignKey.NO_ACTION,
+                        onUpdate = ForeignKey.NO_ACTION),
+                @ForeignKey(entity = ESPACAMENTOS.class,
+                        parentColumns = "ID_ESPACAMENTO",
+                        childColumns = "ID_ESPACAMENTO",
+                        onDelete = ForeignKey.NO_ACTION,
+                        onUpdate = ForeignKey.NO_ACTION)},
 
         primaryKeys = {"ID_REGIONAL", "ID_SETOR", "TALHAO", "CICLO", "ID_MANEJO"})
 
 public class CADASTRO_FLORESTAL implements Serializable {
     @NonNull
-    @ColumnInfo (name = "ID_REGIONAL")
+    @ColumnInfo(name = "ID_REGIONAL")
     private int ID_REGIONAL;
 
     @NonNull
-    @ColumnInfo (name ="ID_SETOR")
+    @ColumnInfo(name = "ID_SETOR")
     private int ID_SETOR;
 
     @NonNull
-    @ColumnInfo (name = "TALHAO")
+    @ColumnInfo(name = "TALHAO")
     private String TALHAO;
 
     @NonNull
-    @ColumnInfo (name = "CICLO")
+    @ColumnInfo(name = "CICLO")
     private int CICLO;
 
     @NonNull
-    @ColumnInfo (name = "ID_MANEJO")
+    @ColumnInfo(name = "ID_MANEJO")
     private int ID_MANEJO;
 
     private String DATA_MANEJO;
@@ -62,16 +63,16 @@ public class CADASTRO_FLORESTAL implements Serializable {
     private String DATA_PROGRAMACAO_REFORMA;
 
     @NonNull
-    @ColumnInfo (name = "ID_MATERIAL_GENETICO")
+    @ColumnInfo(name = "ID_MATERIAL_GENETICO")
     private int ID_MATERIAL_GENETICO;
 
     @NonNull
-    @ColumnInfo (name = "ID_ESPACAMENTO")
+    @ColumnInfo(name = "ID_ESPACAMENTO")
     private int ID_ESPACAMENTO;
 
     private String OBSERVACAO;
 
-	private int ATIVO;
+    private int ATIVO;
 
     public CADASTRO_FLORESTAL(int ID_REGIONAL, int ID_SETOR, @NonNull String TALHAO, int CICLO, int ID_MANEJO, String DATA_MANEJO, String DATA_PROGRAMACAO_REFORMA, int ID_MATERIAL_GENETICO, int ID_ESPACAMENTO, String OBSERVACAO, int ATIVO) {
         this.ID_REGIONAL = ID_REGIONAL;
