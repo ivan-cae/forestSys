@@ -39,6 +39,7 @@ import com.example.forestsys.Classes.O_S_ATIVIDADES_DIA;
 import com.example.forestsys.Classes.O_S_ATIVIDADE_INSUMOS;
 import com.example.forestsys.Classes.O_S_ATIVIDADE_INSUMOS_DIA;
 import com.example.forestsys.Classes.PRESTADORES;
+import com.itkacher.okhttpprofiler.OkHttpProfilerInterceptor;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,6 +50,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -57,7 +59,7 @@ import okhttp3.RequestBody;
 import static com.example.forestsys.Activities.ActivityInicializacao.HOST_PORTA;
 import static com.example.forestsys.Activities.ActivityInicializacao.conectado;
 
-public class ClienteWeb {
+public class ClienteWeb<client> {
 
     private static DAO dao;
 
@@ -66,7 +68,12 @@ public class ClienteWeb {
     private static final MediaType JSON
             = MediaType.get("application/json; charset=utf-8");
 
-    private static OkHttpClient client = new OkHttpClient();
+    private static OkHttpClient client = new OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+            .addInterceptor(new OkHttpProfilerInterceptor())
+                .build();
 
     public static boolean finalizouSinc = false;
 
@@ -75,6 +82,8 @@ public class ClienteWeb {
     private static Context activity;
 
     public static Integer contadorDeErros;
+
+    public static boolean erroNoOracle;
 
     public ClienteWeb(Context context) {
         activity = context;
@@ -95,8 +104,6 @@ public class ClienteWeb {
     }
 
     private static String requisicaoGET(String url) throws IOException {
-
-        OkHttpClient client = new OkHttpClient();
 
         okhttp3.Request request = new okhttp3.Request.Builder().url(url).build();
 
@@ -150,6 +157,7 @@ public class ClienteWeb {
     public static void populaBdComWebService() throws IOException, JSONException {
         finalizouSinc = false;
         conectado = false;
+        erroNoOracle = false;
         JSONArray response;
 
         try {
@@ -165,7 +173,21 @@ public class ClienteWeb {
             finalizouSinc = true;
         }
 
-        if (conectado == true) {
+            if(conectado==true && finalizouSinc==false){
+
+                okhttp3.Request request = new okhttp3.Request.Builder().url(HOST_PORTA + "ggfusuarios").build();
+
+                okhttp3.Response resposta = client.newCall(request).execute();
+
+                if(resposta.isSuccessful()){
+                    erroNoOracle = false;
+                }else{
+                    erroNoOracle = true;
+                }
+            }
+
+
+        if (conectado == true && finalizouSinc==false && erroNoOracle==false) {
             try {
                 List<CALIBRAGEM_SUBSOLAGEM> todasCalibragens = dao.todasCalibragens();
                 for (Integer i = 0; i < todasCalibragens.size(); i++) {
@@ -188,6 +210,8 @@ public class ClienteWeb {
                 }
             } catch (Exception ex) {
                 Log.e("CALIBRAGEM_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST");
+                ex.printStackTrace();
+                contadorDeErros ++;
             }
 
             try {
@@ -234,7 +258,7 @@ public class ClienteWeb {
                         obj.put("HM_ESCAVADEIRA", hme);
                         obj.put("HO_ESCAVADEIRA", hoe);
 
-                        Log.e("Objeto Post Atv_dia" + i, obj.toString());
+                        //Log.e("Objeto Post Atv_dia" + i, obj.toString());
 
                         String POST = requisicaoPOST(HOST_PORTA + "silvosatividadesdias", obj.toString());
                         Log.e("Post Atv_dia", POST);
@@ -260,19 +284,20 @@ public class ClienteWeb {
                         obj.put("ID_PRESTADOR", todasOsAtividadesDia.get(i).getID_PRESTADOR());
                         obj.put("ID_RESPONSAVEL", todasOsAtividadesDia.get(i).getID_RESPONSAVEL());
                         obj.put("OBSERVACAO", todasOsAtividadesDia.get(i).getOBSERVACAO());
-                        obj.put("ACAO_INATIVO", todasOsAtividadesDia.get(i).getACAO_INATIVO());
                         obj.put("REGISTRO_DESCARREGADO", todasOsAtividadesDia.get(i).getREGISTRO_DESCARREGADO());
                         obj.put("STATUS", todasOsAtividadesDia.get(i).getSTATUS());
 
+                        String ACAO_INATIVO = todasOsAtividadesDia.get(i).getACAO_INATIVO();
 
+                           obj.put("ACAO_INATIVO", ACAO_INATIVO);
 
-                        if (obj.getString("ACAO_INATIVO")==null || obj.getString("REGISTRO_DESCARREGADO").equals("S") ||
-                                obj.getString("ACAO_INATIVO").trim().equals("null")) {
+                        if(ACAO_INATIVO==null ||ACAO_INATIVO.trim().equals("null") || obj.getString("REGISTRO_DESCARREGADO").equals("S") ||
+                                ACAO_INATIVO.trim().equals("null")) {
                             naoFazPut = true;
                         }
 
                         if (naoFazPut == false) {
-                            Log.e("Objeto Put Atv_dia", obj.toString());
+                            //Log.e("Objeto Put Atv_dia", obj.toString());
 
                             Log.e("PUT Atv_dia", requisicaoPUT(HOST_PORTA + "silvosatividadesdias" + "/" +
                                     String.valueOf(todasOsAtividadesDia.get(i).getID()), obj.toString()));
@@ -283,15 +308,19 @@ public class ClienteWeb {
                 }
             } catch (Exception ex) {
                 Log.e("ATIVIDADES_DIA", "Erro ao instanciar objeto para requisição POST ou PUT");
+                ex.printStackTrace();
+                contadorDeErros ++;
             }
 
 
             try {
                 List<O_S_ATIVIDADE_INSUMOS_DIA> todasOsAtividadeInsumoDia = dao.todasOsAtvInsumosDia();
                 boolean naoFazPut = false;
+
                 for (Integer i = 0; i < todasOsAtividadeInsumoDia.size(); i++) {
                     JSONObject obj = new JSONObject();
-                    if (todasOsAtividadeInsumoDia.get(i).getID() == null || todasOsAtividadeInsumoDia.get(i).getID() == 0) {
+
+                    if (todasOsAtividadeInsumoDia.get(i).getID() == null) {
                         obj.put("ID_PROGRAMACAO_ATIVIDADE", todasOsAtividadeInsumoDia.get(i).getID_PROGRAMACAO_ATIVIDADE());
                         obj.put("DATA", todasOsAtividadeInsumoDia.get(i).getDATA());
                         obj.put("ID_INSUMO", todasOsAtividadeInsumoDia.get(i).getID_INSUMO());
@@ -308,10 +337,10 @@ public class ClienteWeb {
                             POST = requisicaoPOST(HOST_PORTA + "silvosatividadeinsumosdias", obj.toString());
                             Log.e("Post OsAtividadeInsumoDia", POST);
                             fezOPost = true;
-                        }catch(Exception ex){
-                            fezOPost=false;
+                        } catch (Exception ex) {
+                            fezOPost = false;
                         }
-                        if(fezOPost==true && POST!=null) {
+                        if (fezOPost == true && POST != null) {
                             JSONObject updateId = new JSONObject(POST);
                             Integer idRetornado = updateId.getInt("ID");
                             todasOsAtividadeInsumoDia.get(i).setID(idRetornado);
@@ -319,8 +348,7 @@ public class ClienteWeb {
 
                             Log.e("ID inserido ", String.valueOf(todasOsAtividadeInsumoDia.get(i).getID()));
                         }
-                    }
-                    if (todasOsAtividadeInsumoDia.get(i).getID() != null && todasOsAtividadeInsumoDia.get(i).getID() != 0) {
+                    } else {
                         naoFazPut = false;
                         obj.put("ID_PROGRAMACAO_ATIVIDADE", todasOsAtividadeInsumoDia.get(i).getID_PROGRAMACAO_ATIVIDADE());
                         obj.put("DATA", todasOsAtividadeInsumoDia.get(i).getDATA());
@@ -334,22 +362,21 @@ public class ClienteWeb {
 
                         obj.put("ACAO_INATIVO", ACAO_INATIVO);
 
-                        if (ACAO_INATIVO==null || ACAO_INATIVO.trim().equals("null") || obj.getString("REGISTRO_DESCARREGADO").equals("S") ||
-                                obj.getString("ACAO_INATIVO").trim().equals("null")) {
+                        if (ACAO_INATIVO == null || ACAO_INATIVO.trim().equals("null") || obj.getString("REGISTRO_DESCARREGADO").equals("S") ||
+                                ACAO_INATIVO.trim().equals("null")) {
                             naoFazPut = true;
                             obj.put("ACAO_INATIVO", null);
                         }
 
 
                         if (naoFazPut == false) {
-                            Log.e("Objeto Put OsAtividadeInsumoDia", obj.toString());
+                            //Log.e("Objeto Put OsAtividadeInsumoDia", obj.toString());
                             Log.e("PUT OsAtividadeInsumoDia", requisicaoPUT(HOST_PORTA + "silvosatividadeinsumosdias" + "/" +
                                     String.valueOf(todasOsAtividadeInsumoDia.get(i).getID()), obj.toString()));
                             //requisicaoPUT(HOST_PORTA + "silvosatividadeinsumosdias" + "/" +
-                              //      String.valueOf(todasOsAtividadeInsumoDia.get(i).getID()), obj.toString());
+                            //      String.valueOf(todasOsAtividadeInsumoDia.get(i).getID()), obj.toString());
                         }
                     }
-
                 }
             } catch (Exception ex) {
                 if(ex!=null){
@@ -393,6 +420,8 @@ public class ClienteWeb {
                 }
             } catch (Exception ex) {
                 Log.e("OS_ATIVIDADES", "Erro ao instanciar objeto para requisição PUT");
+                ex.printStackTrace();
+                contadorDeErros ++;
             }
 
 
@@ -420,6 +449,7 @@ public class ClienteWeb {
             } catch (JSONException ex) {
                 Log.e("O_S_ATIVIDADE_INSUMOS", "Erro ao instanciar objeto para requisição PUT");
                 ex.printStackTrace();
+                contadorDeErros ++;
             }
 
 
@@ -441,8 +471,9 @@ public class ClienteWeb {
                             obj.toString());
                 }
             } catch (JSONException ex) {
-                ex.printStackTrace();
                 Log.e("INDICADOR_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST");
+                ex.printStackTrace();
+                contadorDeErros ++;
             }
 
 
@@ -499,8 +530,9 @@ public class ClienteWeb {
                     //Log.e("Objeto Ponto", obj.toString());
                 }
             } catch (JSONException ex) {
-                ex.printStackTrace();
                 Log.e("AVAL_PONTO_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST ou PUT");
+                ex.printStackTrace();
+                contadorDeErros ++;
             }
 
 
@@ -826,7 +858,7 @@ public class ClienteWeb {
                     String OBSERVACAO = obj.getString("OBSERVACAO");
                     Integer ATIVO = obj.getInt("ATIVO");
 
-                    if(OBSERVACAO==null || OBSERVACAO.trim()=="null"){
+                    if(OBSERVACAO==null || OBSERVACAO.trim().equals("null")){
                         OBSERVACAO = null;
                     }
 
@@ -919,7 +951,7 @@ public class ClienteWeb {
                     }
 
 
-                    if(OBSERVACAO==null || OBSERVACAO.trim()=="null"){
+                    if(OBSERVACAO==null || OBSERVACAO.trim().equals("null")){
                         OBSERVACAO = null;
                     }
 
@@ -962,11 +994,11 @@ public class ClienteWeb {
                 String REGISTRO_DESCARREGADO = obj.getString("REGISTRO_DESCARREGADO");
                 String ACAO_INATIVO = obj.getString("ACAO_INATIVO");
 
-                if(OBSERVACAO==null || OBSERVACAO.trim()=="null"){
+                if(OBSERVACAO==null || OBSERVACAO.trim().equals("null")){
                     OBSERVACAO = null;
                 }
 
-                if(ACAO_INATIVO == null || ACAO_INATIVO.trim()==null){
+                if(ACAO_INATIVO == null || ACAO_INATIVO.trim().equals("null")){
                     ACAO_INATIVO = null;
                 }
 
@@ -1213,11 +1245,11 @@ public class ClienteWeb {
                 String OBSERVACAO = obj.getString("OBSERVACAO");
                 Integer ID = obj.getInt("ID");
 
-                if(OBSERVACAO==null || OBSERVACAO.trim()=="null"){
+                if(OBSERVACAO==null || OBSERVACAO.trim().equals("null")){
                     OBSERVACAO = null;
                 }
 
-                if(ACAO_INATIVO == null || ACAO_INATIVO.trim()==null){
+                if(ACAO_INATIVO == null || ACAO_INATIVO.trim().equals("null")){
                     ACAO_INATIVO = null;
                 }
 
@@ -1311,29 +1343,30 @@ public class ClienteWeb {
             contadorDeErros++;
         }
 
-        dao.apagaTodasGeoLocal();
-        try {
-            response = new JSONArray(requisicaoGET(HOST_PORTA + "silvgeolocalizacoes"));
-            for (Integer i = 0; i < response.length(); i++) {
-                JSONObject obj = response.getJSONObject(i);
+        if(contadorDeErros==0) {
+            dao.apagaTodasGeoLocal();
+            try {
+                response = new JSONArray(requisicaoGET(HOST_PORTA + "silvgeolocalizacoes"));
+                for (Integer i = 0; i < response.length(); i++) {
+                    JSONObject obj = response.getJSONObject(i);
 
-                String TALHAO = obj.getString("TALHAO");
+                    String TALHAO = obj.getString("TALHAO");
 
-                double LATITUDE = obj.getDouble("LATITUDE");
-                double LONGITUDE = obj.getDouble("LONGITUDE");
+                    double LATITUDE = obj.getDouble("LATITUDE");
+                    double LONGITUDE = obj.getDouble("LONGITUDE");
 
-                try {
-                    dao.insert(new GEO_LOCALIZACAO(TALHAO, LATITUDE, LONGITUDE));
-                } catch (SQLiteConstraintException e) {
-                    e.printStackTrace();
+                    try {
+                        dao.insert(new GEO_LOCALIZACAO(TALHAO, LATITUDE, LONGITUDE));
+                    } catch (SQLiteConstraintException e) {
+                        e.printStackTrace();
+                    }
                 }
+            } catch (JSONException ex) {
+                Log.e("S27", "Sem resposta geo_localizacoes,json");
+                ex.printStackTrace();
+                contadorDeErros++;
             }
-        } catch (JSONException ex) {
-            Log.e("S27", "Sem resposta geo_localizacoes,json");
-            ex.printStackTrace();
-            contadorDeErros++;
         }
-
         finalizouSinc = true;
     }
 }

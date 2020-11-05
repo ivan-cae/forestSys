@@ -384,7 +384,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         }else{
             AlertDialog dialog = new AlertDialog.Builder(ActivityMain.this)
                     .setTitle("Erro de rede.")
-                    .setMessage("Não há conexão com a internet.")
+                    .setMessage("Não há conexão com a rede.")
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {

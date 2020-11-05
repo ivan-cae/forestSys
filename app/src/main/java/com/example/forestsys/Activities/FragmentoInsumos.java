@@ -175,22 +175,7 @@ public class FragmentoInsumos extends Fragment {
                                 }).create();
                         dialog.show();
                     }else{
-                        abreDialogoQtdAplicada(joinOsInsumos);/*
-                        AlertDialog dialog = new AlertDialog.Builder(getActivity())
-                                .setTitle("Editar")
-                                .setMessage("Deseja Adicionar a Quantidade Aplicada para " + joinOsInsumos.getDESCRICAO() + "?")
-                                .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        abreDialogoQtdAplicada(joinOsInsumos);
-                                    }
-                                }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                    }
-                                }).create();
-                        dialog.show();
-                    */
+                        abreDialogoQtdAplicada(joinOsInsumos);
                     }
                 }
             });
@@ -328,8 +313,8 @@ public class FragmentoInsumos extends Fragment {
         });
     }
 
-    //Abre diálogo para edição da quantidade do insumo
-    //Método de entrada: uma instância da classe Join_OS_INSUMOS
+    //Abre diálogo para justificar a edição da quantidade do insumo
+    //Método de entrada: um double, esse double é a quantidade aplicada na edição do insumo
     public void abreDialogoEdicaoIns(double valor) {
         abriuDialogoEdicao = true;
         auxValorDialogoQtd = valor;
@@ -368,7 +353,6 @@ public class FragmentoInsumos extends Fragment {
                         if (obs.length()>0) pegaObs = obs + "\n";
                     obs = pegaObs.concat("Editado em " + ferramentas.dataAtual() + " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorDialogoEdicao.getText().toString()));
                     insumoInsere.setOBSERVACAO(obs);
-                    insumoInsere.setACAO_INATIVO("EDICAO");
 
                     listaJoinOsInsumosSelecionados.set(id, insumoInsere);
                     setInsumos();

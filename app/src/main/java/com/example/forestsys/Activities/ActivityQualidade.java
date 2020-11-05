@@ -178,6 +178,131 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         auxSavedInstanceState = savedInstanceState;
         setContentView(R.layout.activity_qualidade);
 
+        try {
+            inicializacao();
+        }catch(Exception e){
+            e.printStackTrace();
+            Intent it = new Intent(ActivityQualidade.this, ActivityAtividades.class);
+            it.putExtra("erroAbrirQualidade", true);
+            startActivity(it);
+        }
+
+        if (savedInstanceState != null) {
+            dialogoVerionAberto = savedInstanceState.getBoolean("dialogoVerionAberto");
+            dialogoPontoAberto = savedInstanceState.getBoolean("dialogoPontoAberto");
+            dialogoCorrecaoAberto = savedInstanceState.getBoolean("dialogoCorrecaoAberto");
+
+            if (dialogoPontoAberto == true) abreDialogoPonto();
+            if (dialogoVerionAberto == true) abreDialogoVerion();
+            if (dialogoCorrecaoAberto == true) abreDialogoCorrecao();
+        }
+
+        if (dialogoPontoAberto == false && dialogoVerionAberto == false && dialogoCorrecaoAberto == false) {
+            savedInstanceState = null;
+            auxSavedInstanceState = null;
+        }
+
+        if (listaVerion.size() > 3) {
+            botaoVerion.setVisibility(View.GONE);
+        }
+
+        botaoVerion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listaVerion.size() > 0) {
+                    jaTemVerion = true;
+                    AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
+                            .setTitle("Aviso!")
+                            .setMessage("Já existe um cadastro de dados verion, deseja edita-lo?")
+                            .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    abreDialogoVerion();
+                                }
+                            })
+                            .setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                }
+                            })
+                            .create();
+                    dialog.show();
+                } else abreDialogoVerion();
+            }
+        });
+
+        botaoPonto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                abreDialogoPonto();
+            }
+        });
+
+        if (listaPonto.size() > 0) {
+            qtdPontos = listaPonto.get(listaPonto.size() - 1).getPONTO();
+        }
+
+        if (osSelecionada.getSTATUS_NUM() == 1) {
+            if (qtdPontos > 0) {
+                botaoCorrecoes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        List<AVAL_PONTO_SUBSOLAGEM> listaAux = new ArrayList<>();
+                        if (auxSavedInstanceState != null) {
+                            listaCorrecoes = listaPontosCorrecaoAux;
+                        } else {
+                            for (int i = 1; i < qtdPontos + 1; i++) {
+                                listaAux = dao.listaPontoCorrecoes(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), osSelecionada.getID_ATIVIDADE(), i);
+                                if (!listaCorrecoes.contains(listaAux))
+                                    listaCorrecoes.add(listaAux);
+                            }
+                        }
+                        abreDialogoCorrecao();
+                    }
+                });
+            } else botaoCorrecoes.setVisibility(View.GONE);
+        } else botaoCorrecoes.setVisibility(View.GONE);
+
+        botaoVoltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (osSelecionada.getSTATUS_NUM() == 2) {
+                    Intent it = new Intent(ActivityQualidade.this, ActivityAtividades.class);
+                    startActivity(it);
+                } else {
+                    AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
+                            .setTitle("Voltar")
+                            .setMessage("Deseja voltar Para a Tela da Atividade?")
+                            .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    Intent it = new Intent(ActivityQualidade.this, ActivityAtividades.class);
+                                    startActivity(it);
+                                }
+                            }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                }
+                            }).create();
+                    dialog.show();
+                }
+            }
+        });
+
+
+        if (osSelecionada.getSTATUS_NUM() == 2) {
+            botaoPonto.setEnabled(false);
+            botaoPonto.setVisibility(GONE);
+
+            botaoVerion.setEnabled(false);
+            botaoVerion.setVisibility(GONE);
+        }
+    }
+
+    private void inicializacao() {
+
         formulas = new Formulas();
 
         baseDeDados = BaseDeDados.getInstance(getApplicationContext());
@@ -266,7 +391,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         indicador9.setText(atividadeIndicadores.get(8).getDESCRICAO());
         indicador10.setText(atividadeIndicadores.get(9).getDESCRICAO());
 
-        if (listaVerion.size()>0) {
+        if (listaVerion.size() > 0) {
             listaInsumoP1.setText(joinOsInsumos.get(0).getDESCRICAO());
             listaInsumoP2.setText(joinOsInsumos.get(1).getDESCRICAO());
 
@@ -294,7 +419,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
         listaPonto = dao.listaAvalPontoSubsolagem(idProg);
 
-        if (listaPonto.size()==0) pontosRealizados.setText("0");
+        if (listaPonto.size() == 0) pontosRealizados.setText("0");
         else {
 
             pontosRealizados.setText(String.valueOf(listaPonto.get(listaPonto.size() - 1).getPONTO()));
@@ -388,111 +513,6 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 ncPercLocalizacao.setTextColor(Color.parseColor("#FF0000"));
         }
 
-        if (savedInstanceState != null) {
-            dialogoVerionAberto = savedInstanceState.getBoolean("dialogoVerionAberto");
-            dialogoPontoAberto = savedInstanceState.getBoolean("dialogoPontoAberto");
-            dialogoCorrecaoAberto = savedInstanceState.getBoolean("dialogoCorrecaoAberto");
-
-            if (dialogoPontoAberto == true) abreDialogoPonto();
-            if (dialogoVerionAberto == true) abreDialogoVerion();
-            if (dialogoCorrecaoAberto == true) abreDialogoCorrecao();
-        }
-
-        if (dialogoPontoAberto == false && dialogoVerionAberto == false && dialogoCorrecaoAberto == false) {
-            savedInstanceState = null;
-            auxSavedInstanceState = null;
-        }
-
-        if(listaVerion.size()>3){
-            botaoVerion.setVisibility(View.GONE);
-        }
-
-        botaoVerion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listaVerion.size()>0) {
-                    jaTemVerion = true;
-                    AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
-                            .setTitle("Aviso!")
-                            .setMessage("Já existe um cadastro de dados verion, deseja edita-lo?")
-                            .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    abreDialogoVerion();
-                                }
-                            })
-                            .setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                }
-                            })
-                            .create();
-                    dialog.show();
-                } else abreDialogoVerion();
-            }
-        });
-
-        botaoPonto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                abreDialogoPonto();
-            }
-        });
-
-        if (listaPonto.size()>0) {
-            qtdPontos = listaPonto.get(listaPonto.size() - 1).getPONTO();
-        }
-
-        if (osSelecionada.getSTATUS_NUM() == 1) {
-            if (qtdPontos > 0) {
-                botaoCorrecoes.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        List<AVAL_PONTO_SUBSOLAGEM> listaAux = new ArrayList<>();
-                        if (auxSavedInstanceState != null) {
-                            listaCorrecoes = listaPontosCorrecaoAux;
-                        } else {
-                            for (int i = 1; i < qtdPontos + 1; i++) {
-                                listaAux = dao.listaPontoCorrecoes(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), osSelecionada.getID_ATIVIDADE(), i);
-                                if (!listaCorrecoes.contains(listaAux))
-                                    listaCorrecoes.add(listaAux);
-                            }
-                        }
-                        abreDialogoCorrecao();
-                    }
-                });
-            } else botaoCorrecoes.setVisibility(View.GONE);
-        } else botaoCorrecoes.setVisibility(View.GONE);
-
-        botaoVoltar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (osSelecionada.getSTATUS_NUM() == 2) {
-                    Intent it = new Intent(ActivityQualidade.this, ActivityAtividades.class);
-                    startActivity(it);
-                } else {
-                    AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
-                            .setTitle("Voltar")
-                            .setMessage("Deseja voltar Para a Tela da Atividade?")
-                            .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-
-                                    Intent it = new Intent(ActivityQualidade.this, ActivityAtividades.class);
-                                    startActivity(it);
-                                }
-                            }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                }
-                            }).create();
-                    dialog.show();
-                }
-            }
-        });
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_qualidade);
 
         setSupportActionBar(toolbar);
@@ -509,14 +529,6 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-        if (osSelecionada.getSTATUS_NUM() == 2) {
-            botaoPonto.setEnabled(false);
-            botaoPonto.setVisibility(GONE);
-
-            botaoVerion.setEnabled(false);
-            botaoVerion.setVisibility(GONE);
-        }
     }
 
     //Poe a virgula automaticamente como separador decimal dos números inseridos nas caixas de teste
@@ -530,7 +542,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         tamanho = edit.getText().toString().length();
         input = s.toString();
 
-        if (input.length()>0) {
+        if (input.length() > 0) {
 
             antesDaVirgula = String.valueOf(atividadeIndicadores.get(i).getLIMITE_SUPERIOR())
                     .replace('.', ',').split(",");
@@ -625,7 +637,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
 
         if (jaTemVerion == true) {
-            if (listaVerion.size()>0) {
+            if (listaVerion.size() > 0) {
                 listaInsumoP1.setText(joinOsInsumos.get(0).getDESCRICAO());
                 listaInsumoP2.setText(joinOsInsumos.get(1).getDESCRICAO());
 
@@ -766,19 +778,19 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             desvioEditP2 = mView.findViewById(R.id.dialogo_qualidade_verion_desvio_padrao_p2);
 
             if (auxSavedInstanceState.getString("mediaEditP1") != null)
-                if (auxSavedInstanceState.getString("mediaEditP1").length()>0)
+                if (auxSavedInstanceState.getString("mediaEditP1").length() > 0)
                     mediaEditP1.setText(auxSavedInstanceState.getString("mediaEditP1"));
 
             if (auxSavedInstanceState.getString("mediaEditP2") != null)
-                if (auxSavedInstanceState.getString("mediaEditP2").length()>0)
+                if (auxSavedInstanceState.getString("mediaEditP2").length() > 0)
                     mediaEditP2.setText(auxSavedInstanceState.getString("mediaEditP2"));
 
             if (auxSavedInstanceState.getString("desvioEditP1") != null)
-                if (auxSavedInstanceState.getString("desvioEditP1").length()>0)
+                if (auxSavedInstanceState.getString("desvioEditP1").length() > 0)
                     desvioEditP1.setText(auxSavedInstanceState.getString("desvioEditP1"));
 
             if (auxSavedInstanceState.getString("desvioEditP2") != null)
-                if (auxSavedInstanceState.getString("desvioEditP2").length()>0)
+                if (auxSavedInstanceState.getString("desvioEditP2").length() > 0)
                     desvioEditP2.setText(auxSavedInstanceState.getString("desvioEditP2"));
 
             mediaEditP1.addTextChangedListener(new TextWatcher() {
@@ -907,7 +919,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                     listaMediaP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
                     listaDesvioP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
 
-                    if(listaVerion.size()>3){
+                    if (listaVerion.size() > 3) {
                         botaoVerion.setVisibility(View.GONE);
                     }
 
@@ -963,7 +975,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         recyclerView.setAdapter(adaptador);
         if (auxSavedInstanceState == null) listaCorrecoes = checaCorrecoes(listaCorrecoes);
 
-        if (listaCorrecoes.size()==0) {
+        if (listaCorrecoes.size() == 0) {
             AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
                     .setTitle("Erro")
                     .setMessage("Não há correções para serem feitas.")
@@ -1477,27 +1489,27 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             if (auxSavedInstanceState.getBoolean("editItem9") == true) editItem9.setChecked(true);
 
             if (auxSavedInstanceState.getString("editItem1") != null)
-                if (auxSavedInstanceState.getString("editItem1").length()>0)
+                if (auxSavedInstanceState.getString("editItem1").length() > 0)
                     editItem1.setText(auxSavedInstanceState.getString("editItem1"));
 
             if (auxSavedInstanceState.getString("editItem2") != null)
-                if (auxSavedInstanceState.getString("editItem2").length()>0)
+                if (auxSavedInstanceState.getString("editItem2").length() > 0)
                     editItem2.setText(auxSavedInstanceState.getString("editItem2"));
 
             if (auxSavedInstanceState.getString("editItem3") != null)
-                if (auxSavedInstanceState.getString("editItem3").length()>0)
+                if (auxSavedInstanceState.getString("editItem3").length() > 0)
                     editItem3.setText(auxSavedInstanceState.getString("editItem3"));
 
             if (auxSavedInstanceState.getString("editItem4") != null)
-                if (auxSavedInstanceState.getString("editItem4").length()>0)
+                if (auxSavedInstanceState.getString("editItem4").length() > 0)
                     editItem4.setText(auxSavedInstanceState.getString("editItem4"));
 
             if (auxSavedInstanceState.getString("editItem6") != null)
-                if (auxSavedInstanceState.getString("editItem6").length()>0)
+                if (auxSavedInstanceState.getString("editItem6").length() > 0)
                     editItem6.setText(auxSavedInstanceState.getString("editItem6"));
 
             if (auxSavedInstanceState.getString("editItem10") != null)
-                if (auxSavedInstanceState.getString("editItem10").length()>0)
+                if (auxSavedInstanceState.getString("editItem10").length() > 0)
                     editItem10.setText(auxSavedInstanceState.getString("editItem10"));
         }
 
@@ -1623,7 +1635,6 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                     Double.valueOf(editItem1.getText().toString().replace(',', '.')), latitude, longitude, 0);
 
             dao.insert(insere);
-
 
 
             dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),

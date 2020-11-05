@@ -33,11 +33,11 @@ public class ActivityInicializacao extends AppCompatActivity {
         DAO dao = baseDeDados.dao();
 
         if (dao.selecionaConfigs() == null) {
-            dao.insert(new Configs(1, "GELF", "http://sateliteinfo.ddns.net",
+            dao.insert(new Configs(1, "GELF", "sateliteinfo.ddns.net",
                     "3333", 90, 5));
         }
         Configs configs = dao.selecionaConfigs();
-        HOST_PORTA = configs.getEndereçoHost() + ":" + configs.getPortaDeComunicacao() + "/";
+        HOST_PORTA = "http://"+configs.getEndereçoHost() + ":" + configs.getPortaDeComunicacao() + "/";
         nomeEmpresaPref = configs.getNomeEmpresa();
 
         ClienteWeb clienteWeb = new ClienteWeb(getApplicationContext());

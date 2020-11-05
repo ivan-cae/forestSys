@@ -3,9 +3,9 @@ package com.example.forestsys.Classes.Joins;
 import java.io.Serializable;
 
 public class Join_OS_INSUMOS implements Serializable {
-    int ID_PROGRAMACAO_ATIVIDADE;
+    Integer ID_PROGRAMACAO_ATIVIDADE;
 
-    int ID_INSUMO;
+    Integer ID_INSUMO;
 
     private String DESCRICAO;
     private double NUTRIENTE_N;
@@ -21,7 +21,7 @@ public class Join_OS_INSUMOS implements Serializable {
     private double NUTRIENTE_MN;
     private String UND_MEDIDA;
 
-    private int RECOMENDACAO;
+    private Integer RECOMENDACAO;
     private double QTD_HA_RECOMENDADO;
     private  double QTD_APLICADO;
     private String DATA;
@@ -30,24 +30,24 @@ public class Join_OS_INSUMOS implements Serializable {
     private String REGISTRO_DESCARREGADO;
     private String OBSERVACAO;
     private String ID_INSUMO_RM;
-    private int ID;
+    private Integer ID;
 
     public Join_OS_INSUMOS() {
     }
 
-    public int getID_PROGRAMACAO_ATIVIDADE() {
+    public Integer getID_PROGRAMACAO_ATIVIDADE() {
         return ID_PROGRAMACAO_ATIVIDADE;
     }
 
-    public void setID_PROGRAMACAO_ATIVIDADE(int ID_PROGRAMACAO_ATIVIDADE) {
+    public void setID_PROGRAMACAO_ATIVIDADE(Integer ID_PROGRAMACAO_ATIVIDADE) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
     }
 
-    public int getID_INSUMO() {
+    public Integer getID_INSUMO() {
         return ID_INSUMO;
     }
 
-    public void setID_INSUMO(int ID_INSUMO) {
+    public void setID_INSUMO(Integer ID_INSUMO) {
         this.ID_INSUMO = ID_INSUMO;
     }
 
@@ -155,11 +155,11 @@ public class Join_OS_INSUMOS implements Serializable {
         this.UND_MEDIDA = UND_MEDIDA;
     }
 
-    public int getRECOMENDACAO() {
+    public Integer getRECOMENDACAO() {
         return RECOMENDACAO;
     }
 
-    public void setRECOMENDACAO(int RECOMENDACAO) {
+    public void setRECOMENDACAO(Integer RECOMENDACAO) {
         this.RECOMENDACAO = RECOMENDACAO;
     }
 
@@ -219,11 +219,11 @@ public class Join_OS_INSUMOS implements Serializable {
         this.ID_INSUMO_RM = ID_INSUMO_RM;
     }
 
-    public int getID() {
+    public Integer getID() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(Integer ID) {
         this.ID = ID;
     }
 

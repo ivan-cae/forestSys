@@ -178,7 +178,14 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
         auxSavedInstanceState = savedInstanceState;
 
-        inicializacao();
+        try{
+            inicializacao();
+        }catch(Exception e){
+            e.printStackTrace();
+            Intent it = new Intent(ActivityCalibracao.this, ActivityAtividades.class);
+            it.putExtra("erroAbrirCalibracao", true);
+            startActivity(it);
+        }
 
         if (savedInstanceState != null) {
             p1_a1.setText(savedInstanceState.getString("p1_a1"));

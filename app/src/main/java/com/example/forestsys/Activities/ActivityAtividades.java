@@ -135,6 +135,7 @@ public class ActivityAtividades extends AppCompatActivity
 
     private List<AVAL_PONTO_SUBSOLAGEM> listaPonto;
     private int qtdPontos;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -199,7 +200,7 @@ public class ActivityAtividades extends AppCompatActivity
             obsOs.setText(String.valueOf(osSelecionada.getOBSERVACAO()));
         }
 
-        if(osSelecionada.getOBSERVACAO() == null || osSelecionada.getOBSERVACAO().trim().equals("null")){
+        if (osSelecionada.getOBSERVACAO() == null || osSelecionada.getOBSERVACAO().trim().equals("null")) {
             obsOs.setText("");
             osSelecionada.setOBSERVACAO("");
         }
@@ -353,8 +354,9 @@ public class ActivityAtividades extends AppCompatActivity
                                             boolean erroGeral = false;
 
                                             listaPonto = dao.listaAvalPontoSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
-                                           if(listaPonto.size()>0) qtdPontos = listaPonto.get(listaPonto.size() - 1).getPONTO();
-                                           else qtdPontos = 0;
+                                            if (listaPonto.size() > 0)
+                                                qtdPontos = listaPonto.get(listaPonto.size() - 1).getPONTO();
+                                            else qtdPontos = 0;
 
                                             for (int j = 0; j < listaOsAtiDia.size(); j++) {
                                                 if (listaOsAtiDia.get(j).getHO_ESCAVADEIRA() == null)
@@ -460,9 +462,51 @@ public class ActivityAtividades extends AppCompatActivity
         talhaoOs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(talhao, 16));
+                if (talhao != null) {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(talhao, 16));
+                }
             }
         });
+
+        Intent it = getIntent();
+        if(it.hasExtra("erroAbrirRegistros")){
+            AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
+                    .setTitle("Erro!")
+                    .setMessage("Houve um erro ao abrir o módulo de registros, favor comunicar ao responsável.")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    }).create();
+            dialog.show();
+        }
+
+        if(it.hasExtra("erroAbrirCalibracao")){
+            AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
+                    .setTitle("Erro!")
+                    .setMessage("Houve um erro ao abrir o módulo de calibrações, favor comunicar ao responsável.")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    }).create();
+            dialog.show();
+        }
+
+        if(it.hasExtra("erroAbrirQualidade")){
+            AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
+                    .setTitle("Erro!")
+                    .setMessage("Houve um erro ao abrir o módulo de qualidade, favor comunicar ao responsável.")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    }).create();
+            dialog.show();
+        }
     }
 
     public void salvar() {
@@ -484,7 +528,7 @@ public class ActivityAtividades extends AppCompatActivity
 
         if (auxSavedInstanceState != null) {
             if (auxSavedInstanceState.getString("valorDialogoJustificativaEdicaoOs") != null) {
-                if (auxSavedInstanceState.getString("valorDialogoJustificativaEdicaoOs").length()>0) {
+                if (auxSavedInstanceState.getString("valorDialogoJustificativaEdicaoOs").length() > 0) {
                     valorDialogoJustificativaEdicaoOs.setText(auxSavedInstanceState.getString("valorDialogoJustificativaEdicaoOs"));
                 }
             }
@@ -505,7 +549,7 @@ public class ActivityAtividades extends AppCompatActivity
                 else {
                     String obs = osSelecionada.getOBSERVACAO();
                     String pegaObs = "";
-                    if (obs != null || obs.length()>0) pegaObs = obs + "\n";
+                    if (obs != null || obs.length() > 0) pegaObs = obs + "\n";
                     obs = pegaObs.concat("Editado em " + ferramentas.dataAtual() + " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorDialogoJustificativaEdicaoOs.getText().toString()));
                     osSelecionada.setOBSERVACAO(obs);
                     osSelecionada.setSTATUS("Andamento");
@@ -545,7 +589,7 @@ public class ActivityAtividades extends AppCompatActivity
 
         if (auxSavedInstanceState != null) {
             if (auxSavedInstanceState.getString("valorDialogoQtdPontos") != null) {
-                if (auxSavedInstanceState.getString("valorDialogoQtdPontos").length()>0) {
+                if (auxSavedInstanceState.getString("valorDialogoQtdPontos").length() > 0) {
                     valorDialogoQtdPontos.setText(auxSavedInstanceState.getString("valorDialogoQtdPontos"));
                 }
             }
@@ -566,7 +610,7 @@ public class ActivityAtividades extends AppCompatActivity
                 else {
                     String obs = osSelecionada.getOBSERVACAO();
                     String pegaObs = "";
-                    if (obs != null || obs.length()>0) pegaObs = obs + "\n";
+                    if (obs != null || obs.length() > 0) pegaObs = obs + "\n";
                     obs = pegaObs.concat("Atividade finalizada com menos de seis pontos registrados em " + ferramentas.dataAtual() + " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorDialogoQtdPontos.getText().toString()));
 
                     osSelecionada.setOBSERVACAO(obs);
@@ -588,7 +632,7 @@ public class ActivityAtividades extends AppCompatActivity
             public void onCancel(DialogInterface dialog) {
                 auxSavedInstanceState = null;
                 osSelecionada = dao.selecionaOs(osSelecionada.getID_ATIVIDADE());
-                if(dialogoAreaRealizada.isShowing()) dialogoAreaRealizada.cancel();
+                if (dialogoAreaRealizada.isShowing()) dialogoAreaRealizada.cancel();
             }
         });
     }
@@ -609,7 +653,7 @@ public class ActivityAtividades extends AppCompatActivity
 
         if (auxSavedInstanceState != null) {
             if (auxSavedInstanceState.getString("valorDialogoAreaRealizada") != null) {
-                if (auxSavedInstanceState.getString("valorDialogoAreaRealizada").length()>0) {
+                if (auxSavedInstanceState.getString("valorDialogoAreaRealizada").length() > 0) {
                     valorDialogoAreaRealizada.setText(auxSavedInstanceState.getString("valorDialogoAreaRealizada"));
                 }
             }
@@ -630,7 +674,7 @@ public class ActivityAtividades extends AppCompatActivity
                 else {
                     String obs = osSelecionada.getOBSERVACAO();
                     String pegaObs = "";
-                    if (obs != null || obs.length()>0) pegaObs = obs + "\n";
+                    if (obs != null || obs.length() > 0) pegaObs = obs + "\n";
                     if (osSelecionada.getAREA_PROGRAMADA() > osSelecionada.getAREA_REALIZADA())
                         obs = pegaObs.concat("Atividade finalizada com a área realizada menor que a área programada em " + ferramentas.dataAtual() + " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorDialogoAreaRealizada.getText().toString()));
                     ;
@@ -638,7 +682,7 @@ public class ActivityAtividades extends AppCompatActivity
                         obs = pegaObs.concat("Atividade finalizada com a área realizada maior que a área programada em " + ferramentas.dataAtual() + " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorDialogoAreaRealizada.getText().toString()));
 
                     osSelecionada.setOBSERVACAO(obs);
-                    if(qtdPontos<6) abreDialogoJustificativaQtdPontos();
+                    if (qtdPontos < 6) abreDialogoJustificativaQtdPontos();
                     else salvar();
                 }
             }
@@ -716,11 +760,12 @@ public class ActivityAtividades extends AppCompatActivity
 
         GEO_LOCALIZACAO geoLocalizacao = dao.selecionaGeoLocal(osSelecionada.getTALHAO());
 
-        talhao = new LatLng(geoLocalizacao.getLATITUDE(), geoLocalizacao.getLONGITUDE());
+        if (talhao != null) {
+            talhao = new LatLng(geoLocalizacao.getLATITUDE(), geoLocalizacao.getLONGITUDE());
 
-        desenharCirculo(talhao);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(talhao));
-
+            desenharCirculo(talhao);
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(talhao));
+        }
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -732,11 +777,14 @@ public class ActivityAtividades extends AppCompatActivity
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        mMap.setMyLocationEnabled(true);
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(talhao, 16));
-        //mMap.setMinZoomPreference(1.f);
-        mMap.setMaxZoomPreference(14.0f);
-        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
+        if (talhao != null) {
+            mMap.setMyLocationEnabled(true);
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(talhao, 16));
+            //mMap.setMinZoomPreference(1.f);
+            mMap.setMaxZoomPreference(14.0f);
+            mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        }
     }
 
 
@@ -771,10 +819,10 @@ public class ActivityAtividades extends AppCompatActivity
         List<O_S_ATIVIDADE_INSUMOS_DIA> listaInsDia = dao.checaOsInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
         listaPonto = dao.listaAvalPontoSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
-        if(listaPonto.size()>0) qtdPontos = listaPonto.get(listaPonto.size() - 1).getPONTO();
+        if (listaPonto.size() > 0) qtdPontos = listaPonto.get(listaPonto.size() - 1).getPONTO();
         else qtdPontos = 0;
 
-        if (listaCalib.size()>0 || listaOsAtiDia.size()>0 || listaInsDia.size()>0 || qtdPontos > 0) {
+        if (listaCalib.size() > 0 || listaOsAtiDia.size() > 0 || listaInsDia.size() > 0 || qtdPontos > 0) {
             botaoFinalizarOs.setVisibility(View.VISIBLE);
             botaoFinalizarOs.setEnabled(true);
             botaoFinalizarOs.setBackgroundColor(Color.parseColor("#32CD32"));

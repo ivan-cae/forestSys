@@ -151,7 +151,14 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         super.onCreate(savedInstanceState);
 
         auxSavedInstanceState = savedInstanceState;
-        inicializacao();
+        try {
+            inicializacao();
+        }catch(Exception e){
+            e.printStackTrace();
+            Intent it = new Intent(ActivityRegistros.this, ActivityAtividades.class);
+            it.putExtra("erroAbrirRegistros", true);
+            startActivity(it);
+        }
 
         if (savedInstanceState != null) {
             dataDoApontamento = savedInstanceState.getString("data");
@@ -850,7 +857,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         double somaQtdApl;
         double somaAreaRealizada;
         String dataAntesDoEdit = null;
-        
+
 
         if (editouRegistro == true) {
             idAtividadeDia = oSAtividadesDiaAtual.getID();
@@ -906,12 +913,12 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             listaJoinOsInsumosSelecionados.get(0).setOBSERVACAO(obsInsumo1.getText().toString());
             listaJoinOsInsumosSelecionados.get(1).setOBSERVACAO(obsInsumo2.getText().toString());
         }
-        
+
         String dataDepoisDoEdit = oSAtividadesDiaAtual.getDATA();
         if(editouRegistro==false){
-            dataAntesDoEdit = dataDepoisDoEdit;    
+            dataAntesDoEdit = dataDepoisDoEdit;
         }
-        
+
         try {
             for (int i = 0; i < listaJoinOsInsumosSelecionados.size(); i++) {
                 Join_OS_INSUMOS persisteInsumosDia = listaJoinOsInsumosSelecionados.get(i);
@@ -919,14 +926,23 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 O_S_ATIVIDADE_INSUMOS editaAtividadeInsumos =
                         dao.selecionaAtividadeInsumos(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), persisteInsumosDia.getID_INSUMO());
 
-                if (persisteInsumosDia.getREGISTRO_DESCARREGADO() == null) {
+                if (persisteInsumosDia.getREGISTRO_DESCARREGADO() == null ||
+                        persisteInsumosDia.getREGISTRO_DESCARREGADO() == "null") {
                     persisteInsumosDia.setREGISTRO_DESCARREGADO("N");
                 }
 
+                if(editouRegistro == false){
+                    persisteInsumosDia.setACAO_INATIVO(null);
+                    persisteInsumosDia.setID(null);
+                }
+                if(editouRegistro==true){
+                    persisteInsumosDia.setACAO_INATIVO("EDICAO");
+                }
 
 
                 dao.apagaOsAtividadeInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
                         dataAntesDoEdit, persisteInsumosDia.getID_INSUMO());
+
 
 
                 dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(persisteInsumosDia.getID(), osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),

@@ -41,6 +41,7 @@ import java.net.URLConnection;
 
 import static com.example.forestsys.Activities.ActivityInicializacao.conectado;
 import static com.example.forestsys.Assets.ClienteWeb.contadorDeErros;
+import static com.example.forestsys.Assets.ClienteWeb.erroNoOracle;
 import static com.example.forestsys.Assets.ClienteWeb.finalizouSinc;
 import static com.example.forestsys.Activities.ActivityInicializacao.HOST_PORTA;
 import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresaPref;
@@ -87,11 +88,11 @@ private ProgressDialog dialogoProgresso;
             dao = baseDeDados.dao();
 
             if (dao.selecionaConfigs() == null) {
-                dao.insert(new Configs(1, "GELF", "http://sateliteinfo.ddns.net",
+                dao.insert(new Configs(1, "GELF", "sateliteinfo.ddns.net",
                         "3333", 90, 5));
             }
             Configs configs = dao.selecionaConfigs();
-            HOST_PORTA = configs.getEndereçoHost() + ":" + configs.getPortaDeComunicacao() + "/";
+            HOST_PORTA = "http://"+configs.getEndereçoHost() + ":" + configs.getPortaDeComunicacao() + "/";
         nomeEmpresaPref = configs.getNomeEmpresa();
 
         configButton.setOnClickListener(new View.OnClickListener() {
@@ -171,13 +172,14 @@ private ProgressDialog dialogoProgresso;
                 @SuppressLint("StaticFieldLeak")
                 @Override
                 protected void onPostExecute(Void aVoid) {
-                    if(conectado == true){
+                    if(conectado == true && erroNoOracle==false){
                         dialogoProgresso.dismiss();
                         String s = "Sincronizado com " + HOST_PORTA;
                         if(contadorDeErros>0) s = "Houveram erros na sincronização, favor comunicar ao responsável.";
 
                         Toast.makeText(ActivityLogin.this, s, Toast.LENGTH_LONG).show();
-                    }else{
+                    }
+                    if(conectado == false){
                         dialogoProgresso.dismiss();
                         @SuppressLint("StaticFieldLeak") AlertDialog dialog = new AlertDialog.Builder(ActivityLogin.this)
                                 .setTitle("Erro de conexão com o host.")
@@ -192,14 +194,27 @@ private ProgressDialog dialogoProgresso;
                                     }
                                 }).create();
                         dialog.show();
-                    }                    super.onPostExecute(aVoid);
+                    }
+                    if(conectado==true && erroNoOracle==true){
+                        dialogoProgresso.dismiss();
+                        @SuppressLint("StaticFieldLeak") AlertDialog dialog = new AlertDialog.Builder(ActivityLogin.this)
+                                .setTitle("Erro!")
+                                .setMessage("Falha de conexão com o banco de dados, favor comunicar ao responsável.")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                }).create();
+                        dialog.show();
+                    }
+                    super.onPostExecute(aVoid);
                 }
             }.execute();
 
         }else{
             AlertDialog dialog = new AlertDialog.Builder(ActivityLogin.this)
                     .setTitle("Erro de rede.")
-                    .setMessage("Não há conexão com a internet.")
+                    .setMessage("Não há conexão com a rede.")
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
