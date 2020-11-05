@@ -335,6 +335,10 @@ public class ActivityAtividades extends AppCompatActivity
             }
         });
 
+        if(osSelecionada.getSTATUS_NUM()!=2){
+            Toast.makeText(ActivityAtividades.this, "Toque no número do talhão para mostra-lo no mapa",
+                    Toast.LENGTH_LONG).show();
+        }
         if (osSelecionada.getSTATUS_NUM() == 1) {
             botaoFinalizarOs.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -759,10 +763,11 @@ public class ActivityAtividades extends AppCompatActivity
         mMap = googleMap;
 
         GEO_LOCALIZACAO geoLocalizacao = dao.selecionaGeoLocal(osSelecionada.getTALHAO());
+        if(geoLocalizacao!=null){
+            talhao = new LatLng(geoLocalizacao.getLATITUDE(), geoLocalizacao.getLONGITUDE());
+        }
 
         if (talhao != null) {
-            talhao = new LatLng(geoLocalizacao.getLATITUDE(), geoLocalizacao.getLONGITUDE());
-
             desenharCirculo(talhao);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(talhao));
         }

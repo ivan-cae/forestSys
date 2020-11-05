@@ -69,11 +69,9 @@ public class ClienteWeb<client> {
             = MediaType.get("application/json; charset=utf-8");
 
     private static OkHttpClient client = new OkHttpClient.Builder()
-            .connectTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
+            .callTimeout(20, TimeUnit.SECONDS)
             .addInterceptor(new OkHttpProfilerInterceptor())
-                .build();
+            .build();
 
     public static boolean finalizouSinc = false;
 
@@ -167,27 +165,28 @@ public class ClienteWeb<client> {
             connection.connect();
             Log.e("Conectado a", myUrl.toString());
             conectado = true;
+            finalizouSinc = false;
         } catch (Exception e) {
             Log.e("Erro", e.toString() + " ao conectar com: " + HOST_PORTA);
             conectado = false;
             finalizouSinc = true;
         }
 
-            if(conectado==true && finalizouSinc==false){
+        if (conectado == true && finalizouSinc == false) {
 
-                okhttp3.Request request = new okhttp3.Request.Builder().url(HOST_PORTA + "ggfusuarios").build();
+            okhttp3.Request request = new okhttp3.Request.Builder().url(HOST_PORTA + "ggfusuarios").build();
 
-                okhttp3.Response resposta = client.newCall(request).execute();
+            okhttp3.Response resposta = client.newCall(request).execute();
 
-                if(resposta.isSuccessful()){
-                    erroNoOracle = false;
-                }else{
-                    erroNoOracle = true;
-                }
+            if (resposta.isSuccessful()) {
+                erroNoOracle = false;
+            } else {
+                erroNoOracle = true;
             }
+        }
 
 
-        if (conectado == true && finalizouSinc==false && erroNoOracle==false) {
+        if (conectado == true && finalizouSinc == false && erroNoOracle == false) {
             try {
                 List<CALIBRAGEM_SUBSOLAGEM> todasCalibragens = dao.todasCalibragens();
                 for (Integer i = 0; i < todasCalibragens.size(); i++) {
@@ -211,7 +210,7 @@ public class ClienteWeb<client> {
             } catch (Exception ex) {
                 Log.e("CALIBRAGEM_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST");
                 ex.printStackTrace();
-                contadorDeErros ++;
+                //contadorDeErros ++;
             }
 
             try {
@@ -289,9 +288,9 @@ public class ClienteWeb<client> {
 
                         String ACAO_INATIVO = todasOsAtividadesDia.get(i).getACAO_INATIVO();
 
-                           obj.put("ACAO_INATIVO", ACAO_INATIVO);
+                        obj.put("ACAO_INATIVO", ACAO_INATIVO);
 
-                        if(ACAO_INATIVO==null ||ACAO_INATIVO.trim().equals("null") || obj.getString("REGISTRO_DESCARREGADO").equals("S") ||
+                        if (ACAO_INATIVO == null || ACAO_INATIVO.trim().equals("null") || obj.getString("REGISTRO_DESCARREGADO").trim().equals("S") ||
                                 ACAO_INATIVO.trim().equals("null")) {
                             naoFazPut = true;
                         }
@@ -302,14 +301,14 @@ public class ClienteWeb<client> {
                             Log.e("PUT Atv_dia", requisicaoPUT(HOST_PORTA + "silvosatividadesdias" + "/" +
                                     String.valueOf(todasOsAtividadesDia.get(i).getID()), obj.toString()));
                             //requisicaoPUT(HOST_PORTA + "silvosatividadesdias" + "/" +
-                                  //  String.valueOf(todasOsAtividadesDia.get(i).getID()), obj.toString());
+                            //  String.valueOf(todasOsAtividadesDia.get(i).getID()), obj.toString());
                         }
                     }
                 }
             } catch (Exception ex) {
                 Log.e("ATIVIDADES_DIA", "Erro ao instanciar objeto para requisição POST ou PUT");
                 ex.printStackTrace();
-                contadorDeErros ++;
+                //contadorDeErros ++;
             }
 
 
@@ -362,7 +361,7 @@ public class ClienteWeb<client> {
 
                         obj.put("ACAO_INATIVO", ACAO_INATIVO);
 
-                        if (ACAO_INATIVO == null || ACAO_INATIVO.trim().equals("null") || obj.getString("REGISTRO_DESCARREGADO").equals("S") ||
+                        if (ACAO_INATIVO == null || ACAO_INATIVO.trim().equals("null") || obj.getString("REGISTRO_DESCARREGADO").trim().equals("S") ||
                                 ACAO_INATIVO.trim().equals("null")) {
                             naoFazPut = true;
                             obj.put("ACAO_INATIVO", null);
@@ -379,10 +378,10 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                if(ex!=null){
-                Log.e("INSUMOS_ATIVIDADES_DIA", ex.getMessage());
-            }
-            ex.printStackTrace();
+                if (ex != null) {
+                    Log.e("INSUMOS_ATIVIDADES_DIA", ex.getMessage());
+                }
+                ex.printStackTrace();
             }
 
 
@@ -394,6 +393,9 @@ public class ClienteWeb<client> {
                     Integer STATUS_NUM = todasOsAtividades.get(i).getSTATUS_NUM();
                     String STATUS = null;
 
+                    if(STATUS_NUM == 0){
+                        obj.put("STATUS", null);
+                    }
                     if (STATUS_NUM == 1) {
                         STATUS = "A";
                         obj.put("STATUS", STATUS);
@@ -402,6 +404,7 @@ public class ClienteWeb<client> {
                         STATUS = "F";
                         obj.put("STATUS", STATUS);
                     }
+
 
 
                     obj.put("DATA_INICIAL", todasOsAtividades.get(i).getDATA_INICIAL());
@@ -421,7 +424,7 @@ public class ClienteWeb<client> {
             } catch (Exception ex) {
                 Log.e("OS_ATIVIDADES", "Erro ao instanciar objeto para requisição PUT");
                 ex.printStackTrace();
-                contadorDeErros ++;
+                //contadorDeErros ++;
             }
 
 
@@ -449,7 +452,7 @@ public class ClienteWeb<client> {
             } catch (JSONException ex) {
                 Log.e("O_S_ATIVIDADE_INSUMOS", "Erro ao instanciar objeto para requisição PUT");
                 ex.printStackTrace();
-                contadorDeErros ++;
+                //contadorDeErros ++;
             }
 
 
@@ -469,11 +472,13 @@ public class ClienteWeb<client> {
                     //      obj.toString()));
                     requisicaoPOST(HOST_PORTA + "silvindicadoressubsolagens",
                             obj.toString());
+
+
                 }
             } catch (JSONException ex) {
                 Log.e("INDICADOR_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST");
                 ex.printStackTrace();
-                contadorDeErros ++;
+                // contadorDeErros ++;
             }
 
 
@@ -482,8 +487,8 @@ public class ClienteWeb<client> {
 
                 for (Integer i = 0; i < listaPontos.size(); i++) {
                     JSONObject obj = new JSONObject();
-                    Log.e("Latitude ponto " + listaPontos.get(i).getPONTO(), String.valueOf(listaPontos.get(i).getCOORDENADA_X()));
-                    Log.e("Longitude ponto " + listaPontos.get(i).getPONTO(), String.valueOf(listaPontos.get(i).getCOORDENADA_Y()));
+                    //Log.e("Latitude ponto " + listaPontos.get(i).getPONTO(), String.valueOf(listaPontos.get(i).getCOORDENADA_X()));
+                   // Log.e("Longitude ponto " + listaPontos.get(i).getPONTO(), String.valueOf(listaPontos.get(i).getCOORDENADA_Y()));
 
                     String lati = String.valueOf(listaPontos.get(i).getCOORDENADA_X());
                     String longi = String.valueOf(listaPontos.get(i).getCOORDENADA_Y());
@@ -532,7 +537,7 @@ public class ClienteWeb<client> {
             } catch (JSONException ex) {
                 Log.e("AVAL_PONTO_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST ou PUT");
                 ex.printStackTrace();
-                contadorDeErros ++;
+                //contadorDeErros ++;
             }
 
 
@@ -858,7 +863,7 @@ public class ClienteWeb<client> {
                     String OBSERVACAO = obj.getString("OBSERVACAO");
                     Integer ATIVO = obj.getInt("ATIVO");
 
-                    if(OBSERVACAO==null || OBSERVACAO.trim().equals("null")){
+                    if (OBSERVACAO == null || OBSERVACAO.trim().equals("null")) {
                         OBSERVACAO = null;
                     }
 
@@ -893,34 +898,44 @@ public class ClienteWeb<client> {
                     Integer ID_MANEJO = obj.getInt("ID_MANEJO");
                     Integer ID_ATIVIDADE = obj.getInt("ID_ATIVIDADE");
                     Integer ID_RESPONSAVEL = null;
+
                     try {
                         ID_RESPONSAVEL = obj.getInt("ID_RESPONSAVEL");
-                    } catch (JSONException ex) {
+                    }catch(Exception ex){
                         ID_RESPONSAVEL = null;
+                        ex.printStackTrace();
                     }
+
                     Integer PRIORIDADE = 4;
                     try {
                         PRIORIDADE = obj.getInt("PRIORIDADE");
                     } catch (JSONException ex) {
                         PRIORIDADE = 4;
+                        ex.printStackTrace();
                     }
+
                     Integer EXPERIMENTO = null;
                     try {
                         EXPERIMENTO = obj.getInt("EXPERIMENTO");
                     } catch (JSONException ex) {
                         EXPERIMENTO = null;
+                        ex.printStackTrace();
                     }
+
                     Integer MADEIRA_NO_TALHAO = 0;
                     try {
                         MADEIRA_NO_TALHAO = obj.getInt("MADEIRA_NO_TALHAO");
                     } catch (JSONException ex) {
                         MADEIRA_NO_TALHAO = 0;
+                        ex.printStackTrace();
                     }
+
                     Double AREA_REALIZADA = 0.0;
                     try {
                         AREA_REALIZADA = obj.getDouble("AREA_REALIZADA");
                     } catch (JSONException ex) {
                         AREA_REALIZADA = 0.0;
+                        ex.printStackTrace();
                     }
                     DecimalFormat format = new DecimalFormat(".##");
 
@@ -937,21 +952,21 @@ public class ClienteWeb<client> {
                     String STATUS = obj.getString("STATUS");
 
                     Integer STATUS_NUM = 0;
-                    if (STATUS == null) {
+                    if (STATUS == null || STATUS.trim().equals("null")) {
                         STATUS_NUM = 0;
                         STATUS = "Aberto";
                     }
-                    if (STATUS.equals("A")) {
+                    if (STATUS.trim().equals("A")) {
                         STATUS_NUM = 1;
                         STATUS = "Andamento";
                     }
-                    if (STATUS.equals("F")) {
+                    if (STATUS.trim().equals("F")) {
                         STATUS_NUM = 2;
                         STATUS = "Finalizado";
                     }
 
 
-                    if(OBSERVACAO==null || OBSERVACAO.trim().equals("null")){
+                    if (OBSERVACAO == null || OBSERVACAO.trim().equals("null")) {
                         OBSERVACAO = null;
                     }
 
@@ -994,11 +1009,11 @@ public class ClienteWeb<client> {
                 String REGISTRO_DESCARREGADO = obj.getString("REGISTRO_DESCARREGADO");
                 String ACAO_INATIVO = obj.getString("ACAO_INATIVO");
 
-                if(OBSERVACAO==null || OBSERVACAO.trim().equals("null")){
+                if (OBSERVACAO == null || OBSERVACAO.trim().equals("null")) {
                     OBSERVACAO = null;
                 }
 
-                if(ACAO_INATIVO == null || ACAO_INATIVO.trim().equals("null")){
+                if (ACAO_INATIVO == null || ACAO_INATIVO.trim().equals("null")) {
                     ACAO_INATIVO = null;
                 }
 
@@ -1020,7 +1035,7 @@ public class ClienteWeb<client> {
                 oSAtividadesDia.setACAO_INATIVO(ACAO_INATIVO);
 
 
-                    dao.insert(oSAtividadesDia);
+                dao.insert(oSAtividadesDia);
 
             }
         } catch (JSONException ex) {
@@ -1087,7 +1102,7 @@ public class ClienteWeb<client> {
                 Integer LIMITE_SUPERIOR;
                 Integer CASAS_DECIMAIS;
 
-                if(FORMULA == null || FORMULA == "null"){
+                if (FORMULA == null || FORMULA == "null") {
                     FORMULA = null;
                 }
                 try {
@@ -1245,11 +1260,11 @@ public class ClienteWeb<client> {
                 String OBSERVACAO = obj.getString("OBSERVACAO");
                 Integer ID = obj.getInt("ID");
 
-                if(OBSERVACAO==null || OBSERVACAO.trim().equals("null")){
+                if (OBSERVACAO == null || OBSERVACAO.trim().equals("null")) {
                     OBSERVACAO = null;
                 }
 
-                if(ACAO_INATIVO == null || ACAO_INATIVO.trim().equals("null")){
+                if (ACAO_INATIVO == null || ACAO_INATIVO.trim().equals("null")) {
                     ACAO_INATIVO = null;
                 }
 
@@ -1343,30 +1358,29 @@ public class ClienteWeb<client> {
             contadorDeErros++;
         }
 
-        if(contadorDeErros==0) {
+        try {
             dao.apagaTodasGeoLocal();
-            try {
-                response = new JSONArray(requisicaoGET(HOST_PORTA + "silvgeolocalizacoes"));
-                for (Integer i = 0; i < response.length(); i++) {
-                    JSONObject obj = response.getJSONObject(i);
+            response = new JSONArray(requisicaoGET(HOST_PORTA + "silvgeolocalizacoes"));
+            for (Integer i = 0; i < response.length(); i++) {
+                JSONObject obj = response.getJSONObject(i);
 
-                    String TALHAO = obj.getString("TALHAO");
+                String TALHAO = obj.getString("TALHAO");
 
-                    double LATITUDE = obj.getDouble("LATITUDE");
-                    double LONGITUDE = obj.getDouble("LONGITUDE");
+                double LATITUDE = obj.getDouble("LATITUDE");
+                double LONGITUDE = obj.getDouble("LONGITUDE");
 
-                    try {
-                        dao.insert(new GEO_LOCALIZACAO(TALHAO, LATITUDE, LONGITUDE));
-                    } catch (SQLiteConstraintException e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    dao.insert(new GEO_LOCALIZACAO(TALHAO, LATITUDE, LONGITUDE));
+                } catch (SQLiteConstraintException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException ex) {
-                Log.e("S27", "Sem resposta geo_localizacoes,json");
-                ex.printStackTrace();
-                contadorDeErros++;
             }
+        } catch (JSONException ex) {
+            Log.e("S27", "Sem resposta geo_localizacoes,json");
+            ex.printStackTrace();
+            contadorDeErros++;
         }
+
         finalizouSinc = true;
     }
 }

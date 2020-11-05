@@ -180,7 +180,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
         try {
             inicializacao();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             Intent it = new Intent(ActivityQualidade.this, ActivityAtividades.class);
             it.putExtra("erroAbrirQualidade", true);
@@ -202,10 +202,10 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             auxSavedInstanceState = null;
         }
 
-        if (listaVerion.size() > 3) {
+        /*if (listaVerion.size() > 3) {
             botaoVerion.setVisibility(View.GONE);
         }
-
+*/
         botaoVerion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -592,366 +592,380 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
     //Abre caixa de diálogo para preenchimento dos dados verion
     public void abreDialogoVerion() {
-        dialogoVerionAberto = true;
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_qualidade_verion, null);
+        try {
+            dialogoVerionAberto = true;
 
-        List<ATIVIDADE_INDICADORES> atividadeIndicadores = dao.listaAtividadeIndicadores(osSelecionada.getID_ATIVIDADE(), "S");
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+            View mView = getLayoutInflater().inflate(R.layout.dialogo_qualidade_verion, null);
 
-        TextView mediaP1Nome;
-        TextView mediaP2Nome;
-        TextView desvioP1Nome;
-        TextView desvioP2Nome;
+            List<ATIVIDADE_INDICADORES> atividadeIndicadores = dao.listaAtividadeIndicadores(osSelecionada.getID_ATIVIDADE(), "S");
 
-        TextView letraItem1;
-        TextView letraItem2;
-        TextView letraItem3;
-        TextView letraItem4;
+            TextView mediaP1Nome;
+            TextView mediaP2Nome;
+            TextView desvioP1Nome;
+            TextView desvioP2Nome;
 
-        mediaP1Nome = mView.findViewById(R.id.dialogo_qualidade_verion_nome_media_p1);
-        mediaP2Nome = mView.findViewById(R.id.dialogo_qualidade_verion_nome_media_p2);
-        desvioP1Nome = mView.findViewById(R.id.dialogo_qualidade_verion_nome_desvio_padrao_p1);
-        desvioP2Nome = mView.findViewById(R.id.dialogo_qualidade_verion_nome_desvio_padrao_p2);
+            TextView letraItem1;
+            TextView letraItem2;
+            TextView letraItem3;
+            TextView letraItem4;
 
-        letraItem1 = mView.findViewById(R.id.dialogo_qualidade_verion_letra_item1);
-        letraItem2 = mView.findViewById(R.id.dialogo_qualidade_verion_letra_item2);
-        letraItem3 = mView.findViewById(R.id.dialogo_qualidade_verion_letra_item3);
-        letraItem4 = mView.findViewById(R.id.dialogo_qualidade_verion_letra_item4);
+            mediaP1Nome = mView.findViewById(R.id.dialogo_qualidade_verion_nome_media_p1);
+            mediaP2Nome = mView.findViewById(R.id.dialogo_qualidade_verion_nome_media_p2);
+            desvioP1Nome = mView.findViewById(R.id.dialogo_qualidade_verion_nome_desvio_padrao_p1);
+            desvioP2Nome = mView.findViewById(R.id.dialogo_qualidade_verion_nome_desvio_padrao_p2);
 
-        mediaEditP1 = mView.findViewById(R.id.dialogo_qualidade_verion_media_p1);
-        mediaEditP2 = mView.findViewById(R.id.dialogo_qualidade_verion_media_p2);
-        desvioEditP1 = mView.findViewById(R.id.dialogo_qualidade_verion_desvio_padrao_p1);
-        desvioEditP2 = mView.findViewById(R.id.dialogo_qualidade_verion_desvio_padrao_p2);
-
-        Button botaoRegistrar = (Button) mView.findViewById(R.id.dialogo_qualidade_verion_botao_registrar);
-
-        mediaP1Nome.setText(joinOsInsumos.get(0).getDESCRICAO() + " - P1");
-        mediaP2Nome.setText(joinOsInsumos.get(1).getDESCRICAO() + " - P2");
-        desvioP1Nome.setText(joinOsInsumos.get(0).getDESCRICAO() + " - P1");
-        desvioP2Nome.setText(joinOsInsumos.get(1).getDESCRICAO() + " - P2");
-
-        letraItem1.setText(atividadeIndicadores.get(0).getREFERENCIA());
-        letraItem2.setText(atividadeIndicadores.get(1).getREFERENCIA());
-        letraItem3.setText(atividadeIndicadores.get(2).getREFERENCIA());
-        letraItem4.setText(atividadeIndicadores.get(3).getREFERENCIA());
-
-
-        if (jaTemVerion == true) {
-            if (listaVerion.size() > 0) {
-                listaInsumoP1.setText(joinOsInsumos.get(0).getDESCRICAO());
-                listaInsumoP2.setText(joinOsInsumos.get(1).getDESCRICAO());
-
-                if (listaVerion.size() == 1) {
-                    mediaEditP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
-                }
-                if (listaVerion.size() == 2) {
-                    mediaEditP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
-                    desvioEditP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
-
-                }
-                if (listaVerion.size() == 3) {
-                    mediaEditP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
-                    desvioEditP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
-                    mediaEditP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
-
-                }
-                if (listaVerion.size() == 4) {
-                    mediaEditP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
-                    desvioEditP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
-                    mediaEditP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
-                    desvioEditP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
-                }
-            }
-        }
-
-        mediaEditP1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) ultimoFocus = v.findFocus().getId();
-            }
-        });
-
-        mediaEditP2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) ultimoFocus = v.findFocus().getId();
-            }
-        });
-
-        desvioEditP1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) ultimoFocus = v.findFocus().getId();
-            }
-        });
-
-        desvioEditP2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) ultimoFocus = v.findFocus().getId();
-            }
-        });
-
-        if (auxSavedInstanceState == null) {
-            mediaEditP1.addTextChangedListener(new TextWatcher() {
-
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mascaraVirgula(mediaEditP1, 0, s);
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            });
-
-            desvioEditP1.addTextChangedListener(new TextWatcher() {
-
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mascaraVirgula(desvioEditP1, 1, s);
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                }
-
-            });
-
-            mediaEditP2.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mascaraVirgula(mediaEditP2, 2, s);
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            });
-
-            desvioEditP2.addTextChangedListener(new TextWatcher() {
-
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mascaraVirgula(desvioEditP2, 3, s);
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            });
-
-            mediaEditP1.requestFocus();
-        }
-
-        if (dialogoVerionAberto == true && auxSavedInstanceState != null) {
-            ultimoFocus = auxSavedInstanceState.getInt("ultimoFocus");
-            EditText auxEdit = mView.findViewById(ultimoFocus);
-            if (auxEdit != null) auxEdit.requestFocus();
+            letraItem1 = mView.findViewById(R.id.dialogo_qualidade_verion_letra_item1);
+            letraItem2 = mView.findViewById(R.id.dialogo_qualidade_verion_letra_item2);
+            letraItem3 = mView.findViewById(R.id.dialogo_qualidade_verion_letra_item3);
+            letraItem4 = mView.findViewById(R.id.dialogo_qualidade_verion_letra_item4);
 
             mediaEditP1 = mView.findViewById(R.id.dialogo_qualidade_verion_media_p1);
             mediaEditP2 = mView.findViewById(R.id.dialogo_qualidade_verion_media_p2);
             desvioEditP1 = mView.findViewById(R.id.dialogo_qualidade_verion_desvio_padrao_p1);
             desvioEditP2 = mView.findViewById(R.id.dialogo_qualidade_verion_desvio_padrao_p2);
 
-            if (auxSavedInstanceState.getString("mediaEditP1") != null)
-                if (auxSavedInstanceState.getString("mediaEditP1").length() > 0)
-                    mediaEditP1.setText(auxSavedInstanceState.getString("mediaEditP1"));
+            Button botaoRegistrar = (Button) mView.findViewById(R.id.dialogo_qualidade_verion_botao_registrar);
 
-            if (auxSavedInstanceState.getString("mediaEditP2") != null)
-                if (auxSavedInstanceState.getString("mediaEditP2").length() > 0)
-                    mediaEditP2.setText(auxSavedInstanceState.getString("mediaEditP2"));
+            mediaP1Nome.setText(joinOsInsumos.get(0).getDESCRICAO() + " - P1");
+            mediaP2Nome.setText(joinOsInsumos.get(1).getDESCRICAO() + " - P2");
+            desvioP1Nome.setText(joinOsInsumos.get(0).getDESCRICAO() + " - P1");
+            desvioP2Nome.setText(joinOsInsumos.get(1).getDESCRICAO() + " - P2");
 
-            if (auxSavedInstanceState.getString("desvioEditP1") != null)
-                if (auxSavedInstanceState.getString("desvioEditP1").length() > 0)
-                    desvioEditP1.setText(auxSavedInstanceState.getString("desvioEditP1"));
+            letraItem1.setText(atividadeIndicadores.get(0).getREFERENCIA());
+            letraItem2.setText(atividadeIndicadores.get(1).getREFERENCIA());
+            letraItem3.setText(atividadeIndicadores.get(2).getREFERENCIA());
+            letraItem4.setText(atividadeIndicadores.get(3).getREFERENCIA());
 
-            if (auxSavedInstanceState.getString("desvioEditP2") != null)
-                if (auxSavedInstanceState.getString("desvioEditP2").length() > 0)
-                    desvioEditP2.setText(auxSavedInstanceState.getString("desvioEditP2"));
 
-            mediaEditP1.addTextChangedListener(new TextWatcher() {
+            if (jaTemVerion == true) {
+                if (listaVerion.size() > 0) {
+                    listaInsumoP1.setText(joinOsInsumos.get(0).getDESCRICAO());
+                    listaInsumoP2.setText(joinOsInsumos.get(1).getDESCRICAO());
 
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    if (listaVerion.size() == 1) {
+                        mediaEditP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
+                    }
+                    if (listaVerion.size() == 2) {
+                        mediaEditP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
+                        desvioEditP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
 
+                    }
+                    if (listaVerion.size() == 3) {
+                        mediaEditP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
+                        desvioEditP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
+                        mediaEditP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
+
+                    }
+                    if (listaVerion.size() == 4) {
+                        mediaEditP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
+                        desvioEditP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
+                        mediaEditP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
+                        desvioEditP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
+                    }
                 }
+            }
 
+            mediaEditP1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mascaraVirgula(mediaEditP1, 0, s);
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            });
-
-            desvioEditP1.addTextChangedListener(new TextWatcher() {
-
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mascaraVirgula(desvioEditP1, 1, s);
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                }
-
-            });
-
-            mediaEditP2.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mascaraVirgula(mediaEditP2, 2, s);
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) ultimoFocus = v.findFocus().getId();
                 }
             });
 
-            desvioEditP2.addTextChangedListener(new TextWatcher() {
-
+            mediaEditP2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mascaraVirgula(desvioEditP2, 3, s);
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) ultimoFocus = v.findFocus().getId();
                 }
             });
-        }
 
-        mBuilder.setView(mView);
-        dialogoVerion = mBuilder.create();
-        dialogoVerion.show();
-        dialogoVerion.setCanceledOnTouchOutside(false);
+            desvioEditP1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) ultimoFocus = v.findFocus().getId();
+                }
+            });
+
+            desvioEditP2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) ultimoFocus = v.findFocus().getId();
+                }
+            });
+
+            if (auxSavedInstanceState == null) {
+                mediaEditP1.addTextChangedListener(new TextWatcher() {
+
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        mascaraVirgula(mediaEditP1, 0, s);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+
+                desvioEditP1.addTextChangedListener(new TextWatcher() {
+
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        mascaraVirgula(desvioEditP1, 1, s);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                    }
+
+                });
+
+                mediaEditP2.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        mascaraVirgula(mediaEditP2, 2, s);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+
+                desvioEditP2.addTextChangedListener(new TextWatcher() {
+
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        mascaraVirgula(desvioEditP2, 3, s);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+
+                mediaEditP1.requestFocus();
+            }
+
+            if (dialogoVerionAberto == true && auxSavedInstanceState != null) {
+                ultimoFocus = auxSavedInstanceState.getInt("ultimoFocus");
+                EditText auxEdit = mView.findViewById(ultimoFocus);
+                if (auxEdit != null) auxEdit.requestFocus();
+
+                mediaEditP1 = mView.findViewById(R.id.dialogo_qualidade_verion_media_p1);
+                mediaEditP2 = mView.findViewById(R.id.dialogo_qualidade_verion_media_p2);
+                desvioEditP1 = mView.findViewById(R.id.dialogo_qualidade_verion_desvio_padrao_p1);
+                desvioEditP2 = mView.findViewById(R.id.dialogo_qualidade_verion_desvio_padrao_p2);
+
+                if (auxSavedInstanceState.getString("mediaEditP1") != null)
+                    if (auxSavedInstanceState.getString("mediaEditP1").length() > 0)
+                        mediaEditP1.setText(auxSavedInstanceState.getString("mediaEditP1"));
+
+                if (auxSavedInstanceState.getString("mediaEditP2") != null)
+                    if (auxSavedInstanceState.getString("mediaEditP2").length() > 0)
+                        mediaEditP2.setText(auxSavedInstanceState.getString("mediaEditP2"));
+
+                if (auxSavedInstanceState.getString("desvioEditP1") != null)
+                    if (auxSavedInstanceState.getString("desvioEditP1").length() > 0)
+                        desvioEditP1.setText(auxSavedInstanceState.getString("desvioEditP1"));
+
+                if (auxSavedInstanceState.getString("desvioEditP2") != null)
+                    if (auxSavedInstanceState.getString("desvioEditP2").length() > 0)
+                        desvioEditP2.setText(auxSavedInstanceState.getString("desvioEditP2"));
+
+                mediaEditP1.addTextChangedListener(new TextWatcher() {
+
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        mascaraVirgula(mediaEditP1, 0, s);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+
+                desvioEditP1.addTextChangedListener(new TextWatcher() {
+
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        mascaraVirgula(desvioEditP1, 1, s);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                    }
+
+                });
+
+                mediaEditP2.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        mascaraVirgula(mediaEditP2, 2, s);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+
+                desvioEditP2.addTextChangedListener(new TextWatcher() {
+
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        mascaraVirgula(desvioEditP2, 3, s);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+            }
+
+            mBuilder.setView(mView);
+            dialogoVerion = mBuilder.create();
+            dialogoVerion.show();
+            dialogoVerion.setCanceledOnTouchOutside(false);
 
 
-        botaoRegistrar.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onClick(View view) {
-                boolean todosEditCorretos = true;
+            botaoRegistrar.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                @Override
+                public void onClick(View view) {
+                    boolean todosEditCorretos = true;
 
-                if (converteuPrecisao(mediaEditP1) == false) todosEditCorretos = false;
-                if (converteuPrecisao(mediaEditP2) == false) todosEditCorretos = false;
-                if (converteuPrecisao(desvioEditP1) == false) todosEditCorretos = false;
-                if (converteuPrecisao(desvioEditP2) == false) todosEditCorretos = false;
+                    if (converteuPrecisao(mediaEditP1) == false) todosEditCorretos = false;
+                    if (converteuPrecisao(mediaEditP2) == false) todosEditCorretos = false;
+                    if (converteuPrecisao(desvioEditP1) == false) todosEditCorretos = false;
+                    if (converteuPrecisao(desvioEditP2) == false) todosEditCorretos = false;
 
-                if (todosEditCorretos == false) {
+                    if (todosEditCorretos == false) {
+                        AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
+                                .setTitle("Erro!")
+                                .setMessage("Um ou mais campos contém valores inválidos, favor corrigir.")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                }).create();
+                        dialog.show();
+                    } else {
+                        try {
+                            dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 11, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP1.getText().toString().replace(',', '.'))));
+                            dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 12, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP1.getText().toString().replace(',', '.'))));
+                            dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 13, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP2.getText().toString().replace(',', '.'))));
+                            dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.'))));
+                        } catch (SQLiteConstraintException | NullPointerException ex) {
+                            AlertDialog dialogoErro = new AlertDialog.Builder(ActivityQualidade.this)
+                                    .setTitle("Erro")
+                                    .setMessage("Houve um problema ao salvar a calibração.")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                        }
+                                    }).create();
+                            dialogoErro.show();
+                        }
+                        listaVerion = dao.listaIndicadoresSubsolagem(idProg, osSelecionada.getID_ATIVIDADE());
+
+                        listaInsumoP1.setText(joinOsInsumos.get(0).getDESCRICAO());
+                        listaInsumoP2.setText(joinOsInsumos.get(1).getDESCRICAO());
+
+                        listaMediaP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
+                        listaDesvioP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
+                        listaMediaP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
+                        listaDesvioP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
+
+                        /*if (listaVerion.size() > 3) {
+                            botaoVerion.setVisibility(View.GONE);
+                        }*/
+
+                        if (osSelecionada.getSTATUS_NUM() == 0) {
+                            osSelecionada.setSTATUS("Andamento");
+                            osSelecionada.setSTATUS_NUM(1);
+                            osSelecionada.setDATA_INICIAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
+                            dao.update(osSelecionada);
+                        }
+
+                        dialogoVerionAberto = false;
+                        dialogoVerion.dismiss();
+                    }
+                }
+            });
+
+            dialogoVerion.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    dialogoVerionAberto = false;
+                    auxSavedInstanceState = null;
+                }
+            });
+
+            dialogoVerion.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    dialogoVerionAberto = false;
+                    auxSavedInstanceState = null;
+                    Toast.makeText(ActivityQualidade.this, "Operação cancelada pelo usuário", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception ex) {
+
                     AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
                             .setTitle("Erro!")
-                            .setMessage("Um ou mais campos contém valores inválidos, favor corrigir.")
+                            .setMessage("Houve um problema ao abrir a tela de coleta do sistema de precisão.")
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                 }
                             }).create();
                     dialog.show();
-                } else {
-                    try {
-                        dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 11, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP1.getText().toString().replace(',', '.'))));
-                        dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 12, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP1.getText().toString().replace(',', '.'))));
-                        dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 13, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP2.getText().toString().replace(',', '.'))));
-                        dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.'))));
-                    } catch (SQLiteConstraintException | NullPointerException ex) {
-                        AlertDialog dialogoErro = new AlertDialog.Builder(ActivityQualidade.this)
-                                .setTitle("Erro")
-                                .setMessage("Houve um problema ao salvar a calibração.")
-                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                    }
-                                }).create();
-                        dialogoErro.show();
-                    }
-                    listaVerion = dao.listaIndicadoresSubsolagem(idProg, osSelecionada.getID_ATIVIDADE());
-
-                    listaInsumoP1.setText(joinOsInsumos.get(0).getDESCRICAO());
-                    listaInsumoP2.setText(joinOsInsumos.get(1).getDESCRICAO());
-
-                    listaMediaP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
-                    listaDesvioP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
-                    listaMediaP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
-                    listaDesvioP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
-
-                    if (listaVerion.size() > 3) {
-                        botaoVerion.setVisibility(View.GONE);
-                    }
-
-                    if (osSelecionada.getSTATUS_NUM() == 0) {
-                        osSelecionada.setSTATUS("Andamento");
-                        osSelecionada.setSTATUS_NUM(1);
-                        osSelecionada.setDATA_INICIAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
-                        dao.update(osSelecionada);
-                    }
-
-                    dialogoVerionAberto = false;
-                    dialogoVerion.dismiss();
-                }
             }
-        });
-
-        dialogoVerion.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                dialogoVerionAberto = false;
-                auxSavedInstanceState = null;
-            }
-        });
-
-        dialogoVerion.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                dialogoVerionAberto = false;
-                auxSavedInstanceState = null;
-                Toast.makeText(ActivityQualidade.this, "Operação cancelada pelo usuário", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     public void abreDialogoCorrecao() {
