@@ -750,17 +750,17 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         }
 
         if (erroNaString(hme) == true) {
-            //erro = true;
-            //erroGeral = true;
+            erro = true;
+            erroGeral = true;
             hme = "";
-            HMEscavadeiraApontamento.setText("");
+            HMEscavadeiraApontamento.setError("");
         }
 
         if (erroNaString(hoe) == true) {
-            //erro = true;
-            //erroGeral = true;
+            erro = true;
+            erroGeral = true;
             hoe = "";
-            HOEscavadeiraApontamento.setText("");
+            HOEscavadeiraApontamento.setError("");
         }
 
         /*if (posicaoResponsavel == -1) {
@@ -966,6 +966,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     somaQtdApl = Double.parseDouble(s);
                     // Log.e("Valor somaQtdApl", s);
                 } catch (Exception e) {
+                    e.printStackTrace();
                     // Log.e("Erro ao obter qtd aplicada", e.getMessage());
                     somaQtdApl = 1;
                 }
@@ -1002,6 +1003,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         }
 
         somaAreaRealizada = dao.somaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+
         osSelecionada.setAREA_REALIZADA(somaAreaRealizada);
 
         if (osSelecionada.getSTATUS_NUM() == 0) {

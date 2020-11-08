@@ -98,7 +98,8 @@ public class ActivityConfiguracoes extends AppCompatActivity {
                                     dao.insert(new Configs(1, empresa, host, porta, Integer.valueOf(opçõesPermanencia[posicaoSpinnerPermanencia]), posicaoSpinnerPermanencia));
                                     Intent it = new Intent(ActivityConfiguracoes.this, ActivityInicializacao.class);
                                     startActivity(it);
-                                } catch (SQLiteConstraintException | NullPointerException ex) {
+                                } catch (Exception ex) {
+                                    ex.printStackTrace();
                                     AlertDialog dialogoErro = new AlertDialog.Builder(ActivityConfiguracoes.this)
                                             .setTitle("Erro")
                                             .setMessage("Houve um problema ao salvar as configurações.")

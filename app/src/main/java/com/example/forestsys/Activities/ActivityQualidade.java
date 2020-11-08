@@ -376,7 +376,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
         AVAL_SUBSOLAGEM aval_subsolagem = dao.selecionaAvalSubsolagem(idProg);
 
-        listaVerion = dao.listaIndicadoresSubsolagem(idProg, osSelecionada.getID_ATIVIDADE());
+        listaVerion = dao.listaIndicadoresSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), osSelecionada.getID_ATIVIDADE());
 
         atividadeIndicadores = dao.listaAtividadeIndicadores(osSelecionada.getID_ATIVIDADE(), "N");
 
@@ -437,6 +437,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             try {
                 teste = Double.parseDouble(pegaEspacamento[0]);
             } catch (NumberFormatException | NullPointerException n) {
+                n.printStackTrace();
                 teste = 3;
             }
 
@@ -896,11 +897,84 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                         dialog.show();
                     } else {
                         try {
-                            dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 11, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP1.getText().toString().replace(',', '.'))));
-                            dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 12, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP1.getText().toString().replace(',', '.'))));
-                            dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 13, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP2.getText().toString().replace(',', '.'))));
-                            dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.'))));
-                        } catch (SQLiteConstraintException | NullPointerException ex) {
+                            Log.e("Tamanho lista Verion", String.valueOf(listaVerion.size()));
+
+                            if(listaVerion.size() == 0) {
+                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 11, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP1.getText().toString().replace(',', '.'))));
+                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 12, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP1.getText().toString().replace(',', '.'))));
+                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 13, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP2.getText().toString().replace(',', '.'))));
+                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.'))));
+                            }
+
+                            if(listaVerion.size()==1){
+                                listaVerion.get(0).setVALOR_INDICADOR(Double.valueOf(mediaEditP1.getText().toString().replace(',', '.')));
+                                dao.update(listaVerion.get(0));
+
+                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 12, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP1.getText().toString().replace(',', '.'))));
+                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 13, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP2.getText().toString().replace(',', '.'))));
+                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.'))));
+                            }
+
+                            if(listaVerion.size()==2){
+                                listaVerion.get(0).setVALOR_INDICADOR(Double.valueOf(mediaEditP1.getText().toString().replace(',', '.')));
+                                listaVerion.get(1).setVALOR_INDICADOR(Double.valueOf(desvioEditP1.getText().toString().replace(',', '.')));
+                                dao.update(listaVerion.get(0));
+                                dao.update(listaVerion.get(1));
+
+                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 13, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP2.getText().toString().replace(',', '.'))));
+                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.'))));
+                            }
+
+                            if(listaVerion.size()==3){
+                                listaVerion.get(0).setVALOR_INDICADOR(Double.valueOf(mediaEditP1.getText().toString().replace(',', '.')));
+                                listaVerion.get(1).setVALOR_INDICADOR(Double.valueOf(desvioEditP1.getText().toString().replace(',', '.')));
+                                listaVerion.get(2).setVALOR_INDICADOR(Double.valueOf(mediaEditP2.getText().toString().replace(',', '.')));
+
+                                dao.update(listaVerion.get(0));
+                                dao.update(listaVerion.get(1));
+                                dao.update(listaVerion.get(2));
+
+                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.'))));
+                            }
+
+                            if(listaVerion.size()==4){
+                                listaVerion.get(0).setVALOR_INDICADOR(Double.valueOf(mediaEditP1.getText().toString().replace(',', '.')));
+                                listaVerion.get(1).setVALOR_INDICADOR(Double.valueOf(desvioEditP1.getText().toString().replace(',', '.')));
+                                listaVerion.get(2).setVALOR_INDICADOR(Double.valueOf(mediaEditP2.getText().toString().replace(',', '.')));
+                                listaVerion.get(3).setVALOR_INDICADOR(Double.valueOf(desvioEditP2.getText().toString().replace(',', '.')));
+
+                                for(int i = 0; i<4; i++) {
+                                    dao.update(listaVerion.get(i));
+                                    Log.e("Valor Indicador "+ String.valueOf(listaVerion.get(i).getID_INDICADOR()),
+                                            String.valueOf(listaVerion.get(i).getVALOR_INDICADOR()));
+                                }
+                            }
+
+                            listaInsumoP1.setText(joinOsInsumos.get(0).getDESCRICAO());
+                            listaInsumoP2.setText(joinOsInsumos.get(1).getDESCRICAO());
+
+                            listaMediaP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
+                            listaDesvioP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
+                            listaMediaP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
+                            listaDesvioP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
+
+                        /*if (listaVerion.size() > 3) {
+                            botaoVerion.setVisibility(View.GONE);
+                        }*/
+
+                            if (osSelecionada.getSTATUS_NUM() == 0) {
+                                osSelecionada.setSTATUS("Andamento");
+                                osSelecionada.setSTATUS_NUM(1);
+                                osSelecionada.setDATA_INICIAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
+                                dao.update(osSelecionada);
+                            }
+
+                            dialogoVerionAberto = false;
+                            dialogoVerion.dismiss();
+
+                        } catch (Exception ex) {
+                            dialogoVerion.dismiss();
+                            ex.printStackTrace();
                             AlertDialog dialogoErro = new AlertDialog.Builder(ActivityQualidade.this)
                                     .setTitle("Erro")
                                     .setMessage("Houve um problema ao salvar a calibração.")
@@ -911,29 +985,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                                     }).create();
                             dialogoErro.show();
                         }
-                        listaVerion = dao.listaIndicadoresSubsolagem(idProg, osSelecionada.getID_ATIVIDADE());
 
-                        listaInsumoP1.setText(joinOsInsumos.get(0).getDESCRICAO());
-                        listaInsumoP2.setText(joinOsInsumos.get(1).getDESCRICAO());
-
-                        listaMediaP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
-                        listaDesvioP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
-                        listaMediaP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
-                        listaDesvioP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
-
-                        /*if (listaVerion.size() > 3) {
-                            botaoVerion.setVisibility(View.GONE);
-                        }*/
-
-                        if (osSelecionada.getSTATUS_NUM() == 0) {
-                            osSelecionada.setSTATUS("Andamento");
-                            osSelecionada.setSTATUS_NUM(1);
-                            osSelecionada.setDATA_INICIAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
-                            dao.update(osSelecionada);
-                        }
-
-                        dialogoVerionAberto = false;
-                        dialogoVerion.dismiss();
                     }
                 }
             });
@@ -955,7 +1007,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 }
             });
         } catch (Exception ex) {
-
+                ex.printStackTrace();
                     AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
                             .setTitle("Erro!")
                             .setMessage("Houve um problema ao abrir a tela de coleta do sistema de precisão.")
@@ -1707,6 +1759,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             startActivity(it);
             dialogoPonto.dismiss();
         } catch (SQLiteConstraintException | NullPointerException ex) {
+            ex.printStackTrace();
             AlertDialog dialogoErro = new AlertDialog.Builder(ActivityQualidade.this)
                     .setTitle("Erro")
                     .setMessage("Houve um problema ao salvar a calibração.")

@@ -45,7 +45,7 @@ public class ActivityInicializacao extends AppCompatActivity {
         if(temRede()==true){
         try {
             clienteWeb.sincronizaWebService();
-        } catch (JSONException | IOException e) {
+        } catch (Exception e) {
             finalizouSinc = true;
             conectado = false;
             e.printStackTrace();

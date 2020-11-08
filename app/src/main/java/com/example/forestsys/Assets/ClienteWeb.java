@@ -167,7 +167,7 @@ public class ClienteWeb<client> {
             conectado = true;
             finalizouSinc = false;
         } catch (Exception e) {
-            Log.e("Erro", e.toString() + " ao conectar com: " + HOST_PORTA);
+            Log.e("Erro", e.toString() + " ao conectar a: " + HOST_PORTA);
             conectado = false;
             finalizouSinc = true;
         }
@@ -203,9 +203,7 @@ public class ClienteWeb<client> {
                     obj.put("P2_DESVIO", todasCalibragens.get(i).getP2_DESVIO());
 
                     requisicaoPOST(HOST_PORTA + "silvcalibragemsubsolagens", obj.toString());
-                    //Log.e("Objeto Calibacao" + i, obj.toString());
-                    //Log.e("Post", requisicaoPOST(HOST_PORTA + "silvcalibragemsubsolagens", obj.toString()));
-                    //requisicaoPOST(HOST_PORTA + "silvcalibragemsubsolagens", obj.toString());
+
                 }
             } catch (Exception ex) {
                 Log.e("CALIBRAGEM_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST");
@@ -257,18 +255,12 @@ public class ClienteWeb<client> {
                         obj.put("HM_ESCAVADEIRA", hme);
                         obj.put("HO_ESCAVADEIRA", hoe);
 
-                        //Log.e("Objeto Post Atv_dia" + i, obj.toString());
-
                         String POST = requisicaoPOST(HOST_PORTA + "silvosatividadesdias", obj.toString());
-                        Log.e("Post Atv_dia", POST);
 
                         JSONObject updateId = new JSONObject(POST);
                         Integer idRetornado = updateId.getInt("ID");
                         todasOsAtividadesDia.get(i).setID(idRetornado);
                         dao.update(todasOsAtividadesDia.get(i));
-
-
-                        Log.e("ID inserido ", String.valueOf(todasOsAtividadesDia.get(i).getID()));
                     } else {
                         naoFazPut = false;
                         obj.put("ID", todasOsAtividadesDia.get(i).getID());
@@ -296,12 +288,8 @@ public class ClienteWeb<client> {
                         }
 
                         if (naoFazPut == false) {
-                            //Log.e("Objeto Put Atv_dia", obj.toString());
-
-                            Log.e("PUT Atv_dia", requisicaoPUT(HOST_PORTA + "silvosatividadesdias" + "/" +
-                                    String.valueOf(todasOsAtividadesDia.get(i).getID()), obj.toString()));
-                            //requisicaoPUT(HOST_PORTA + "silvosatividadesdias" + "/" +
-                            //  String.valueOf(todasOsAtividadesDia.get(i).getID()), obj.toString());
+                            requisicaoPUT(HOST_PORTA + "silvosatividadesdias" + "/" +
+                              String.valueOf(todasOsAtividadesDia.get(i).getID()), obj.toString());
                         }
                     }
                 }
@@ -328,13 +316,10 @@ public class ClienteWeb<client> {
                         obj.put("OBSERVACAO", todasOsAtividadeInsumoDia.get(i).getOBSERVACAO());
                         obj.put("ACAO_INATIVO", todasOsAtividadeInsumoDia.get(i).getACAO_INATIVO());
 
-                        //Log.e("Objeto Post OsAtividadeInsumoDia" + i, obj.toString());
-
                         String POST = null;
                         boolean fezOPost = false;
                         try {
                             POST = requisicaoPOST(HOST_PORTA + "silvosatividadeinsumosdias", obj.toString());
-                            Log.e("Post OsAtividadeInsumoDia", POST);
                             fezOPost = true;
                         } catch (Exception ex) {
                             fezOPost = false;
@@ -344,8 +329,6 @@ public class ClienteWeb<client> {
                             Integer idRetornado = updateId.getInt("ID");
                             todasOsAtividadeInsumoDia.get(i).setID(idRetornado);
                             dao.update(todasOsAtividadeInsumoDia.get(i));
-
-                            Log.e("ID inserido ", String.valueOf(todasOsAtividadeInsumoDia.get(i).getID()));
                         }
                     } else {
                         naoFazPut = false;
@@ -369,11 +352,8 @@ public class ClienteWeb<client> {
 
 
                         if (naoFazPut == false) {
-                            //Log.e("Objeto Put OsAtividadeInsumoDia", obj.toString());
-                            Log.e("PUT OsAtividadeInsumoDia", requisicaoPUT(HOST_PORTA + "silvosatividadeinsumosdias" + "/" +
-                                    String.valueOf(todasOsAtividadeInsumoDia.get(i).getID()), obj.toString()));
-                            //requisicaoPUT(HOST_PORTA + "silvosatividadeinsumosdias" + "/" +
-                            //      String.valueOf(todasOsAtividadeInsumoDia.get(i).getID()), obj.toString());
+                            requisicaoPUT(HOST_PORTA + "silvosatividadeinsumosdias" + "/" +
+                                 String.valueOf(todasOsAtividadeInsumoDia.get(i).getID()), obj.toString());
                         }
                     }
                 }
@@ -388,38 +368,54 @@ public class ClienteWeb<client> {
             try {
                 List<O_S_ATIVIDADES> todasOsAtividades = dao.todasOs();
                 for (Integer i = 0; i < todasOsAtividades.size(); i++) {
+                    Integer STATUS_NUM = todasOsAtividades.get(i).getSTATUS_NUM();
+
+                    if(STATUS_NUM!=0){
                     JSONObject obj = new JSONObject();
 
-                    Integer STATUS_NUM = todasOsAtividades.get(i).getSTATUS_NUM();
-                    String STATUS = null;
-
-                    if(STATUS_NUM == 0){
-                        obj.put("STATUS", null);
-                    }
                     if (STATUS_NUM == 1) {
-                        STATUS = "A";
-                        obj.put("STATUS", STATUS);
+                        obj.put("STATUS", "A");
                     }
                     if (STATUS_NUM == 2) {
-                        STATUS = "F";
-                        obj.put("STATUS", STATUS);
+                        obj.put("STATUS", "F");
                     }
 
 
 
-                    obj.put("DATA_INICIAL", todasOsAtividades.get(i).getDATA_INICIAL());
-                    obj.put("OBSERVACAO", todasOsAtividades.get(i).getOBSERVACAO());
+                    if(todasOsAtividades.get(i).getDATA_INICIAL()==null || todasOsAtividades.get(i).getDATA_INICIAL().trim().equals("null")){
+                        obj.put("DATA_INICIAL", JSONObject.NULL);
+                    }else {
+                        obj.put("DATA_INICIAL", todasOsAtividades.get(i).getDATA_INICIAL());
+                        obj.put("DATA_INICIAL", todasOsAtividades.get(i).getDATA_INICIAL());
+                    }
+
+                    if(todasOsAtividades.get(i).getOBSERVACAO()==null || todasOsAtividades.get(i).getOBSERVACAO().trim().equals("null")){
+                        obj.put("OBSERVACAO", JSONObject.NULL);
+                    }else {
+                        obj.put("OBSERVACAO", todasOsAtividades.get(i).getOBSERVACAO());
+                    }
+
+                    if(todasOsAtividades.get(i).getDATA_FINAL()==null || todasOsAtividades.get(i).getDATA_FINAL().trim().equals("null")){
+                        obj.put("DATA_FINAL", JSONObject.NULL);
+                    }else {
+                        obj.put("DATA_FINAL", todasOsAtividades.get(i).getDATA_FINAL());
+                    }
+
+
+                    /*obj.put("STATUS", JSONObject.NULL);
+                    obj.put("DATA_INICIAL", JSONObject.NULL);
+                    obj.put("OBSERVACAO", JSONObject.NULL);
+                    obj.put("DATA_FINAL", JSONObject.NULL);
                     obj.put("AREA_REALIZADA", todasOsAtividades.get(i).getAREA_REALIZADA());
-                    obj.put("DATA_FINAL", todasOsAtividades.get(i).getDATA_FINAL());
-
-
-                    //Log.e("Objeto os_atividades" + i, obj.toString());
-
-                    //Log.e("Put", requisicaoPUT(HOST_PORTA + "silvosatividades" + "/" +
-                    //      String.valueOf(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE()), obj.toString()));
 
                     requisicaoPUT(HOST_PORTA + "silvosatividades" + "/" +
                             String.valueOf(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE()), obj.toString());
+*/
+
+                        requisicaoPUT(HOST_PORTA + "silvosatividades" + "/" +
+                                String.valueOf(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE()), obj.toString());
+
+                }
                 }
             } catch (Exception ex) {
                 Log.e("OS_ATIVIDADES", "Erro ao instanciar objeto para requisição PUT");
@@ -439,15 +435,9 @@ public class ClienteWeb<client> {
                     obj.put("QTD_HA_RECOMENDADO", todasAtvInsumos.get(i).getQTD_HA_RECOMENDADO());
                     obj.put("QTD_HA_APLICADO", todasAtvInsumos.get(i).getQTD_HA_APLICADO());
 
-                    //Log.e("Objeto Atv_insumos", obj.toString());
-                    Log.e("Put atv_insumos", requisicaoPUT(HOST_PORTA + "silvosatividadeinsumos" + "/" +
+                    requisicaoPUT(HOST_PORTA + "silvosatividadeinsumos" + "/" +
                             todasAtvInsumos.get(i).getID_PROGRAMACAO_ATIVIDADE() + "&" +
-                            todasAtvInsumos.get(i).getID_INSUMO(), obj.toString()));
-
-
-                    /*requisicaoPUT(HOST_PORTA + "silvosatividadeinsumos" + "/" +
-                            todasAtvInsumos.get(i).getID_PROGRAMACAO_ATIVIDADE() + "&" +
-                            todasAtvInsumos.get(i).getID_INSUMO(), obj.toString());*/
+                            todasAtvInsumos.get(i).getID_INSUMO(), obj.toString());
                 }
             } catch (JSONException ex) {
                 Log.e("O_S_ATIVIDADE_INSUMOS", "Erro ao instanciar objeto para requisição PUT");
@@ -466,13 +456,14 @@ public class ClienteWeb<client> {
                     obj.put("DATA", listaIndSubs.get(i).getDATA());
                     obj.put("ID_ATIVIDADE", listaIndSubs.get(i).getID_ATIVIDADE());
                     obj.put("ID_INDICADOR", listaIndSubs.get(i).getID_INDICADOR());
-                    obj.put("VALOR_INDICADOR", listaIndSubs.get(i).getID_INDICADOR());
+                    obj.put("VALOR_INDICADOR", listaIndSubs.get(i).getVALOR_INDICADOR());
 
-                    //Log.e("POST indicadores subsolagens", requisicaoPOST(HOST_PORTA +"silvindicadoressubsolagens",
-                    //      obj.toString()));
+                    requisicaoPUT(HOST_PORTA + "silvindicadoressubsolagens"+"/"+listaIndSubs.get(i).getID_PROGRAMACAO_ATIVIDADE()+"&"+
+                                    listaIndSubs.get(i).getDATA()+"&"+listaIndSubs.get(i).getID_ATIVIDADE()+"&"+ listaIndSubs.get(i).getID_INDICADOR()
+                            ,obj.toString());
+
                     requisicaoPOST(HOST_PORTA + "silvindicadoressubsolagens",
                             obj.toString());
-
 
                 }
             } catch (JSONException ex) {
@@ -487,8 +478,6 @@ public class ClienteWeb<client> {
 
                 for (Integer i = 0; i < listaPontos.size(); i++) {
                     JSONObject obj = new JSONObject();
-                    //Log.e("Latitude ponto " + listaPontos.get(i).getPONTO(), String.valueOf(listaPontos.get(i).getCOORDENADA_X()));
-                   // Log.e("Longitude ponto " + listaPontos.get(i).getPONTO(), String.valueOf(listaPontos.get(i).getCOORDENADA_Y()));
 
                     String lati = String.valueOf(listaPontos.get(i).getCOORDENADA_X());
                     String longi = String.valueOf(listaPontos.get(i).getCOORDENADA_Y());
@@ -505,10 +494,8 @@ public class ClienteWeb<client> {
                         obj.put("COORDENADA_Y", longi);
                         obj.put("NC_TRATADA", listaPontos.get(i).getNC_TRATADA());
 
-                        Log.e("POST aval_ponto_subsolagens", requisicaoPOST(HOST_PORTA +
-                                "silvindavalpontosubsolagens", obj.toString()));
-                        //requisicaoPOST(HOST_PORTA +
-                        //"silvindavalpontosubsolagens", obj.toString());
+                        requisicaoPOST(HOST_PORTA +
+                        "silvindavalpontosubsolagens", obj.toString());
                     } else {
                         obj.put("ID_PROGRAMACAO_ATIVIDADE", listaPontos.get(i).getID_PROGRAMACAO_ATIVIDADE());
                         obj.put("DATA", listaPontos.get(i).getDATA());
@@ -521,18 +508,15 @@ public class ClienteWeb<client> {
                         obj.put("COORDENADA_Y", longi);
                         obj.put("NC_TRATADA", listaPontos.get(i).getNC_TRATADA());
 
-                        Log.e("PUT aval_ponto_subsolagens", requisicaoPUT(HOST_PORTA +
-                                        "silvindavalpontosubsolagens" + "/" + listaPontos.get(i).getID_PROGRAMACAO_ATIVIDADE() + "&" +
-                                        listaPontos.get(i).getDATA() + "&" + listaPontos.get(i).getPONTO() + "&" + listaPontos.get(i).getID_ATIVIDADE() +
-                                        "&" + listaPontos.get(i).getID_INDICADOR(),
-                                obj.toString()));
-                       /*requisicaoPUT(HOST_PORTA +
-                                       "silvindavalpontosubsolagens"+"/"+listaPontos.get(i).getID_PROGRAMACAO_ATIVIDADE()+"&"+
-                                       listaPontos.get(i).getDATA()+"&"+listaPontos.get(i).getPONTO()+"&"+listaPontos.get(i).getID_ATIVIDADE()+
-                                       "&"+listaPontos.get(i).getID_INDICADOR(),
-                               obj.toString());*/
+                        Integer NC_TRATADA = obj.getInt("NC_TRATADA");
+                        if(NC_TRATADA==1) {
+                            requisicaoPUT(HOST_PORTA +
+                                            "silvindavalpontosubsolagens" + "/" + listaPontos.get(i).getID_PROGRAMACAO_ATIVIDADE() + "&" +
+                                            listaPontos.get(i).getDATA() + "&" + listaPontos.get(i).getPONTO() + "&" + listaPontos.get(i).getID_ATIVIDADE() +
+                                            "&" + listaPontos.get(i).getID_INDICADOR(),
+                                    obj.toString());
+                        }
                     }
-                    //Log.e("Objeto Ponto", obj.toString());
                 }
             } catch (JSONException ex) {
                 Log.e("AVAL_PONTO_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST ou PUT");
@@ -551,7 +535,6 @@ public class ClienteWeb<client> {
                     try {
                         dao.insert(new ATIVIDADES(ID_ATIVIDADE, DESCRICAO, ATIVO));
                     } catch (SQLiteConstraintException e) {
-                        //Log.e("Atividade na id", String.valueOf(ID_FUNCAO));
                         e.printStackTrace();
                     }
                 }
@@ -572,7 +555,6 @@ public class ClienteWeb<client> {
                     try {
                         dao.insert(new GGF_FUNCOES(ID_FUNCAO, DESCRICAO, ATIVO));
                     } catch (SQLiteConstraintException e) {
-                        //Log.e("Função na id", String.valueOf(ID_FUNCAO));
                         e.printStackTrace();
                     }
                 }
@@ -593,7 +575,6 @@ public class ClienteWeb<client> {
                     try {
                         dao.insert(new GGF_DEPARTAMENTOS(ID_DEPARTAMENTO, DESCRICAO, ATIVO));
                     } catch (SQLiteConstraintException e) {
-                        //Log.e("Departamento na id", String.valueOf(ID_DEPARTAMENTO));
                         e.printStackTrace();
                     }
                 }
@@ -625,7 +606,6 @@ public class ClienteWeb<client> {
                     try {
                         dao.insert(new GGF_USUARIOS(ID_USUARIO, ID_DEPARTAMENTO, ID_FUNCAO, SENHA, ATIVO, EMAIL, DESCRICAO, NIVEL_ACESSO));
                     } catch (SQLiteConstraintException e) {
-                        //Log.e("Usuario na id", String.valueOf(ID_USUARIO));
                         e.printStackTrace();
                     }
                 }
@@ -646,7 +626,6 @@ public class ClienteWeb<client> {
                     try {
                         dao.insert(new OPERADORES(ID_OPERADORES, DESCRICAO, ATIVO));
                     } catch (SQLiteConstraintException e) {
-                        // Log.e("Operador na id", String.valueOf(ID_OPERADORES));
                         e.printStackTrace();
                     }
                 }
@@ -667,7 +646,6 @@ public class ClienteWeb<client> {
                     try {
                         dao.insert(new MAQUINAS(ID_MAQUINA, DESCRICAO, ATIVO));
                     } catch (SQLiteConstraintException e) {
-                        // Log.e("Maquina na id", String.valueOf(ID_MAQUINA));
                     }
                 }
             } catch (JSONException ex) {
@@ -687,7 +665,6 @@ public class ClienteWeb<client> {
                     try {
                         dao.insert(new IMPLEMENTOS(ID_IMPLEMENTO, DESCRICAO, ATIVO));
                     } catch (SQLiteConstraintException e) {
-                        // Log.e("Implementp na id", String.valueOf(ID_IMPLEMENTO));
                         e.printStackTrace();
                     }
                 }
@@ -708,7 +685,6 @@ public class ClienteWeb<client> {
                         dao.insert(new MAQUINA_IMPLEMENTO(ID_MAQUINA_IMPLEMENTO, ID_MAQUINA, ID_IMPLEMENTO));
                     } catch (SQLiteConstraintException e) {
                         e.printStackTrace();
-                        //Log.e("Maquina Implemento na id", String.valueOf(ID_MAQUINA_IMPLEMENTO));
                     }
                 }
             } catch (JSONException ex) {
@@ -730,7 +706,6 @@ public class ClienteWeb<client> {
                         dao.insert(new PRESTADORES(ID_PRESTADORES, DESCRICAO, ATIVO));
                     } catch (SQLiteConstraintException e) {
                         e.printStackTrace();
-                        // Log.e("Prestador na id", String.valueOf(ID_PRESTADORES));
                     }
                 }
             } catch (JSONException ex) {
@@ -772,7 +747,6 @@ public class ClienteWeb<client> {
                         dao.insert(new ESPACAMENTOS(ID_ESPACAMENTO, DESCRICAO, ATIVO));
                     } catch (SQLiteConstraintException e) {
                         e.printStackTrace();
-                        //Log.e("Espacamentos na id", String.valueOf(ID_ESPACAMENTO));
                     }
                 }
             } catch (JSONException ex) {
@@ -794,7 +768,6 @@ public class ClienteWeb<client> {
                         dao.insert(new GEO_REGIONAIS(ID_REGIONAL, DESCRICAO, SETOR_TODOS, ATIVO));
                     } catch (SQLiteConstraintException e) {
                         e.printStackTrace();
-                        //Log.e("Regionais na id", String.valueOf(ID_REGIONAL));
                     }
                 }
             } catch (JSONException ex) {
@@ -816,7 +789,6 @@ public class ClienteWeb<client> {
                         dao.insert(new GEO_SETORES(ID_REGIONAL, ID_SETOR, DESCRICAO, ATIVO));
                     } catch (SQLiteConstraintException e) {
                         e.printStackTrace();
-                        //Log.e("Geo Setores na id", String.valueOf(ID_REGIONAL) + " , " + String.valueOf(ID_SETOR));
                     }
                 }
             } catch (JSONException ex) {
@@ -872,7 +844,6 @@ public class ClienteWeb<client> {
                                 DATA_MANEJO, DATA_PROGRAMACAO_REFORMA, ID_MATERIAL_GENETICO, ID_ESPACAMENTO, OBSERVACAO, ATIVO));
                     } catch (SQLiteConstraintException e) {
                         e.printStackTrace();
-                        //Log.e("Cad Florestal na id", String.valueOf(ID_REGIONAL) + " , " + String.valueOf(ID_SETOR));
                     }
                 }
             } catch (JSONException ex) {
@@ -888,8 +859,6 @@ public class ClienteWeb<client> {
                 for (Integer i = 0; i < response.length(); i++) {
                     JSONObject obj = response.getJSONObject(i);
 
-                    //Log.e("Objeto "+String.valueOf(i), obj.toString());
-
                     Integer ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
                     Integer ID_REGIONAL = obj.getInt("ID_REGIONAL");
                     Integer ID_SETOR = obj.getInt("ID_SETOR");
@@ -901,7 +870,7 @@ public class ClienteWeb<client> {
 
                     try {
                         ID_RESPONSAVEL = obj.getInt("ID_RESPONSAVEL");
-                    }catch(Exception ex){
+                    } catch (Exception ex) {
                         ID_RESPONSAVEL = null;
                         ex.printStackTrace();
                     }
@@ -945,14 +914,10 @@ public class ClienteWeb<client> {
                     String DATA_PROGRAMADA = obj.getString("DATA_PROGRAMADA");
                     Double AREA_PROGRAMADA = obj.getDouble("AREA_PROGRAMADA");
 
-                    String OBSERVACAO = obj.getString("OBSERVACAO");
-                    String DATA_INICIAL = obj.getString("DATA_INICIAL");
-                    String DATA_FINAL = obj.getString("DATA_FINAL");
-
                     String STATUS = obj.getString("STATUS");
 
                     Integer STATUS_NUM = 0;
-                    if (STATUS == null || STATUS.trim().equals("null")) {
+                    if (STATUS == JSONObject.NULL || STATUS == null || STATUS.trim().equals("null") || STATUS.trim().equals("")) {
                         STATUS_NUM = 0;
                         STATUS = "Aberto";
                     }
@@ -965,9 +930,20 @@ public class ClienteWeb<client> {
                         STATUS = "Finalizado";
                     }
 
+                    String OBSERVACAO = obj.getString("OBSERVACAO");
+                    String DATA_INICIAL = obj.getString("DATA_INICIAL");
+                    String DATA_FINAL = obj.getString("DATA_FINAL");
 
                     if (OBSERVACAO == null || OBSERVACAO.trim().equals("null")) {
                         OBSERVACAO = null;
+                    }
+
+                    if (DATA_INICIAL == null || DATA_INICIAL.trim().equals("null")) {
+                        DATA_INICIAL = null;
+                    }
+
+                    if (DATA_FINAL == null || DATA_FINAL.trim().equals("null")) {
+                        DATA_FINAL = null;
                     }
 
                     try {
@@ -976,7 +952,6 @@ public class ClienteWeb<client> {
                                 EXPERIMENTO, MADEIRA_NO_TALHAO, OBSERVACAO, DATA_INICIAL, DATA_FINAL, AREA_REALIZADA,
                                 STATUS, STATUS_NUM));
                     } catch (SQLiteConstraintException ex) {
-                        //Log.e("Os Atividade na id", String.valueOf(ID_PROGRAMACAO_ATIVIDADE));
                         ex.printStackTrace();
                     }
                 }
@@ -1073,7 +1048,6 @@ public class ClienteWeb<client> {
                             NUTRIENTE_AF, NUTRIENTE_MN, ATIVO, UND_MEDIDA));
                 } catch (SQLiteConstraintException e) {
                     e.printStackTrace();
-                    //Log.e("Insumo na id", String.valueOf(ID_INSUMO));
                 }
             }
         } catch (JSONException ex) {
@@ -1132,7 +1106,6 @@ public class ClienteWeb<client> {
                 try {
                     dao.insert(new ATIVIDADE_INDICADORES(ID_INDICADOR, ID_ATIVIDADE, ORDEM_INDICADOR, REFERENCIA, DESCRICAO, ATIVO, VERION, LIMITE_SUPERIOR, LIMITE_INFERIOR, CASAS_DECIMAIS, INDICADOR_CORRIGIVEL, FORMULA));
                 } catch (SQLiteConstraintException e) {
-                    //Log.e("Atividade Indicadores na id", String.valueOf(ID_INDICADOR) + " , " + String.valueOf(ID_ATIVIDADE));
                     e.printStackTrace();
                 }
             }
@@ -1163,7 +1136,6 @@ public class ClienteWeb<client> {
                             ID_MAQUINA_IMPLEMENTO, ID_OPERADOR, P1_MEDIA, P1_DESVIO, P2_MEDIA, P2_DESVIO));
                 } catch (SQLiteConstraintException e) {
                     e.printStackTrace();
-                    //Log.e("Calibragem na id", String.valueOf(ID_MAQUINA_IMPLEMENTO) + " , " + DATA);
                 }
             }
         } catch (JSONException ex) {
@@ -1186,7 +1158,6 @@ public class ClienteWeb<client> {
                     dao.insert(new O_S_ATIVIDADE_INSUMOS(ID_INSUMO, ID_PROGRAMACAO_ATIVIDADE, RECOMENDACAO, QTD_HA_RECOMENDADO, QTD_HA_APLICADO));
                 } catch (SQLiteConstraintException e) {
                     e.printStackTrace();
-                    // Log.e("Atividade Insumos na id", String.valueOf(ID_INSUMO) + " , " + String.valueOf(ID_PROGRAMACAO_ATIVIDADE));
                 }
             }
         } catch (JSONException ex) {
@@ -1215,7 +1186,6 @@ public class ClienteWeb<client> {
                             ESTRONDAMENTO_LATERAL_SUPERIOR, FAIXA_SOLO_PREPARADA, PROFUNDIDADE_ADUBO_INFERIOR,
                             PROFUNDIDADE_ADUBO_SUPERIOR, LOCALIZACAO_INSUMO_INFERIOR, LOCALIZACAO_INSUMO_SUPERIOR));
                 } catch (SQLiteConstraintException e) {
-                    //Log.e("Aval Sbsolagem na id", String.valueOf(ID_PROGRAMACAO_ATIVIDADE));
                     e.printStackTrace();
                 }
             }
@@ -1235,7 +1205,6 @@ public class ClienteWeb<client> {
                 try {
                     dao.insert(new INSUMO_ATIVIDADES(ID_INSUMO, ID_ATIVIDADE, ATIVO));
                 } catch (SQLiteConstraintException e) {
-                    // Log.e("Insumo_atividades na id", String.valueOf(ID_ATIVIDADE));
                     e.printStackTrace();
                 }
             }
@@ -1272,7 +1241,6 @@ public class ClienteWeb<client> {
                     dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(ID, ID_PROGRAMACAO_ATIVIDADE, DATA,
                             ID_INSUMO, QTD_APLICADO, ACAO_INATIVO, REGISTRO_DESCARREGADO, OBSERVACAO));
                 } catch (SQLiteConstraintException e) {
-                    //Log.e("atividade_insumos_dia na id", String.valueOf(ID_PROGRAMACAO_ATIVIDADE) + ", " + DATA);
                     e.printStackTrace();
                 }
             }
@@ -1287,7 +1255,6 @@ public class ClienteWeb<client> {
             response = new JSONArray(requisicaoGET(HOST_PORTA + "silvindicadoressubsolagens"));
             for (Integer i = 0; i < response.length(); i++) {
                 JSONObject obj = response.getJSONObject(i);
-                // Log.e("Objeto indicadores_subsolagem", obj.toString());
 
                 Integer ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
                 String DATA = obj.getString("DATA");
@@ -1312,7 +1279,6 @@ public class ClienteWeb<client> {
             response = new JSONArray(requisicaoGET(HOST_PORTA + "silvindavalpontosubsolagens"));
             for (Integer i = 0; i < response.length(); i++) {
                 JSONObject obj = response.getJSONObject(i);
-                //Log.e("Objeto ponto_subsolagem", obj.toString());
 
                 Integer ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
                 String DATA = obj.getString("DATA");

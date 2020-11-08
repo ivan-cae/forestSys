@@ -416,7 +416,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                                 ClienteWeb clienteWeb = new ClienteWeb(getApplicationContext());
                                 try {
                                     clienteWeb.sincronizaWebService();
-                                } catch (JSONException | IOException e) {
+                                } catch (Exception e) {
                                     finalizouSinc = true;
                                     conectado = false;
                                     e.printStackTrace();

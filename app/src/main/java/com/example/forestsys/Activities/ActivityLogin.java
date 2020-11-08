@@ -61,28 +61,28 @@ public class ActivityLogin extends AppCompatActivity {
     private ImageButton configButton;
     private DAO dao;
     private BaseDeDados baseDeDados;
-
+    private Intent it;
 
 private ProgressDialog dialogoProgresso;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_login);
         super.onCreate(savedInstanceState);
-        Intent it = getIntent();
+        it = getIntent();
         if (it.hasExtra("fechar")) {
             finishAffinity();
             moveTaskToBack(true);
         }
-        dialogoProgresso = new ProgressDialog(ActivityLogin.this);
-        dialogoProgresso.setTitle("Sincronizando com o servidor");
-        dialogoProgresso.setMessage("Aguarde um momento...");
-        dialogoProgresso.setCancelable(false);
-        dialogoProgresso.setCanceledOnTouchOutside(false);
+            dialogoProgresso = new ProgressDialog(ActivityLogin.this);
+            dialogoProgresso.setTitle("Sincronizando com o servidor");
+            dialogoProgresso.setMessage("Aguarde um momento...");
+            dialogoProgresso.setCancelable(false);
+            dialogoProgresso.setCanceledOnTouchOutside(false);
 
-        usernameEditText = findViewById(R.id.username);
-        passwordEditText = findViewById(R.id.password);
-        loginButton = findViewById(R.id.botao_login);
-        configButton = findViewById(R.id.botao_config);
+            usernameEditText = findViewById(R.id.username);
+            passwordEditText = findViewById(R.id.password);
+            loginButton = findViewById(R.id.botao_login);
+            configButton = findViewById(R.id.botao_config);
 
             baseDeDados = BaseDeDados.getInstance(getApplicationContext());
             dao = baseDeDados.dao();
@@ -92,33 +92,33 @@ private ProgressDialog dialogoProgresso;
                         "3333", 90, 5));
             }
             Configs configs = dao.selecionaConfigs();
-            HOST_PORTA = "http://"+configs.getEndereçoHost() + ":" + configs.getPortaDeComunicacao() + "/";
-        nomeEmpresaPref = configs.getNomeEmpresa();
+            HOST_PORTA = "http://" + configs.getEndereçoHost() + ":" + configs.getPortaDeComunicacao() + "/";
+            nomeEmpresaPref = configs.getNomeEmpresa();
 
-        configButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent it2 = new Intent(ActivityLogin.this, ActivityConfiguracoes.class);
-                startActivity(it2);
-            }
-        });
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean tem = false;
-                nomeUsuario = usernameEditText.getText().toString();
-                senhaUsuario = passwordEditText.getText().toString();
-                usuarioLogado = dao.valida(nomeUsuario, senhaUsuario);
-                if (usuarioLogado != null) tem = true;
-                if (tem == false) {
-                    Toast.makeText(ActivityLogin.this, "Credenciais Inválidas", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent it = new Intent(ActivityLogin.this, ActivityMain.class);
+            configButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    it = new Intent(ActivityLogin.this, ActivityConfiguracoes.class);
                     startActivity(it);
                 }
-            }
-        });
+            });
+
+            loginButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    boolean tem = false;
+                    nomeUsuario = usernameEditText.getText().toString();
+                    senhaUsuario = passwordEditText.getText().toString();
+                    usuarioLogado = dao.valida(nomeUsuario, senhaUsuario);
+                    if (usuarioLogado != null) tem = true;
+                    if (tem == false) {
+                        Toast.makeText(ActivityLogin.this, "Credenciais Inválidas", Toast.LENGTH_SHORT).show();
+                    } else {
+                        it = new Intent(ActivityLogin.this, ActivityMain.class);
+                        startActivity(it);
+                    }
+                }
+            });
 
         /*botaoVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,7 +129,7 @@ private ProgressDialog dialogoProgresso;
                         .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent it = new Intent(ActivityLogin.this, ActivityLogin.class);
+                                it = new Intent(ActivityLogin.this, ActivityLogin.class);
                                 boolean fechou = true;
                                 it.putExtra("fechar", fechou);
                                 startActivity(it);
@@ -143,11 +143,11 @@ private ProgressDialog dialogoProgresso;
                         .show();
             }
         });*/
-        if (it.hasExtra("deslogar")) {
-            usuarioLogado = null;
-        }else {
-            checaFimDaSinc();
-        }
+            if (it.hasExtra("deslogar")) {
+                usuarioLogado = null;
+            } else {
+                checaFimDaSinc();
+            }
         }
 
     @SuppressLint("StaticFieldLeak")
@@ -172,7 +172,9 @@ private ProgressDialog dialogoProgresso;
                 @SuppressLint("StaticFieldLeak")
                 @Override
                 protected void onPostExecute(Void aVoid) {
-                    if(conectado == true && erroNoOracle==false){
+                    it = getIntent();
+
+                    if(conectado == true && erroNoOracle==false && !it.hasExtra("fechar")){
                         dialogoProgresso.dismiss();
                         String s = "Sincronizado com " + HOST_PORTA;
                         if(contadorDeErros>0) s = "Houveram erros na sincronização, favor comunicar ao responsável.";
@@ -280,7 +282,7 @@ private ProgressDialog dialogoProgresso;
                     .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent it = new Intent(ActivityLogin.this, ActivityLogin.class);
+                            it = new Intent(ActivityLogin.this, ActivityLogin.class);
                             boolean fechou = true;
                             it.putExtra("fechar", fechou);
                             startActivity(it);
