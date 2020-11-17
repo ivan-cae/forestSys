@@ -64,6 +64,7 @@ public class FragmentoInsumos extends Fragment {
     private Bundle auxSavedInstanceState;
     private AlertDialog dialogoEdicao;
     private AlertDialog dialogoQtdAplicada;
+
     private double auxValorDialogoQtd;
     private boolean cancelouDialogoEdicao;
 
@@ -313,13 +314,14 @@ public class FragmentoInsumos extends Fragment {
         });
     }
 
+
     //Abre diálogo para justificar a edição da quantidade do insumo
     //Método de entrada: um double, esse double é a quantidade aplicada na edição do insumo
     public void abreDialogoEdicaoIns(double valor) {
         abriuDialogoEdicao = true;
         auxValorDialogoQtd = valor;
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_editar_insumos, null);
+        View mView = getLayoutInflater().inflate(R.layout.dialogo_frag_insumos_edicao_insumos, null);
         valorDialogoEdicao = mView.findViewById(R.id.valor_dialogo_editar_insumos);
         Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_editar_insumos);
 

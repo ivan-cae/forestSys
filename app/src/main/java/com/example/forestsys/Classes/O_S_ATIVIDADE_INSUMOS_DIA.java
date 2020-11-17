@@ -40,7 +40,8 @@ public class O_S_ATIVIDADE_INSUMOS_DIA implements Serializable {
     private String OBSERVACAO;
     private Integer ID;
 
-    public O_S_ATIVIDADE_INSUMOS_DIA(Integer ID, Integer ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, Integer ID_INSUMO, double QTD_APLICADO, String ACAO_INATIVO, String REGISTRO_DESCARREGADO, String OBSERVACAO) {
+    public O_S_ATIVIDADE_INSUMOS_DIA(Integer ID, Integer ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, Integer ID_INSUMO,
+                                     double QTD_APLICADO, String ACAO_INATIVO, String REGISTRO_DESCARREGADO, String OBSERVACAO) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.DATA = DATA;
         this.ID_INSUMO = ID_INSUMO;

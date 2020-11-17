@@ -343,7 +343,7 @@
             app:layout_constraintEnd_toEndOf="@+id/textView64"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView67"
-            tools:listitem="@layout/item_lista_insumos" />
+            tools:listitem="@layout/item_atividade_lista_insumos" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

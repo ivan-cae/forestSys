@@ -52,7 +52,6 @@ import com.google.android.material.navigation.NavigationView;
 
 import android.widget.Toast;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -213,7 +212,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                     jaTemVerion = true;
                     AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
                             .setTitle("Aviso!")
-                            .setMessage("Já existe um cadastro de dados verion, deseja edita-lo?")
+                            .setMessage("Já existe um cadastro de dados do sistema de precisão, deseja edita-lo?")
                             .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -1025,7 +1024,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         dialogoCorrecaoAberto = true;
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_correcao_ponto, null);
+        View mView = getLayoutInflater().inflate(R.layout.dialogo_qualidade_correcao_ponto, null);
         Button botaoCorrecaoCancelar;
         mBuilder.setView(mView);
 

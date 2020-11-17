@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,12 +35,10 @@ import com.example.forestsys.Assets.BaseDeDados;
 import com.example.forestsys.Assets.DAO;
 import com.example.forestsys.Assets.Ferramentas;
 import com.example.forestsys.Classes.GEO_LOCALIZACAO;
-import com.example.forestsys.Classes.O_S_ATIVIDADES;
 import com.example.forestsys.R;
 import com.example.forestsys.Calculadora.CalculadoraMain;
 import com.example.forestsys.Classes.AVAL_PONTO_SUBSOLAGEM;
 import com.example.forestsys.Classes.CALIBRAGEM_SUBSOLAGEM;
-import com.example.forestsys.Classes.INDICADORES_SUBSOLAGEM;
 import com.example.forestsys.Classes.O_S_ATIVIDADES_DIA;
 import com.example.forestsys.Classes.O_S_ATIVIDADE_INSUMOS_DIA;
 import com.example.forestsys.Classes.Joins.Join_OS_INSUMOS;
@@ -136,6 +133,8 @@ public class ActivityAtividades extends AppCompatActivity
     private List<AVAL_PONTO_SUBSOLAGEM> listaPonto;
     private int qtdPontos;
 
+    public static boolean ncInsumo1Justificada;
+    public static boolean ncInsumo2Justificada;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,6 +152,8 @@ public class ActivityAtividades extends AppCompatActivity
         editouInsumo1 = false;
         editouInsumo2 = false;
         insumoInsere = null;
+        ncInsumo1Justificada = false;
+        ncInsumo2Justificada = false;
 
         listaJoinOsInsumosSelecionados = new ArrayList<Join_OS_INSUMOS>();
 
@@ -526,7 +527,7 @@ public class ActivityAtividades extends AppCompatActivity
     public void abreDialogoEdicaoAtividade() {
         abriuDialogoJustificativaEdicaoOs = true;
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityAtividades.this);
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_edita_os, null);
+        View mView = getLayoutInflater().inflate(R.layout.dialogo_atividade_edita_os, null);
         valorDialogoJustificativaEdicaoOs = mView.findViewById(R.id.justificativa_edicao_os);
         Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_edicao_os);
 
@@ -587,7 +588,7 @@ public class ActivityAtividades extends AppCompatActivity
     public void abreDialogoJustificativaQtdPontos() {
         abriuDialogoQtdPontos = true;
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityAtividades.this);
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_justificativa_qtd_pontos, null);
+        View mView = getLayoutInflater().inflate(R.layout.dialogo_atividade_justificativa_qtd_pontos, null);
         valorDialogoQtdPontos = mView.findViewById(R.id.justificativa_qtd_pontos);
         Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_justificativa_qtd_pontos);
 
@@ -645,7 +646,7 @@ public class ActivityAtividades extends AppCompatActivity
     public void abreDialogoJustificativaAreaRealizada() {
         abriuDialogoAreaRealizada = true;
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityAtividades.this);
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_justificativa_area_realizada, null);
+        View mView = getLayoutInflater().inflate(R.layout.dialogo_atividade_justificativa_area_realizada, null);
         valorDialogoAreaRealizada = mView.findViewById(R.id.justificativa_area_realizada);
         Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_justificativa_area_realizada);
         TextView texto = mView.findViewById(R.id.textview_dialogo_justificativa_area_realizada);

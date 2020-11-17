@@ -1163,7 +1163,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     public void caixaAlertaMaquinaImplemento() {
         AlertDialog dialog = new AlertDialog.Builder(ActivityCalibracao.this)
                 .setTitle("ERRO")
-                .setMessage("MAQUINA JÁ CALIBRADA PARA ESTE IMPLEMENTO NO TURNO ATUAL.")
+                .setMessage("Conjunto já calibrado no turno atual")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

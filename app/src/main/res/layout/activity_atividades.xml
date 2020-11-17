@@ -337,7 +337,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView119"
-            tools:listitem="@layout/item_lista_insumos" />
+            tools:listitem="@layout/item_atividade_lista_insumos" />
 
         <Button
             android:id="@+id/botao_finalizar_os"

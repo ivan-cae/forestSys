@@ -289,7 +289,7 @@ public class ClienteWeb<client> {
 
                         if (naoFazPut == false) {
                             requisicaoPUT(HOST_PORTA + "silvosatividadesdias" + "/" +
-                              String.valueOf(todasOsAtividadesDia.get(i).getID()), obj.toString());
+                                    String.valueOf(todasOsAtividadesDia.get(i).getID()), obj.toString());
                         }
                     }
                 }
@@ -353,7 +353,7 @@ public class ClienteWeb<client> {
 
                         if (naoFazPut == false) {
                             requisicaoPUT(HOST_PORTA + "silvosatividadeinsumosdias" + "/" +
-                                 String.valueOf(todasOsAtividadeInsumoDia.get(i).getID()), obj.toString());
+                                    String.valueOf(todasOsAtividadeInsumoDia.get(i).getID()), obj.toString());
                         }
                     }
                 }
@@ -370,36 +370,35 @@ public class ClienteWeb<client> {
                 for (Integer i = 0; i < todasOsAtividades.size(); i++) {
                     Integer STATUS_NUM = todasOsAtividades.get(i).getSTATUS_NUM();
 
-                    if(STATUS_NUM!=0){
-                    JSONObject obj = new JSONObject();
+                    if (STATUS_NUM != 0) {
+                        JSONObject obj = new JSONObject();
 
-                    if (STATUS_NUM == 1) {
-                        obj.put("STATUS", "A");
-                    }
-                    if (STATUS_NUM == 2) {
-                        obj.put("STATUS", "F");
-                    }
+                        if (STATUS_NUM == 1) {
+                            obj.put("STATUS", "A");
+                        }
+                        if (STATUS_NUM == 2) {
+                            obj.put("STATUS", "F");
+                        }
 
 
+                        if (todasOsAtividades.get(i).getDATA_INICIAL() == null || todasOsAtividades.get(i).getDATA_INICIAL().trim().equals("null")) {
+                            obj.put("DATA_INICIAL", JSONObject.NULL);
+                        } else {
+                            obj.put("DATA_INICIAL", todasOsAtividades.get(i).getDATA_INICIAL());
+                            obj.put("DATA_INICIAL", todasOsAtividades.get(i).getDATA_INICIAL());
+                        }
 
-                    if(todasOsAtividades.get(i).getDATA_INICIAL()==null || todasOsAtividades.get(i).getDATA_INICIAL().trim().equals("null")){
-                        obj.put("DATA_INICIAL", JSONObject.NULL);
-                    }else {
-                        obj.put("DATA_INICIAL", todasOsAtividades.get(i).getDATA_INICIAL());
-                        obj.put("DATA_INICIAL", todasOsAtividades.get(i).getDATA_INICIAL());
-                    }
+                        if (todasOsAtividades.get(i).getOBSERVACAO() == null || todasOsAtividades.get(i).getOBSERVACAO().trim().equals("null")) {
+                            obj.put("OBSERVACAO", JSONObject.NULL);
+                        } else {
+                            obj.put("OBSERVACAO", todasOsAtividades.get(i).getOBSERVACAO());
+                        }
 
-                    if(todasOsAtividades.get(i).getOBSERVACAO()==null || todasOsAtividades.get(i).getOBSERVACAO().trim().equals("null")){
-                        obj.put("OBSERVACAO", JSONObject.NULL);
-                    }else {
-                        obj.put("OBSERVACAO", todasOsAtividades.get(i).getOBSERVACAO());
-                    }
-
-                    if(todasOsAtividades.get(i).getDATA_FINAL()==null || todasOsAtividades.get(i).getDATA_FINAL().trim().equals("null")){
-                        obj.put("DATA_FINAL", JSONObject.NULL);
-                    }else {
-                        obj.put("DATA_FINAL", todasOsAtividades.get(i).getDATA_FINAL());
-                    }
+                        if (todasOsAtividades.get(i).getDATA_FINAL() == null || todasOsAtividades.get(i).getDATA_FINAL().trim().equals("null")) {
+                            obj.put("DATA_FINAL", JSONObject.NULL);
+                        } else {
+                            obj.put("DATA_FINAL", todasOsAtividades.get(i).getDATA_FINAL());
+                        }
 
 
                     /*obj.put("STATUS", JSONObject.NULL);
@@ -415,7 +414,7 @@ public class ClienteWeb<client> {
                         requisicaoPUT(HOST_PORTA + "silvosatividades" + "/" +
                                 String.valueOf(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE()), obj.toString());
 
-                }
+                    }
                 }
             } catch (Exception ex) {
                 Log.e("OS_ATIVIDADES", "Erro ao instanciar objeto para requisição PUT");
@@ -458,9 +457,9 @@ public class ClienteWeb<client> {
                     obj.put("ID_INDICADOR", listaIndSubs.get(i).getID_INDICADOR());
                     obj.put("VALOR_INDICADOR", listaIndSubs.get(i).getVALOR_INDICADOR());
 
-                    requisicaoPUT(HOST_PORTA + "silvindicadoressubsolagens"+"/"+listaIndSubs.get(i).getID_PROGRAMACAO_ATIVIDADE()+"&"+
-                                    listaIndSubs.get(i).getDATA()+"&"+listaIndSubs.get(i).getID_ATIVIDADE()+"&"+ listaIndSubs.get(i).getID_INDICADOR()
-                            ,obj.toString());
+                    requisicaoPUT(HOST_PORTA + "silvindicadoressubsolagens" + "/" + listaIndSubs.get(i).getID_PROGRAMACAO_ATIVIDADE() + "&" +
+                                    listaIndSubs.get(i).getDATA() + "&" + listaIndSubs.get(i).getID_ATIVIDADE() + "&" + listaIndSubs.get(i).getID_INDICADOR()
+                            , obj.toString());
 
                     requisicaoPOST(HOST_PORTA + "silvindicadoressubsolagens",
                             obj.toString());
@@ -495,7 +494,7 @@ public class ClienteWeb<client> {
                         obj.put("NC_TRATADA", listaPontos.get(i).getNC_TRATADA());
 
                         requisicaoPOST(HOST_PORTA +
-                        "silvindavalpontosubsolagens", obj.toString());
+                                "silvindavalpontosubsolagens", obj.toString());
                     } else {
                         obj.put("ID_PROGRAMACAO_ATIVIDADE", listaPontos.get(i).getID_PROGRAMACAO_ATIVIDADE());
                         obj.put("DATA", listaPontos.get(i).getDATA());
@@ -509,7 +508,7 @@ public class ClienteWeb<client> {
                         obj.put("NC_TRATADA", listaPontos.get(i).getNC_TRATADA());
 
                         Integer NC_TRATADA = obj.getInt("NC_TRATADA");
-                        if(NC_TRATADA==1) {
+                        if (NC_TRATADA == 1) {
                             requisicaoPUT(HOST_PORTA +
                                             "silvindavalpontosubsolagens" + "/" + listaPontos.get(i).getID_PROGRAMACAO_ATIVIDADE() + "&" +
                                             listaPontos.get(i).getDATA() + "&" + listaPontos.get(i).getPONTO() + "&" + listaPontos.get(i).getID_ATIVIDADE() +
@@ -908,18 +907,22 @@ public class ClienteWeb<client> {
                     }
                     DecimalFormat format = new DecimalFormat(".##");
 
-                    String s = format.format(AREA_REALIZADA).replace(',', '.');
+                    String s;
+                    s = format.format(AREA_REALIZADA).replace(',', '.');
                     AREA_REALIZADA = Double.parseDouble(s);
 
                     String DATA_PROGRAMADA = obj.getString("DATA_PROGRAMADA");
                     Double AREA_PROGRAMADA = obj.getDouble("AREA_PROGRAMADA");
+
+                    s = format.format(AREA_PROGRAMADA).replace(',', '.');
+                    AREA_PROGRAMADA = Double.parseDouble(s);
 
                     String STATUS = obj.getString("STATUS");
 
                     Integer STATUS_NUM = 0;
                     if (STATUS == JSONObject.NULL || STATUS == null || STATUS.trim().equals("null") || STATUS.trim().equals("")) {
                         STATUS_NUM = 0;
-                        STATUS = "Aberto";
+                        STATUS = "Não iniciado";
                     }
                     if (STATUS.trim().equals("A")) {
                         STATUS_NUM = 1;
@@ -1152,8 +1155,20 @@ public class ClienteWeb<client> {
                 Integer ID_INSUMO = obj.getInt("ID_INSUMO");
                 Integer ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
                 Integer RECOMENDACAO = obj.getInt("RECOMENDACAO");
-                double QTD_HA_RECOMENDADO = obj.getDouble("QTD_HA_RECOMENDADO");
-                double QTD_HA_APLICADO = obj.getDouble("QTD_HA_APLICADO");
+                double QTD_HA_RECOMENDADO = 0;
+                double QTD_HA_APLICADO = 0;
+                try {
+                    QTD_HA_APLICADO = obj.getDouble("QTD_HA_APLICADO");
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                try {
+                    QTD_HA_RECOMENDADO = obj.getDouble("QTD_HA_RECOMENDADO");
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
                 try {
                     dao.insert(new O_S_ATIVIDADE_INSUMOS(ID_INSUMO, ID_PROGRAMACAO_ATIVIDADE, RECOMENDACAO, QTD_HA_RECOMENDADO, QTD_HA_APLICADO));
                 } catch (SQLiteConstraintException e) {

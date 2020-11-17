@@ -16,7 +16,6 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteConstraintException;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -53,7 +52,6 @@ import java.util.Date;
 import java.util.List;
 
 import static android.view.View.GONE;
-import static com.example.forestsys.Activities.ActivityAtividades.editouInsumo1;
 import static com.example.forestsys.Activities.ActivityAtividades.editouRegistro;
 import static com.example.forestsys.Activities.ActivityAtividades.joinOsInsumos;
 import static com.example.forestsys.Activities.ActivityAtividades.listaJoinOsInsumosSelecionados;
@@ -128,10 +126,15 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     private FragmentoInsumos fragmentoInsumos;
     private FragmentoRendimento fragmentoRendimento;
 
-    private AlertDialog dialogoEdicaoRec;
-    private boolean abriuDialogoEdicao;
+    private AlertDialog dialogoEdicaoReg;
+    private boolean abriuDialogoEdicaoReg;
     public static Bundle auxSavedInstanceState;
-    private EditText valorJustificativa;
+    private EditText valorEdicaoRegJustificativa;
+
+    private AlertDialog dialogoQtdForaFaixa;
+    private boolean abriuDialogoForaFaixa;
+    private EditText valorJustificativa1;
+    private EditText valorJustificativa2;
 
     private double testeAreaRealizada;
     private boolean erro;
@@ -145,6 +148,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     private String acaoInativo = null;
     private String regDescarregado = "N";
 
+    private boolean insumosNaoConforme = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,9 +173,14 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             acaoInativo = savedInstanceState.getString("acaoInativo");
             regDescarregado = savedInstanceState.getString("regDescarregado");
 
-            abriuDialogoEdicao = savedInstanceState.getBoolean("abriuDialogoEdicao");
+            abriuDialogoEdicaoReg = savedInstanceState.getBoolean("abriuDialogoEdicaoReg");
             editouRegistro = savedInstanceState.getBoolean("editouRegistro");
-            if (abriuDialogoEdicao == true) abreDialogoEdicaoReg();
+            if (abriuDialogoEdicaoReg == true) abreDialogoEdicaoReg();
+
+            abriuDialogoForaFaixa = savedInstanceState.getBoolean("abriuDialogoForaFaixa");
+            if (abriuDialogoForaFaixa == true) abreDialogoQtdForaFaixa();
+
+            savedInstanceState.getBoolean("insumosNaoConforme");
         }
     }
 
@@ -227,6 +236,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     private static Double diferencaPercentual(Double anterior, Double atual) {
         Double calculo = (1 - (atual / anterior)) * 100;//((anterior - atual) / anterior) * 100.0
         DecimalFormat df = new DecimalFormat("###.##");
+        Log.e("Diferenca percentual", df.format(calculo).replace(',', '.'));
         return Double.valueOf(df.format(calculo).replace(',', '.'));
     }
 
@@ -236,7 +246,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     public double checaConversao(String numero) {
         double teste;
         try {
-            teste = Double.parseDouble(numero);
+            teste = Double.valueOf(numero);
         } catch (NumberFormatException | NullPointerException n) {
             teste = 0;
         }
@@ -250,7 +260,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
         ferramentas = new Ferramentas();
 
-        abriuDialogoEdicao = false;
+        abriuDialogoEdicaoReg = false;
         edicaoReg = false;
 
         if (osSelecionada.getSTATUS_NUM() != 2)
@@ -389,7 +399,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     if (erro == false && (novaArea + osSelecionada.getAREA_REALIZADA()) > osSelecionada.getAREA_PROGRAMADA()) {
                         DecimalFormat format = new DecimalFormat("###.#####");
                         Double d = (novaArea + osSelecionada.getAREA_REALIZADA()) - osSelecionada.getAREA_PROGRAMADA();
-                        String diferenca = format.format(Double.parseDouble(String.valueOf(d)));
+                        String diferenca = format.format(Double.valueOf(String.valueOf(d)));
                         diferenca.replace('.', ',');
 
                         AlertDialog dialog = new AlertDialog.Builder(ActivityRegistros.this)
@@ -410,6 +420,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                                 }).create();
                         dialog.show();
                     }
+
 
                     if ((novaArea + osSelecionada.getAREA_REALIZADA()) <= osSelecionada.getAREA_PROGRAMADA()) {
                         if (erro == false && erroInsumos == false && erroGeral == false) {
@@ -521,57 +532,230 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 salva();
             }
         };
-        t.run();
+        if (editouRegistro == false) {
+            if (diferencaPercentual(listaJoinOsInsumosSelecionados.get(0).getQTD_HA_RECOMENDADO(),
+                    listaJoinOsInsumosSelecionados.get(0).getQTD_APLICADO() *
+                            Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) > 5.0000 ||
+                    diferencaPercentual(listaJoinOsInsumosSelecionados.get(0).getQTD_HA_RECOMENDADO(),
+                            listaJoinOsInsumosSelecionados.get(0).getQTD_APLICADO() *
+                                    Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) < -5.0000
+
+                    || diferencaPercentual(listaJoinOsInsumosSelecionados.get(1).getQTD_HA_RECOMENDADO(),
+                    listaJoinOsInsumosSelecionados.get(1).getQTD_APLICADO() *
+                            Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) > 5.0000 ||
+                    diferencaPercentual(listaJoinOsInsumosSelecionados.get(1).getQTD_HA_RECOMENDADO(),
+                            listaJoinOsInsumosSelecionados.get(1).getQTD_APLICADO() *
+                                    Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) < -5.0000) {
+                abreDialogoQtdForaFaixa();
+            } else {
+                t.run();
+            }
+        } else {
+            t.run();
+        }
     }
 
-    //Abre o diálogo para edição dos registros
-    public void abreDialogoEdicaoReg() {
-        abriuDialogoEdicao = true;
+
+    //Abre diálogo para justificar a edição da quantidade do insumo
+    //Método de entrada: um double, esse double é a quantidade aplicada na edição do insumo
+    public void abreDialogoQtdForaFaixa() {
+        abriuDialogoForaFaixa = true;
+
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_editar_registro, null);
-        valorJustificativa = mView.findViewById(R.id.valor_dialogo_editar_registro);
-        Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_editar_registro);
+        View mView = getLayoutInflater().inflate(R.layout.dialogo_registros_insumo_fora_faixa, null);
+        valorJustificativa1 = mView.findViewById(R.id.dialogo_frag_insumos_fora_faixa1);
+        valorJustificativa2 = mView.findViewById(R.id.dialogo_frag_insumos_fora_faixa2);
+        TextView titulo1 = mView.findViewById(R.id.dialogo_registros_insumos_titulo1);
+        TextView titulo2 = mView.findViewById(R.id.dialogo_registros_insumos_titulo2);
+        Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_insumo_fora_faixa);
+
+        if (diferencaPercentual(listaJoinOsInsumosSelecionados.get(0).getQTD_HA_RECOMENDADO(),
+                listaJoinOsInsumosSelecionados.get(0).getQTD_APLICADO() *
+                        Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) > 5.0000 ||
+                diferencaPercentual(listaJoinOsInsumosSelecionados.get(0).getQTD_HA_RECOMENDADO(),
+                        listaJoinOsInsumosSelecionados.get(0).getQTD_APLICADO() *
+                                Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) < -5.0000) {
+            titulo1.setVisibility(View.VISIBLE);
+            titulo1.setText("Digite a justificativa para o insumo " + listaJoinOsInsumosSelecionados.get(0).getDESCRICAO());
+            valorJustificativa1.setVisibility(View.VISIBLE);
+        }
+
+        if (diferencaPercentual(listaJoinOsInsumosSelecionados.get(1).getQTD_HA_RECOMENDADO(),
+                listaJoinOsInsumosSelecionados.get(1).getQTD_APLICADO() *
+                        Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) > 5.0000 ||
+                diferencaPercentual(listaJoinOsInsumosSelecionados.get(1).getQTD_HA_RECOMENDADO(),
+                        listaJoinOsInsumosSelecionados.get(1).getQTD_APLICADO() *
+                                Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) < -5.0000) {
+            titulo2.setVisibility(View.VISIBLE);
+            titulo2.setText("Digite a justificativa para o insumo " + listaJoinOsInsumosSelecionados.get(1).getDESCRICAO());
+            valorJustificativa2.setVisibility(View.VISIBLE);
+        }
+
 
         if (auxSavedInstanceState != null) {
-            if (auxSavedInstanceState.getString("valorJustificativa") != null) {
-                if (auxSavedInstanceState.getString("valorJustificativa").length() > 0) {
-                    valorJustificativa.setText(auxSavedInstanceState.getString("valorJustificativa"));
+            if (auxSavedInstanceState.getString("valorJustificativa1") != null) {
+                if (auxSavedInstanceState.getString("valorJustificativa1").length() > 0) {
+                    valorJustificativa1.setText(auxSavedInstanceState.getString("valorJustificativa1"));
+                }
+            }
+
+            if (auxSavedInstanceState.getString("valorJustificativa2") != null) {
+                if (auxSavedInstanceState.getString("valorJustificativa2").length() > 0) {
+                    valorJustificativa2.setText(auxSavedInstanceState.getString("valorJustificativa2"));
                 }
             }
         }
 
+
         mBuilder.setView(mView);
-        dialogoEdicaoRec = mBuilder.create();
-        dialogoEdicaoRec.setCanceledOnTouchOutside(false);
-        dialogoEdicaoRec.show();
+        dialogoQtdForaFaixa = mBuilder.create();
+        dialogoQtdForaFaixa.setCanceledOnTouchOutside(false);
+        dialogoQtdForaFaixa.show();
 
         botaoOk.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
-                String str = valorJustificativa.getText().toString();
+                boolean temErro = false;
+                String obs1 = "";
+                String obs2 = "";
+                if(obsInsumo1.length()>0) {
+                    obs1 = obsInsumo1.getText().toString();
+                }
+                if(obsInsumo2.length()>0) {
+                    obs2 = obsInsumo2.getText().toString();
+                }
 
-                if (str.trim().length() < 3)
-                    valorJustificativa.setError("Justificativa deve ter mais de 2 caracteres.");
-                else {
-                    String pegaObs = "";
-                    if (obs.length() > 0) pegaObs = obs + "\n";
-                    obs = pegaObs.concat("Editado em " + ferramentas.dataAtual() + " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorJustificativa.getText().toString()));
-                    chamaSalvar();
-                    dialogoEdicaoRec.dismiss();
+                boolean naoConformeIns1 = false;
+                boolean naoConformeIns2 = false;
+
+                if (diferencaPercentual(listaJoinOsInsumosSelecionados.get(0).getQTD_HA_RECOMENDADO(),
+                        listaJoinOsInsumosSelecionados.get(0).getQTD_APLICADO() *
+                                Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) > 5.0000 ||
+                        diferencaPercentual(listaJoinOsInsumosSelecionados.get(0).getQTD_HA_RECOMENDADO(),
+                                listaJoinOsInsumosSelecionados.get(0).getQTD_APLICADO() *
+                                        Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) < -5.0000) {
+                    String str1 = valorJustificativa1.getText().toString();
+                    if (str1.trim().length() < 3) {
+                        valorJustificativa1.setError("Justificativa deve ter mais de 2 caracteres.");
+                        temErro = true;
+                    } else {
+                        String pegaObs = "";
+                        if (obs1 != null) {
+                            if (obs1.length() > 0) pegaObs = obs1 + "\n";
+                        }
+                            obs1 = pegaObs.concat("Aplicada quantidade fora da faixa em "+ ferramentas.dataAtual() +
+                                " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorJustificativa1.getText().toString()));
+
+                        naoConformeIns1 = true;
+                    }
+                }
+
+                if (diferencaPercentual(listaJoinOsInsumosSelecionados.get(1).getQTD_HA_RECOMENDADO(),
+                        listaJoinOsInsumosSelecionados.get(1).getQTD_APLICADO() *
+                                Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) > 5.0000 ||
+                        diferencaPercentual(listaJoinOsInsumosSelecionados.get(1).getQTD_HA_RECOMENDADO(),
+                                listaJoinOsInsumosSelecionados.get(1).getQTD_APLICADO() *
+                                        Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) < -5.0000) {
+                    String str2 = valorJustificativa2.getText().toString();
+                    if (str2.trim().length() < 3) {
+                        valorJustificativa2.setError("Justificativa deve ter mais de 2 caracteres.");
+                        temErro = true;
+                    } else {
+                        String pegaObs = "";
+                        if (obs2 != null){
+                            if (obs2.length() > 0) pegaObs = obs2 + "\n";
+                        }
+                        obs2 = pegaObs.concat("Aplicada quantidade fora da faixa em "+ ferramentas.dataAtual() +
+                                " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorJustificativa2.getText().toString()));
+                        naoConformeIns2 = true;
+                    }
+                }
+
+                if (temErro == false) {
+                    if (naoConformeIns1 == true) {
+                        listaJoinOsInsumosSelecionados.get(0).setOBSERVACAO(obs1);
+                        insumosNaoConforme = true;
+                    }
+
+                    if (naoConformeIns2 == true) {
+                        listaJoinOsInsumosSelecionados.get(1).setOBSERVACAO(obs2);
+                        insumosNaoConforme = true;
+                    }
+
+                    salva();
+                    dialogoQtdForaFaixa.dismiss();
                 }
             }
         });
 
-        dialogoEdicaoRec.setOnDismissListener(new DialogInterface.OnDismissListener() {
+        dialogoQtdForaFaixa.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 auxSavedInstanceState = null;
-                abriuDialogoEdicao = false;
+                abriuDialogoForaFaixa = false;
             }
         });
 
-        dialogoEdicaoRec.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        dialogoQtdForaFaixa.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                Toast.makeText(ActivityRegistros.this, "Operação cancelada pelo usuário", Toast.LENGTH_SHORT).show();
+                auxSavedInstanceState = null;
+                abriuDialogoForaFaixa = false;
+            }
+        });
+    }
+
+
+    //Abre o diálogo para edição dos registros
+    public void abreDialogoEdicaoReg() {
+        abriuDialogoEdicaoReg = true;
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+        View mView = getLayoutInflater().inflate(R.layout.dialogo_registros_editar_registro, null);
+        valorEdicaoRegJustificativa = mView.findViewById(R.id.valor_dialogo_editar_registro);
+        Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_editar_registro);
+
+        if (auxSavedInstanceState != null) {
+            if (auxSavedInstanceState.getString("valorJustificativa") != null) {
+                if (auxSavedInstanceState.getString("valorJustificativa").length() > 0) {
+                    valorEdicaoRegJustificativa.setText(auxSavedInstanceState.getString("valorJustificativa"));
+                }
+            }
+        }
+
+        mBuilder.setView(mView);
+        dialogoEdicaoReg = mBuilder.create();
+        dialogoEdicaoReg.setCanceledOnTouchOutside(false);
+        dialogoEdicaoReg.show();
+
+        botaoOk.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View view) {
+                String str = valorEdicaoRegJustificativa.getText().toString();
+
+                if (str.trim().length() < 3)
+                    valorEdicaoRegJustificativa.setError("Justificativa deve ter mais de 2 caracteres.");
+                else {
+                    String pegaObs = "";
+                    if (obs.length() > 0) pegaObs = obs + "\n";
+                    obs = pegaObs.concat("Editado em " + ferramentas.dataAtual() + " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorEdicaoRegJustificativa.getText().toString()));
+                    chamaSalvar();
+                    dialogoEdicaoReg.dismiss();
+                }
+            }
+        });
+
+        dialogoEdicaoReg.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                auxSavedInstanceState = null;
+                abriuDialogoEdicaoReg = false;
+            }
+        });
+
+        dialogoEdicaoReg.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 Toast.makeText(ActivityRegistros.this, "Operação cancelada pelo usuário", Toast.LENGTH_SHORT).show();
@@ -886,11 +1070,11 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
         if (hme != null) {
             if (hme.contains(",")) hme = hme.replace(',', '.');
-        }else hme = "0";
+        } else hme = "0";
 
         if (hoe != null) {
             if (hoe.contains(",")) hoe = hoe.replace(',', '.');
-        }else hoe = "0";
+        } else hoe = "0";
 
         oSAtividadesDiaAtual.setAREA_REALIZADA(area.replace(',', '.'));
         oSAtividadesDiaAtual.setHH(hh.replace(',', '.'));
@@ -913,7 +1097,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         dao.insert(oSAtividadesDiaAtual);
 
 
-        if (editouRegistro == false) {
+        if (editouRegistro == false && insumosNaoConforme == false) {
             listaJoinOsInsumosSelecionados.get(0).setOBSERVACAO(obsInsumo1.getText().toString());
             listaJoinOsInsumosSelecionados.get(1).setOBSERVACAO(obsInsumo2.getText().toString());
         }
@@ -943,10 +1127,12 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     persisteInsumosDia.setACAO_INATIVO("EDICAO");
                 }
 
+                if(persisteInsumosDia.getOBSERVACAO() != null) {
+                    Log.e("Obs " + String.valueOf(i), persisteInsumosDia.getOBSERVACAO());
+                }
 
                 dao.apagaOsAtividadeInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
                         dataAntesDoEdit, persisteInsumosDia.getID_INSUMO());
-
 
                 dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(persisteInsumosDia.getID(), osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
                         dataDepoisDoEdit,
@@ -955,7 +1141,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
                 DecimalFormat format = new DecimalFormat(".##");
                 BigDecimal qtdHaAplicado;
-                somaAreaRealizada = dao.selecionaOs(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()).getAREA_REALIZADA();
+                somaAreaRealizada = dao.somaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
                 somaQtdApl = dao.qtdAplicadaTodosInsumos(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), persisteInsumosDia.getID_INSUMO());
                 String s = format.format(somaQtdApl).replace(',', '.');
@@ -963,7 +1149,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 // Log.e("Valor somaAreaRealizada", String.valueOf(somaAreaRealizada));
 
                 try {
-                    somaQtdApl = Double.parseDouble(s);
+                    somaQtdApl = Double.valueOf(s);
                     // Log.e("Valor somaQtdApl", s);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -971,13 +1157,19 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     somaQtdApl = 1;
                 }
 
-                qtdHaAplicado = new BigDecimal(somaQtdApl / somaAreaRealizada);
+
+                Log.e("soma area | soma qtdApl", String.valueOf(somaAreaRealizada)+" | "+String.valueOf(somaQtdApl));
+
+                String divisao = String.valueOf((long)somaQtdApl / (long)somaAreaRealizada);
+                Log.e("Valor divisao", divisao);
+
+                qtdHaAplicado = new BigDecimal(divisao).setScale(2, BigDecimal.ROUND_UP);
 
                 s = new DecimalFormat(".##").format(qtdHaAplicado).replace(',', '.');
 
                 double converteQtdHaApl;
                 try {
-                    converteQtdHaApl = Double.parseDouble(s);
+                    converteQtdHaApl = Double.valueOf(s);
                 } catch (Exception e) {
                     e.printStackTrace();
                     converteQtdHaApl = 1;
@@ -986,7 +1178,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
                 editaAtividadeInsumos.setQTD_HA_APLICADO(converteQtdHaApl);
 
-                Log.e("QTD_HA_APLICADO Total para o insumo: " + persisteInsumosDia.getDESCRICAO() + " ->",
+                /*Log.e("QTD_HA_APLICADO Total para o insumo: " + persisteInsumosDia.getDESCRICAO() + " ->",
                         String.valueOf(editaAtividadeInsumos.getQTD_HA_APLICADO()));
 
                 //Log.e("Qtd Apl "+persisteInsumosDia.getDESCRICAO(), String.valueOf(persisteInsumosDia.getQTD_APLICADO()));
@@ -995,7 +1187,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
                 Log.e("idprog, Data, idIns", osSelecionada.getID_PROGRAMACAO_ATIVIDADE() + " " +
                         dataDepoisDoEdit + " " + persisteInsumosDia.getID_INSUMO());
-
+*/
                 dao.update(editaAtividadeInsumos);
             }
         } catch (Exception ex) {
@@ -1207,7 +1399,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         }
 
         fragmentoInsumos.onBackPressed();
-        if (abriuDialogoEdicao) dialogoEdicaoRec.cancel();
+        if (abriuDialogoEdicaoReg) dialogoEdicaoReg.cancel();
     }
 
     @Override
@@ -1221,19 +1413,43 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         outState.putInt("idAtividadeDia", idAtividadeDia);
         outState.putString("regDescarregado", regDescarregado);
 
-        outState.putBoolean("abriuDialogoEdicao", abriuDialogoEdicao);
+        outState.putBoolean("abriuDialogoEdicaoReg", abriuDialogoEdicaoReg);
+        outState.putBoolean("abriuDialogoForaFaixa", abriuDialogoForaFaixa);
+
         outState.putBoolean("editouRegistro", editouRegistro);
 
+        if (abriuDialogoEdicaoReg == true) {
+            if (valorEdicaoRegJustificativa != null) {
+                if (valorEdicaoRegJustificativa.getText().toString().length() > 0) {
+                    outState.putString("valorEdicaoRegJustificativa", valorEdicaoRegJustificativa.getText().toString());
+                }
+            }
 
-        if (abriuDialogoEdicao == true) {
-            if (valorJustificativa != null) {
-                if (valorJustificativa.getText().toString().length() > 0) {
-                    outState.putString("valorJustificativa", valorJustificativa.getText().toString());
+        }
+
+        if (abriuDialogoForaFaixa == true) {
+            if (valorJustificativa1 != null) {
+                if (valorJustificativa1.getText().toString().length() > 0) {
+                    outState.putString("valorJustificativa1", valorJustificativa1.getText().toString());
+                }
+            }
+
+            if (valorJustificativa2 != null) {
+                if (valorJustificativa2.getText().toString().length() > 0) {
+                    outState.putString("valorJustificativa2", valorJustificativa2.getText().toString());
                 }
             }
         }
 
+        outState.putBoolean("insumosNaoConforme", insumosNaoConforme);
 
-        if (abriuDialogoEdicao == true) dialogoEdicaoRec.dismiss();
+        if (abriuDialogoEdicaoReg == true) {
+            if (dialogoEdicaoReg != null && dialogoEdicaoReg.isShowing())
+                dialogoEdicaoReg.dismiss();
+        }
+        if (abriuDialogoForaFaixa == true) {
+            if (dialogoQtdForaFaixa != null && dialogoQtdForaFaixa.isShowing())
+                dialogoQtdForaFaixa.dismiss();
+        }
     }
 }

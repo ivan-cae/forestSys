@@ -356,7 +356,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                             dialogoProgresso.dismiss();
                         }
                         String s = "Sincronizado com " + HOST_PORTA;
-                        if(contadorDeErros>0) s = "Houveram erros na sincronização, favor comunicar ao responsável.";
+                        //if(contadorDeErros>0) s = "Houveram erros na sincronização, favor comunicar ao responsável.";
                         Toast.makeText(ActivityMain.this,s , Toast.LENGTH_LONG).show();
                         Intent it = new Intent(ActivityMain.this, ActivityMain.class);
                         startActivity(it);

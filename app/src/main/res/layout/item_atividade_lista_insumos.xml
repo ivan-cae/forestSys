@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="30dp"
+    android:layout_height="28dp"
     android:background="#FFFFFF">
 
         <TextView
             android:id="@+id/item_insumos_descricao"
             android:layout_width="80dp"
-            android:layout_height="20dp"
+            android:layout_height="18dp"
             android:layout_marginStart="8dp"
             android:textAlignment="center"
             android:textSize="12sp"
@@ -20,7 +20,7 @@
         <TextView
             android:id="@+id/item_insumos_qtd_prog"
             android:layout_width="90dp"
-            android:layout_height="20dp"
+            android:layout_height="18dp"
             android:textAlignment="center"
             android:textSize="12sp"
             android:textStyle="normal"
@@ -30,7 +30,7 @@
         <TextView
             android:id="@+id/item_insumos_rec"
             android:layout_width="105dp"
-            android:layout_height="20dp"
+            android:layout_height="18dp"
             android:textAlignment="center"
             android:textSize="12sp"
             android:textStyle="normal"
@@ -40,7 +40,7 @@
         <TextView
             android:id="@+id/item_insumos_qtd_apl"
             android:layout_width="115dp"
-            android:layout_height="20dp"
+            android:layout_height="18dp"
             android:textAlignment="center"
             android:textSize="12sp"
             android:textStyle="normal"
@@ -50,7 +50,7 @@
         <TextView
             android:id="@+id/item_insumos_qtd_rec"
             android:layout_width="195dp"
-            android:layout_height="20dp"
+            android:layout_height="18dp"
             android:textAlignment="center"
             android:textSize="12sp"
             android:textStyle="normal"

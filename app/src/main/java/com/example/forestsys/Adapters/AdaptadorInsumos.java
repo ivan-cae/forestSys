@@ -32,7 +32,7 @@ public class AdaptadorInsumos extends RecyclerView.Adapter<AdaptadorInsumos.Insu
         @Override
         public AdaptadorInsumos.InsumosHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_lista_insumos, parent, false);
+                    .inflate(R.layout.item_atividade_lista_insumos, parent, false);
 
             return new AdaptadorInsumos.InsumosHolder(itemView);
         }

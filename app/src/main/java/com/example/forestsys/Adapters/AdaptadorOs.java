@@ -75,6 +75,7 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
 
         if (ordem.getPRIORIDADE() == 2) prio = "Normal";
         if (ordem.getPRIORIDADE() == 3) prio = "Alta";
+        if (ordem.getPRIORIDADE() == 4) prio = "Nenhuma";
         holder.prioridade.setText(prio);
     }
 
