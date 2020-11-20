@@ -54,6 +54,7 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 
 import static com.example.forestsys.Activities.ActivityInicializacao.HOST_PORTA;
@@ -121,6 +122,15 @@ public class ClienteWeb<client> {
         try (okhttp3.Response response = client.newCall(request).execute()) {
             return response.body().string();
         }
+    }
+
+    private static String ignoraHoras(String data){
+        if(data == null || data.length()==0) return null;
+
+        if(data.length() == 10) return data;
+
+        String s = data.substring(0, 10);
+        return s;
     }
 
     @SuppressLint("LongLogTag")
@@ -193,7 +203,7 @@ public class ClienteWeb<client> {
                     JSONObject obj = new JSONObject();
 
                     obj.put("ID_PROGRAMACAO_ATIVIDADE", todasCalibragens.get(i).getID_PROGRAMACAO_ATIVIDADE());
-                    obj.put("DATA", todasCalibragens.get(i).getDATA());
+                    obj.put("DATA", todasCalibragens.get(i).getDATA() + " 12:00:00");
                     obj.put("TURNO", todasCalibragens.get(i).getTURNO());
                     obj.put("ID_MAQUINA_IMPLEMENTO", todasCalibragens.get(i).getID_MAQUINA_IMPLEMENTO());
                     obj.put("ID_OPERADOR", todasCalibragens.get(i).getID_OPERADOR());
@@ -202,8 +212,9 @@ public class ClienteWeb<client> {
                     obj.put("P2_MEDIA", todasCalibragens.get(i).getP2_MEDIA());
                     obj.put("P2_DESVIO", todasCalibragens.get(i).getP2_DESVIO());
 
-                    requisicaoPOST(HOST_PORTA + "silvcalibragemsubsolagens", obj.toString());
-
+                    if(todasCalibragens.get(i).getUPDATED_AT()==null) {
+                        requisicaoPOST(HOST_PORTA + "silvcalibragemsubsolagens", obj.toString());
+                    }
                 }
             } catch (Exception ex) {
                 Log.e("CALIBRAGEM_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST");
@@ -218,7 +229,7 @@ public class ClienteWeb<client> {
                     JSONObject obj = new JSONObject();
                     if (todasOsAtividadesDia.get(i).getID() == null) {
                         obj.put("ID_PROGRAMACAO_ATIVIDADE", todasOsAtividadesDia.get(i).getID_PROGRAMACAO_ATIVIDADE());
-                        obj.put("DATA", todasOsAtividadesDia.get(i).getDATA());
+                        obj.put("DATA", todasOsAtividadesDia.get(i).getDATA() + " 12:00:00");
                         obj.put("AREA_REALIZADA", todasOsAtividadesDia.get(i).getAREA_REALIZADA());
                         obj.put("HH", todasOsAtividadesDia.get(i).getHH());
                         obj.put("HM", todasOsAtividadesDia.get(i).getHM());
@@ -265,7 +276,7 @@ public class ClienteWeb<client> {
                         naoFazPut = false;
                         obj.put("ID", todasOsAtividadesDia.get(i).getID());
                         obj.put("ID_PROGRAMACAO_ATIVIDADE", todasOsAtividadesDia.get(i).getID_PROGRAMACAO_ATIVIDADE());
-                        obj.put("DATA", todasOsAtividadesDia.get(i).getDATA());
+                        obj.put("DATA", todasOsAtividadesDia.get(i).getDATA() + " 12:00:00");
                         obj.put("AREA_REALIZADA", todasOsAtividadesDia.get(i).getAREA_REALIZADA());
                         obj.put("HH", todasOsAtividadesDia.get(i).getHH());
                         obj.put("HM", todasOsAtividadesDia.get(i).getHM());
@@ -309,7 +320,7 @@ public class ClienteWeb<client> {
 
                     if (todasOsAtividadeInsumoDia.get(i).getID() == null) {
                         obj.put("ID_PROGRAMACAO_ATIVIDADE", todasOsAtividadeInsumoDia.get(i).getID_PROGRAMACAO_ATIVIDADE());
-                        obj.put("DATA", todasOsAtividadeInsumoDia.get(i).getDATA());
+                        obj.put("DATA", todasOsAtividadeInsumoDia.get(i).getDATA() + " 12:00:00");
                         obj.put("ID_INSUMO", todasOsAtividadeInsumoDia.get(i).getID_INSUMO());
                         obj.put("QTD_APLICADO", todasOsAtividadeInsumoDia.get(i).getQTD_APLICADO());
                         obj.put("REGISTRO_DESCARREGADO", todasOsAtividadeInsumoDia.get(i).getREGISTRO_DESCARREGADO());
@@ -333,7 +344,7 @@ public class ClienteWeb<client> {
                     } else {
                         naoFazPut = false;
                         obj.put("ID_PROGRAMACAO_ATIVIDADE", todasOsAtividadeInsumoDia.get(i).getID_PROGRAMACAO_ATIVIDADE());
-                        obj.put("DATA", todasOsAtividadeInsumoDia.get(i).getDATA());
+                        obj.put("DATA", todasOsAtividadeInsumoDia.get(i).getDATA() + " 12:00:00");
                         obj.put("ID_INSUMO", todasOsAtividadeInsumoDia.get(i).getID_INSUMO());
                         obj.put("QTD_APLICADO", todasOsAtividadeInsumoDia.get(i).getQTD_APLICADO());
                         obj.put("REGISTRO_DESCARREGADO", todasOsAtividadeInsumoDia.get(i).getREGISTRO_DESCARREGADO());
@@ -384,8 +395,7 @@ public class ClienteWeb<client> {
                         if (todasOsAtividades.get(i).getDATA_INICIAL() == null || todasOsAtividades.get(i).getDATA_INICIAL().trim().equals("null")) {
                             obj.put("DATA_INICIAL", JSONObject.NULL);
                         } else {
-                            obj.put("DATA_INICIAL", todasOsAtividades.get(i).getDATA_INICIAL());
-                            obj.put("DATA_INICIAL", todasOsAtividades.get(i).getDATA_INICIAL());
+                            obj.put("DATA_INICIAL", todasOsAtividades.get(i).getDATA_INICIAL() + " 12:00:00");
                         }
 
                         if (todasOsAtividades.get(i).getOBSERVACAO() == null || todasOsAtividades.get(i).getOBSERVACAO().trim().equals("null")) {
@@ -397,19 +407,11 @@ public class ClienteWeb<client> {
                         if (todasOsAtividades.get(i).getDATA_FINAL() == null || todasOsAtividades.get(i).getDATA_FINAL().trim().equals("null")) {
                             obj.put("DATA_FINAL", JSONObject.NULL);
                         } else {
-                            obj.put("DATA_FINAL", todasOsAtividades.get(i).getDATA_FINAL());
+                            obj.put("DATA_FINAL", todasOsAtividades.get(i).getDATA_FINAL() + " 12:00:00");
                         }
 
+                        obj.put("AREA_REALIZADA", todasOsAtividades.get(i).getAREA_REALIZADA());
 
-                    /*obj.put("STATUS", JSONObject.NULL);
-                    obj.put("DATA_INICIAL", JSONObject.NULL);
-                    obj.put("OBSERVACAO", JSONObject.NULL);
-                    obj.put("DATA_FINAL", JSONObject.NULL);
-                    obj.put("AREA_REALIZADA", todasOsAtividades.get(i).getAREA_REALIZADA());
-
-                    requisicaoPUT(HOST_PORTA + "silvosatividades" + "/" +
-                            String.valueOf(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE()), obj.toString());
-*/
 
                         requisicaoPUT(HOST_PORTA + "silvosatividades" + "/" +
                                 String.valueOf(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE()), obj.toString());
@@ -452,7 +454,7 @@ public class ClienteWeb<client> {
                     JSONObject obj = new JSONObject();
 
                     obj.put("ID_PROGRAMACAO_ATIVIDADE", listaIndSubs.get(i).getID_PROGRAMACAO_ATIVIDADE());
-                    obj.put("DATA", listaIndSubs.get(i).getDATA());
+                    obj.put("DATA", listaIndSubs.get(i).getDATA() + " 12:00:00");
                     obj.put("ID_ATIVIDADE", listaIndSubs.get(i).getID_ATIVIDADE());
                     obj.put("ID_INDICADOR", listaIndSubs.get(i).getID_INDICADOR());
                     obj.put("VALOR_INDICADOR", listaIndSubs.get(i).getVALOR_INDICADOR());
@@ -483,7 +485,7 @@ public class ClienteWeb<client> {
 
                     if (listaPontos.get(i).getUPDATED_AT() == null) {
                         obj.put("ID_PROGRAMACAO_ATIVIDADE", listaPontos.get(i).getID_PROGRAMACAO_ATIVIDADE());
-                        obj.put("DATA", listaPontos.get(i).getDATA());
+                        obj.put("DATA", listaPontos.get(i).getDATA() + " 12:00:00");
                         obj.put("ID_ATIVIDADE", listaPontos.get(i).getID_ATIVIDADE());
                         obj.put("ID_INDICADOR", listaPontos.get(i).getID_INDICADOR());
                         obj.put("VALOR_INDICADOR", listaPontos.get(i).getID_INDICADOR());
@@ -497,7 +499,7 @@ public class ClienteWeb<client> {
                                 "silvindavalpontosubsolagens", obj.toString());
                     } else {
                         obj.put("ID_PROGRAMACAO_ATIVIDADE", listaPontos.get(i).getID_PROGRAMACAO_ATIVIDADE());
-                        obj.put("DATA", listaPontos.get(i).getDATA());
+                        obj.put("DATA", listaPontos.get(i).getDATA() + " 12:00:00");
                         obj.put("ID_ATIVIDADE", listaPontos.get(i).getID_ATIVIDADE());
                         obj.put("ID_INDICADOR", listaPontos.get(i).getID_INDICADOR());
                         obj.put("VALOR_INDICADOR", listaPontos.get(i).getID_INDICADOR());
@@ -949,6 +951,10 @@ public class ClienteWeb<client> {
                         DATA_FINAL = null;
                     }
 
+                    DATA_FINAL = ignoraHoras(DATA_FINAL);
+                    DATA_INICIAL = ignoraHoras(DATA_INICIAL);
+                    DATA_PROGRAMADA = ignoraHoras(DATA_PROGRAMADA);
+
                     try {
                         dao.insert(new O_S_ATIVIDADES(ID_PROGRAMACAO_ATIVIDADE, ID_REGIONAL, ID_SETOR, TALHAO, CICLO,
                                 ID_MANEJO, ID_ATIVIDADE, ID_RESPONSAVEL, DATA_PROGRAMADA, AREA_PROGRAMADA, PRIORIDADE,
@@ -987,6 +993,7 @@ public class ClienteWeb<client> {
                 String REGISTRO_DESCARREGADO = obj.getString("REGISTRO_DESCARREGADO");
                 String ACAO_INATIVO = obj.getString("ACAO_INATIVO");
 
+
                 if (OBSERVACAO == null || OBSERVACAO.trim().equals("null")) {
                     OBSERVACAO = null;
                 }
@@ -994,6 +1001,8 @@ public class ClienteWeb<client> {
                 if (ACAO_INATIVO == null || ACAO_INATIVO.trim().equals("null")) {
                     ACAO_INATIVO = null;
                 }
+
+                DATA = ignoraHoras(DATA);
 
                 O_S_ATIVIDADES_DIA oSAtividadesDia = new O_S_ATIVIDADES_DIA();
                 oSAtividadesDia.setID_PROGRAMACAO_ATIVIDADE(ID_PROGRAMACAO_ATIVIDADE);
@@ -1132,11 +1141,15 @@ public class ClienteWeb<client> {
                 Double P1_DESVIO = obj.getDouble("P1_DESVIO");
                 Double P2_MEDIA = obj.getDouble("P2_MEDIA");
                 Double P2_DESVIO = obj.getDouble("P2_DESVIO");
+                String UPDATED_AT = obj.getString("UPDATED_AT");
 
+                DATA = ignoraHoras(DATA);
 
+                CALIBRAGEM_SUBSOLAGEM insereCalib = new CALIBRAGEM_SUBSOLAGEM(ID_PROGRAMACAO_ATIVIDADE, DATA, TURNO,
+                        ID_MAQUINA_IMPLEMENTO, ID_OPERADOR, P1_MEDIA, P1_DESVIO, P2_MEDIA, P2_DESVIO);
+                insereCalib.setUPDATED_AT(UPDATED_AT);
                 try {
-                    dao.insert(new CALIBRAGEM_SUBSOLAGEM(ID_PROGRAMACAO_ATIVIDADE, DATA, TURNO,
-                            ID_MAQUINA_IMPLEMENTO, ID_OPERADOR, P1_MEDIA, P1_DESVIO, P2_MEDIA, P2_DESVIO));
+                    dao.insert(insereCalib);
                 } catch (SQLiteConstraintException e) {
                     e.printStackTrace();
                 }
@@ -1252,6 +1265,8 @@ public class ClienteWeb<client> {
                     ACAO_INATIVO = null;
                 }
 
+                DATA = ignoraHoras(DATA);
+
                 try {
                     dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(ID, ID_PROGRAMACAO_ATIVIDADE, DATA,
                             ID_INSUMO, QTD_APLICADO, ACAO_INATIVO, REGISTRO_DESCARREGADO, OBSERVACAO));
@@ -1276,6 +1291,8 @@ public class ClienteWeb<client> {
                 Integer ID_ATIVIDADE = obj.getInt("ID_ATIVIDADE");
                 Integer ID_INDICADOR = obj.getInt("ID_INDICADOR");
                 double VALOR_INDICADOR = obj.getDouble("VALOR_INDICADOR");
+
+                DATA = ignoraHoras(DATA);
 
                 try {
                     dao.insert(new INDICADORES_SUBSOLAGEM(ID_PROGRAMACAO_ATIVIDADE, ID_ATIVIDADE, ID_INDICADOR, DATA, VALOR_INDICADOR));
@@ -1322,6 +1339,8 @@ public class ClienteWeb<client> {
                 }
 
                 Integer NC_TRATADA = obj.getInt("NC_TRATADA");
+
+                DATA = ignoraHoras(DATA);
 
                 AVAL_PONTO_SUBSOLAGEM pontoSubsolagem = new AVAL_PONTO_SUBSOLAGEM(ID_PROGRAMACAO_ATIVIDADE, DATA, PONTO, ID_ATIVIDADE, ID_INDICADOR, VALOR_INDICADOR, COORDENADA_X,
                         COORDENADA_Y, NC_TRATADA);

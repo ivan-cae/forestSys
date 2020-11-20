@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.itkacher.okhttpprofiler:okhttpprofiler:1.0.7@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f8fe47e4e4ae29cdd3b89733e8158e7a/jetified-okhttpprofiler-1.0.7/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f8fe47e4e4ae29cdd3b89733e8158e7a/jetified-okhttpprofiler-1.0.7/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f8fe47e4e4ae29cdd3b89733e8158e7a/jetified-okhttpprofiler-1.0.7/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8dcce14ce83607b7dbacc6fce91f4201/jetified-okhttpprofiler-1.0.7/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8dcce14ce83607b7dbacc6fce91f4201/jetified-okhttpprofiler-1.0.7/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8dcce14ce83607b7dbacc6fce91f4201/jetified-okhttpprofiler-1.0.7/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

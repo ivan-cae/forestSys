@@ -52,6 +52,7 @@ public class CALIBRAGEM_SUBSOLAGEM implements Serializable {
     private Double P1_DESVIO;
     private Double P2_MEDIA;
     private Double P2_DESVIO;
+    private String UPDATED_AT;
 
     public CALIBRAGEM_SUBSOLAGEM(Integer ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, @NonNull String TURNO,
                                  Integer ID_MAQUINA_IMPLEMENTO, Integer ID_OPERADOR, Double P1_MEDIA, Double P1_DESVIO,
@@ -140,5 +141,13 @@ public class CALIBRAGEM_SUBSOLAGEM implements Serializable {
 
     public void setP2_DESVIO(Double p2_DESVIO) {
         P2_DESVIO = p2_DESVIO;
+    }
+
+    public String getUPDATED_AT() {
+        return UPDATED_AT;
+    }
+
+    public void setUPDATED_AT(String UPDATED_AT) {
+        this.UPDATED_AT = UPDATED_AT;
     }
 }
