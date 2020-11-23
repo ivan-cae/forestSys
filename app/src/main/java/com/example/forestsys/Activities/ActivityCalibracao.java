@@ -68,43 +68,43 @@ import static java.sql.Types.NULL;
 public class ActivityCalibracao extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
 
-    private TextView p1_a1;
-    private TextView p1_a2;
-    private TextView p1_a3;
-    private TextView p1_a4;
-    private TextView p1_a5;
+    private TextView P1_a1;
+    private TextView P1_a2;
+    private TextView P1_a3;
+    private TextView P1_a4;
+    private TextView P1_a5;
 
-    private TextView p1Media;
-
-
-    private TextView p2_a1;
-    private TextView p2_a2;
-    private TextView p2_a3;
-    private TextView p2_a4;
-    private TextView p2_a5;
-
-    private TextView p2Media;
+    private TextView P1Media;
 
 
-    private TextView dif1_p1;
-    private TextView dif2_p1;
-    private TextView dif3_p1;
-    private TextView dif4_p1;
+    private TextView P2_a1;
+    private TextView P2_a2;
+    private TextView P2_a3;
+    private TextView P2_a4;
+    private TextView P2_a5;
+
+    private TextView P2Media;
+
+
+    private TextView dif1_P1;
+    private TextView dif2_P1;
+    private TextView dif3_P1;
+    private TextView dif4_P1;
     private TextView mediaDifP1;
 
-    private TextView dif1_p2;
-    private TextView dif2_p2;
-    private TextView dif3_p2;
-    private TextView dif4_p2;
+    private TextView dif1_P2;
+    private TextView dif2_P2;
+    private TextView dif3_P2;
+    private TextView dif4_P2;
     private TextView mediaDifP2;
 
-    private TextView desvioProduto1;
-    private TextView desvioProduto2;
+    private TextView desvioP1;
+    private TextView desvioP2;
 
 
     private NDSpinner spinnerOperador;
     private NDSpinner spinnerMaquina;
-    private NDSpinner spinnerMaquinaImplemento;
+    private NDSpinner spinnerImplemento;
 
     private TextView osTalhao;
     private TextView osData;
@@ -129,11 +129,11 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     private double[] amostrasP2;
 
 
-    private Double mediaPercentualp1;
-    private Double mediaGeralp1;
+    private Double mediaPercentualP1;
+    private Double mediaGeralP1;
 
-    private Double mediaPercentualp2;
-    private Double mediaGeralp2;
+    private Double mediaPercentualP2;
+    private Double mediaGeralP2;
 
     private String valorCorreto;
 
@@ -148,11 +148,11 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
     private Integer idMaquina;
     private Integer idOperador;
-    private Integer idMaquinaImplemento;
+    private Integer idImplemento;
 
     private int contSpinnerOperador;
     private int contSpinnerMaquina;
-    private int contSpinnerMaquinaImplemento;
+    private int contSpinnerImplemento;
 
     private TextView nomeProduto1;
     private TextView nomeProduto2;
@@ -188,53 +188,53 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         }
 
         if (savedInstanceState != null) {
-            p1_a1.setText(savedInstanceState.getString("p1_a1"));
-            p1_a2.setText(savedInstanceState.getString("p1_a2"));
-            p1_a3.setText(savedInstanceState.getString("p1_a3"));
-            p1_a4.setText(savedInstanceState.getString("p1_a4"));
-            p1_a5.setText(savedInstanceState.getString("p1_a5"));
+            P1_a1.setText(savedInstanceState.getString("p1_a1"));
+            P1_a2.setText(savedInstanceState.getString("p1_a2"));
+            P1_a3.setText(savedInstanceState.getString("p1_a3"));
+            P1_a4.setText(savedInstanceState.getString("p1_a4"));
+            P1_a5.setText(savedInstanceState.getString("p1_a5"));
 
-            p2_a1.setText(savedInstanceState.getString("p2_a1"));
-            p2_a2.setText(savedInstanceState.getString("p2_a2"));
-            p2_a3.setText(savedInstanceState.getString("p2_a3"));
-            p2_a4.setText(savedInstanceState.getString("p2_a4"));
-            p2_a5.setText(savedInstanceState.getString("p2_a5"));
+            P2_a1.setText(savedInstanceState.getString("p2_a1"));
+            P2_a2.setText(savedInstanceState.getString("p2_a2"));
+            P2_a3.setText(savedInstanceState.getString("p2_a3"));
+            P2_a4.setText(savedInstanceState.getString("p2_a4"));
+            P2_a5.setText(savedInstanceState.getString("p2_a5"));
 
-            dif1_p1.setText(savedInstanceState.getString("dif1_p1"));
-            dif2_p1.setText(savedInstanceState.getString("dif2_p1"));
-            dif3_p1.setText(savedInstanceState.getString("dif3_p1"));
-            dif4_p1.setText(savedInstanceState.getString("dif4_p1"));
+            dif1_P1.setText(savedInstanceState.getString("dif1_p1"));
+            dif2_P1.setText(savedInstanceState.getString("dif2_p1"));
+            dif3_P1.setText(savedInstanceState.getString("dif3_p1"));
+            dif4_P1.setText(savedInstanceState.getString("dif4_p1"));
 
-            dif1_p2.setText(savedInstanceState.getString("dif1_p2"));
-            dif2_p2.setText(savedInstanceState.getString("dif2_p2"));
-            dif3_p2.setText(savedInstanceState.getString("dif3_p2"));
-            dif4_p2.setText(savedInstanceState.getString("dif4_p2"));
+            dif1_P2.setText(savedInstanceState.getString("dif1_p2"));
+            dif2_P2.setText(savedInstanceState.getString("dif2_p2"));
+            dif3_P2.setText(savedInstanceState.getString("dif3_p2"));
+            dif4_P2.setText(savedInstanceState.getString("dif4_p2"));
 
-            p1Media.setText(savedInstanceState.getString("p1Media"));
-            p2Media.setText(savedInstanceState.getString("p2Media"));
+            P1Media.setText(savedInstanceState.getString("p1Media"));
+            P2Media.setText(savedInstanceState.getString("p2Media"));
 
             mediaDifP1.setText(savedInstanceState.getString("mediaDifP1"));
             mediaDifP2.setText(savedInstanceState.getString("mediaDifP2"));
 
-            desvioProduto1.setText(savedInstanceState.getString("desvioProduto1"));
-            desvioProduto2.setText(savedInstanceState.getString("desvioProduto2"));
+            desvioP1.setText(savedInstanceState.getString("desvioProduto1"));
+            desvioP2.setText(savedInstanceState.getString("desvioProduto2"));
 
             atualP1 = savedInstanceState.getInt("atualP1");
             atualP2 = savedInstanceState.getInt("atualP2");
             corrigirP1 = savedInstanceState.getInt("corrigirP1");
             corrigirP2 = savedInstanceState.getInt("corrigirP2");
 
-            mediaPercentualp1 = savedInstanceState.getDouble("mediaPercentualp1");
-            mediaPercentualp2 = savedInstanceState.getDouble("mediaPercentualp2");
-            mediaGeralp1 = savedInstanceState.getDouble("mediaGeralp1");
-            mediaGeralp2 = savedInstanceState.getDouble("mediaGeralp2");
+            mediaPercentualP1 = savedInstanceState.getDouble("mediaPercentualp1");
+            mediaPercentualP2 = savedInstanceState.getDouble("mediaPercentualp2");
+            mediaGeralP1 = savedInstanceState.getDouble("mediaGeralp1");
+            mediaGeralP2 = savedInstanceState.getDouble("mediaGeralp2");
 
             amostrasP1 = savedInstanceState.getDoubleArray("amostrasP1");
             amostrasP2 = savedInstanceState.getDoubleArray("amostrasP2");
 
             idOperador = savedInstanceState.getInt("idOperador");
             idMaquina = savedInstanceState.getInt("idMaquina");
-            idMaquinaImplemento = savedInstanceState.getInt("idMaquinaImplemento");
+            idImplemento = savedInstanceState.getInt("idImplemento");
 
             posicaoOperador = savedInstanceState.getInt("posicaoOperador");
             posicaoImplemento = savedInstanceState.getInt("posicaoImplemento");
@@ -272,7 +272,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     //Libera a edição das amostras no produto 1
     public void testaCliqueP1() {
         if (atualP1 >= 2) {
-            p1_a1.setOnClickListener(new View.OnClickListener() {
+            P1_a1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     corrigirP1 = 1;
@@ -282,9 +282,9 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         }
 
         if (atualP1 >= 3) {
-            p1_a2.setCursorVisible(true);
-            p1_a2.setClickable(true);
-            p1_a2.setOnClickListener(new View.OnClickListener() {
+            P1_a2.setCursorVisible(true);
+            P1_a2.setClickable(true);
+            P1_a2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     corrigirP1 = 2;
@@ -294,9 +294,9 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         }
 
         if (atualP1 >= 4) {
-            p1_a3.setCursorVisible(true);
-            p1_a3.setClickable(true);
-            p1_a3.setOnClickListener(new View.OnClickListener() {
+            P1_a3.setCursorVisible(true);
+            P1_a3.setClickable(true);
+            P1_a3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     corrigirP1 = 3;
@@ -306,9 +306,9 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         }
 
         if (atualP1 >= 5) {
-            p1_a4.setCursorVisible(true);
-            p1_a4.setClickable(true);
-            p1_a4.setOnClickListener(new View.OnClickListener() {
+            P1_a4.setCursorVisible(true);
+            P1_a4.setClickable(true);
+            P1_a4.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     corrigirP1 = 4;
@@ -318,9 +318,9 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         }
 
         if (atualP1 > 5) {
-            p1_a5.setCursorVisible(true);
-            p1_a5.setClickable(true);
-            p1_a5.setOnClickListener(new View.OnClickListener() {
+            P1_a5.setCursorVisible(true);
+            P1_a5.setClickable(true);
+            P1_a5.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     corrigirP1 = 5;
@@ -341,7 +341,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     //Libera a edição das amostras no produto 2
     public void testaCliqueP2() {
         if (atualP2 >= 2) {
-            p2_a1.setOnClickListener(new View.OnClickListener() {
+            P2_a1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     corrigirP2 = 1;
@@ -351,9 +351,9 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         }
 
         if (atualP2 >= 3) {
-            p2_a2.setCursorVisible(true);
-            p2_a2.setClickable(true);
-            p2_a2.setOnClickListener(new View.OnClickListener() {
+            P2_a2.setCursorVisible(true);
+            P2_a2.setClickable(true);
+            P2_a2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     corrigirP2 = 2;
@@ -363,9 +363,9 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         }
 
         if (atualP2 >= 4) {
-            p2_a3.setCursorVisible(true);
-            p2_a3.setClickable(true);
-            p2_a3.setOnClickListener(new View.OnClickListener() {
+            P2_a3.setCursorVisible(true);
+            P2_a3.setClickable(true);
+            P2_a3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     corrigirP2 = 3;
@@ -375,9 +375,9 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         }
 
         if (atualP2 >= 5) {
-            p2_a4.setCursorVisible(true);
-            p2_a4.setClickable(true);
-            p2_a4.setOnClickListener(new View.OnClickListener() {
+            P2_a4.setCursorVisible(true);
+            P2_a4.setClickable(true);
+            P2_a4.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     corrigirP2 = 4;
@@ -387,9 +387,9 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         }
 
         if (atualP2 > 5) {
-            p2_a5.setCursorVisible(true);
-            p2_a5.setClickable(true);
-            p2_a5.setOnClickListener(new View.OnClickListener() {
+            P2_a5.setCursorVisible(true);
+            P2_a5.setClickable(true);
+            P2_a5.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     corrigirP2 = 5;
@@ -423,7 +423,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     //Retorna false se não houver nenhum item preenchido ou true se houver
     public boolean algumItemPreenchido() {
         if(osSelecionada.getSTATUS_NUM()==2) return false;
-        if (p1_a1.getText().toString().length()==0 && p2_a1.getText().toString().length()==0 && idMaquinaImplemento == -1 && idMaquina == -1
+        if (P1_a1.getText().toString().length()==0 && P2_a1.getText().toString().length()==0 && idImplemento == -1 && idMaquina == -1
                 && idOperador == -1) return false;
 
         return true;
@@ -602,23 +602,23 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                         if (corrigirP1 == 0) {
                             if (atualP1 == 1) {
                                 amostrasP1[0] = Double.valueOf(valorCorreto);
-                                p1_a1.setText(valorCorreto.replace('.', ','));
+                                P1_a1.setText(valorCorreto.replace('.', ','));
                             }
                             if (atualP1 == 2) {
                                 amostrasP1[1] = Double.valueOf(valorCorreto);
-                                p1_a2.setText(valorCorreto.replace('.', ','));
+                                P1_a2.setText(valorCorreto.replace('.', ','));
                             }
                             if (atualP1 == 3) {
                                 amostrasP1[2] = Double.valueOf(valorCorreto);
-                                p1_a3.setText(valorCorreto.replace('.', ','));
+                                P1_a3.setText(valorCorreto.replace('.', ','));
                             }
                             if (atualP1 == 4) {
                                 amostrasP1[3] = Double.valueOf(valorCorreto);
-                                p1_a4.setText(valorCorreto.replace('.', ','));
+                                P1_a4.setText(valorCorreto.replace('.', ','));
                             }
                             if (atualP1 == 5) {
                                 amostrasP1[4] = Double.valueOf(valorCorreto);
-                                p1_a5.setText(valorCorreto.replace('.', ','));
+                                P1_a5.setText(valorCorreto.replace('.', ','));
                             }
                             atualP1++;
                             cliqueP1();
@@ -631,23 +631,23 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
                             if (corrigirP1 == 1) {
                                 amostrasP1[0] = Double.valueOf(valorCorreto);
-                                p1_a1.setText(valorCorreto.replace('.', ','));
+                                P1_a1.setText(valorCorreto.replace('.', ','));
                             }
                             if (corrigirP1 == 2) {
                                 amostrasP1[1] = Double.valueOf(valorCorreto);
-                                p1_a2.setText(valorCorreto.replace('.', ','));
+                                P1_a2.setText(valorCorreto.replace('.', ','));
                             }
                             if (corrigirP1 == 3) {
                                 amostrasP1[2] = Double.valueOf(valorCorreto);
-                                p1_a3.setText(valorCorreto.replace('.', ','));
+                                P1_a3.setText(valorCorreto.replace('.', ','));
                             }
                             if (corrigirP1 == 4) {
                                 amostrasP1[3] = Double.valueOf(valorCorreto);
-                                p1_a4.setText(valorCorreto.replace('.', ','));
+                                P1_a4.setText(valorCorreto.replace('.', ','));
                             }
                             if (corrigirP1 == 5) {
                                 amostrasP1[4] = Double.valueOf(valorCorreto);
-                                p1_a5.setText(valorCorreto.replace('.', ','));
+                                P1_a5.setText(valorCorreto.replace('.', ','));
                             }
                         }
                         dialog.dismiss();
@@ -664,65 +664,63 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     //Verifica as regras de conformidade para o produto 1
     public void testaP1() {
 
+        todosConformeP1 = true;
+
         if (diferencaPercentual(amostrasP1[0], amostrasP1[1]) > 5.00 || diferencaPercentual(amostrasP1[0], amostrasP1[1]) < -5.00) {
-            dif1_p1.setTextColor(Color.parseColor("#FF0000"));
+            dif1_P1.setTextColor(Color.parseColor("#FF0000"));
 
             todosConformeP1 = false;
         } else {
-            dif1_p1.setTextColor(Color.parseColor("#32CD32"));
-            todosConformeP1 = true;
+            dif1_P1.setTextColor(Color.parseColor("#32CD32"));
         }
         if (((diferencaPercentual(amostrasP1[0], amostrasP1[1]).isInfinite()) || diferencaPercentual(amostrasP1[0], amostrasP1[1]).isNaN()))
-            dif1_p1.setText("");
+            dif1_P1.setText("");
         else
-            dif1_p1.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP1[0], amostrasP1[1])))).replace('.', ','));
+            dif1_P1.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP1[0], amostrasP1[1])))).replace('.', ','));
 
 
         if (diferencaPercentual(amostrasP1[1], amostrasP1[2]) > 5.00 || diferencaPercentual(amostrasP1[1], amostrasP1[2]) < -5.00) {
-            dif2_p1.setTextColor(Color.parseColor("#FF0000"));
+            dif2_P1.setTextColor(Color.parseColor("#FF0000"));
 
             todosConformeP1 = false;
         } else {
-            dif2_p1.setTextColor(Color.parseColor("#32CD32"));
-            todosConformeP1 = true;
+            dif2_P1.setTextColor(Color.parseColor("#32CD32"));
         }
         if (((diferencaPercentual(amostrasP1[1], amostrasP1[2]).isNaN() || diferencaPercentual(amostrasP1[1], amostrasP1[2]).isInfinite())))
-            dif2_p1.setText("");
+            dif2_P1.setText("");
         else
-            dif2_p1.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP1[1], amostrasP1[2])))).replace('.', ','));
+            dif2_P1.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP1[1], amostrasP1[2])))).replace('.', ','));
 
 
         if (diferencaPercentual(amostrasP1[2], amostrasP1[3]) > 5.00 || diferencaPercentual(amostrasP1[2], amostrasP1[3]) < -5.00) {
-            dif3_p1.setTextColor(Color.parseColor("#FF0000"));
-
+            dif3_P1.setTextColor(Color.parseColor("#FF0000"));
             todosConformeP1 = false;
-
         } else {
-            dif3_p1.setTextColor(Color.parseColor("#32CD32"));
-            todosConformeP1 = true;
+            dif3_P1.setTextColor(Color.parseColor("#32CD32"));
+
         }
         if (((diferencaPercentual(amostrasP1[2], amostrasP1[3]).isInfinite() || diferencaPercentual(amostrasP1[2], amostrasP1[3]).isNaN())))
-            dif3_p1.setText("");
+            dif3_P1.setText("");
         else
-            dif3_p1.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP1[2], amostrasP1[3])))).replace('.', ','));
+            dif3_P1.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP1[2], amostrasP1[3])))).replace('.', ','));
 
 
         if (diferencaPercentual(amostrasP1[3], amostrasP1[4]) > 5.00 || diferencaPercentual(amostrasP1[3], amostrasP1[4]) < -5.00) {
-            dif4_p1.setTextColor(Color.parseColor("#FF0000"));
+            dif4_P1.setTextColor(Color.parseColor("#FF0000"));
 
             todosConformeP1 = false;
 
         } else {
-            dif4_p1.setTextColor(Color.parseColor("#32CD32"));
-            todosConformeP1 = true;
+            dif4_P1.setTextColor(Color.parseColor("#32CD32"));
         }
         if (((diferencaPercentual(amostrasP1[3], amostrasP1[4]).isInfinite() || diferencaPercentual(amostrasP1[3], amostrasP1[4]).isNaN())))
-            dif4_p1.setText("");
+            dif4_P1.setText("");
         else
-            dif4_p1.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP1[3], amostrasP1[4])))).replace('.', ','));
+            dif4_P1.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP1[3], amostrasP1[4])))).replace('.', ','));
 
 
         //testando p2
+        /*todosConformeP2 = true;
         if (diferencaPercentual(amostrasP2[0], amostrasP2[1]) > 5.00 || diferencaPercentual(amostrasP2[0], amostrasP2[1]) < -5.00) {
             todosConformeP2 = false;
         }
@@ -735,9 +733,9 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         if (diferencaPercentual(amostrasP2[3], amostrasP2[4]) > 5.00 || diferencaPercentual(amostrasP2[3], amostrasP2[4]) < -5.00) {
             todosConformeP2 = false;
         }
+*/
 
-
-        mediaPercentualp1 = (
+        mediaPercentualP1 = (
                 diferencaPercentual(amostrasP1[0], amostrasP1[1]) +
                         diferencaPercentual(amostrasP1[1], amostrasP1[2]) +
                         diferencaPercentual(amostrasP1[2], amostrasP1[3]) +
@@ -756,28 +754,146 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
             if (maiorDif > 5.0) {
                 if (posicaoMaiorDif == 1) {
-                    dif1_p1.setTextColor(Color.parseColor("#FF0000"));
+                    dif1_P1.setTextColor(Color.parseColor("#FF0000"));
                 } else if (posicaoMaiorDif == 2) {
-                    dif2_p1.setTextColor(Color.parseColor("#FF0000"));
+                    dif2_P1.setTextColor(Color.parseColor("#FF0000"));
                 } else if (posicaoMaiorDif == 3) {
-                    dif3_p1.setTextColor(Color.parseColor("#FF0000"));
+                    dif3_P1.setTextColor(Color.parseColor("#FF0000"));
                 } else if (posicaoMaiorDif == 4) {
-                    dif4_p1.setTextColor(Color.parseColor("#FF0000"));
+                    dif4_P1.setTextColor(Color.parseColor("#FF0000"));
                 }
             }
         }
 
-        mediaGeralp1 = (amostrasP1[0] + amostrasP1[1] + amostrasP1[2] + amostrasP1[3] + amostrasP1[4]) / 5;
-        mediaGeralp1 = arredonda3Casas(mediaGeralp1);
+        mediaGeralP1 = (amostrasP1[0] + amostrasP1[1] + amostrasP1[2] + amostrasP1[3] + amostrasP1[4]) / 5;
+        mediaGeralP1 = arredonda3Casas(mediaGeralP1);
 
-        if (mediaPercentualp1.isInfinite() || mediaPercentualp1.isNaN()) mediaDifP1.setText("");
+        if (mediaPercentualP1.isInfinite() || mediaPercentualP1.isNaN()) mediaDifP1.setText("");
         else {
-            mediaDifP1.setText(String.valueOf((-1 * arredonda1Casa(mediaPercentualp1))).replace('.', ','));
+            mediaDifP1.setText(String.valueOf((-1 * arredonda1Casa(mediaPercentualP1))).replace('.', ','));
         }
 
-        p1Media.setText(String.valueOf((mediaGeralp1)).replace('.', ','));
+        P1Media.setText(String.valueOf((mediaGeralP1)).replace('.', ','));
         Double aux1 = arredonda2Casas(desvioPadrao(amostrasP1));
-        desvioProduto1.setText(String.valueOf((aux1)).replace('.', ','));
+        desvioP1.setText(String.valueOf((aux1)).replace('.', ','));
+
+        Log.e("todosConformeP1", String.valueOf(todosConformeP1));
+
+    }
+
+    //Verifica as regras de conformidade para o produto 2
+    public void testaP2() {
+
+        todosConformeP2 = true;
+
+        if (diferencaPercentual(amostrasP2[0], amostrasP2[1]) > 5.00 || diferencaPercentual(amostrasP2[0], amostrasP2[1]) < -5.00) {
+            dif1_P2.setTextColor(Color.parseColor("#FF0000"));
+            todosConformeP2 = false;
+
+        } else {
+            dif1_P2.setTextColor(Color.parseColor("#32CD32"));
+        }
+        if (((diferencaPercentual(amostrasP2[0], amostrasP2[1]).isInfinite()) || diferencaPercentual(amostrasP2[0], amostrasP2[1]).isNaN()))
+            dif1_P2.setText("");
+        else
+            dif1_P2.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP2[0], amostrasP2[1])))).replace('.', ','));
+
+
+        if (diferencaPercentual(amostrasP2[1], amostrasP2[2]) > 5.00 || diferencaPercentual(amostrasP2[1], amostrasP2[2]) < -5.00) {
+            dif2_P2.setTextColor(Color.parseColor("#FF0000"));
+            todosConformeP2 = false;
+        } else {
+            dif2_P2.setTextColor(Color.parseColor("#32CD32"));
+        }
+        if (((diferencaPercentual(amostrasP2[1], amostrasP2[2]).isNaN() || diferencaPercentual(amostrasP2[1], amostrasP2[2]).isInfinite())))
+            dif2_P2.setText("");
+        else
+            dif2_P2.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP2[1], amostrasP2[2])))).replace('.', ','));
+
+
+        if (diferencaPercentual(amostrasP2[2], amostrasP2[3]) > 5.00 || diferencaPercentual(amostrasP2[2], amostrasP2[3]) < -5.00) {
+            dif3_P2.setTextColor(Color.parseColor("#FF0000"));
+            todosConformeP2 = false;
+        } else {
+            dif3_P2.setTextColor(Color.parseColor("#32CD32"));
+        }
+        if (((diferencaPercentual(amostrasP2[2], amostrasP2[3]).isInfinite() || diferencaPercentual(amostrasP2[2], amostrasP2[3]).isNaN())))
+            dif3_P2.setText("");
+        else
+            dif3_P2.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP2[2], amostrasP2[3])))).replace('.', ','));
+
+
+        if (diferencaPercentual(amostrasP2[3], amostrasP2[4]) > 5.00 || diferencaPercentual(amostrasP2[3], amostrasP2[4]) < -5.00) {
+            dif4_P2.setTextColor(Color.parseColor("#FF0000"));
+            todosConformeP2 = false;
+        } else {
+            dif4_P2.setTextColor(Color.parseColor("#32CD32"));
+        }
+        if (((diferencaPercentual(amostrasP2[3], amostrasP2[4]).isInfinite() || diferencaPercentual(amostrasP2[3], amostrasP2[4]).isNaN())))
+            dif4_P2.setText("");
+        else
+            dif4_P2.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP2[3], amostrasP2[4])))).replace('.', ','));
+
+
+        //testando p1
+        /*todosConformeP1 = true;
+        if (diferencaPercentual(amostrasP1[0], amostrasP1[1]) > 5.00 || diferencaPercentual(amostrasP1[0], amostrasP1[1]) < -5.00) {
+            todosConformeP1 = false;
+        }
+        if (diferencaPercentual(amostrasP1[1], amostrasP1[2]) > 5.00 || diferencaPercentual(amostrasP1[1], amostrasP1[2]) < -5.00) {
+            todosConformeP1 = false;
+        }
+        if (diferencaPercentual(amostrasP1[2], amostrasP1[3]) > 5.00 || diferencaPercentual(amostrasP1[2], amostrasP1[3]) < -5.00) {
+            todosConformeP1 = false;
+        }
+        if (diferencaPercentual(amostrasP1[3], amostrasP1[4]) > 5.00 || diferencaPercentual(amostrasP1[3], amostrasP1[4]) < -5.00) {
+            todosConformeP1 = false;
+        }*/
+
+
+        mediaPercentualP2 = (
+                diferencaPercentual(amostrasP2[0], amostrasP2[1]) +
+                        diferencaPercentual(amostrasP2[1], amostrasP2[2]) +
+                        diferencaPercentual(amostrasP2[2], amostrasP2[3]) +
+                        diferencaPercentual(amostrasP2[3], amostrasP2[4])) / 4;
+
+        Double maiorDif = 0.0;
+        int posicaoMaiorDif = 0;
+
+        if (atualP2 >= 5) {
+            for (int i = 0; i < 4; i++) {
+                if (Math.abs(diferencaPercentual(amostrasP2[i], amostrasP2[i + 1])) > maiorDif) {
+                    maiorDif = Math.abs(diferencaPercentual(amostrasP2[i], amostrasP2[i + 1]));
+                    posicaoMaiorDif = i + 1;
+                }
+            }
+
+            if (maiorDif > 5.0) {
+                if (posicaoMaiorDif == 1) {
+                    dif1_P2.setTextColor(Color.parseColor("#FF0000"));
+                } else if (posicaoMaiorDif == 2) {
+                    dif2_P2.setTextColor(Color.parseColor("#FF0000"));
+                } else if (posicaoMaiorDif == 3) {
+                    dif3_P2.setTextColor(Color.parseColor("#FF0000"));
+                } else if (posicaoMaiorDif == 4) {
+                    dif4_P2.setTextColor(Color.parseColor("#FF0000"));
+                }
+            }
+        }
+
+        mediaGeralP2 = (amostrasP2[0] + amostrasP2[1] + amostrasP2[2] + amostrasP2[3] + amostrasP2[4]) / 5;
+        mediaGeralP2 = arredonda3Casas(mediaGeralP2);
+
+        if (mediaPercentualP2.isInfinite() || mediaPercentualP2.isNaN()) mediaDifP2.setText("");
+        else {
+            mediaDifP2.setText(String.valueOf((-1 * arredonda1Casa(mediaPercentualP2))).replace('.', ','));
+        }
+
+        P2Media.setText(String.valueOf((mediaGeralP2)).replace('.', ','));
+        Double aux1 = arredonda2Casas(desvioPadrao(amostrasP2));
+        desvioP2.setText(String.valueOf((aux1)).replace('.', ','));
+
+        Log.e("todosConformeP2", String.valueOf(todosConformeP2));
     }
 
     //Abre caixa de diálogo para preencher amostras do produto
@@ -862,23 +978,23 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                         if (corrigirP2 == 0) {
                             if (atualP2 == 1) {
                                 amostrasP2[0] = Double.valueOf(valorCorreto);
-                                p2_a1.setText(valorCorreto.replace('.', ','));
+                                P2_a1.setText(valorCorreto.replace('.', ','));
                             }
                             if (atualP2 == 2) {
                                 amostrasP2[1] = Double.valueOf(valorCorreto);
-                                p2_a2.setText(valorCorreto.replace('.', ','));
+                                P2_a2.setText(valorCorreto.replace('.', ','));
                             }
                             if (atualP2 == 3) {
                                 amostrasP2[2] = Double.valueOf(valorCorreto);
-                                p2_a3.setText(valorCorreto.replace('.', ','));
+                                P2_a3.setText(valorCorreto.replace('.', ','));
                             }
                             if (atualP2 == 4) {
                                 amostrasP2[3] = Double.valueOf(valorCorreto);
-                                p2_a4.setText(valorCorreto.replace('.', ','));
+                                P2_a4.setText(valorCorreto.replace('.', ','));
                             }
                             if (atualP2 == 5) {
                                 amostrasP2[4] = Double.valueOf(valorCorreto);
-                                p2_a5.setText(valorCorreto.replace('.', ','));
+                                P2_a5.setText(valorCorreto.replace('.', ','));
                             }
                             atualP2++;
                             cliqueP2();
@@ -891,23 +1007,23 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
                             if (corrigirP2 == 1) {
                                 amostrasP2[0] = Double.valueOf(valorCorreto);
-                                p2_a1.setText(valorCorreto.replace('.', ','));
+                                P2_a1.setText(valorCorreto.replace('.', ','));
                             }
                             if (corrigirP2 == 2) {
                                 amostrasP2[1] = Double.valueOf(valorCorreto);
-                                p2_a2.setText(valorCorreto.replace('.', ','));
+                                P2_a2.setText(valorCorreto.replace('.', ','));
                             }
                             if (corrigirP2 == 3) {
                                 amostrasP2[2] = Double.valueOf(valorCorreto);
-                                p2_a3.setText(valorCorreto.replace('.', ','));
+                                P2_a3.setText(valorCorreto.replace('.', ','));
                             }
                             if (corrigirP2 == 4) {
                                 amostrasP2[3] = Double.valueOf(valorCorreto);
-                                p2_a4.setText(valorCorreto.replace('.', ','));
+                                P2_a4.setText(valorCorreto.replace('.', ','));
                             }
                             if (corrigirP2 == 5) {
                                 amostrasP2[4] = Double.valueOf(valorCorreto);
-                                p2_a5.setText(valorCorreto.replace('.', ','));
+                                P2_a5.setText(valorCorreto.replace('.', ','));
                             }
                         }
                         dialog.dismiss();
@@ -915,136 +1031,18 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                 }
                 if (naoPermiteCentena == true)
                     valor.setError("Valor incorreto: Permitido unidade e dezena.");
-                if (atualP1 > 5) testaP1();
+
                 if (atualP2 > 5) testaP2();
+                if (atualP1 > 5) testaP1();
             }
         });
     }
 
-    //Verifica as regras de conformidade para o produto 2
-    public void testaP2() {
-
-
-        if (diferencaPercentual(amostrasP2[0], amostrasP2[1]) > 5.00 || diferencaPercentual(amostrasP2[0], amostrasP2[1]) < -5.00) {
-            dif1_p2.setTextColor(Color.parseColor("#FF0000"));
-            todosConformeP2 = false;
-        } else {
-            dif1_p2.setTextColor(Color.parseColor("#32CD32"));
-            todosConformeP2 = true;
-        }
-        if (((diferencaPercentual(amostrasP2[0], amostrasP2[1]).isInfinite() || diferencaPercentual(amostrasP2[0], amostrasP2[1]).isNaN())))
-            dif1_p2.setText("");
-        else
-            dif1_p2.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP2[0], amostrasP2[1])))).replace('.', ','));
-
-
-        if (diferencaPercentual(amostrasP2[1], amostrasP2[2]) > 5.00 || diferencaPercentual(amostrasP2[1], amostrasP2[2]) < -5.00) {
-            dif2_p2.setTextColor(Color.parseColor("#FF0000"));
-            todosConformeP2 = false;
-
-        } else {
-            dif2_p2.setTextColor(Color.parseColor("#32CD32"));
-            todosConformeP2 = true;
-        }
-        if (((diferencaPercentual(amostrasP2[1], amostrasP2[2]).isInfinite() || diferencaPercentual(amostrasP2[1], amostrasP2[2]).isNaN())))
-            dif2_p2.setText("");
-        else
-            dif2_p2.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP2[1], amostrasP2[2])))).replace('.', ','));
-
-
-        if (diferencaPercentual(amostrasP2[2], amostrasP2[3]) > 5.00 || diferencaPercentual(amostrasP2[2], amostrasP2[3]) < -5.00) {
-            dif3_p2.setTextColor(Color.parseColor("#FF0000"));
-            todosConformeP2 = false;
-
-        } else {
-            dif3_p2.setTextColor(Color.parseColor("#32CD32"));
-            todosConformeP2 = true;
-        }
-        if (((diferencaPercentual(amostrasP2[2], amostrasP2[3]).isNaN() || diferencaPercentual(amostrasP2[2], amostrasP2[3]).isInfinite())))
-            dif3_p2.setText("");
-        else
-            dif3_p2.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP2[2], amostrasP2[3])))).replace('.', ','));
-
-
-        if (diferencaPercentual(amostrasP2[3], amostrasP2[4]) > 5.00 || diferencaPercentual(amostrasP2[3], amostrasP2[4]) < -5.00) {
-            dif4_p2.setTextColor(Color.parseColor("#FF0000"));
-            todosConformeP2 = false;
-
-        } else {
-            dif4_p2.setTextColor(Color.parseColor("#32CD32"));
-            todosConformeP2 = true;
-        }
-        if (((diferencaPercentual(amostrasP2[3], amostrasP2[4]).isNaN() || diferencaPercentual(amostrasP2[3], amostrasP2[4]).isInfinite())))
-            dif4_p2.setText("");
-        else
-            dif4_p2.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP2[3], amostrasP2[4])))).replace('.', ','));
-
-
-        if (diferencaPercentual(amostrasP1[0], amostrasP1[1]) > 5.00 || diferencaPercentual(amostrasP1[0], amostrasP1[1]) < -5.00) {
-            todosConformeP1 = false;
-        }
-
-        if (diferencaPercentual(amostrasP1[1], amostrasP1[2]) > 5.00 || diferencaPercentual(amostrasP1[1], amostrasP1[2]) < -5.00) {
-            todosConformeP1 = false;
-        }
-
-        if (diferencaPercentual(amostrasP1[2], amostrasP1[3]) > 5.00 || diferencaPercentual(amostrasP1[2], amostrasP1[3]) < -5.00) {
-            todosConformeP1 = false;
-        }
-
-        if (diferencaPercentual(amostrasP1[3], amostrasP1[4]) > 5.00 || diferencaPercentual(amostrasP1[3], amostrasP1[4]) < -5.00) {
-            todosConformeP1 = false;
-        }
-
-        mediaPercentualp2 = (
-                diferencaPercentual(amostrasP2[0], amostrasP2[1]) +
-                        diferencaPercentual(amostrasP2[1], amostrasP2[2]) +
-                        diferencaPercentual(amostrasP2[2], amostrasP2[3]) +
-                        diferencaPercentual(amostrasP2[3], amostrasP2[4])) / 4;
-
-        Double maiorDif = 0.0;
-        int posicaoMaiorDif = 0;
-
-        if (atualP2 >= 5) {
-            for (int i = 0; i < 4; i++) {
-                if (Math.abs(diferencaPercentual(amostrasP2[i], amostrasP2[i + 1])) > maiorDif) {
-                    maiorDif = Math.abs(diferencaPercentual(amostrasP2[i], amostrasP2[i + 1]));
-                    posicaoMaiorDif = i + 1;
-                }
-            }
-
-            if (maiorDif > 5.0) {
-                if (posicaoMaiorDif == 1) {
-                    dif1_p2.setTextColor(Color.parseColor("#FF0000"));
-                } else if (posicaoMaiorDif == 2) {
-                    dif2_p2.setTextColor(Color.parseColor("#FF0000"));
-                } else if (posicaoMaiorDif == 3) {
-                    dif3_p2.setTextColor(Color.parseColor("#FF0000"));
-                } else if (posicaoMaiorDif == 4) {
-                    dif4_p2.setTextColor(Color.parseColor("#FF0000"));
-                }
-            }
-        }
-
-        mediaGeralp2 = (amostrasP2[0] + amostrasP2[1] + amostrasP2[2] + amostrasP2[3] + amostrasP2[4]) / 5;
-        mediaGeralp2 = arredonda3Casas(mediaGeralp2);
-
-        if ((mediaPercentualp2).isNaN() || mediaPercentualp2.isInfinite()) mediaDifP2.setText("");
-        else {
-
-            mediaDifP2.setText(String.valueOf((-1 * arredonda1Casa(mediaPercentualp2))).replace('.', ','));
-        }
-
-        p2Media.setText(String.valueOf((mediaGeralp2)).replace('.', ','));
-        Double aux1 = arredonda2Casas(desvioPadrao(amostrasP2));
-        desvioProduto2.setText(String.valueOf((aux1)).replace('.', ','));
-    }
-
     //Checa se há uma calibração para a máquina selecionada na data e turno atuais
     //Parâmetro de entrada: Descrição da máquina selecionada
-    public boolean checaMaquinaImplemento(Integer s) {
+    public boolean checaMaquinaImplemento(Integer idMaquinaImplemento) {
         Integer checagem = dao.checaMaquinaImplemento(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
-                ferramentas.formataDataDb(ferramentas.dataAtual()), checaTurno(), s);
+                ferramentas.formataDataDb(ferramentas.dataAtual()), checaTurno(), idMaquinaImplemento);
         if(checagem!=null) {
             if (checagem > 0) return true;
         }return false;
@@ -1178,7 +1176,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             testaP1();
             testaP2();
             if (todosConformeP1 == true && todosConformeP2 == true) {
-                if (idOperador != -1 && idMaquina != -1 && idMaquinaImplemento != -1) {
+                if (idOperador != -1 && idMaquina != -1 && idImplemento != -1) {
                     return true;
                 }
             }
@@ -1207,7 +1205,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
         spinnerOperador = findViewById(R.id.spinner_operador_calibragem);
         spinnerMaquina = findViewById(R.id.spinner_maquina_calibragem);
-        spinnerMaquinaImplemento = findViewById(R.id.spinner_implemento_calibragem);
+        spinnerImplemento = findViewById(R.id.spinner_implemento_calibragem);
 
         osData = findViewById(R.id.data_os_calibragem);
         osTalhao = findViewById(R.id.talhao_os_calibragem);
@@ -1222,33 +1220,33 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         calibragens = dao.listaCalibragem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
         adaptador.setCalibragem(calibragens);
 
-        desvioProduto1 = findViewById(R.id.desvio_produto1);
-        desvioProduto2 = findViewById(R.id.desvio_produto2);
+        desvioP1 = findViewById(R.id.desvio_produto1);
+        desvioP2 = findViewById(R.id.desvio_produto2);
 
-        p1_a1 = findViewById(R.id.p1_amostra_1);
-        p1_a2 = findViewById(R.id.p1_amostra_2);
-        p1_a3 = findViewById(R.id.p1_amostra_3);
-        p1_a4 = findViewById(R.id.p1_amostra_4);
-        p1_a5 = findViewById(R.id.p1_amostra_5);
-        p1Media = findViewById(R.id.p1_media);
+        P1_a1 = findViewById(R.id.p1_amostra_1);
+        P1_a2 = findViewById(R.id.p1_amostra_2);
+        P1_a3 = findViewById(R.id.p1_amostra_3);
+        P1_a4 = findViewById(R.id.p1_amostra_4);
+        P1_a5 = findViewById(R.id.p1_amostra_5);
+        P1Media = findViewById(R.id.p1_media);
 
-        p2_a1 = findViewById(R.id.p2_amostra_1);
-        p2_a2 = findViewById(R.id.p2_amostra_2);
-        p2_a3 = findViewById(R.id.p2_amostra_3);
-        p2_a4 = findViewById(R.id.p2_amostra_4);
-        p2_a5 = findViewById(R.id.p2_amostra_5);
-        p2Media = findViewById(R.id.p2_media);
+        P2_a1 = findViewById(R.id.p2_amostra_1);
+        P2_a2 = findViewById(R.id.p2_amostra_2);
+        P2_a3 = findViewById(R.id.p2_amostra_3);
+        P2_a4 = findViewById(R.id.p2_amostra_4);
+        P2_a5 = findViewById(R.id.p2_amostra_5);
+        P2Media = findViewById(R.id.p2_media);
 
-        dif1_p1 = findViewById(R.id.dif1_p1);
-        dif2_p1 = findViewById(R.id.dif2_p1);
-        dif3_p1 = findViewById(R.id.dif3_p1);
-        dif4_p1 = findViewById(R.id.dif4_p1);
+        dif1_P1 = findViewById(R.id.dif1_p1);
+        dif2_P1 = findViewById(R.id.dif2_p1);
+        dif3_P1 = findViewById(R.id.dif3_p1);
+        dif4_P1 = findViewById(R.id.dif4_p1);
         mediaDifP1 = findViewById(R.id.media_dif_p1);
 
-        dif1_p2 = findViewById(R.id.dif1_p2);
-        dif2_p2 = findViewById(R.id.dif2_p2);
-        dif3_p2 = findViewById(R.id.dif3_p2);
-        dif4_p2 = findViewById(R.id.dif4_p2);
+        dif1_P2 = findViewById(R.id.dif1_p2);
+        dif2_P2 = findViewById(R.id.dif2_p2);
+        dif3_P2 = findViewById(R.id.dif3_p2);
+        dif4_P2 = findViewById(R.id.dif4_p2);
         mediaDifP2 = findViewById(R.id.media_dif_p2);
 
         botaoConfirma = findViewById(R.id.botao_calibragem_confirma);
@@ -1262,16 +1260,16 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
         idOperador = -1;
         idMaquina = -1;
-        idMaquinaImplemento = -1;
+        idImplemento = -1;
 
         contSpinnerOperador = 0;
         contSpinnerMaquina = 0;
-        contSpinnerMaquinaImplemento = 0;
+        contSpinnerImplemento = 0;
 
-        mediaGeralp1 = 0.0;
-        mediaPercentualp1 = 0.0;
-        mediaGeralp2 = 0.0;
-        mediaPercentualp2 = 0.0;
+        mediaGeralP1 = 0.0;
+        mediaPercentualP1 = 0.0;
+        mediaGeralP2 = 0.0;
+        mediaPercentualP2 = 0.0;
 
         nomeProduto1.setText(joinOsInsumos.get(0).getDESCRICAO());
         nomeProduto2.setText(joinOsInsumos.get(1).getDESCRICAO());
@@ -1286,8 +1284,8 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
         osTurno.setText(checaTurno());
 
-        p1_a1.setFocusable(false);
-
+        P1_a1.setFocusable(false);
+        P2_a1.setFocusable(false);
 
         maquinas = new ArrayList<>(dao.listaMaquinas());
 
@@ -1319,11 +1317,11 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             }
         });
 
-        spinnerMaquinaImplemento.setOnTouchListener(new View.OnTouchListener() {
+        spinnerImplemento.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (contSpinnerMaquinaImplemento == 0)
-                    spinnerMaquinaImplemento.setAdapter(adapterImplemento);
+                if (contSpinnerImplemento == 0)
+                    spinnerImplemento.setAdapter(adapterImplemento);
                 return false;
             }
         });
@@ -1346,11 +1344,11 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         spinnerMaquina.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                spinnerMaquinaImplemento.setAdapter(null);
+                spinnerImplemento.setAdapter(null);
                 if (contSpinnerMaquina > 0) {
                     idMaquina = maquinas.get(position).getID_MAQUINA();
-                    contSpinnerMaquinaImplemento = 0;
-                    idMaquinaImplemento = -1;
+                    contSpinnerImplemento = 0;
+                    idImplemento = -1;
                     implementos = new ArrayList<>(dao.listaJoinMaquinaImplemento(maquinas.get(position).getID_MAQUINA()));
                     adapterImplemento = new ArrayAdapter<Join_MAQUINA_IMPLEMENTO>(ActivityCalibracao.this,
                             android.R.layout.simple_spinner_item, implementos);
@@ -1359,13 +1357,13 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
                     if (contSpinnerMaquina == 1 && auxSavedInstanceState != null) {
                         idMaquina = auxSavedInstanceState.getInt("idMaquina");
-                        idMaquinaImplemento = auxSavedInstanceState.getInt("idMaquinaImplemento");
+                        idImplemento = auxSavedInstanceState.getInt("idImplemento");
                         posicaoMaquina = auxSavedInstanceState.getInt("posicaoMaquina");
                         posicaoImplemento = auxSavedInstanceState.getInt("posicaoImplemento");
 
-                        if (idMaquinaImplemento != -1) {
-                            spinnerMaquinaImplemento.setAdapter(adapterImplemento);
-                            spinnerMaquinaImplemento.setSelection(posicaoImplemento);
+                        if (idImplemento != -1) {
+                            spinnerImplemento.setAdapter(adapterImplemento);
+                            spinnerImplemento.setSelection(posicaoImplemento);
                         }
                     }
                 }
@@ -1377,22 +1375,22 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             }
         });
 
-        spinnerMaquinaImplemento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerImplemento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (contSpinnerMaquinaImplemento > 0) {
+                if (contSpinnerImplemento > 0) {
                     Integer posicao = position;
                     if (checaMaquinaImplemento(implementos.get(posicao).getID_MAQUINA_IMPLEMENTO()) == true) {
-                        spinnerMaquinaImplemento.setAdapter(null);
-                        contSpinnerMaquinaImplemento = -1;
-                        idMaquinaImplemento = -1;
+                        spinnerImplemento.setAdapter(null);
+                        contSpinnerImplemento = -1;
+                        idImplemento = -1;
                         caixaAlertaMaquinaImplemento();
                     } else {
-                        idMaquinaImplemento = implementos.get(position).getID_MAQUINA_IMPLEMENTO();
+                        idImplemento = implementos.get(position).getID_MAQUINA_IMPLEMENTO();
                         posicaoImplemento = position;
                     }
                 }
-                contSpinnerMaquinaImplemento++;
+                contSpinnerImplemento++;
             }
 
             @Override
@@ -1412,33 +1410,33 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
             spinnerMaquina.setEnabled(false);
             spinnerOperador.setEnabled(false);
-            spinnerMaquinaImplemento.setEnabled(false);
+            spinnerImplemento.setEnabled(false);
 
             botaoMediaP1.setVisibility(GONE);
             botaoMediaP2.setVisibility(GONE);
             botaoConfirma.setVisibility(GONE);
         }
 
-        p1_a1.setClickable(false);
+        P1_a1.setClickable(false);
 
-        p1_a2.setClickable(false);
+        P1_a2.setClickable(false);
 
-        p1_a3.setClickable(false);
+        P1_a3.setClickable(false);
 
-        p1_a4.setClickable(false);
+        P1_a4.setClickable(false);
 
-        p1_a5.setClickable(false);
+        P1_a5.setClickable(false);
 
 
-        p2_a1.setClickable(false);
+        P2_a1.setClickable(false);
 
-        p2_a2.setClickable(false);
+        P2_a2.setClickable(false);
 
-        p2_a3.setClickable(false);
+        P2_a3.setClickable(false);
 
-        p2_a4.setClickable(false);
+        P2_a4.setClickable(false);
 
-        p2_a5.setClickable(false);
+        P2_a5.setClickable(false);
 
 
         botaoMediaP1.setOnClickListener(new View.OnClickListener() {
@@ -1494,7 +1492,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         botaoConfirma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checaMaquinaImplemento(idMaquina) == true)
+                if (checaMaquinaImplemento(idImplemento) == true)
                     caixaAlertaMaquinaImplemento();
                 else {
                     AlertDialog dialog = new AlertDialog.Builder(ActivityCalibracao.this)
@@ -1506,19 +1504,18 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                                     if (testaConfirmacao() == true) {
                                         Double mediaP1;
                                         Double mediaP2;
-                                        Double desvioP1;
-                                        Double desvioP2;
+                                        Double desvioProd1;
+                                        Double desvioProd2;
 
-                                        mediaP1 = Double.valueOf(p1Media.getText().toString().replace(',', '.'));
-                                        mediaP2 = Double.valueOf(p2Media.getText().toString().replace(',', '.'));
-                                        desvioP1 = Double.valueOf(desvioProduto1.getText().toString().replace(',', '.'));
-                                        desvioP2 = Double.valueOf(desvioProduto2.getText().toString().replace(',', '.'));
+                                        mediaP1 = Double.valueOf(P1Media.getText().toString().replace(',', '.'));
+                                        mediaP2 = Double.valueOf(P2Media.getText().toString().replace(',', '.'));
+                                        desvioProd1 = Double.valueOf(ActivityCalibracao.this.desvioP1.getText().toString().replace(',', '.'));
+                                        desvioProd2 = Double.valueOf(desvioP2.getText().toString().replace(',', '.'));
 
                                         CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem = new CALIBRAGEM_SUBSOLAGEM(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
-                                                ferramentas.formataDataDb(ferramentas.dataAtual()), checaTurno(), idMaquinaImplemento,
-                                                idOperador, mediaP1, desvioP1, mediaP2, desvioP2);
+                                                ferramentas.formataDataDb(ferramentas.dataAtual()), checaTurno(), idImplemento,
+                                                idOperador, mediaP1, desvioProd1, mediaP2, desvioProd2);
                                         try {
-                                            Log.e("DATA CALIBRAÇÃO", ferramentas.formataDataDb(ferramentas.dataAtual()));
                                             dao.insert(calibragem_subsolagem);
                                         }catch(SQLiteConstraintException | NullPointerException ex) {
                                             AlertDialog dialogoErro = new AlertDialog.Builder(ActivityCalibracao.this)
@@ -1571,53 +1568,53 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putString("p1_a1", p1_a1.getText().toString());
-        outState.putString("p1_a2", p1_a2.getText().toString());
-        outState.putString("p1_a3", p1_a3.getText().toString());
-        outState.putString("p1_a4", p1_a4.getText().toString());
-        outState.putString("p1_a5", p1_a5.getText().toString());
+        outState.putString("p1_a1", P1_a1.getText().toString());
+        outState.putString("p1_a2", P1_a2.getText().toString());
+        outState.putString("p1_a3", P1_a3.getText().toString());
+        outState.putString("p1_a4", P1_a4.getText().toString());
+        outState.putString("p1_a5", P1_a5.getText().toString());
 
-        outState.putString("p2_a1", p2_a1.getText().toString());
-        outState.putString("p2_a2", p2_a2.getText().toString());
-        outState.putString("p2_a3", p2_a3.getText().toString());
-        outState.putString("p2_a4", p2_a4.getText().toString());
-        outState.putString("p2_a5", p2_a5.getText().toString());
+        outState.putString("p2_a1", P2_a1.getText().toString());
+        outState.putString("p2_a2", P2_a2.getText().toString());
+        outState.putString("p2_a3", P2_a3.getText().toString());
+        outState.putString("p2_a4", P2_a4.getText().toString());
+        outState.putString("p2_a5", P2_a5.getText().toString());
 
-        outState.putString("dif1_p1", dif1_p1.getText().toString());
-        outState.putString("dif2_p1", dif2_p1.getText().toString());
-        outState.putString("dif3_p1", dif3_p1.getText().toString());
-        outState.putString("dif4_p1", dif4_p1.getText().toString());
+        outState.putString("dif1_p1", dif1_P1.getText().toString());
+        outState.putString("dif2_p1", dif2_P1.getText().toString());
+        outState.putString("dif3_p1", dif3_P1.getText().toString());
+        outState.putString("dif4_p1", dif4_P1.getText().toString());
 
-        outState.putString("dif1_p2", dif1_p2.getText().toString());
-        outState.putString("dif2_p2", dif2_p2.getText().toString());
-        outState.putString("dif3_p2", dif3_p2.getText().toString());
-        outState.putString("dif4_p2", dif4_p2.getText().toString());
+        outState.putString("dif1_p2", dif1_P2.getText().toString());
+        outState.putString("dif2_p2", dif2_P2.getText().toString());
+        outState.putString("dif3_p2", dif3_P2.getText().toString());
+        outState.putString("dif4_p2", dif4_P2.getText().toString());
 
         outState.putDoubleArray("amostrasP1", amostrasP1);
         outState.putDoubleArray("amostrasP2", amostrasP2);
 
-        outState.putString("p1Media", p1Media.getText().toString());
-        outState.putString("p2Media", p2Media.getText().toString());
+        outState.putString("p1Media", P1Media.getText().toString());
+        outState.putString("p2Media", P2Media.getText().toString());
 
         outState.putString("mediaDifP1", mediaDifP1.getText().toString());
         outState.putString("mediaDifP2", mediaDifP2.getText().toString());
 
 
-        outState.putString("desvioProduto1", desvioProduto1.getText().toString());
-        outState.putString("desvioProduto2", desvioProduto2.getText().toString());
+        outState.putString("desvioProduto1", desvioP1.getText().toString());
+        outState.putString("desvioProduto2", desvioP2.getText().toString());
 
         outState.putInt("atualP1", atualP1);
         outState.putInt("atualP2", atualP2);
         outState.putInt("corrigirP1", corrigirP1);
         outState.putInt("corrigirP2", corrigirP2);
 
-        outState.putDouble("mediaGeralp1", mediaGeralp1);
-        outState.putDouble("mediaGeralp2", mediaGeralp2);
-        outState.putDouble("mediaPercentualp1", mediaPercentualp1);
-        outState.putDouble("mediaPercentualp2", mediaPercentualp2);
+        outState.putDouble("mediaGeralp1", mediaGeralP1);
+        outState.putDouble("mediaGeralp2", mediaGeralP2);
+        outState.putDouble("mediaPercentualp1", mediaPercentualP1);
+        outState.putDouble("mediaPercentualp2", mediaPercentualP2);
 
         outState.putInt("idMaquina", idMaquina);
-        outState.putInt("idMaquinaImplemento", idMaquinaImplemento);
+        outState.putInt("idImplemento", idImplemento);
         outState.putInt("idOperador", idOperador);
 
         outState.putInt("posicaoImplemento", posicaoImplemento);

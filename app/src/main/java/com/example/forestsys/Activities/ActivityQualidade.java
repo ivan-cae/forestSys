@@ -373,7 +373,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         indicador9 = findViewById(R.id.qualidade_indicador_9);
         indicador10 = findViewById(R.id.qualidade_indicador_10);
 
-        AVAL_SUBSOLAGEM aval_subsolagem = dao.selecionaAvalSubsolagem(idProg);
+        AVAL_SUBSOLAGEM aval_subsolagem = dao.selecionaAvalSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
         listaVerion = dao.listaIndicadoresSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), osSelecionada.getID_ATIVIDADE());
 
@@ -432,7 +432,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             CADASTRO_FLORESTAL cadastro_florestal = dao.selecionaCadFlorestal(idReg, idSet, talhao, ciclo, idManejo);
 
             String pegaEspacamento[] = dao.selecionaEspacamento(cadastro_florestal.getID_ESPACAMENTO()).getDESCRICAO().trim().replace(',', '.').split("X");
-            double teste;
+            double teste = 3;
             try {
                 teste = Double.parseDouble(pegaEspacamento[0]);
             } catch (NumberFormatException | NullPointerException n) {

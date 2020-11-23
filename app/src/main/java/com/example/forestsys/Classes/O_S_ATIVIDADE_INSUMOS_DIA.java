@@ -39,6 +39,7 @@ public class O_S_ATIVIDADE_INSUMOS_DIA implements Serializable {
     private String REGISTRO_DESCARREGADO;
     private String OBSERVACAO;
     private Integer ID;
+    private boolean EXPORT_PROXIMA_SINC = false;
 
     public O_S_ATIVIDADE_INSUMOS_DIA(Integer ID, Integer ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, Integer ID_INSUMO,
                                      double QTD_APLICADO, String ACAO_INATIVO, String REGISTRO_DESCARREGADO, String OBSERVACAO) {
@@ -115,6 +116,14 @@ public class O_S_ATIVIDADE_INSUMOS_DIA implements Serializable {
 
     public void setID(Integer ID) {
         this.ID = ID;
+    }
+
+    public boolean isEXPORT_PROXIMA_SINC() {
+        return EXPORT_PROXIMA_SINC;
+    }
+
+    public void setEXPORT_PROXIMA_SINC(boolean EXPORT_PROXIMA_SINC) {
+        this.EXPORT_PROXIMA_SINC = EXPORT_PROXIMA_SINC;
     }
 }
 

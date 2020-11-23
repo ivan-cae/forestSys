@@ -1094,6 +1094,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         oSAtividadesDiaAtual.setREGISTRO_DESCARREGADO(regDescarregado);
         oSAtividadesDiaAtual.setSTATUS("A");
 
+        oSAtividadesDiaAtual.setEXPORT_PROXIMA_SINC(true);
         dao.insert(oSAtividadesDiaAtual);
 
 
@@ -1134,10 +1135,13 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 dao.apagaOsAtividadeInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
                         dataAntesDoEdit, persisteInsumosDia.getID_INSUMO());
 
-                dao.insert(new O_S_ATIVIDADE_INSUMOS_DIA(persisteInsumosDia.getID(), osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
+                O_S_ATIVIDADE_INSUMOS_DIA insereInsumosDia = new O_S_ATIVIDADE_INSUMOS_DIA(persisteInsumosDia.getID(), osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
                         dataDepoisDoEdit,
                         persisteInsumosDia.getID_INSUMO(), persisteInsumosDia.getQTD_APLICADO(), persisteInsumosDia.getACAO_INATIVO(),
-                        persisteInsumosDia.getREGISTRO_DESCARREGADO(), persisteInsumosDia.getOBSERVACAO()));
+                        persisteInsumosDia.getREGISTRO_DESCARREGADO(), persisteInsumosDia.getOBSERVACAO());
+
+                insereInsumosDia.setEXPORT_PROXIMA_SINC(true);
+                dao.insert(insereInsumosDia);
 
                 DecimalFormat format = new DecimalFormat(".##");
                 BigDecimal qtdHaAplicado;
@@ -1178,16 +1182,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
                 editaAtividadeInsumos.setQTD_HA_APLICADO(converteQtdHaApl);
 
-                /*Log.e("QTD_HA_APLICADO Total para o insumo: " + persisteInsumosDia.getDESCRICAO() + " ->",
-                        String.valueOf(editaAtividadeInsumos.getQTD_HA_APLICADO()));
-
-                //Log.e("Qtd Apl "+persisteInsumosDia.getDESCRICAO(), String.valueOf(persisteInsumosDia.getQTD_APLICADO()));
-                Log.e("ACAO_INATIVO" + persisteInsumosDia.getDESCRICAO(), String.valueOf(persisteInsumosDia.getACAO_INATIVO()));
-
-
-                Log.e("idprog, Data, idIns", osSelecionada.getID_PROGRAMACAO_ATIVIDADE() + " " +
-                        dataDepoisDoEdit + " " + persisteInsumosDia.getID_INSUMO());
-*/
                 dao.update(editaAtividadeInsumos);
             }
         } catch (Exception ex) {
