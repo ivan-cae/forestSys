@@ -17,7 +17,7 @@
         tools:context=".Activities.ActivityCalibracao">
 
         <TextView
-            android:id="@+id/textView61"
+            android:id="@+id/calib_text_operador"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -33,16 +33,16 @@
             android:layout_width="300dp"
             android:layout_height="20dp"
             android:layout_marginTop="4dp"
-            app:layout_constraintStart_toStartOf="@+id/textView61"
-            app:layout_constraintTop_toBottomOf="@+id/textView61" />
+            app:layout_constraintStart_toStartOf="@+id/calib_text_operador"
+            app:layout_constraintTop_toBottomOf="@+id/calib_text_operador" />
 
         <com.example.forestsys.Assets.NDSpinner
             android:id="@+id/spinner_maquina_calibragem"
             android:layout_width="300dp"
             android:layout_height="20dp"
             android:layout_marginTop="4dp"
-            app:layout_constraintStart_toStartOf="@+id/textView16"
-            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+            app:layout_constraintStart_toStartOf="@+id/calib_text_maquina"
+            app:layout_constraintTop_toBottomOf="@+id/calib_text_maquina" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_calibracao"
@@ -215,7 +215,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView14" />
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/calib_text_maquina"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -227,7 +227,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
         <TextView
-            android:id="@+id/textView17"
+            android:id="@+id/calib_text_implemento"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -243,8 +243,8 @@
             android:layout_width="300dp"
             android:layout_height="20sp"
             android:layout_marginTop="4dp"
-            app:layout_constraintStart_toStartOf="@+id/textView17"
-            app:layout_constraintTop_toBottomOf="@+id/textView17" />
+            app:layout_constraintStart_toStartOf="@+id/calib_text_implemento"
+            app:layout_constraintTop_toBottomOf="@+id/calib_text_implemento" />
 
         <TextView
             android:id="@+id/data_os_calibragem"
@@ -993,7 +993,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <FrameLayout
             android:id="@+id/fragment_container_calibragem"
@@ -1020,7 +1020,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:maxWidth="220dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:menu="@menu/menu_main_lateral" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

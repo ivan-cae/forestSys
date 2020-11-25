@@ -53,6 +53,7 @@ import java.util.List;
 
 import static android.view.View.GONE;
 import static com.example.forestsys.Activities.ActivityAtividades.editouRegistro;
+import static com.example.forestsys.Activities.ActivityAtividades.erroPrestadorBool;
 import static com.example.forestsys.Activities.ActivityAtividades.joinOsInsumos;
 import static com.example.forestsys.Activities.ActivityAtividades.listaJoinOsInsumosSelecionados;
 import static com.example.forestsys.Activities.ActivityAtividades.oSAtividadesDiaAtual;
@@ -67,6 +68,7 @@ import static com.example.forestsys.Activities.FragmentoRendimento.HMEscavadeira
 import static com.example.forestsys.Activities.FragmentoRendimento.HOApontamento;
 import static com.example.forestsys.Activities.FragmentoRendimento.HOEscavadeiraApontamento;
 import static com.example.forestsys.Activities.FragmentoRendimento.areaRealizadaApontamento;
+import static com.example.forestsys.Activities.FragmentoRendimento.erroPrestador;
 import static com.example.forestsys.Activities.FragmentoRendimento.obsApontamento;
 import static com.example.forestsys.Activities.FragmentoRendimento.posicaoPrestador;
 
@@ -77,6 +79,8 @@ import static com.example.forestsys.Activities.ActivityAtividades.ho;
 import static com.example.forestsys.Activities.ActivityAtividades.hoe;
 import static com.example.forestsys.Activities.ActivityAtividades.obs;
 import static com.example.forestsys.Activities.ActivityAtividades.area;
+import static com.example.forestsys.Adapters.AdaptadorFragmentoInsumos.insumoConforme1;
+import static com.example.forestsys.Adapters.AdaptadorFragmentoInsumos.insumoConforme2;
 import static java.sql.Types.NULL;
 
 public class ActivityRegistros extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -236,7 +240,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     private static Double diferencaPercentual(Double anterior, Double atual) {
         Double calculo = (1 - (atual / anterior)) * 100;//((anterior - atual) / anterior) * 100.0
         DecimalFormat df = new DecimalFormat("###.##");
-        Log.e("Diferenca percentual", df.format(calculo).replace(',', '.'));
+        //Log.e("Diferenca percentual", df.format(calculo).replace(',', '.'));
         return Double.valueOf(df.format(calculo).replace(',', '.'));
     }
 
@@ -533,19 +537,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             }
         };
         if (editouRegistro == false) {
-            if (diferencaPercentual(listaJoinOsInsumosSelecionados.get(0).getQTD_HA_RECOMENDADO(),
-                    listaJoinOsInsumosSelecionados.get(0).getQTD_APLICADO() *
-                            Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) > 5.0000 ||
-                    diferencaPercentual(listaJoinOsInsumosSelecionados.get(0).getQTD_HA_RECOMENDADO(),
-                            listaJoinOsInsumosSelecionados.get(0).getQTD_APLICADO() *
-                                    Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) < -5.0000
-
-                    || diferencaPercentual(listaJoinOsInsumosSelecionados.get(1).getQTD_HA_RECOMENDADO(),
-                    listaJoinOsInsumosSelecionados.get(1).getQTD_APLICADO() *
-                            Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) > 5.0000 ||
-                    diferencaPercentual(listaJoinOsInsumosSelecionados.get(1).getQTD_HA_RECOMENDADO(),
-                            listaJoinOsInsumosSelecionados.get(1).getQTD_APLICADO() *
-                                    Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) < -5.0000) {
+            if (insumoConforme1 == false || insumoConforme2 == false) {
                 abreDialogoQtdForaFaixa();
             } else {
                 t.run();
@@ -569,23 +561,13 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         TextView titulo2 = mView.findViewById(R.id.dialogo_registros_insumos_titulo2);
         Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_insumo_fora_faixa);
 
-        if (diferencaPercentual(listaJoinOsInsumosSelecionados.get(0).getQTD_HA_RECOMENDADO(),
-                listaJoinOsInsumosSelecionados.get(0).getQTD_APLICADO() *
-                        Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) > 5.0000 ||
-                diferencaPercentual(listaJoinOsInsumosSelecionados.get(0).getQTD_HA_RECOMENDADO(),
-                        listaJoinOsInsumosSelecionados.get(0).getQTD_APLICADO() *
-                                Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) < -5.0000) {
+        if (insumoConforme1 == false) {
             titulo1.setVisibility(View.VISIBLE);
             titulo1.setText("Digite a justificativa para o insumo " + listaJoinOsInsumosSelecionados.get(0).getDESCRICAO());
             valorJustificativa1.setVisibility(View.VISIBLE);
         }
 
-        if (diferencaPercentual(listaJoinOsInsumosSelecionados.get(1).getQTD_HA_RECOMENDADO(),
-                listaJoinOsInsumosSelecionados.get(1).getQTD_APLICADO() *
-                        Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) > 5.0000 ||
-                diferencaPercentual(listaJoinOsInsumosSelecionados.get(1).getQTD_HA_RECOMENDADO(),
-                        listaJoinOsInsumosSelecionados.get(1).getQTD_APLICADO() *
-                                Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) < -5.0000) {
+        if (insumoConforme2 == false) {
             titulo2.setVisibility(View.VISIBLE);
             titulo2.setText("Digite a justificativa para o insumo " + listaJoinOsInsumosSelecionados.get(1).getDESCRICAO());
             valorJustificativa2.setVisibility(View.VISIBLE);
@@ -931,6 +913,13 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         if (posicaoPrestador == -1) {
             erro = true;
             erroGeral = true;
+
+            erroPrestador.setError("");
+            erroPrestadorBool = true;
+        }else{
+
+            erroPrestador.setError(null);
+            erroPrestadorBool = false;
         }
 
         if (erroNaString(hme) == true) {
@@ -1129,7 +1118,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 }
 
                 if(persisteInsumosDia.getOBSERVACAO() != null) {
-                    Log.e("Obs " + String.valueOf(i), persisteInsumosDia.getOBSERVACAO());
+                   // Log.e("Obs " + String.valueOf(i), persisteInsumosDia.getOBSERVACAO());
                 }
 
                 dao.apagaOsAtividadeInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
@@ -1162,10 +1151,10 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 }
 
 
-                Log.e("soma area | soma qtdApl", String.valueOf(somaAreaRealizada)+" | "+String.valueOf(somaQtdApl));
+                //Log.e("soma area | soma qtdApl", String.valueOf(somaAreaRealizada)+" | "+String.valueOf(somaQtdApl));
 
                 String divisao = String.valueOf((long)somaQtdApl / (long)somaAreaRealizada);
-                Log.e("Valor divisao", divisao);
+                //Log.e("Valor divisao", divisao);
 
                 qtdHaAplicado = new BigDecimal(divisao).setScale(2, BigDecimal.ROUND_UP);
 

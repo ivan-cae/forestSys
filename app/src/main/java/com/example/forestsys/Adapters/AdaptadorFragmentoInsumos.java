@@ -23,6 +23,8 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
 
     private List<Join_OS_INSUMOS> insumos = new ArrayList<>();
     private OnItemClickListener listener;
+    public static boolean insumoConforme1 = false;
+    public static boolean insumoConforme2 = false;
 
     @NonNull
     @Override
@@ -55,12 +57,16 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
                 if(diferencaPercentual((insumo.getQTD_HA_RECOMENDADO() * auxDouble), insumo.getQTD_APLICADO()) > 5.0000 ||
                         diferencaPercentual((insumo.getQTD_HA_RECOMENDADO() * auxDouble), insumo.getQTD_APLICADO()) < -5.0000){
                     if(holder.QTDApl.getText().toString().length()>0){
+                        if(position == 0) insumoConforme1 = false;
+                        if(position == 1) insumoConforme2 = false;
                         holder.QTDApl.setBackgroundColor(Color.parseColor("#FF0000"));
                         holder.QTDApl.setTextColor(Color.parseColor("#FFFFFFFF"));
                     }
                 }
                 else{
                     if(holder.QTDApl.getText().toString().length()>0){
+                        if(position == 0) insumoConforme1 = true;
+                        if(position == 1) insumoConforme2 = true;
                         holder.QTDApl.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
                         holder.QTDApl.setTextColor(holder.descricao.getCurrentTextColor());
 

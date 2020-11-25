@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 @SuppressLint("AppCompatCustomView")
 public class NDSpinner extends Spinner {
@@ -35,5 +36,9 @@ public class NDSpinner extends Spinner {
         if (sameSelected) {
             getOnItemSelectedListener().onItemSelected(this, getSelectedView(), position, getSelectedItemId());
         }
+    }
+
+    public void setError(String s){
+        ((TextView)getSelectedView()).setError(s);
     }
 }

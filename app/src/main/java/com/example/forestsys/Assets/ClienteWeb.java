@@ -98,7 +98,12 @@ public class ClienteWeb<client> {
                 .post(body)
                 .build();
         try (okhttp3.Response response = client.newCall(request).execute()) {
-            return response.body().string();
+            String s = response.body().string();
+            response.close();
+            return s;
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -110,6 +115,7 @@ public class ClienteWeb<client> {
 
         String jsonDeResposta = response.body().string();
 
+        response.close();
         return jsonDeResposta;
     }
 
@@ -120,7 +126,12 @@ public class ClienteWeb<client> {
                 .put(body)
                 .build();
         try (okhttp3.Response response = client.newCall(request).execute()) {
-            return response.body().string();
+            String s = response.body().string();
+            response.close();
+            return s;
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -193,6 +204,7 @@ public class ClienteWeb<client> {
             } else {
                 erroNoOracle = true;
             }
+            resposta.body().close();
         }
 
 

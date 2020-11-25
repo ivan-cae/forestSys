@@ -106,6 +106,7 @@ public class ActivityAtividades extends AppCompatActivity
     public static String hoe;
     public static String hme;
     public static String obs;
+    public static boolean erroPrestadorBool;
 
     public static boolean editouInsumo1;
     public static boolean editouInsumo2;
@@ -167,6 +168,8 @@ public class ActivityAtividades extends AppCompatActivity
         hoe = "";
         hme = "";
         obs = "";
+
+        erroPrestadorBool = false;
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);

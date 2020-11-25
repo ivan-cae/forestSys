@@ -48,6 +48,7 @@ import com.example.forestsys.Classes.AVAL_PONTO_SUBSOLAGEM;
 import com.example.forestsys.Classes.AVAL_SUBSOLAGEM;
 import com.example.forestsys.Classes.CADASTRO_FLORESTAL;
 import com.example.forestsys.Classes.INDICADORES_SUBSOLAGEM;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import android.widget.Toast;
@@ -896,7 +897,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                         dialog.show();
                     } else {
                         try {
-                            Log.e("Tamanho lista Verion", String.valueOf(listaVerion.size()));
+                            //Log.e("Tamanho lista Verion", String.valueOf(listaVerion.size()));
 
                             if(listaVerion.size() == 0) {
                                 dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 11, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP1.getText().toString().replace(',', '.'))));
@@ -944,8 +945,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                                 for(int i = 0; i<4; i++) {
                                     dao.update(listaVerion.get(i));
-                                    Log.e("Valor Indicador "+ String.valueOf(listaVerion.get(i).getID_INDICADOR()),
-                                            String.valueOf(listaVerion.get(i).getVALOR_INDICADOR()));
+                                    //Log.e("Valor Indicador "+ String.valueOf(listaVerion.get(i).getID_INDICADOR()),
+                                            //String.valueOf(listaVerion.get(i).getVALOR_INDICADOR()));
                                 }
                             }
 
@@ -976,7 +977,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                             ex.printStackTrace();
                             AlertDialog dialogoErro = new AlertDialog.Builder(ActivityQualidade.this)
                                     .setTitle("Erro")
-                                    .setMessage("Houve um problema ao salvar a calibração.")
+                                    .setMessage("Houve um problema ao salvar a avaliação.")
                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -1691,8 +1692,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             s = df.format(String.valueOf(longitude));
             longitude = Double.valueOf(s);
 */
-            Log.e("Latitude", String.valueOf(latitude));
-            Log.e("Longitude", String.valueOf(longitude));
+            //Log.e("Latitude", String.valueOf(latitude));
+            //Log.e("Longitude", String.valueOf(longitude));
 
             AVAL_PONTO_SUBSOLAGEM insere;
             insere = new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),

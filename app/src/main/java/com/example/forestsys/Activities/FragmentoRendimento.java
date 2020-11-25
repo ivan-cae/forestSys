@@ -10,6 +10,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -31,6 +32,7 @@ import com.example.forestsys.Classes.PRESTADORES;
 import java.util.ArrayList;
 
 import static com.example.forestsys.Activities.ActivityAtividades.editouRegistro;
+import static com.example.forestsys.Activities.ActivityAtividades.erroPrestadorBool;
 import static com.example.forestsys.Activities.ActivityAtividades.hh;
 import static com.example.forestsys.Activities.ActivityAtividades.hm;
 import static com.example.forestsys.Activities.ActivityAtividades.hme;
@@ -52,7 +54,7 @@ public class FragmentoRendimento extends Fragment {
     public static EditText HHApontamento;
     public static EditText HMEscavadeiraApontamento;
     public static EditText obsApontamento;
-
+    public static TextView erroPrestador;
 
     public static int posicaoResponsavel = -1;
     public static int posicaoPrestador = -1;
@@ -115,6 +117,10 @@ public class FragmentoRendimento extends Fragment {
                     spinnerPrestador.setAdapter(adapterPrestadores);
                     spinnerPrestador.setSelection(posicaoPrestador);
                 }
+
+                if(erroPrestadorBool==true){
+                    erroPrestador.setError("");
+                }
             }if(auxSavedInstanceState==null && editouRegistro==false){
                 areaRealizadaApontamento.getText().clear();
                 HOEscavadeiraApontamento.getText().clear();
@@ -129,10 +135,37 @@ public class FragmentoRendimento extends Fragment {
         }
     }
 
+
+    /*
     //Poe a virgula automaticamente como separador decimal dos números inseridos nas caixas de texto
     //parâmetros de entrada: Uma instância de uma caixa de texto, um inteiro representando quantos números virão antes da virgula,
-    //umaa string contendo os valores inseridos na caixa de texto
+    //uma string contendo os valores inseridos na caixa de texto
     public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
+
+        String input = s.toString();
+        int tamanho = input.length();
+        String semFormatar = input.replace(",","").trim();
+
+        Log.e("Input", input);
+        Log.e("EditText", edit.getText().toString());
+
+            if (tamanho == 2) {
+                input = "," + semFormatar;
+                edit.setText(input);
+            }
+
+        if (tamanho > 2) {
+            String antesVirgula = semFormatar.substring(0, tamanho - 3);
+            String depoisVirgula = semFormatar.substring(tamanho - 3, tamanho - 1);
+
+            input = antesVirgula + "," + depoisVirgula;
+            edit.setText(input);
+        }
+
+    }
+*/
+
+public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
         int tamanho;
         String input;
 
@@ -159,7 +192,6 @@ public class FragmentoRendimento extends Fragment {
         }
     }
 
-
     //inicialização dos itens na tela e variáveis
     public void inicializacao() {
         spinnerResponsavel = getView().findViewById(R.id.spinner_responsavel_apontamento);
@@ -169,6 +201,7 @@ public class FragmentoRendimento extends Fragment {
         HOApontamento = getView().findViewById(R.id.hora_operador_apontamento);
         HMApontamento = getView().findViewById(R.id.hora_maquina_apontamento);
         HHApontamento = getView().findViewById(R.id.hora_homem_apontamento);
+        erroPrestador = getView().findViewById(R.id.fragmento_rendimento_erro_prestador);
         HMEscavadeiraApontamento = getView().findViewById(R.id.hora_maquina_escavadeira_apontamento);
         obsApontamento = getView().findViewById(R.id.obs_apontamento);
 
@@ -344,6 +377,8 @@ public class FragmentoRendimento extends Fragment {
                 if (contSpinnerPrestador > 0) {
                     position++;
                     posicaoPrestador = position;
+                    erroPrestador.setError(null);
+                    erroPrestadorBool = false;
                 }
                 contSpinnerPrestador++;
             }

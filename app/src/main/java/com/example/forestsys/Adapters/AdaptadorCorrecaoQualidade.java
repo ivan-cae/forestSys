@@ -416,7 +416,7 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
     }
 
 public String formataLatLong(String s){
-Log.e("LatLong", s);
+//Log.e("LatLong", s);
         if(s.length()<5) return s.replace(".", ",")+"°";
         if(s.length()>5) {
             String[] antesDaVirgula = s.replace('.', ',').split(",");

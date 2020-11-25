@@ -51,6 +51,8 @@ import com.example.forestsys.Classes.OPERADORES;
 import com.example.forestsys.Classes.Joins.Join_MAQUINA_IMPLEMENTO;
 import com.google.android.material.navigation.NavigationView;
 
+import org.w3c.dom.Text;
+
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -777,7 +779,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         Double aux1 = arredonda2Casas(desvioPadrao(amostrasP1));
         desvioP1.setText(String.valueOf((aux1)).replace('.', ','));
 
-        Log.e("todosConformeP1", String.valueOf(todosConformeP1));
+        //Log.e("todosConformeP1", String.valueOf(todosConformeP1));
 
     }
 
@@ -893,7 +895,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         Double aux1 = arredonda2Casas(desvioPadrao(amostrasP2));
         desvioP2.setText(String.valueOf((aux1)).replace('.', ','));
 
-        Log.e("todosConformeP2", String.valueOf(todosConformeP2));
+        //Log.e("todosConformeP2", String.valueOf(todosConformeP2));
     }
 
     //Abre caixa de diálogo para preencher amostras do produto
@@ -1549,6 +1551,91 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                                                     }
                                                 }).create();
                                         dialogoErro.show();
+
+                                        if(P1_a1.length()==0){
+                                            P1_a1.setError("");
+                                        }else{
+                                            P1_a1.setError(null);
+                                        }
+
+                                        if(P1_a2.length()==0){
+                                            P1_a2.setError("");
+                                        }else{
+                                            P1_a2.setError(null);
+                                        }
+
+                                        if(P1_a3.length()==0){
+                                            P1_a3.setError("");
+                                        }else{
+                                            P1_a3.setError(null);
+                                        }
+
+                                        if(P1_a4.length()==0){
+                                            P1_a4.setError("");
+                                        }else{
+                                            P1_a4.setError(null);
+                                        }
+
+                                        if(P1_a5.length()==0){
+                                            P1_a5.setError("");
+                                        }else{
+                                            P1_a5.setError(null);
+                                        }
+
+
+                                        if(P2_a1.length()==0){
+                                            P2_a1.setError("");
+                                        }else{
+                                            P2_a1.setError(null);
+                                        }
+
+                                        if(P2_a2.length()==0){
+                                            P2_a2.setError("");
+                                        }else{
+                                            P2_a2.setError(null);
+                                        }
+
+                                        if(P2_a3.length()==0){
+                                            P2_a3.setError("");
+                                        }else{
+                                            P2_a3.setError(null);
+                                        }
+
+                                        if(P2_a4.length()==0){
+                                            P2_a4.setError("");
+                                        }else{
+                                            P2_a4.setError(null);
+                                        }
+
+                                        if(P2_a5.length()==0){
+                                            P2_a5.setError("");
+                                        }else{
+                                            P2_a5.setError(null);
+                                        }
+
+
+
+                                        TextView textImplemento = findViewById(R.id.calib_text_implemento);
+                                        TextView textMaquina = findViewById(R.id.calib_text_maquina);
+                                        TextView textOperador = findViewById(R.id.calib_text_operador);
+
+                                        if(idImplemento == -1){
+                                            textImplemento.setError("");
+                                        }else{
+                                            textImplemento.setError(null);
+                                        }
+
+                                        if(idMaquina == -1){
+                                            textMaquina.setError("");
+                                        }else{
+                                            textMaquina.setError(null);
+                                        }
+
+                                        if(idOperador == -1){
+                                            textOperador.setError("");
+                                        }else{
+                                            textOperador.setError(null);
+                                        }
                                     }
                                 }
                             }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
