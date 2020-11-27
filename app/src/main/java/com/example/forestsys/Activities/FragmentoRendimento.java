@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.example.forestsys.Assets.BaseDeDados;
 import com.example.forestsys.Assets.DAO;
+import com.example.forestsys.Assets.Ferramentas;
 import com.example.forestsys.Assets.NDSpinner;
 import com.example.forestsys.R;
 import com.example.forestsys.Classes.GGF_USUARIOS;
@@ -69,6 +70,8 @@ public class FragmentoRendimento extends Fragment {
 
     private BaseDeDados baseDeDados;
     private DAO dao;
+
+    private Ferramentas ferramentas = new Ferramentas();
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragmento_rendimento, container, false);
@@ -118,10 +121,11 @@ public class FragmentoRendimento extends Fragment {
                     spinnerPrestador.setSelection(posicaoPrestador);
                 }
 
-                if(erroPrestadorBool==true){
+                if (erroPrestadorBool == true) {
                     erroPrestador.setError("");
                 }
-            }if(auxSavedInstanceState==null && editouRegistro==false){
+            }
+            if (auxSavedInstanceState == null && editouRegistro == false) {
                 areaRealizadaApontamento.getText().clear();
                 HOEscavadeiraApontamento.getText().clear();
                 HOApontamento.getText().clear();
@@ -136,35 +140,10 @@ public class FragmentoRendimento extends Fragment {
     }
 
 
+
+
+
     /*
-    //Poe a virgula automaticamente como separador decimal dos números inseridos nas caixas de texto
-    //parâmetros de entrada: Uma instância de uma caixa de texto, um inteiro representando quantos números virão antes da virgula,
-    //uma string contendo os valores inseridos na caixa de texto
-    public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
-
-        String input = s.toString();
-        int tamanho = input.length();
-        String semFormatar = input.replace(",","").trim();
-
-        Log.e("Input", input);
-        Log.e("EditText", edit.getText().toString());
-
-            if (tamanho == 2) {
-                input = "," + semFormatar;
-                edit.setText(input);
-            }
-
-        if (tamanho > 2) {
-            String antesVirgula = semFormatar.substring(0, tamanho - 3);
-            String depoisVirgula = semFormatar.substring(tamanho - 3, tamanho - 1);
-
-            input = antesVirgula + "," + depoisVirgula;
-            edit.setText(input);
-        }
-
-    }
-*/
-
 public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
         int tamanho;
         String input;
@@ -191,6 +170,7 @@ public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
             }
         }
     }
+*/
 
     //inicialização dos itens na tela e variáveis
     public void inicializacao() {
@@ -268,8 +248,13 @@ public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
                 FragmentoInsumos frag = (FragmentoInsumos) getActivity().getSupportFragmentManager().findFragmentById(R.id.registro_fragmento_insumos);
                 frag.setInsumos();
 
-                String[] antesDaVirgula = String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace('.', ',').split(",");
-                mascaraVirgula(areaRealizadaApontamento, antesDaVirgula[0].length(), s);
+                //método usado para a máscara anterior
+                /*String[] antesDaVirgula = String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace('.', ',').split(",");
+                mascaraVirgula(areaRealizadaApontamento, antesDaVirgula[0].length(), s);*/
+
+                //Método usado para a máscara atual
+                ferramentas.mascaraVirgula(areaRealizadaApontamento, s, 2,
+                        String.valueOf(osSelecionada.getAREA_PROGRAMADA()), count, before);
             }
 
             @Override
@@ -287,8 +272,12 @@ public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 hoe = checaTextView(HOEscavadeiraApontamento, hoe, 0);
-                mascaraVirgula(HOEscavadeiraApontamento, 2, s);
 
+                //Método usado para a máscara anterior
+                //mascaraVirgula(HOEscavadeiraApontamento, 2, s);
+
+                //Método usado para a máscara atual
+                ferramentas.mascaraVirgula(HOEscavadeiraApontamento, s, 2, "24,00", count, before);
             }
 
             @Override
@@ -307,7 +296,12 @@ public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 ho = checaTextView(HOApontamento, ho, 0);
-                mascaraVirgula(HOApontamento, 2, s);
+
+                //Método usado para a máscara anterior
+                //mascaraVirgula(HOApontamento, 2, s);
+
+                //Método usado para a máscara atual
+                ferramentas.mascaraVirgula(HOApontamento, s, 2, "24,00", count, before);
             }
 
 
@@ -327,7 +321,12 @@ public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 hm = checaTextView(HMApontamento, hm, 0);
-                mascaraVirgula(HMApontamento, 2, s);
+
+                //Método usado para a máscara anterior
+                //mascaraVirgula(HMApontamento, 2, s);
+
+                //Método usado para a máscara atual
+                ferramentas.mascaraVirgula(HMApontamento, s, 2, "24,00", count, before);
             }
 
             @Override
@@ -346,7 +345,12 @@ public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 hme = checaTextView(HMEscavadeiraApontamento, hme, 0);
-                mascaraVirgula(HMEscavadeiraApontamento, 2, s);
+
+                //Método usado para a máscara Anterior
+                //mascaraVirgula(HMEscavadeiraApontamento, 2, s);
+
+                //Método usado para a máscara atual
+                ferramentas.mascaraVirgula(HMEscavadeiraApontamento, s, 2, "24,00", count, before);
             }
 
             @Override
@@ -363,7 +367,12 @@ public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 hh = checaTextView(HHApontamento, hh, 300);
-                mascaraVirgula(HHApontamento, 3, s);
+
+                //Método usado para a máscara anterior
+                // mascaraVirgula(HHApontamento, 3, s);
+
+                //Método usado para a máscara atual
+                ferramentas.mascaraVirgula(HHApontamento, s, 2, "24,00", count, before);
             }
 
             @Override
@@ -437,7 +446,7 @@ public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
     //parâmetro de saída: null se o valor não puder ser convertido, a própria string se o valor puder ser convertido
     public String checaTextView(TextView t, String str, double limite) {
         String s1 = t.getText().toString().trim();
-        if (s1.length()==0) return null;
+        if (s1.length() == 0) return null;
         char[] c = s1.toCharArray();
         if (s1.length() > 0) {
             if (s1 == "," || c[s1.length() - 1] == ',' || c[0] == ',' || contaVirgula(s1, ',') > 1) {
@@ -509,7 +518,7 @@ public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
         } else hoe = "";
 
         if (osAtv.getOBSERVACAO() != null) {
-            if(osAtv.getOBSERVACAO()!=null) obsApontamento.setText(osAtv.getOBSERVACAO());
+            if (osAtv.getOBSERVACAO() != null) obsApontamento.setText(osAtv.getOBSERVACAO());
             obs = obsApontamento.getText().toString();
         } else obs = "";
     }

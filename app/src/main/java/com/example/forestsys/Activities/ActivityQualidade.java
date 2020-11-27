@@ -535,7 +535,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     //Poe a virgula automaticamente como separador decimal dos números inseridos nas caixas de teste
     //parâmetros de entrada: Uma instância de uma caixa de texto, um inteiro representando o índice da lista de indicadores onde está armazenado
     //limite superiorn inferior e casas decimais permitidos para o indicador, a string contendo os valores inseridos na caixa de texto
-    public void mascaraVirgula(EditText edit, int i, CharSequence s) {
+    /*public void mascaraVirgula(EditText edit, int i, CharSequence s) {
         int tamanho;
         String input;
         String[] antesDaVirgula;
@@ -565,6 +565,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             }
         }
     }
+*/
 
     //Sobreescrita do método de seleção de item do menu de navegação localizado na lateral da tela
     @Override
@@ -705,7 +706,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        mascaraVirgula(mediaEditP1, 0, s);
+                        String referencia = String.valueOf(atividadeIndicadores.get(0).getLIMITE_SUPERIOR());
+                        ferramentas.mascaraVirgula(mediaEditP1,s, atividadeIndicadores.get(0).getCASAS_DECIMAIS(), referencia, count, before);
                     }
 
                     @Override
@@ -723,7 +725,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        mascaraVirgula(desvioEditP1, 1, s);
+                        String referencia = String.valueOf(atividadeIndicadores.get(1).getLIMITE_SUPERIOR());
+                        ferramentas.mascaraVirgula(desvioEditP1,s, atividadeIndicadores.get(1).getCASAS_DECIMAIS(), referencia, count, before);
                     }
 
                     @Override
@@ -740,7 +743,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        mascaraVirgula(mediaEditP2, 2, s);
+                        String referencia = String.valueOf(atividadeIndicadores.get(2).getLIMITE_SUPERIOR());
+                        ferramentas.mascaraVirgula(mediaEditP2,s, atividadeIndicadores.get(2).getCASAS_DECIMAIS(), referencia, count, before);
                     }
 
                     @Override
@@ -758,7 +762,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        mascaraVirgula(desvioEditP2, 3, s);
+                        String referencia = String.valueOf(atividadeIndicadores.get(3).getLIMITE_SUPERIOR());
+                        ferramentas.mascaraVirgula(desvioEditP2,s, atividadeIndicadores.get(3).getCASAS_DECIMAIS(), referencia, count, before);
                     }
 
                     @Override
@@ -805,7 +810,9 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        mascaraVirgula(mediaEditP1, 0, s);
+                        String referencia = String.valueOf(atividadeIndicadores.get(0).getLIMITE_SUPERIOR());
+                        ferramentas.mascaraVirgula(mediaEditP1,s, atividadeIndicadores.get(0).getCASAS_DECIMAIS(), referencia, count, before);
+
                     }
 
                     @Override
@@ -823,7 +830,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        mascaraVirgula(desvioEditP1, 1, s);
+                        String referencia = String.valueOf(atividadeIndicadores.get(1).getLIMITE_SUPERIOR());
+                        ferramentas.mascaraVirgula(desvioEditP1,s, atividadeIndicadores.get(1).getCASAS_DECIMAIS(), referencia, count, before);
                     }
 
                     @Override
@@ -840,7 +848,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        mascaraVirgula(mediaEditP2, 2, s);
+                        String referencia = String.valueOf(atividadeIndicadores.get(2).getLIMITE_SUPERIOR());
+                        ferramentas.mascaraVirgula(mediaEditP2,s, atividadeIndicadores.get(2).getCASAS_DECIMAIS(), referencia, count, before);
                     }
 
                     @Override
@@ -858,7 +867,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        mascaraVirgula(desvioEditP2, 3, s);
+                        String referencia = String.valueOf(atividadeIndicadores.get(3).getLIMITE_SUPERIOR());
+                        ferramentas.mascaraVirgula(desvioEditP2,s, atividadeIndicadores.get(3).getCASAS_DECIMAIS(), referencia, count, before);
                     }
 
                     @Override
@@ -1331,7 +1341,9 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mascaraVirgula(editItem1, 0, s);
+                    String referencia = String.valueOf(atividadeIndicadores.get(0).getLIMITE_SUPERIOR());
+                    ferramentas.mascaraVirgula(editItem1,s, atividadeIndicadores.get(0).getCASAS_DECIMAIS(), referencia, count, before);
+
                 }
 
                 @Override
@@ -1348,7 +1360,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mascaraVirgula(editItem2, 1, s);
+                    String referencia = String.valueOf(atividadeIndicadores.get(1).getLIMITE_SUPERIOR());
+                    ferramentas.mascaraVirgula(editItem2,s, atividadeIndicadores.get(1).getCASAS_DECIMAIS(), referencia, count, before);
                 }
 
                 @Override
@@ -1365,7 +1378,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mascaraVirgula(editItem3, 2, s);
+                    String referencia = String.valueOf(atividadeIndicadores.get(2).getLIMITE_SUPERIOR());
+                    ferramentas.mascaraVirgula(editItem3,s, atividadeIndicadores.get(2).getCASAS_DECIMAIS(), referencia, count, before);
                 }
 
                 @Override
@@ -1382,7 +1396,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mascaraVirgula(editItem4, 3, s);
+                    String referencia = String.valueOf(atividadeIndicadores.get(3).getLIMITE_SUPERIOR());
+                    ferramentas.mascaraVirgula(editItem4,s, atividadeIndicadores.get(3).getCASAS_DECIMAIS(), referencia, count, before);
                 }
 
                 @Override
@@ -1399,7 +1414,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mascaraVirgula(editItem6, 5, s);
+                    String referencia = String.valueOf(atividadeIndicadores.get(5).getLIMITE_SUPERIOR());
+                    ferramentas.mascaraVirgula(editItem6,s, atividadeIndicadores.get(5).getCASAS_DECIMAIS(), referencia, count, before);
                 }
 
                 @Override
@@ -1418,7 +1434,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mascaraVirgula(editItem10, 9, s);
+                    String referencia = String.valueOf(atividadeIndicadores.get(9).getLIMITE_SUPERIOR());
+                    ferramentas.mascaraVirgula(editItem10,s, atividadeIndicadores.get(9).getCASAS_DECIMAIS(), referencia, count, before);
                 }
 
                 @Override
@@ -1454,7 +1471,9 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mascaraVirgula(editItem1, 0, s);
+                    String referencia = String.valueOf(atividadeIndicadores.get(0).getLIMITE_SUPERIOR());
+                    ferramentas.mascaraVirgula(editItem1,s, atividadeIndicadores.get(0).getCASAS_DECIMAIS(), referencia, count, before);
+
                 }
 
                 @Override
@@ -1471,7 +1490,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mascaraVirgula(editItem2, 1, s);
+                    String referencia = String.valueOf(atividadeIndicadores.get(1).getLIMITE_SUPERIOR());
+                    ferramentas.mascaraVirgula(editItem2,s, atividadeIndicadores.get(1).getCASAS_DECIMAIS(), referencia, count, before);
                 }
 
                 @Override
@@ -1488,7 +1508,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mascaraVirgula(editItem3, 2, s);
+                    String referencia = String.valueOf(atividadeIndicadores.get(2).getLIMITE_SUPERIOR());
+                    ferramentas.mascaraVirgula(editItem3,s, atividadeIndicadores.get(2).getCASAS_DECIMAIS(), referencia, count, before);
                 }
 
                 @Override
@@ -1505,7 +1526,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mascaraVirgula(editItem4, 3, s);
+                    String referencia = String.valueOf(atividadeIndicadores.get(3).getLIMITE_SUPERIOR());
+                    ferramentas.mascaraVirgula(editItem4,s, atividadeIndicadores.get(3).getCASAS_DECIMAIS(), referencia, count, before);
                 }
 
                 @Override
@@ -1522,7 +1544,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mascaraVirgula(editItem6, 5, s);
+                    String referencia = String.valueOf(atividadeIndicadores.get(5).getLIMITE_SUPERIOR());
+                    ferramentas.mascaraVirgula(editItem6,s, atividadeIndicadores.get(5).getCASAS_DECIMAIS(), referencia, count, before);
                 }
 
                 @Override
@@ -1541,13 +1564,15 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mascaraVirgula(editItem10, 9, s);
+                    String referencia = String.valueOf(atividadeIndicadores.get(9).getLIMITE_SUPERIOR());
+                    ferramentas.mascaraVirgula(editItem10,s, atividadeIndicadores.get(9).getCASAS_DECIMAIS(), referencia, count, before);
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
                 }
             });
+
 
             if (auxSavedInstanceState.getBoolean("editItem5") == true) editItem5.setChecked(true);
             if (auxSavedInstanceState.getBoolean("editItem7") == true) editItem7.setChecked(true);

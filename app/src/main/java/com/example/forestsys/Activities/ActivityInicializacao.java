@@ -24,6 +24,8 @@ public class ActivityInicializacao extends AppCompatActivity {
     public static String HOST_PORTA;
     public static String nomeEmpresaPref;
     public static boolean conectado;
+    public static boolean pulaSinc;
+    private Configs configs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,18 +33,18 @@ public class ActivityInicializacao extends AppCompatActivity {
         setContentView(R.layout.activity_inicializacao);
         BaseDeDados baseDeDados = BaseDeDados.getInstance(getApplicationContext());
         DAO dao = baseDeDados.dao();
-
+        pulaSinc = false;
         if (dao.selecionaConfigs() == null) {
-            dao.insert(new Configs(1, "GELF", "sateliteinfo.ddns.net",
-                    "3333", 90, 5));
+            pulaSinc = true;
+        }else {
+            configs = dao.selecionaConfigs();
+            HOST_PORTA = "http://" + configs.getEndereçoHost() + ":" + configs.getPortaDeComunicacao() + "/";
+            nomeEmpresaPref = configs.getNomeEmpresa();
         }
-        Configs configs = dao.selecionaConfigs();
-        HOST_PORTA = "http://"+configs.getEndereçoHost() + ":" + configs.getPortaDeComunicacao() + "/";
-        nomeEmpresaPref = configs.getNomeEmpresa();
 
         ClienteWeb clienteWeb = new ClienteWeb(getApplicationContext());
 
-        if(temRede()==true){
+        if(temRede()==true && pulaSinc==false){
         try {
             clienteWeb.sincronizaWebService();
         } catch (Exception e) {

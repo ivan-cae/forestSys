@@ -1,11 +1,15 @@
 package com.example.forestsys.Assets;
 
+import android.text.InputFilter;
 import android.text.format.DateFormat;
+import android.util.Log;
+import android.widget.EditText;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
 import static java.lang.String.format;
 
 public class Ferramentas {
@@ -66,5 +70,60 @@ public class Ferramentas {
         return dia+ "-" +mes+ "-" +ano;
     }
 
+    //Poe a virgula automaticamente como separador decimal dos números inseridos nas caixas de texto
+    //parâmetros de entrada: Uma instância de uma caixa de texto, um inteiro representando quantos números virão antes da virgula,
+    //uma string contendo os valores inseridos na caixa de texto
+    public static void mascaraVirgula(EditText edit, CharSequence s, int casasDecimais, String valorReferencia,
+                                      int contAtual, int contAnterior) {
 
+        Log.e("Digitado", s.toString());
+        Log.e("Anterior", String.valueOf(contAnterior));
+        Log.e("Atual", String.valueOf(contAtual));
+
+        if(casasDecimais == 0) casasDecimais = 2;
+
+        String input = s.toString();
+        String semFormatar = input.replace(",", "").trim();
+        int tamanho = semFormatar.length();
+        String valorFinal = semFormatar;
+        char[] separaSemFormatar = semFormatar.toCharArray();
+        char[] separaFormatado = input.toCharArray();
+        int nCasasAntesVirgula = 2;
+
+        valorReferencia = valorReferencia.replace(".", ",");
+        String[] antesDaVirgula = valorReferencia.split(",");
+        nCasasAntesVirgula = antesDaVirgula[0].length();
+
+
+        edit.setFilters(new InputFilter[]{
+                new InputFilter.LengthFilter(nCasasAntesVirgula+3)});
+
+        if (contAnterior != contAtual) {
+            if (tamanho > casasDecimais-1) {
+                if (tamanho == casasDecimais) {
+                    if (contAnterior>contAtual && input.contains(",")) {
+                        valorFinal = "";
+                        valorFinal = (separaSemFormatar[0] + "" + separaSemFormatar[1]).trim();
+                    }
+
+                    if(contAnterior<contAtual && !input.contains(",")){
+                        valorFinal = separaSemFormatar[0] + "," + separaSemFormatar[1];
+                    }
+                }
+            }
+
+            if (tamanho > casasDecimais) {
+                valorFinal = "";
+                for (int i = 0; i < tamanho; i++) {
+                    valorFinal += separaSemFormatar[i];
+                    if (i == (tamanho - (casasDecimais+1))) {
+                        valorFinal += ",";
+                    }
+
+                }
+            }
+            edit.setText(valorFinal.trim());
+            edit.setSelection(edit.length());
+        }
+    }
 }

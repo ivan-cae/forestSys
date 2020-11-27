@@ -5,14 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.forestsys.Assets.BaseDeDados;
 import com.example.forestsys.Assets.DAO;
@@ -31,7 +29,7 @@ public class ActivityConfiguracoes extends AppCompatActivity {
     private EditText editHost;
     private EditText editPorta;
 
-    private String[] opçõesPermanencia = new String[]{"15", "30", "45",
+    private String[] opcoesPermanencia = new String[]{"15", "30", "45",
             "60", "75", "90"};
     private NDSpinner spinnerPermanencia;
     private Integer posicaoSpinnerPermanencia;
@@ -53,14 +51,16 @@ public class ActivityConfiguracoes extends AppCompatActivity {
         DAO dao = baseDeDados.dao();
         Configs configs = dao.selecionaConfigs();
 
-        if (configs.getNomeEmpresa() != null) editNomeEmpresa.setText(configs.getNomeEmpresa());
-        else editNomeEmpresa.setText("GELF");
-        if (configs.getEndereçoHost() != null) editHost.setText(configs.getEndereçoHost());
-        if (configs.getPortaDeComunicacao() != null)
-            editPorta.setText(configs.getPortaDeComunicacao());
+        if(configs!=null) {
+            if (configs.getNomeEmpresa() != null) editNomeEmpresa.setText(configs.getNomeEmpresa());
+            else editNomeEmpresa.setText("GELF");
+            if (configs.getEndereçoHost() != null) editHost.setText(configs.getEndereçoHost());
+            if (configs.getPortaDeComunicacao() != null)
+                editPorta.setText(configs.getPortaDeComunicacao());
+        }
 
         ArrayAdapter adapterPioridade = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, opçõesPermanencia);
+                android.R.layout.simple_spinner_item, opcoesPermanencia);
         adapterPioridade.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPermanencia.setAdapter(adapterPioridade);
 
@@ -75,8 +75,11 @@ public class ActivityConfiguracoes extends AppCompatActivity {
             }
         });
 
-        spinnerPermanencia.setSelection(configs.getPosicaoNoSpinner());
-
+        if(configs!=null) {
+            spinnerPermanencia.setSelection(configs.getPosicaoNoSpinner());
+        }else{
+            spinnerPermanencia.setSelection(opcoesPermanencia.length - 1);
+        }
 
         botaoSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +98,7 @@ public class ActivityConfiguracoes extends AppCompatActivity {
                                 if (editHost.length() > 0) host = editHost.getText().toString();
                                 if (editPorta.length() > 0) porta = editPorta.getText().toString();
                                 try {
-                                    dao.insert(new Configs(1, empresa, host, porta, Integer.valueOf(opçõesPermanencia[posicaoSpinnerPermanencia]), posicaoSpinnerPermanencia));
+                                    dao.insert(new Configs(1, empresa, host, porta, Integer.valueOf(opcoesPermanencia[posicaoSpinnerPermanencia]), posicaoSpinnerPermanencia));
                                     Intent it = new Intent(ActivityConfiguracoes.this, ActivityInicializacao.class);
                                     startActivity(it);
                                 } catch (Exception ex) {

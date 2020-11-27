@@ -32,6 +32,8 @@ import com.example.forestsys.Assets.Ferramentas;
 import com.example.forestsys.R;
 import com.example.forestsys.Classes.Joins.Join_OS_INSUMOS;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import static com.example.forestsys.Activities.ActivityAtividades.editouRegistro;
@@ -67,6 +69,7 @@ public class FragmentoInsumos extends Fragment {
 
     private double auxValorDialogoQtd;
     private boolean cancelouDialogoEdicao;
+
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         auxSavedInstanceState = savedInstanceState;
@@ -188,7 +191,7 @@ public class FragmentoInsumos extends Fragment {
     //Poe a virgula automaticamente como separador decimal dos números inseridos nas caixas de texto
     //parâmetros de entrada: Uma instância de uma caixa de texto, um double representando a qtd_ha_recomendado para o insumo,
     //a string contendo os valores inseridos na caixa de texto
-    public void mascaraVirgula(EditText edit, double qtd_ha_rec , CharSequence s){
+    /*public void mascaraVirgula(EditText edit, double qtd_ha_rec , CharSequence s){
         int tamanho;
         String input;
 
@@ -217,7 +220,7 @@ public class FragmentoInsumos extends Fragment {
                 }
             }
         }
-    }
+    }*/
 
     //Abre o diálogo para preencher a quantidade aplicada de um insumo.
     //Parâmetro de entrada: instância da classe Join_OS_INSUMOS
@@ -239,7 +242,21 @@ public class FragmentoInsumos extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mascaraVirgula(valorDialogoQtd, insere.getQTD_HA_RECOMENDADO(), s);
+                DecimalFormat format = new DecimalFormat(".##");
+
+                double areaDouble = Double.valueOf(area.replace(',', '.'));
+
+                double mult = ((long) areaDouble * (long)insere.getQTD_HA_RECOMENDADO());
+                //Log.e("Valor divisao", divisao);
+
+                BigDecimal bigDecimal = new BigDecimal(mult).setScale(2, BigDecimal.ROUND_UP);
+
+                String qtd_ha_rec  = new DecimalFormat(".##").format(bigDecimal).replace(',', '.');
+
+                //BigDecimal =
+                //String  = format.format(String.valueOf(Double.valueOf(area.replace(',', '.')) * insere.getQTD_HA_RECOMENDADO()));
+
+                ferramentas.mascaraVirgula(valorDialogoQtd, s, 2, qtd_ha_rec, count, before);
             }
 
             @Override

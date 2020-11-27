@@ -199,12 +199,13 @@ public class ClienteWeb<client> {
 
             okhttp3.Response resposta = client.newCall(request).execute();
 
+
             if (resposta.isSuccessful()) {
                 erroNoOracle = false;
             } else {
                 erroNoOracle = true;
             }
-            resposta.body().close();
+            resposta.close();
         }
 
 
