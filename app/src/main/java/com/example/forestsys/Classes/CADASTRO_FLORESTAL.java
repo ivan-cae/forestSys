@@ -40,11 +40,11 @@ import java.io.Serializable;
 public class CADASTRO_FLORESTAL implements Serializable {
     @NonNull
     @ColumnInfo(name = "ID_REGIONAL")
-    private int ID_REGIONAL;
+    private Integer ID_REGIONAL;
 
     @NonNull
     @ColumnInfo(name = "ID_SETOR")
-    private int ID_SETOR;
+    private Integer ID_SETOR;
 
     @NonNull
     @ColumnInfo(name = "TALHAO")
@@ -52,29 +52,27 @@ public class CADASTRO_FLORESTAL implements Serializable {
 
     @NonNull
     @ColumnInfo(name = "CICLO")
-    private int CICLO;
+    private Integer CICLO;
 
     @NonNull
     @ColumnInfo(name = "ID_MANEJO")
-    private int ID_MANEJO;
+    private Integer ID_MANEJO;
 
     private String DATA_MANEJO;
 
     private String DATA_PROGRAMACAO_REFORMA;
 
-    @NonNull
     @ColumnInfo(name = "ID_MATERIAL_GENETICO")
-    private int ID_MATERIAL_GENETICO;
+    private Integer ID_MATERIAL_GENETICO;
 
-    @NonNull
     @ColumnInfo(name = "ID_ESPACAMENTO")
-    private int ID_ESPACAMENTO;
+    private Integer ID_ESPACAMENTO;
 
     private String OBSERVACAO;
 
-    private int ATIVO;
+    private Integer ATIVO;
 
-    public CADASTRO_FLORESTAL(int ID_REGIONAL, int ID_SETOR, @NonNull String TALHAO, int CICLO, int ID_MANEJO, String DATA_MANEJO, String DATA_PROGRAMACAO_REFORMA, int ID_MATERIAL_GENETICO, int ID_ESPACAMENTO, String OBSERVACAO, int ATIVO) {
+    public CADASTRO_FLORESTAL(Integer ID_REGIONAL, Integer ID_SETOR, @NonNull String TALHAO, Integer CICLO, Integer ID_MANEJO, String DATA_MANEJO, String DATA_PROGRAMACAO_REFORMA, Integer ID_MATERIAL_GENETICO, Integer ID_ESPACAMENTO, String OBSERVACAO, Integer ATIVO) {
         this.ID_REGIONAL = ID_REGIONAL;
         this.ID_SETOR = ID_SETOR;
         this.TALHAO = TALHAO;
@@ -88,19 +86,19 @@ public class CADASTRO_FLORESTAL implements Serializable {
         this.ATIVO = ATIVO;
     }
 
-    public int getID_REGIONAL() {
+    public Integer getID_REGIONAL() {
         return ID_REGIONAL;
     }
 
-    public void setID_REGIONAL(int ID_REGIONAL) {
+    public void setID_REGIONAL(Integer ID_REGIONAL) {
         this.ID_REGIONAL = ID_REGIONAL;
     }
 
-    public int getID_SETOR() {
+    public Integer getID_SETOR() {
         return ID_SETOR;
     }
 
-    public void setID_SETOR(int ID_SETOR) {
+    public void setID_SETOR(Integer ID_SETOR) {
         this.ID_SETOR = ID_SETOR;
     }
 
@@ -113,19 +111,19 @@ public class CADASTRO_FLORESTAL implements Serializable {
         this.TALHAO = TALHAO;
     }
 
-    public int getCICLO() {
+    public Integer getCICLO() {
         return CICLO;
     }
 
-    public void setCICLO(int CICLO) {
+    public void setCICLO(Integer CICLO) {
         this.CICLO = CICLO;
     }
 
-    public int getID_MANEJO() {
+    public Integer getID_MANEJO() {
         return ID_MANEJO;
     }
 
-    public void setID_MANEJO(int ID_MANEJO) {
+    public void setID_MANEJO(Integer ID_MANEJO) {
         this.ID_MANEJO = ID_MANEJO;
     }
 
@@ -145,19 +143,19 @@ public class CADASTRO_FLORESTAL implements Serializable {
         this.DATA_PROGRAMACAO_REFORMA = DATA_PROGRAMACAO_REFORMA;
     }
 
-    public int getID_MATERIAL_GENETICO() {
+    public Integer getID_MATERIAL_GENETICO() {
         return ID_MATERIAL_GENETICO;
     }
 
-    public void setID_MATERIAL_GENETICO(int ID_MATERIAL_GENETICO) {
+    public void setID_MATERIAL_GENETICO(Integer ID_MATERIAL_GENETICO) {
         this.ID_MATERIAL_GENETICO = ID_MATERIAL_GENETICO;
     }
 
-    public int getID_ESPACAMENTO() {
+    public Integer getID_ESPACAMENTO() {
         return ID_ESPACAMENTO;
     }
 
-    public void setID_ESPACAMENTO(int ID_ESPACAMENTO) {
+    public void setID_ESPACAMENTO(Integer ID_ESPACAMENTO) {
         this.ID_ESPACAMENTO = ID_ESPACAMENTO;
     }
 
@@ -169,11 +167,11 @@ public class CADASTRO_FLORESTAL implements Serializable {
         this.OBSERVACAO = OBSERVACAO;
     }
 
-    public int getATIVO() {
+    public Integer getATIVO() {
         return ATIVO;
     }
 
-    public void setATIVO(int ATIVO) {
+    public void setATIVO(Integer ATIVO) {
         this.ATIVO = ATIVO;
     }
 }

@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,9 +16,15 @@ import android.widget.EditText;
 
 import com.example.forestsys.Assets.BaseDeDados;
 import com.example.forestsys.Assets.DAO;
+import com.example.forestsys.Assets.Ferramentas;
 import com.example.forestsys.Assets.NDSpinner;
 import com.example.forestsys.Classes.ClassesAuxiliares.Configs;
 import com.example.forestsys.R;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 
 public class ActivityConfiguracoes extends AppCompatActivity {
@@ -29,11 +37,12 @@ public class ActivityConfiguracoes extends AppCompatActivity {
     private EditText editHost;
     private EditText editPorta;
 
-    private String[] opcoesPermanencia = new String[]{"15", "30", "45",
+    private static String[] opcoesPermanencia = new String[]{"15", "30", "45",
             "60", "75", "90"};
     private NDSpinner spinnerPermanencia;
-    private Integer posicaoSpinnerPermanencia;
+    private static Integer posicaoSpinnerPermanencia;
     private Integer diasPermanencia;
+    private static Ferramentas ferramentas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +59,7 @@ public class ActivityConfiguracoes extends AppCompatActivity {
         BaseDeDados baseDeDados = BaseDeDados.getInstance(getApplicationContext());
         DAO dao = baseDeDados.dao();
         Configs configs = dao.selecionaConfigs();
+        ferramentas = new Ferramentas();
 
         if(configs!=null) {
             if (configs.getNomeEmpresa() != null) editNomeEmpresa.setText(configs.getNomeEmpresa());
@@ -98,7 +108,9 @@ public class ActivityConfiguracoes extends AppCompatActivity {
                                 if (editHost.length() > 0) host = editHost.getText().toString();
                                 if (editPorta.length() > 0) porta = editPorta.getText().toString();
                                 try {
-                                    dao.insert(new Configs(1, empresa, host, porta, Integer.valueOf(opcoesPermanencia[posicaoSpinnerPermanencia]), posicaoSpinnerPermanencia));
+                                    dao.insert(new Configs(1, empresa, host, porta,
+                                            Integer.valueOf(opcoesPermanencia[posicaoSpinnerPermanencia]),
+                                            posicaoSpinnerPermanencia, calculaDataParaApagarDados(opcoesPermanencia[posicaoSpinnerPermanencia])));
                                     Intent it = new Intent(ActivityConfiguracoes.this, ActivityInicializacao.class);
                                     startActivity(it);
                                 } catch (Exception ex) {
@@ -149,7 +161,23 @@ public class ActivityConfiguracoes extends AppCompatActivity {
         });
     }
 
-    //SObrescrita do método onBackPressed nativo do Android para que não execute nenhuma função
+    public static String calculaDataParaApagarDados(String dias) {
+        String pattern = ("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        Date data1 = null;
+
+        long qtdDias = Long.valueOf(dias);
+        try {
+            data1 = sdf.parse(ferramentas.formataDataDb(ferramentas.dataAtual()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long dataInicialMilis = data1.getTime();
+        long dataFinal = dataInicialMilis + TimeUnit.DAYS.toMillis(qtdDias);
+        return DateFormat.format(pattern, dataFinal).toString().trim();
+    }
+
+        //SObrescrita do método onBackPressed nativo do Android para que não execute nenhuma função
     @Override
     public void onBackPressed() {
     }

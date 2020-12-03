@@ -2,7 +2,6 @@ package com.example.forestsys.Assets;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.database.sqlite.SQLiteConstraintException;
 import android.graphics.Color;
 import android.hardware.Camera;
 import android.os.AsyncTask;
@@ -42,7 +41,6 @@ import com.example.forestsys.Classes.PRESTADORES;
 import com.itkacher.okhttpprofiler.OkHttpProfilerInterceptor;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -57,6 +55,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
+import static com.example.forestsys.Activities.ActivityConfiguracoes.calculaDataParaApagarDados;
 import static com.example.forestsys.Activities.ActivityInicializacao.HOST_PORTA;
 import static com.example.forestsys.Activities.ActivityInicializacao.conectado;
 
@@ -70,13 +69,16 @@ public class ClienteWeb<client> {
             = MediaType.get("application/json; charset=utf-8");
 
     private static OkHttpClient client = new OkHttpClient.Builder()
-            .callTimeout(20, TimeUnit.SECONDS)
+            .callTimeout(5, TimeUnit.MINUTES)
+            .connectTimeout(5, TimeUnit.MINUTES)
+            .readTimeout(5, TimeUnit.MINUTES)
+            .writeTimeout(5, TimeUnit.MINUTES)
             .addInterceptor(new OkHttpProfilerInterceptor())
             .build();
 
     public static boolean finalizouSinc = false;
 
-    private BaseDeDados baseDeDados;
+    private static BaseDeDados baseDeDados;
 
     private static Context activity;
 
@@ -84,15 +86,34 @@ public class ClienteWeb<client> {
 
     public static boolean erroNoOracle;
 
+    private String dataAtual;
+    private String dataParaApagarDados;
+    private boolean chegouDataApagarTudo = false;
+
     public ClienteWeb(Context context) {
         activity = context;
         baseDeDados = BaseDeDados.getInstance(activity);
         dao = baseDeDados.dao();
+        dataAtual = ferramentas.formataDataDb(ferramentas.dataAtual());
+        Configs configs = dao.selecionaConfigs();
+        if(configs!=null) {
+            dataParaApagarDados = configs.getDataParaApagarDados();
+            if (dataAtual.equals(dataParaApagarDados)) {
+                chegouDataApagarTudo = true;
+                baseDeDados.clearAllTables();
+                Log.e("Apagou tudo", "");
+                configs.setDataParaApagarDados(calculaDataParaApagarDados(configs.getPermanenciaDosDados().toString()));
+                dao.insert(configs);
+            } else {
+                chegouDataApagarTudo = false;
+            }
+        }
     }
 
 
     private static String requisicaoPOST(String url, String json) throws IOException {
         RequestBody body = RequestBody.create(json, JSON);
+
         okhttp3.Request request = new okhttp3.Request.Builder()
                 .url(url)
                 .post(body)
@@ -118,6 +139,7 @@ public class ClienteWeb<client> {
         response.close();
         return jsonDeResposta;
     }
+
 
     private static String requisicaoPUT(String url, String json) throws IOException {
         RequestBody body = RequestBody.create(json, JSON);
@@ -145,7 +167,7 @@ public class ClienteWeb<client> {
     }
 
     @SuppressLint("LongLogTag")
-    public static void sincronizaWebService() throws JSONException, IOException {
+    public static void sincronizaWebService() throws Exception, IOException {
         contadorDeErros = 0;
         new AsyncTask<Void, Void, Void>() {
 
@@ -158,7 +180,7 @@ public class ClienteWeb<client> {
             protected Void doInBackground(Void... params) {
                 try {
                     populaBdComWebService();
-                } catch (IOException | JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 return null;
@@ -173,7 +195,7 @@ public class ClienteWeb<client> {
     }
 
     @SuppressLint("LongLogTag")
-    public static void populaBdComWebService() throws IOException, JSONException {
+    public static void populaBdComWebService() throws IOException, Exception {
         finalizouSinc = false;
         conectado = false;
         erroNoOracle = false;
@@ -182,7 +204,7 @@ public class ClienteWeb<client> {
         try {
             URL myUrl = new URL(HOST_PORTA);
             URLConnection connection = myUrl.openConnection();
-            connection.setConnectTimeout(10000);
+            connection.setConnectTimeout(300000);
             connection.connect();
             Log.e("Conectado a", myUrl.toString());
             conectado = true;
@@ -457,7 +479,7 @@ public class ClienteWeb<client> {
                             todasAtvInsumos.get(i).getID_PROGRAMACAO_ATIVIDADE() + "&" +
                             todasAtvInsumos.get(i).getID_INSUMO(), obj.toString());
                 }
-            } catch (JSONException ex) {
+            } catch (Exception ex) {
                 Log.e("O_S_ATIVIDADE_INSUMOS", "Erro ao instanciar objeto para requisição PUT");
                 ex.printStackTrace();
                 //contadorDeErros ++;
@@ -484,7 +506,7 @@ public class ClienteWeb<client> {
                             obj.toString());
 
                 }
-            } catch (JSONException ex) {
+            } catch (Exception ex) {
                 Log.e("INDICADOR_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST");
                 ex.printStackTrace();
                 // contadorDeErros ++;
@@ -536,7 +558,7 @@ public class ClienteWeb<client> {
                         }
                     }
                 }
-            } catch (JSONException ex) {
+            } catch (Exception ex) {
                 Log.e("AVAL_PONTO_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST ou PUT");
                 ex.printStackTrace();
                 //contadorDeErros ++;
@@ -552,11 +574,11 @@ public class ClienteWeb<client> {
                     Integer ATIVO = obj.getInt("ATIVO");
                     try {
                         dao.insert(new ATIVIDADES(ID_ATIVIDADE, DESCRICAO, ATIVO));
-                    } catch (SQLiteConstraintException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-            } catch (JSONException ex) {
+            } catch (Exception ex) {
                 Log.e("S24", "Sem resposta nas funcs,json");
                 ex.printStackTrace();
                 contadorDeErros++;
@@ -572,11 +594,11 @@ public class ClienteWeb<client> {
                     Integer ATIVO = obj.getInt("ATIVO");
                     try {
                         dao.insert(new GGF_FUNCOES(ID_FUNCAO, DESCRICAO, ATIVO));
-                    } catch (SQLiteConstraintException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-            } catch (JSONException ex) {
+            } catch (Exception ex) {
                 Log.e("S1", "Sem resposta nas funcs,json");
                 ex.printStackTrace();
                 contadorDeErros++;
@@ -592,11 +614,11 @@ public class ClienteWeb<client> {
                     Integer ATIVO = obj.getInt("ATIVO");
                     try {
                         dao.insert(new GGF_DEPARTAMENTOS(ID_DEPARTAMENTO, DESCRICAO, ATIVO));
-                    } catch (SQLiteConstraintException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-            } catch (JSONException ex) {
+            } catch (Exception ex) {
                 Log.e("S2", "Sem resposta nos deps,json");
                 ex.printStackTrace();
                 contadorDeErros++;
@@ -614,7 +636,7 @@ public class ClienteWeb<client> {
                     Integer NIVEL_ACESSO = 0;
                     try {
                         NIVEL_ACESSO = obj.getInt("NIVEL_ACESSO");
-                    } catch (JSONException ex) {
+                    } catch (Exception ex) {
                         Log.e("Erro ao converter nivel de acesso", "");
                         NIVEL_ACESSO = 0;
                     }
@@ -623,11 +645,11 @@ public class ClienteWeb<client> {
                     Integer ID_FUNCAO = obj.getInt("ID_FUNCAO");
                     try {
                         dao.insert(new GGF_USUARIOS(ID_USUARIO, ID_DEPARTAMENTO, ID_FUNCAO, SENHA, ATIVO, EMAIL, DESCRICAO, NIVEL_ACESSO));
-                    } catch (SQLiteConstraintException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-            } catch (JSONException ex) {
+            } catch (Exception ex) {
                 Log.e("S3", "Sem resposta nos users:json");
                 ex.printStackTrace();
                 contadorDeErros++;
@@ -643,11 +665,11 @@ public class ClienteWeb<client> {
                     Integer ATIVO = obj.getInt("ATIVO");
                     try {
                         dao.insert(new OPERADORES(ID_OPERADORES, DESCRICAO, ATIVO));
-                    } catch (SQLiteConstraintException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-            } catch (JSONException ex) {
+            } catch (Exception ex) {
                 Log.e("S4", "Sem resposta nos operadores,json");
                 ex.printStackTrace();
                 contadorDeErros++;
@@ -663,10 +685,10 @@ public class ClienteWeb<client> {
                     Integer ATIVO = obj.getInt("ATIVO");
                     try {
                         dao.insert(new MAQUINAS(ID_MAQUINA, DESCRICAO, ATIVO));
-                    } catch (SQLiteConstraintException e) {
+                    } catch (Exception e) {
                     }
                 }
-            } catch (JSONException ex) {
+            } catch (Exception ex) {
                 Log.e("S5", "Sem resposta maquinas,json");
                 ex.printStackTrace();
                 contadorDeErros++;
@@ -682,11 +704,11 @@ public class ClienteWeb<client> {
                     Integer ATIVO = obj.getInt("ATIVO");
                     try {
                         dao.insert(new IMPLEMENTOS(ID_IMPLEMENTO, DESCRICAO, ATIVO));
-                    } catch (SQLiteConstraintException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-            } catch (JSONException ex) {
+            } catch (Exception ex) {
                 Log.e("S6", "Sem resposta implementos,json");
                 ex.printStackTrace();
                 contadorDeErros++;
@@ -701,11 +723,11 @@ public class ClienteWeb<client> {
                     Integer ID_IMPLEMENTO = obj.getInt("ID_IMPLEMENTO");
                     try {
                         dao.insert(new MAQUINA_IMPLEMENTO(ID_MAQUINA_IMPLEMENTO, ID_MAQUINA, ID_IMPLEMENTO));
-                    } catch (SQLiteConstraintException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-            } catch (JSONException ex) {
+            } catch (Exception ex) {
                 Log.e("S8", "Sem resposta Maquina implementos,json");
                 ex.printStackTrace();
                 contadorDeErros++;
@@ -722,11 +744,11 @@ public class ClienteWeb<client> {
                     Integer ATIVO = obj.getInt("ATIVO");
                     try {
                         dao.insert(new PRESTADORES(ID_PRESTADORES, DESCRICAO, ATIVO));
-                    } catch (SQLiteConstraintException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-            } catch (JSONException ex) {
+            } catch (Exception ex) {
                 Log.e("S10", "Sem resposta Prestador,json");
                 ex.printStackTrace();
                 contadorDeErros++;
@@ -742,12 +764,12 @@ public class ClienteWeb<client> {
                     Integer ATIVO = obj.getInt("ATIVO");
                     try {
                         dao.insert(new MANEJO(ID_MANEJO, DESCRICAO, ATIVO));
-                    } catch (SQLiteConstraintException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                         //("Manejo na id", String.valueOf(ID_MANEJO));
                     }
                 }
-            } catch (JSONException ex) {
+            } catch (Exception ex) {
                 Log.e("S11", "Sem resposta Manejos,json");
                 ex.printStackTrace();
                 contadorDeErros++;
@@ -763,11 +785,11 @@ public class ClienteWeb<client> {
                     Integer ATIVO = obj.getInt("ATIVO");
                     try {
                         dao.insert(new ESPACAMENTOS(ID_ESPACAMENTO, DESCRICAO, ATIVO));
-                    } catch (SQLiteConstraintException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-            } catch (JSONException ex) {
+            } catch (Exception ex) {
                 Log.e("S12", "Sem resposta Espacamentos,json");
                 ex.printStackTrace();
                 contadorDeErros++;
@@ -784,11 +806,11 @@ public class ClienteWeb<client> {
                     Integer ATIVO = obj.getInt("ATIVO");
                     try {
                         dao.insert(new GEO_REGIONAIS(ID_REGIONAL, DESCRICAO, SETOR_TODOS, ATIVO));
-                    } catch (SQLiteConstraintException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-            } catch (JSONException ex) {
+            } catch (Exception ex) {
                 Log.e("S13", "Sem resposta Geo Regionais,json");
                 ex.printStackTrace();
                 contadorDeErros++;
@@ -805,11 +827,11 @@ public class ClienteWeb<client> {
                     Integer ATIVO = obj.getInt("ATIVO");
                     try {
                         dao.insert(new GEO_SETORES(ID_REGIONAL, ID_SETOR, DESCRICAO, ATIVO));
-                    } catch (SQLiteConstraintException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-            } catch (JSONException ex) {
+            } catch (Exception ex) {
                 Log.e("S14", "Sem resposta Geo Setores,json");
                 ex.printStackTrace();
                 contadorDeErros++;
@@ -825,12 +847,12 @@ public class ClienteWeb<client> {
                     Integer ATIVO = obj.getInt("ATIVO");
                     try {
                         dao.insert(new MATERIAL_GENETICO(ID_MATERIAL_GENETICO, DESCRICAO, ATIVO));
-                    } catch (SQLiteConstraintException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                         //("Material Genetico na id", String.valueOf(ID_MATERIAL_GENETICO));
                     }
                 }
-            } catch (JSONException ex) {
+            } catch (Exception ex) {
                 Log.e("S15", "Sem resposta Mat Genético,json");
                 ex.printStackTrace();
                 contadorDeErros++;
@@ -848,8 +870,8 @@ public class ClienteWeb<client> {
                     Integer ID_MANEJO = obj.getInt("ID_MANEJO");
                     String DATA_MANEJO = obj.getString("DATA_MANEJO");
                     String DATA_PROGRAMACAO_REFORMA = obj.getString("DATA_PROGRAMACAO_REFORMA");
-                    Integer ID_MATERIAL_GENETICO = obj.getInt("ID_MATERIAL_GENETICO");
-                    Integer ID_ESPACAMENTO = obj.getInt("ID_ESPACAMENTO");
+                    Integer ID_MATERIAL_GENETICO = null;
+                    Integer ID_ESPACAMENTO = null;
                     String OBSERVACAO = obj.getString("OBSERVACAO");
                     Integer ATIVO = obj.getInt("ATIVO");
 
@@ -858,13 +880,22 @@ public class ClienteWeb<client> {
                     }
 
                     try {
+                        ID_MATERIAL_GENETICO = obj.getInt("ID_MATERIAL_GENETICO");
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+
+                    try {
+                        ID_ESPACAMENTO = obj.getInt("ID_ESPACAMENTO");
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+
                         dao.insert(new CADASTRO_FLORESTAL(ID_REGIONAL, ID_SETOR, TALHAO, CICLO, ID_MANEJO,
                                 DATA_MANEJO, DATA_PROGRAMACAO_REFORMA, ID_MATERIAL_GENETICO, ID_ESPACAMENTO, OBSERVACAO, ATIVO));
-                    } catch (SQLiteConstraintException e) {
-                        e.printStackTrace();
-                    }
+
                 }
-            } catch (JSONException ex) {
+            } catch (Exception ex) {
                 Log.e("S16", "Sem resposta Cad Florestal,json");
                 ex.printStackTrace();
                 contadorDeErros++;
@@ -896,7 +927,7 @@ public class ClienteWeb<client> {
                     Integer PRIORIDADE = 4;
                     try {
                         PRIORIDADE = obj.getInt("PRIORIDADE");
-                    } catch (JSONException ex) {
+                    } catch (Exception ex) {
                         PRIORIDADE = 4;
                         ex.printStackTrace();
                     }
@@ -904,7 +935,7 @@ public class ClienteWeb<client> {
                     Integer EXPERIMENTO = null;
                     try {
                         EXPERIMENTO = obj.getInt("EXPERIMENTO");
-                    } catch (JSONException ex) {
+                    } catch (Exception ex) {
                         EXPERIMENTO = null;
                         ex.printStackTrace();
                     }
@@ -912,7 +943,7 @@ public class ClienteWeb<client> {
                     Integer MADEIRA_NO_TALHAO = 0;
                     try {
                         MADEIRA_NO_TALHAO = obj.getInt("MADEIRA_NO_TALHAO");
-                    } catch (JSONException ex) {
+                    } catch (Exception ex) {
                         MADEIRA_NO_TALHAO = 0;
                         ex.printStackTrace();
                     }
@@ -920,7 +951,7 @@ public class ClienteWeb<client> {
                     Double AREA_REALIZADA = 0.0;
                     try {
                         AREA_REALIZADA = obj.getDouble("AREA_REALIZADA");
-                    } catch (JSONException ex) {
+                    } catch (Exception ex) {
                         AREA_REALIZADA = 0.0;
                         ex.printStackTrace();
                     }
@@ -977,429 +1008,445 @@ public class ClienteWeb<client> {
                                 ID_MANEJO, ID_ATIVIDADE, ID_RESPONSAVEL, DATA_PROGRAMADA, AREA_PROGRAMADA, PRIORIDADE,
                                 EXPERIMENTO, MADEIRA_NO_TALHAO, OBSERVACAO, DATA_INICIAL, DATA_FINAL, AREA_REALIZADA,
                                 STATUS, STATUS_NUM));
-                    } catch (SQLiteConstraintException ex) {
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 }
-            } catch (JSONException ex) {
+            } catch (Exception ex) {
                 Log.e("S17", "Sem resposta Os_Atividades,json");
                 ex.printStackTrace();
                 contadorDeErros++;
             }
-        }
 
 
-        try {
-            response = new JSONArray(requisicaoGET(HOST_PORTA + "silvosatividadesdias"));
-            for (Integer i = 0; i < response.length(); i++) {
-                JSONObject obj = response.getJSONObject(i);
+            try {
+                response = new JSONArray(requisicaoGET(HOST_PORTA + "silvosatividadesdias"));
+                for (Integer i = 0; i < response.length(); i++) {
+                    JSONObject obj = response.getJSONObject(i);
 
-                Integer ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
-                Integer ID = obj.getInt("ID");
-                String DATA = obj.getString("DATA");
-                Integer ID_PRESTADOR = obj.getInt("ID_PRESTADOR");
-                Integer ID_RESPONSAVEL = obj.getInt("ID_RESPONSAVEL");
-                String STATUS = obj.getString("STATUS");
-                String AREA_REALIZADA = String.valueOf(obj.getString("AREA_REALIZADA"));
-                String HH = String.valueOf(obj.getString("HH"));
-                String HM = String.valueOf(obj.getString("HM"));
-                String HO = String.valueOf(obj.getString("HO"));
-                String HM_ESCAVADEIRA = String.valueOf(obj.getString("HM_ESCAVADEIRA"));
-                String HO_ESCAVADEIRA = String.valueOf(obj.getString("HO_ESCAVADEIRA"));
-                String OBSERVACAO = obj.getString("OBSERVACAO");
-                String REGISTRO_DESCARREGADO = obj.getString("REGISTRO_DESCARREGADO");
-                String ACAO_INATIVO = obj.getString("ACAO_INATIVO");
+                    Integer ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
+                    Integer ID = obj.getInt("ID");
+                    String DATA = obj.getString("DATA");
+                    Integer ID_PRESTADOR = obj.getInt("ID_PRESTADOR");
+                    Integer ID_RESPONSAVEL = obj.getInt("ID_RESPONSAVEL");
+                    String STATUS = obj.getString("STATUS");
+                    String AREA_REALIZADA = String.valueOf(obj.getString("AREA_REALIZADA"));
+                    String HH = String.valueOf(obj.getString("HH"));
+                    String HM = String.valueOf(obj.getString("HM"));
+                    String HO = String.valueOf(obj.getString("HO"));
+                    String HM_ESCAVADEIRA = String.valueOf(obj.getString("HM_ESCAVADEIRA"));
+                    String HO_ESCAVADEIRA = String.valueOf(obj.getString("HO_ESCAVADEIRA"));
+                    String OBSERVACAO = obj.getString("OBSERVACAO");
+                    String REGISTRO_DESCARREGADO = obj.getString("REGISTRO_DESCARREGADO");
+                    String ACAO_INATIVO = obj.getString("ACAO_INATIVO");
 
 
-                if (OBSERVACAO == null || OBSERVACAO.trim().equals("null")) {
-                    OBSERVACAO = null;
+                    if (OBSERVACAO == null || OBSERVACAO.trim().equals("null")) {
+                        OBSERVACAO = null;
+                    }
+
+                    if (ACAO_INATIVO == null || ACAO_INATIVO.trim().equals("null")) {
+                        ACAO_INATIVO = null;
+                    }
+
+                    DATA = ignoraHoras(DATA);
+
+                    O_S_ATIVIDADES_DIA oSAtividadesDia = new O_S_ATIVIDADES_DIA();
+                    oSAtividadesDia.setID_PROGRAMACAO_ATIVIDADE(ID_PROGRAMACAO_ATIVIDADE);
+                    oSAtividadesDia.setID(ID);
+                    oSAtividadesDia.setDATA(DATA);
+                    oSAtividadesDia.setID_PRESTADOR(ID_PRESTADOR);
+                    oSAtividadesDia.setID_RESPONSAVEL(ID_RESPONSAVEL);
+                    oSAtividadesDia.setSTATUS(STATUS);
+                    oSAtividadesDia.setAREA_REALIZADA(AREA_REALIZADA);
+                    oSAtividadesDia.setHH(HH);
+                    oSAtividadesDia.setHM(HM);
+                    oSAtividadesDia.setHO(HO);
+                    oSAtividadesDia.setHM_ESCAVADEIRA(HM_ESCAVADEIRA);
+                    oSAtividadesDia.setHO_ESCAVADEIRA(HO_ESCAVADEIRA);
+                    oSAtividadesDia.setOBSERVACAO(OBSERVACAO);
+                    oSAtividadesDia.setREGISTRO_DESCARREGADO(REGISTRO_DESCARREGADO);
+                    oSAtividadesDia.setACAO_INATIVO(ACAO_INATIVO);
+                    oSAtividadesDia.setEXPORT_PROXIMA_SINC(false);
+
+                    dao.insert(oSAtividadesDia);
+
                 }
-
-                if (ACAO_INATIVO == null || ACAO_INATIVO.trim().equals("null")) {
-                    ACAO_INATIVO = null;
-                }
-
-                DATA = ignoraHoras(DATA);
-
-                O_S_ATIVIDADES_DIA oSAtividadesDia = new O_S_ATIVIDADES_DIA();
-                oSAtividadesDia.setID_PROGRAMACAO_ATIVIDADE(ID_PROGRAMACAO_ATIVIDADE);
-                oSAtividadesDia.setID(ID);
-                oSAtividadesDia.setDATA(DATA);
-                oSAtividadesDia.setID_PRESTADOR(ID_PRESTADOR);
-                oSAtividadesDia.setID_RESPONSAVEL(ID_RESPONSAVEL);
-                oSAtividadesDia.setSTATUS(STATUS);
-                oSAtividadesDia.setAREA_REALIZADA(AREA_REALIZADA);
-                oSAtividadesDia.setHH(HH);
-                oSAtividadesDia.setHM(HM);
-                oSAtividadesDia.setHO(HO);
-                oSAtividadesDia.setHM_ESCAVADEIRA(HM_ESCAVADEIRA);
-                oSAtividadesDia.setHO_ESCAVADEIRA(HO_ESCAVADEIRA);
-                oSAtividadesDia.setOBSERVACAO(OBSERVACAO);
-                oSAtividadesDia.setREGISTRO_DESCARREGADO(REGISTRO_DESCARREGADO);
-                oSAtividadesDia.setACAO_INATIVO(ACAO_INATIVO);
-                oSAtividadesDia.setEXPORT_PROXIMA_SINC(false);
-
-                dao.insert(oSAtividadesDia);
-
+            } catch (Exception ex) {
+                Log.e("S18", "Sem resposta Atividades_Dia,json");
+                ex.printStackTrace();
+                contadorDeErros++;
             }
-        } catch (JSONException ex) {
-            Log.e("S18", "Sem resposta Atividades_Dia,json");
-            ex.printStackTrace();
-            contadorDeErros++;
-        }
 
 
-        try {
-            response = new JSONArray(requisicaoGET(HOST_PORTA + "silvinsumos"));
-            for (Integer i = 0; i < response.length(); i++) {
-                JSONObject obj = response.getJSONObject(i);
+            try {
+                response = new JSONArray(requisicaoGET(HOST_PORTA + "silvinsumos"));
+                for (Integer i = 0; i < response.length(); i++) {
+                    JSONObject obj = response.getJSONObject(i);
 
-                Integer ID_INSUMO = obj.getInt("ID_INSUMO");
-                String ID_INSUMO_RM = obj.getString("ID_INSUMO_RM");
-                String CLASSE = obj.getString("CLASSE");
-                String DESCRICAO = obj.getString("DESCRICAO");
-                double NUTRIENTE_N = obj.getDouble("NUTRIENTE_N");
-                double NUTRIENTE_P2O5 = obj.getDouble("NUTRIENTE_P2O5");
-                double NUTRIENTE_K2O = obj.getDouble("NUTRIENTE_K2O");
-                double NUTRIENTE_CAO = obj.getDouble("NUTRIENTE_CAO");
-                double NUTRIENTE_MGO = obj.getDouble("NUTRIENTE_MGO");
-                double NUTRIENTE_B = obj.getDouble("NUTRIENTE_B");
-                double NUTRIENTE_ZN = obj.getDouble("NUTRIENTE_ZN");
-                double NUTRIENTE_S = obj.getDouble("NUTRIENTE_S");
-                double NUTRIENTE_CU = obj.getDouble("NUTRIENTE_CU");
-                double NUTRIENTE_AF = obj.getDouble("NUTRIENTE_AF");
-                double NUTRIENTE_MN = obj.getDouble("NUTRIENTE_MN");
-                Integer ATIVO = obj.getInt("ATIVO");
-                String UND_MEDIDA = obj.getString("UND_MEDIDA");
-                try {
-                    dao.insert(new INSUMOS(ID_INSUMO, ID_INSUMO_RM, CLASSE, DESCRICAO, NUTRIENTE_N,
-                            NUTRIENTE_P2O5, NUTRIENTE_K2O, NUTRIENTE_CAO, NUTRIENTE_MGO, NUTRIENTE_B, NUTRIENTE_ZN, NUTRIENTE_S, NUTRIENTE_CU,
-                            NUTRIENTE_AF, NUTRIENTE_MN, ATIVO, UND_MEDIDA));
-                } catch (SQLiteConstraintException e) {
-                    e.printStackTrace();
+                    Integer ID_INSUMO = obj.getInt("ID_INSUMO");
+                    String ID_INSUMO_RM = obj.getString("ID_INSUMO_RM");
+                    String CLASSE = obj.getString("CLASSE");
+                    String DESCRICAO = obj.getString("DESCRICAO");
+                    double NUTRIENTE_N = obj.getDouble("NUTRIENTE_N");
+                    double NUTRIENTE_P2O5 = obj.getDouble("NUTRIENTE_P2O5");
+                    double NUTRIENTE_K2O = obj.getDouble("NUTRIENTE_K2O");
+                    double NUTRIENTE_CAO = obj.getDouble("NUTRIENTE_CAO");
+                    double NUTRIENTE_MGO = obj.getDouble("NUTRIENTE_MGO");
+                    double NUTRIENTE_B = obj.getDouble("NUTRIENTE_B");
+                    double NUTRIENTE_ZN = obj.getDouble("NUTRIENTE_ZN");
+                    double NUTRIENTE_S = obj.getDouble("NUTRIENTE_S");
+                    double NUTRIENTE_CU = obj.getDouble("NUTRIENTE_CU");
+                    double NUTRIENTE_AF = obj.getDouble("NUTRIENTE_AF");
+                    double NUTRIENTE_MN = obj.getDouble("NUTRIENTE_MN");
+                    Integer ATIVO = obj.getInt("ATIVO");
+                    String UND_MEDIDA = obj.getString("UND_MEDIDA");
+                    try {
+                        dao.insert(new INSUMOS(ID_INSUMO, ID_INSUMO_RM, CLASSE, DESCRICAO, NUTRIENTE_N,
+                                NUTRIENTE_P2O5, NUTRIENTE_K2O, NUTRIENTE_CAO, NUTRIENTE_MGO, NUTRIENTE_B, NUTRIENTE_ZN, NUTRIENTE_S, NUTRIENTE_CU,
+                                NUTRIENTE_AF, NUTRIENTE_MN, ATIVO, UND_MEDIDA));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+            } catch (Exception ex) {
+                Log.e("S19", "Sem resposta insumos,json");
+                ex.printStackTrace();
+                contadorDeErros++;
             }
-        } catch (JSONException ex) {
-            Log.e("S19", "Sem resposta insumos,json");
-            ex.printStackTrace();
-            contadorDeErros++;
-        }
 
 
-        try {
-            response = new JSONArray(requisicaoGET(HOST_PORTA + "silvatividadeindicadores"));
+            try {
+                response = new JSONArray(requisicaoGET(HOST_PORTA + "silvatividadeindicadores"));
 
-            for (Integer i = 0; i < response.length(); i++) {
-                JSONObject obj = response.getJSONObject(i);
+                for (Integer i = 0; i < response.length(); i++) {
+                    JSONObject obj = response.getJSONObject(i);
 
-                Integer ID_ATIVIDADE = obj.getInt("ID_ATIVIDADE");
-                Integer ID_INDICADOR = obj.getInt("ID_INDICADOR");
-                Integer ORDEM_INDICADOR = obj.getInt("ORDEM_INDICADOR");
-                String REFERENCIA = obj.getString("REFERENCIA");
-                String DESCRICAO = obj.getString("DESCRICAO");
-                Integer ATIVO = obj.getInt("ATIVO");
-                String VERION = obj.getString("VERION");
-                String FORMULA = obj.getString("FORMULA");
-                Integer INDICADOR_CORRIGIVEL;
-                Integer LIMITE_INFERIOR;
-                Integer LIMITE_SUPERIOR;
-                Integer CASAS_DECIMAIS;
+                    Integer ID_ATIVIDADE = obj.getInt("ID_ATIVIDADE");
+                    Integer ID_INDICADOR = obj.getInt("ID_INDICADOR");
+                    Integer ORDEM_INDICADOR = obj.getInt("ORDEM_INDICADOR");
+                    String REFERENCIA = obj.getString("REFERENCIA");
+                    String DESCRICAO = obj.getString("DESCRICAO");
+                    Integer ATIVO = obj.getInt("ATIVO");
+                    String VERION = obj.getString("VERION");
+                    String FORMULA = obj.getString("FORMULA");
+                    Integer INDICADOR_CORRIGIVEL;
+                    Integer LIMITE_INFERIOR;
+                    Integer LIMITE_SUPERIOR;
+                    Integer CASAS_DECIMAIS;
 
-                if (FORMULA == null || FORMULA == "null") {
-                    FORMULA = null;
+                    if (FORMULA == null || FORMULA == "null") {
+                        FORMULA = null;
+                    }
+                    try {
+                        INDICADOR_CORRIGIVEL = obj.getInt("INDICADOR_CORRIGIVEL");
+                    } catch (Exception ex) {
+                        INDICADOR_CORRIGIVEL = 0;
+                    }
+
+                    try {
+                        LIMITE_INFERIOR = obj.getInt("LIMITE_INFERIOR");
+                    } catch (Exception ex) {
+                        LIMITE_INFERIOR = 1;
+                    }
+
+                    try {
+                        LIMITE_SUPERIOR = obj.getInt("LIMITE_SUPERIOR");
+                    } catch (Exception ex) {
+                        LIMITE_SUPERIOR = 1000;
+                    }
+
+                    try {
+                        CASAS_DECIMAIS = obj.getInt("CASAS_DECIMAIS");
+                    } catch (Exception ex) {
+                        CASAS_DECIMAIS = 0;
+                    }
+
+                    try {
+                        dao.insert(new ATIVIDADE_INDICADORES(ID_INDICADOR, ID_ATIVIDADE, ORDEM_INDICADOR, REFERENCIA, DESCRICAO, ATIVO, VERION, LIMITE_SUPERIOR, LIMITE_INFERIOR, CASAS_DECIMAIS, INDICADOR_CORRIGIVEL, FORMULA));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-                try {
-                    INDICADOR_CORRIGIVEL = obj.getInt("INDICADOR_CORRIGIVEL");
-                } catch (Exception ex) {
-                    INDICADOR_CORRIGIVEL = 0;
-                }
-
-                try {
-                    LIMITE_INFERIOR = obj.getInt("LIMITE_INFERIOR");
-                } catch (Exception ex) {
-                    LIMITE_INFERIOR = 1;
-                }
-
-                try {
-                    LIMITE_SUPERIOR = obj.getInt("LIMITE_SUPERIOR");
-                } catch (Exception ex) {
-                    LIMITE_SUPERIOR = 1000;
-                }
-
-                try {
-                    CASAS_DECIMAIS = obj.getInt("CASAS_DECIMAIS");
-                } catch (Exception ex) {
-                    CASAS_DECIMAIS = 0;
-                }
-
-                try {
-                    dao.insert(new ATIVIDADE_INDICADORES(ID_INDICADOR, ID_ATIVIDADE, ORDEM_INDICADOR, REFERENCIA, DESCRICAO, ATIVO, VERION, LIMITE_SUPERIOR, LIMITE_INFERIOR, CASAS_DECIMAIS, INDICADOR_CORRIGIVEL, FORMULA));
-                } catch (SQLiteConstraintException e) {
-                    e.printStackTrace();
-                }
+            } catch (Exception ex) {
+                Log.e("S20", "Sem resposta atividade_indicadores,json");
+                ex.printStackTrace();
+                contadorDeErros++;
             }
-        } catch (JSONException ex) {
-            Log.e("S20", "Sem resposta atividade_indicadores,json");
-            ex.printStackTrace();
-            contadorDeErros++;
-        }
 
 
-        try {
-            response = new JSONArray(requisicaoGET(HOST_PORTA + "silvcalibragemsubsolagens"));
-            for (Integer i = 0; i < response.length(); i++) {
-                JSONObject obj = response.getJSONObject(i);
-                Integer ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
-                String DATA = obj.getString("DATA");
-                String TURNO = obj.getString("TURNO");
-                Integer ID_MAQUINA_IMPLEMENTO = obj.getInt("ID_MAQUINA_IMPLEMENTO");
-                Integer ID_OPERADOR = obj.getInt("ID_OPERADOR");
-                Double P1_MEDIA = obj.getDouble("P1_MEDIA");
-                Double P1_DESVIO = obj.getDouble("P1_DESVIO");
-                Double P2_MEDIA = obj.getDouble("P2_MEDIA");
-                Double P2_DESVIO = obj.getDouble("P2_DESVIO");
-                String UPDATED_AT = obj.getString("UPDATED_AT");
+            try {
+                response = new JSONArray(requisicaoGET(HOST_PORTA + "silvcalibragemsubsolagens"));
+                for (Integer i = 0; i < response.length(); i++) {
+                    JSONObject obj = response.getJSONObject(i);
+                    Integer ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
+                    String DATA = obj.getString("DATA");
+                    String TURNO = obj.getString("TURNO");
+                    Integer ID_MAQUINA_IMPLEMENTO = obj.getInt("ID_MAQUINA_IMPLEMENTO");
+                    Integer ID_OPERADOR = obj.getInt("ID_OPERADOR");
+                    Double P1_MEDIA = obj.getDouble("P1_MEDIA");
+                    Double P1_DESVIO = obj.getDouble("P1_DESVIO");
+                    Double P2_MEDIA = obj.getDouble("P2_MEDIA");
+                    Double P2_DESVIO = obj.getDouble("P2_DESVIO");
+                    String UPDATED_AT = obj.getString("UPDATED_AT");
 
-                DATA = ignoraHoras(DATA);
+                    DATA = ignoraHoras(DATA);
 
-                CALIBRAGEM_SUBSOLAGEM insereCalib = new CALIBRAGEM_SUBSOLAGEM(ID_PROGRAMACAO_ATIVIDADE, DATA, TURNO,
-                        ID_MAQUINA_IMPLEMENTO, ID_OPERADOR, P1_MEDIA, P1_DESVIO, P2_MEDIA, P2_DESVIO);
-                insereCalib.setUPDATED_AT(UPDATED_AT);
-                try {
-                    dao.insert(insereCalib);
-                } catch (SQLiteConstraintException e) {
-                    e.printStackTrace();
+                    CALIBRAGEM_SUBSOLAGEM insereCalib = new CALIBRAGEM_SUBSOLAGEM(ID_PROGRAMACAO_ATIVIDADE, DATA, TURNO,
+                            ID_MAQUINA_IMPLEMENTO, ID_OPERADOR, P1_MEDIA, P1_DESVIO, P2_MEDIA, P2_DESVIO);
+                    insereCalib.setUPDATED_AT(UPDATED_AT);
+                    try {
+                        dao.insert(insereCalib);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+            } catch (Exception ex) {
+                Log.e("S9", "Sem resposta calibração,json");
+                ex.printStackTrace();
+                contadorDeErros++;
             }
-        } catch (JSONException ex) {
-            Log.e("S9", "Sem resposta calibração,json");
-            ex.printStackTrace();
-            contadorDeErros++;
-        }
 
 
-        try {
-            response = new JSONArray(requisicaoGET(HOST_PORTA + "silvosatividadeinsumos"));
-            for (Integer i = 0; i < response.length(); i++) {
-                JSONObject obj = response.getJSONObject(i);
-                Integer ID_INSUMO = obj.getInt("ID_INSUMO");
-                Integer ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
-                Integer RECOMENDACAO = obj.getInt("RECOMENDACAO");
-                double QTD_HA_RECOMENDADO = 0;
-                double QTD_HA_APLICADO = 0;
-                try {
-                    QTD_HA_APLICADO = obj.getDouble("QTD_HA_APLICADO");
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+            try {
+                response = new JSONArray(requisicaoGET(HOST_PORTA + "silvosatividadeinsumos"));
+                for (Integer i = 0; i < response.length(); i++) {
+                    JSONObject obj = response.getJSONObject(i);
+                    Integer ID_INSUMO = obj.getInt("ID_INSUMO");
+                    Integer ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
+                    Integer RECOMENDACAO = null;
+                    double QTD_HA_RECOMENDADO = 0;
+                    double QTD_HA_APLICADO = 0;
+
+                    try {
+                        QTD_HA_APLICADO = obj.getDouble("QTD_HA_APLICADO");
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+
+                    try {
+                        QTD_HA_RECOMENDADO = obj.getDouble("QTD_HA_RECOMENDADO");
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+
+                    try {
+                        RECOMENDACAO = obj.getInt("RECOMENDACAO");
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+
+                    DecimalFormat format = new DecimalFormat(".##");
+
+                    String s;
+                    s = format.format(QTD_HA_RECOMENDADO).replace(',', '.');
+                    QTD_HA_RECOMENDADO = Double.parseDouble(s);
+
+                    s = format.format(QTD_HA_APLICADO).replace(',', '.');
+                    QTD_HA_APLICADO = Double.parseDouble(s);
+
+                    try {
+                        dao.insert(new O_S_ATIVIDADE_INSUMOS(ID_INSUMO, ID_PROGRAMACAO_ATIVIDADE, RECOMENDACAO, QTD_HA_RECOMENDADO, QTD_HA_APLICADO));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-
-                try {
-                    QTD_HA_RECOMENDADO = obj.getDouble("QTD_HA_RECOMENDADO");
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-
-                try {
-                    dao.insert(new O_S_ATIVIDADE_INSUMOS(ID_INSUMO, ID_PROGRAMACAO_ATIVIDADE, RECOMENDACAO, QTD_HA_RECOMENDADO, QTD_HA_APLICADO));
-                } catch (SQLiteConstraintException e) {
-                    e.printStackTrace();
-                }
+            } catch (Exception ex) {
+                Log.e("S21", "Sem resposta atividade_insumos,json");
+                ex.printStackTrace();
+                contadorDeErros++;
             }
-        } catch (JSONException ex) {
-            Log.e("S21", "Sem resposta atividade_insumos,json");
-            ex.printStackTrace();
-            contadorDeErros++;
-        }
 
 
-        try {
-            response = new JSONArray(requisicaoGET(HOST_PORTA + "silvosindavalsubsolagens"));
-            for (Integer i = 0; i < response.length(); i++) {
-                JSONObject obj = response.getJSONObject(i);
-                Integer ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
-                double PROFUNDIDADE = obj.getDouble("PROFUNDIDADE");
-                double ESTRONDAMENTO_LATERAL_INFERIOR = obj.getDouble("ESTRONDAMENTO_LATERAL_INFERIOR");
-                double ESTRONDAMENTO_LATERAL_SUPERIOR = obj.getDouble("ESTRONDAMENTO_LATERAL_SUPERIOR");
-                double FAIXA_SOLO_PREPARADA = obj.getDouble("FAIXA_SOLO_PREPARADA");
-                double PROFUNDIDADE_ADUBO_INFERIOR = obj.getDouble("PROFUNDIDADE_ADUBO_INFERIOR");
-                double PROFUNDIDADE_ADUBO_SUPERIOR = obj.getDouble("PROFUNDIDADE_ADUBO_SUPERIOR");
-                double LOCALIZACAO_INSUMO_INFERIOR = obj.getDouble("LOCALIZACAO_INSUMO_INFERIOR");
-                double LOCALIZACAO_INSUMO_SUPERIOR = obj.getDouble("LOCALIZACAO_INSUMO_SUPERIOR");
+            try {
+                response = new JSONArray(requisicaoGET(HOST_PORTA + "silvosindavalsubsolagens"));
+                for (Integer i = 0; i < response.length(); i++) {
+                    JSONObject obj = response.getJSONObject(i);
+                    Integer ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
+                    double PROFUNDIDADE = obj.getDouble("PROFUNDIDADE");
+                    double ESTRONDAMENTO_LATERAL_INFERIOR = obj.getDouble("ESTRONDAMENTO_LATERAL_INFERIOR");
+                    double ESTRONDAMENTO_LATERAL_SUPERIOR = obj.getDouble("ESTRONDAMENTO_LATERAL_SUPERIOR");
+                    double FAIXA_SOLO_PREPARADA = obj.getDouble("FAIXA_SOLO_PREPARADA");
+                    double PROFUNDIDADE_ADUBO_INFERIOR = obj.getDouble("PROFUNDIDADE_ADUBO_INFERIOR");
+                    double PROFUNDIDADE_ADUBO_SUPERIOR = obj.getDouble("PROFUNDIDADE_ADUBO_SUPERIOR");
+                    double LOCALIZACAO_INSUMO_INFERIOR = obj.getDouble("LOCALIZACAO_INSUMO_INFERIOR");
+                    double LOCALIZACAO_INSUMO_SUPERIOR = obj.getDouble("LOCALIZACAO_INSUMO_SUPERIOR");
 
-                try {
-                    dao.insert(new AVAL_SUBSOLAGEM(ID_PROGRAMACAO_ATIVIDADE, PROFUNDIDADE, ESTRONDAMENTO_LATERAL_INFERIOR,
-                            ESTRONDAMENTO_LATERAL_SUPERIOR, FAIXA_SOLO_PREPARADA, PROFUNDIDADE_ADUBO_INFERIOR,
-                            PROFUNDIDADE_ADUBO_SUPERIOR, LOCALIZACAO_INSUMO_INFERIOR, LOCALIZACAO_INSUMO_SUPERIOR));
-                } catch (SQLiteConstraintException e) {
-                    e.printStackTrace();
+                    try {
+                        dao.insert(new AVAL_SUBSOLAGEM(ID_PROGRAMACAO_ATIVIDADE, PROFUNDIDADE, ESTRONDAMENTO_LATERAL_INFERIOR,
+                                ESTRONDAMENTO_LATERAL_SUPERIOR, FAIXA_SOLO_PREPARADA, PROFUNDIDADE_ADUBO_INFERIOR,
+                                PROFUNDIDADE_ADUBO_SUPERIOR, LOCALIZACAO_INSUMO_INFERIOR, LOCALIZACAO_INSUMO_SUPERIOR));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+            } catch (Exception ex) {
+                Log.e("S22", "Sem resposta aval_subsolagem,json");
+                ex.printStackTrace();
             }
-        } catch (JSONException ex) {
-            Log.e("S22", "Sem resposta aval_subsolagem,json");
-            ex.printStackTrace();
-        }
 
 
-        try {
-            response = new JSONArray(requisicaoGET(HOST_PORTA + "silvinsumoatividades"));
-            for (Integer i = 0; i < response.length(); i++) {
-                JSONObject obj = response.getJSONObject(i);
-                Integer ID_ATIVIDADE = obj.getInt("ID_ATIVIDADE");
-                Integer ID_INSUMO = obj.getInt("ID_INSUMO");
-                Integer ATIVO = obj.getInt("ATIVO");
-                try {
-                    dao.insert(new INSUMO_ATIVIDADES(ID_INSUMO, ID_ATIVIDADE, ATIVO));
-                } catch (SQLiteConstraintException e) {
-                    e.printStackTrace();
+            try {
+                response = new JSONArray(requisicaoGET(HOST_PORTA + "silvinsumoatividades"));
+                for (Integer i = 0; i < response.length(); i++) {
+                    JSONObject obj = response.getJSONObject(i);
+                    Integer ID_ATIVIDADE = obj.getInt("ID_ATIVIDADE");
+                    Integer ID_INSUMO = obj.getInt("ID_INSUMO");
+                    Integer ATIVO = obj.getInt("ATIVO");
+                    try {
+                        dao.insert(new INSUMO_ATIVIDADES(ID_INSUMO, ID_ATIVIDADE, ATIVO));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+            } catch (Exception ex) {
+                Log.e("S23", "Sem resposta nas atividades,json");
+                ex.printStackTrace();
+                contadorDeErros++;
             }
-        } catch (JSONException ex) {
-            Log.e("S23", "Sem resposta nas atividades,json");
-            ex.printStackTrace();
-            contadorDeErros++;
-        }
 
 
-        try {
-            response = new JSONArray(requisicaoGET(HOST_PORTA + "silvosatividadeinsumosdias"));
-            for (Integer i = 0; i < response.length(); i++) {
-                JSONObject obj = response.getJSONObject(i);
+            try {
+                response = new JSONArray(requisicaoGET(HOST_PORTA + "silvosatividadeinsumosdias"));
+                for (Integer i = 0; i < response.length(); i++) {
+                    JSONObject obj = response.getJSONObject(i);
 
-                Integer ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
-                String DATA = obj.getString("DATA");
-                Integer ID_INSUMO = obj.getInt("ID_INSUMO");
-                double QTD_APLICADO = obj.getDouble("QTD_APLICADO");
-                String ACAO_INATIVO = obj.getString("ACAO_INATIVO");
-                String REGISTRO_DESCARREGADO = obj.getString("REGISTRO_DESCARREGADO");
-                String OBSERVACAO = obj.getString("OBSERVACAO");
-                Integer ID = obj.getInt("ID");
+                    Integer ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
+                    String DATA = obj.getString("DATA");
+                    Integer ID_INSUMO = obj.getInt("ID_INSUMO");
+                    double QTD_APLICADO = obj.getDouble("QTD_APLICADO");
+                    String ACAO_INATIVO = obj.getString("ACAO_INATIVO");
+                    String REGISTRO_DESCARREGADO = obj.getString("REGISTRO_DESCARREGADO");
+                    String OBSERVACAO = obj.getString("OBSERVACAO");
+                    Integer ID = obj.getInt("ID");
 
-                if (OBSERVACAO == null || OBSERVACAO.trim().equals("null")) {
-                    OBSERVACAO = null;
+                    if (OBSERVACAO == null || OBSERVACAO.trim().equals("null")) {
+                        OBSERVACAO = null;
+                    }
+
+                    if (ACAO_INATIVO == null || ACAO_INATIVO.trim().equals("null")) {
+                        ACAO_INATIVO = null;
+                    }
+
+                    DATA = ignoraHoras(DATA);
+
+                    try {
+                        O_S_ATIVIDADE_INSUMOS_DIA insereInsumosDia = new O_S_ATIVIDADE_INSUMOS_DIA(ID, ID_PROGRAMACAO_ATIVIDADE, DATA,
+                                ID_INSUMO, QTD_APLICADO, ACAO_INATIVO, REGISTRO_DESCARREGADO, OBSERVACAO);
+                        insereInsumosDia.setEXPORT_PROXIMA_SINC(false);
+                        dao.insert(insereInsumosDia);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-
-                if (ACAO_INATIVO == null || ACAO_INATIVO.trim().equals("null")) {
-                    ACAO_INATIVO = null;
-                }
-
-                DATA = ignoraHoras(DATA);
-
-                try {
-                    O_S_ATIVIDADE_INSUMOS_DIA insereInsumosDia = new O_S_ATIVIDADE_INSUMOS_DIA(ID, ID_PROGRAMACAO_ATIVIDADE, DATA,
-                            ID_INSUMO, QTD_APLICADO, ACAO_INATIVO, REGISTRO_DESCARREGADO, OBSERVACAO);
-                    insereInsumosDia.setEXPORT_PROXIMA_SINC(false);
-                    dao.insert(insereInsumosDia);
-                } catch (SQLiteConstraintException e) {
-                    e.printStackTrace();
-                }
+            } catch (Exception ex) {
+                Log.e("S24", "Sem resposta nas atividade_insumos_dia,json");
+                ex.printStackTrace();
+                contadorDeErros++;
             }
-        } catch (JSONException ex) {
-            Log.e("S24", "Sem resposta nas atividade_insumos_dia,json");
-            ex.printStackTrace();
-            contadorDeErros++;
-        }
 
 
-        try {
-            response = new JSONArray(requisicaoGET(HOST_PORTA + "silvindicadoressubsolagens"));
-            for (Integer i = 0; i < response.length(); i++) {
-                JSONObject obj = response.getJSONObject(i);
+            try {
+                response = new JSONArray(requisicaoGET(HOST_PORTA + "silvindicadoressubsolagens"));
+                for (Integer i = 0; i < response.length(); i++) {
+                    JSONObject obj = response.getJSONObject(i);
 
-                Integer ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
-                String DATA = obj.getString("DATA");
-                Integer ID_ATIVIDADE = obj.getInt("ID_ATIVIDADE");
-                Integer ID_INDICADOR = obj.getInt("ID_INDICADOR");
-                double VALOR_INDICADOR = obj.getDouble("VALOR_INDICADOR");
+                    Integer ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
+                    String DATA = obj.getString("DATA");
+                    Integer ID_ATIVIDADE = obj.getInt("ID_ATIVIDADE");
+                    Integer ID_INDICADOR = obj.getInt("ID_INDICADOR");
+                    double VALOR_INDICADOR = obj.getDouble("VALOR_INDICADOR");
 
-                DATA = ignoraHoras(DATA);
+                    DATA = ignoraHoras(DATA);
 
-                try {
-                    dao.insert(new INDICADORES_SUBSOLAGEM(ID_PROGRAMACAO_ATIVIDADE, ID_ATIVIDADE, ID_INDICADOR, DATA, VALOR_INDICADOR));
-                } catch (SQLiteConstraintException e) {
-                    e.printStackTrace();
+                    try {
+                        dao.insert(new INDICADORES_SUBSOLAGEM(ID_PROGRAMACAO_ATIVIDADE, ID_ATIVIDADE, ID_INDICADOR, DATA, VALOR_INDICADOR));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+            } catch (Exception ex) {
+                Log.e("S25", "Sem resposta indicadores_subsolagem,json");
+                ex.printStackTrace();
+                contadorDeErros++;
             }
-        } catch (JSONException ex) {
-            Log.e("S25", "Sem resposta indicadores_subsolagem,json");
-            ex.printStackTrace();
-            contadorDeErros++;
-        }
 
 
-        try {
-            response = new JSONArray(requisicaoGET(HOST_PORTA + "silvindavalpontosubsolagens"));
-            for (Integer i = 0; i < response.length(); i++) {
-                JSONObject obj = response.getJSONObject(i);
+            try {
+                response = new JSONArray(requisicaoGET(HOST_PORTA + "silvindavalpontosubsolagens"));
+                for (Integer i = 0; i < response.length(); i++) {
+                    JSONObject obj = response.getJSONObject(i);
 
-                Integer ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
-                String DATA = obj.getString("DATA");
-                Integer PONTO = obj.getInt("PONTO");
-                Integer ID_ATIVIDADE = obj.getInt("ID_ATIVIDADE");
-                Integer ID_INDICADOR = obj.getInt("ID_INDICADOR");
-                double VALOR_INDICADOR;
-                try {
-                    VALOR_INDICADOR = obj.getDouble("VALOR_INDICADOR");
-                } catch (Exception e) {
-                    VALOR_INDICADOR = 0;
+                    Integer ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
+                    String DATA = obj.getString("DATA");
+                    Integer PONTO = obj.getInt("PONTO");
+                    Integer ID_ATIVIDADE = obj.getInt("ID_ATIVIDADE");
+                    Integer ID_INDICADOR = obj.getInt("ID_INDICADOR");
+                    double VALOR_INDICADOR;
+                    try {
+                        VALOR_INDICADOR = obj.getDouble("VALOR_INDICADOR");
+                    } catch (Exception e) {
+                        VALOR_INDICADOR = 0;
+                    }
+
+                    double COORDENADA_X;
+                    try {
+                        COORDENADA_X = obj.getDouble("COORDENADA_X");
+                    } catch (Exception e) {
+                        COORDENADA_X = 0;
+                    }
+
+                    double COORDENADA_Y;
+                    try {
+                        COORDENADA_Y = obj.getDouble("COORDENADA_Y");
+                    } catch (Exception e) {
+                        COORDENADA_Y = 0;
+                    }
+
+                    Integer NC_TRATADA = obj.getInt("NC_TRATADA");
+
+                    DATA = ignoraHoras(DATA);
+
+                    AVAL_PONTO_SUBSOLAGEM pontoSubsolagem = new AVAL_PONTO_SUBSOLAGEM(ID_PROGRAMACAO_ATIVIDADE, DATA, PONTO, ID_ATIVIDADE, ID_INDICADOR, VALOR_INDICADOR, COORDENADA_X,
+                            COORDENADA_Y, NC_TRATADA);
+
+                    pontoSubsolagem.setUPDATED_AT(obj.getString("UPDATED_AT"));
+                    try {
+                        dao.insert(pontoSubsolagem);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-
-                double COORDENADA_X;
-                try {
-                    COORDENADA_X = obj.getDouble("COORDENADA_X");
-                } catch (Exception e) {
-                    COORDENADA_X = 0;
-                }
-
-                double COORDENADA_Y;
-                try {
-                    COORDENADA_Y = obj.getDouble("COORDENADA_Y");
-                } catch (Exception e) {
-                    COORDENADA_Y = 0;
-                }
-
-                Integer NC_TRATADA = obj.getInt("NC_TRATADA");
-
-                DATA = ignoraHoras(DATA);
-
-                AVAL_PONTO_SUBSOLAGEM pontoSubsolagem = new AVAL_PONTO_SUBSOLAGEM(ID_PROGRAMACAO_ATIVIDADE, DATA, PONTO, ID_ATIVIDADE, ID_INDICADOR, VALOR_INDICADOR, COORDENADA_X,
-                        COORDENADA_Y, NC_TRATADA);
-
-                pontoSubsolagem.setUPDATED_AT(obj.getString("UPDATED_AT"));
-                try {
-                    dao.insert(pontoSubsolagem);
-                } catch (SQLiteConstraintException e) {
-                    e.printStackTrace();
-                }
+            } catch (Exception ex) {
+                Log.e("S26", "Sem resposta ponto_subsolagem,json");
+                ex.printStackTrace();
+                contadorDeErros++;
             }
-        } catch (JSONException ex) {
-            Log.e("S26", "Sem resposta ponto_subsolagem,json");
-            ex.printStackTrace();
-            contadorDeErros++;
-        }
 
-        try {
-            dao.apagaTodasGeoLocal();
-            response = new JSONArray(requisicaoGET(HOST_PORTA + "silvgeolocalizacoes"));
-            for (Integer i = 0; i < response.length(); i++) {
-                JSONObject obj = response.getJSONObject(i);
+            try {
+                dao.apagaTodasGeoLocal();
+                response = new JSONArray(requisicaoGET(HOST_PORTA + "silvgeolocalizacoes"));
+                for (Integer i = 0; i < response.length(); i++) {
+                    JSONObject obj = response.getJSONObject(i);
 
-                String TALHAO = obj.getString("TALHAO");
+                    String TALHAO = obj.getString("TALHAO");
 
-                double LATITUDE = obj.getDouble("LATITUDE");
-                double LONGITUDE = obj.getDouble("LONGITUDE");
+                    double LATITUDE = obj.getDouble("LATITUDE");
+                    double LONGITUDE = obj.getDouble("LONGITUDE");
 
-                try {
-                    dao.insert(new GEO_LOCALIZACAO(TALHAO, LATITUDE, LONGITUDE));
-                } catch (SQLiteConstraintException e) {
-                    e.printStackTrace();
+                    try {
+                        dao.insert(new GEO_LOCALIZACAO(TALHAO, LATITUDE, LONGITUDE));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+            } catch (Exception ex) {
+                Log.e("S27", "Sem resposta geo_localizacoes,json");
+                ex.printStackTrace();
+                contadorDeErros++;
             }
-        } catch (JSONException ex) {
-            Log.e("S27", "Sem resposta geo_localizacoes,json");
-            ex.printStackTrace();
-            contadorDeErros++;
-        }
 
-        finalizouSinc = true;
+            finalizouSinc = true;
+        }
     }
 }
