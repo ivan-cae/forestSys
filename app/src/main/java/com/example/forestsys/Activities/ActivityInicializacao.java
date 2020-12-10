@@ -17,6 +17,7 @@ import com.example.forestsys.R;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 import static com.example.forestsys.Assets.ClienteWeb.finalizouSinc;
 
@@ -42,7 +43,12 @@ public class ActivityInicializacao extends AppCompatActivity {
             nomeEmpresaPref = configs.getNomeEmpresa();
         }
 
-        ClienteWeb clienteWeb = new ClienteWeb(getApplicationContext());
+        ClienteWeb clienteWeb = null;
+        try {
+            clienteWeb = new ClienteWeb(getApplicationContext());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         if(temRede()==true && pulaSinc==false){
         try {

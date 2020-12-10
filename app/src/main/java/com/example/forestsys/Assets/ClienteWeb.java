@@ -47,6 +47,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -85,27 +88,50 @@ public class ClienteWeb<client> {
     public static Integer contadorDeErros;
 
     public static boolean erroNoOracle;
-
-    private String dataAtual;
+    private static Configs configs;
+    private static String dataAtual;
     private String dataParaApagarDados;
-    private boolean chegouDataApagarTudo = false;
+    private boolean chegouDataApagarTudo;
 
-    public ClienteWeb(Context context) {
+    public ClienteWeb(Context context) throws ParseException {
         activity = context;
         baseDeDados = BaseDeDados.getInstance(activity);
         dao = baseDeDados.dao();
         dataAtual = ferramentas.formataDataDb(ferramentas.dataAtual());
-        Configs configs = dao.selecionaConfigs();
-        if(configs!=null) {
+        configs = dao.selecionaConfigs();
+        if (configs != null) {
+            chegouDataApagarTudo = false;
             dataParaApagarDados = configs.getDataParaApagarDados();
-            if (dataAtual.equals(dataParaApagarDados)) {
-                chegouDataApagarTudo = true;
-                baseDeDados.clearAllTables();
-                Log.e("Apagou tudo", "");
-                configs.setDataParaApagarDados(calculaDataParaApagarDados(configs.getPermanenciaDosDados().toString()));
-                dao.insert(configs);
-            } else {
-                chegouDataApagarTudo = false;
+            String pattern = ("yyyy-MM-dd");
+            SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+            Date date1 = sdf.parse(dataAtual.trim());
+            Date date2 = sdf.parse(dataParaApagarDados.trim());
+
+            Log.e("Data atual", date1.toString());
+            Log.e("Data para apagar", date2.toString());
+
+            boolean jaApagouHoje = false;
+            if (configs.getUltimaDataQueApagou() != null) {
+                if (configs.getUltimaDataQueApagou().trim().equals(dataAtual)) {
+                    jaApagouHoje = true;
+                }
+            }
+
+            if (date1.compareTo(date2) >= 0 && jaApagouHoje == false) {
+                if (configs.getUltimaDataQueApagou() == null) {
+                    chegouDataApagarTudo = true;
+                    baseDeDados.clearAllTables();
+
+                    configs.setDataParaApagarDados(calculaDataParaApagarDados(configs.getPermanenciaDosDados().toString()));
+                    configs.setUltimaDataQueApagou(dataAtual);
+                    Log.e("Data que apagou", dataAtual);
+                    dao.insert(configs);
+                } else {
+                    chegouDataApagarTudo = false;
+                }
+            }
+            if (chegouDataApagarTudo == true) {
+                Log.e("Apagou?", "Apagou Sim");
             }
         }
     }
@@ -122,7 +148,7 @@ public class ClienteWeb<client> {
             String s = response.body().string();
             response.close();
             return s;
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -151,7 +177,7 @@ public class ClienteWeb<client> {
             String s = response.body().string();
             response.close();
             return s;
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -891,8 +917,8 @@ public class ClienteWeb<client> {
                         ex.printStackTrace();
                     }
 
-                        dao.insert(new CADASTRO_FLORESTAL(ID_REGIONAL, ID_SETOR, TALHAO, CICLO, ID_MANEJO,
-                                DATA_MANEJO, DATA_PROGRAMACAO_REFORMA, ID_MATERIAL_GENETICO, ID_ESPACAMENTO, OBSERVACAO, ATIVO));
+                    dao.insert(new CADASTRO_FLORESTAL(ID_REGIONAL, ID_SETOR, TALHAO, CICLO, ID_MANEJO,
+                            DATA_MANEJO, DATA_PROGRAMACAO_REFORMA, ID_MATERIAL_GENETICO, ID_ESPACAMENTO, OBSERVACAO, ATIVO));
 
                 }
             } catch (Exception ex) {
@@ -1003,13 +1029,28 @@ public class ClienteWeb<client> {
                     DATA_INICIAL = ignoraHoras(DATA_INICIAL);
                     DATA_PROGRAMADA = ignoraHoras(DATA_PROGRAMADA);
 
-                    try {
-                        dao.insert(new O_S_ATIVIDADES(ID_PROGRAMACAO_ATIVIDADE, ID_REGIONAL, ID_SETOR, TALHAO, CICLO,
-                                ID_MANEJO, ID_ATIVIDADE, ID_RESPONSAVEL, DATA_PROGRAMADA, AREA_PROGRAMADA, PRIORIDADE,
-                                EXPERIMENTO, MADEIRA_NO_TALHAO, OBSERVACAO, DATA_INICIAL, DATA_FINAL, AREA_REALIZADA,
-                                STATUS, STATUS_NUM));
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+                    boolean ignorarInsert = false;
+
+                    if (STATUS_NUM == 2 && DATA_FINAL != null && configs.getUltimaDataQueApagou()!=null) {
+                        String pattern = ("yyyy-MM-dd");
+                        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+                        Date date1 = sdf.parse(DATA_FINAL.trim());
+                        Date date2 = sdf.parse(configs.getUltimaDataQueApagou().trim());
+
+                        if (date1.compareTo(date2) < 0) {
+                            ignorarInsert = true;
+                        }
+                    }
+
+                    if (ignorarInsert == false) {
+                        try {
+                            dao.insert(new O_S_ATIVIDADES(ID_PROGRAMACAO_ATIVIDADE, ID_REGIONAL, ID_SETOR, TALHAO, CICLO,
+                                    ID_MANEJO, ID_ATIVIDADE, ID_RESPONSAVEL, DATA_PROGRAMADA, AREA_PROGRAMADA, PRIORIDADE,
+                                    EXPERIMENTO, MADEIRA_NO_TALHAO, OBSERVACAO, DATA_INICIAL, DATA_FINAL, AREA_REALIZADA,
+                                    STATUS, STATUS_NUM));
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
                     }
                 }
             } catch (Exception ex) {

@@ -3,6 +3,7 @@ package com.example.forestsys.Activities;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -98,19 +99,33 @@ public class ActivityConfiguracoes extends AppCompatActivity {
                         .setTitle("Salvar essas informações irá reiniciar o aplicativo")
                         .setMessage("Deseja continuar?")
                         .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                            @SuppressLint("LongLogTag")
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 String empresa = null;
                                 String host = null;
                                 String porta = null;
-                                if (editNomeEmpresa.length() > 0)
-                                    empresa = editNomeEmpresa.getText().toString();
+
+                                if (editNomeEmpresa.length() > 0) empresa = editNomeEmpresa.getText().toString();
+
                                 if (editHost.length() > 0) host = editHost.getText().toString();
+
                                 if (editPorta.length() > 0) porta = editPorta.getText().toString();
+
+                                if(empresa == null){
+                                    empresa = "GELF";
+                                }
                                 try {
+                                    String ultimaVezQueApagou = null;
+                                    if(configs != null){
+                                        if(configs.getUltimaDataQueApagou()!=null){
+                                            ultimaVezQueApagou = configs.getUltimaDataQueApagou();
+                                        }
+                                    }
                                     dao.insert(new Configs(1, empresa, host, porta,
                                             Integer.valueOf(opcoesPermanencia[posicaoSpinnerPermanencia]),
-                                            posicaoSpinnerPermanencia, calculaDataParaApagarDados(opcoesPermanencia[posicaoSpinnerPermanencia])));
+                                            posicaoSpinnerPermanencia, calculaDataParaApagarDados(opcoesPermanencia[posicaoSpinnerPermanencia]), ultimaVezQueApagou));
+                                    Log.e("Data para apagar os dados", String.valueOf(calculaDataParaApagarDados(opcoesPermanencia[posicaoSpinnerPermanencia])));
                                     Intent it = new Intent(ActivityConfiguracoes.this, ActivityInicializacao.class);
                                     startActivity(it);
                                 } catch (Exception ex) {

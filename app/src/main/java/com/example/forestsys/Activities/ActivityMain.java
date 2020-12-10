@@ -46,6 +46,7 @@ import com.google.android.material.navigation.NavigationView;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 import static com.example.forestsys.Activities.ActivityInicializacao.HOST_PORTA;
@@ -413,7 +414,12 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                         .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                ClienteWeb clienteWeb = new ClienteWeb(getApplicationContext());
+                                ClienteWeb clienteWeb = null;
+                                try {
+                                    clienteWeb = new ClienteWeb(getApplicationContext());
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
                                 try {
                                     clienteWeb.sincronizaWebService();
                                 } catch (Exception e) {

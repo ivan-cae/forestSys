@@ -15,9 +15,10 @@ public class Configs implements Serializable {
     private Integer permanenciaDosDados;
     private Integer posicaoNoSpinner;
     private String dataParaApagarDados;
+    private String ultimaDataQueApagou;
 
-    public Configs(Integer idConfig, String nomeEmpresa, String endereçoHost, String portaDeComunicacao,
-                   Integer permanenciaDosDados, Integer posicaoNoSpinner, String dataParaApagarDados) {
+    public Configs(Integer idConfig, String nomeEmpresa, String endereçoHost, String portaDeComunicacao, Integer permanenciaDosDados,
+                   Integer posicaoNoSpinner, String dataParaApagarDados, String ultimaDataQueApagou) {
         this.idConfig = idConfig;
         this.nomeEmpresa = nomeEmpresa;
         this.endereçoHost = endereçoHost;
@@ -25,6 +26,7 @@ public class Configs implements Serializable {
         this.permanenciaDosDados = permanenciaDosDados;
         this.posicaoNoSpinner = posicaoNoSpinner;
         this.dataParaApagarDados = dataParaApagarDados;
+        this.ultimaDataQueApagou = ultimaDataQueApagou;
     }
 
     public Integer getIdConfig() {
@@ -81,5 +83,13 @@ public class Configs implements Serializable {
 
     public void setDataParaApagarDados(String dataParaApagarDados) {
         this.dataParaApagarDados = dataParaApagarDados;
+    }
+
+    public String getUltimaDataQueApagou() {
+        return ultimaDataQueApagou;
+    }
+
+    public void setUltimaDataQueApagou(String ultimaDataQueApagou) {
+        this.ultimaDataQueApagou = ultimaDataQueApagou;
     }
 }
