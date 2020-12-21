@@ -21,13 +21,14 @@ import java.io.Serializable;
                         onUpdate = ForeignKey.NO_ACTION)},
         primaryKeys = {"ID_PROGRAMACAO_ATIVIDADE", "ID_INSUMO"})
 public class O_S_ATIVIDADE_INSUMOS implements Serializable {
-    @ColumnInfo(name="ID_INSUMO")
-    @NonNull
-    private Integer ID_INSUMO;
 
     @ColumnInfo(name="ID_PROGRAMACAO_ATIVIDADE")
     @NonNull
     private Integer ID_PROGRAMACAO_ATIVIDADE;
+
+    @ColumnInfo(name="ID_INSUMO")
+    @NonNull
+    private Integer ID_INSUMO;
 
     private Integer RECOMENDACAO;
     private double QTD_HA_RECOMENDADO;

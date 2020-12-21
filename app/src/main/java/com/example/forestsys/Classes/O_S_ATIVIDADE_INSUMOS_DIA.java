@@ -23,6 +23,8 @@ import java.io.Serializable;
 
 public class O_S_ATIVIDADE_INSUMOS_DIA implements Serializable {
 
+    private Integer ID;
+
     @ColumnInfo(name = "ID_PROGRAMACAO_ATIVIDADE")
     @NonNull
     private Integer ID_PROGRAMACAO_ATIVIDADE;
@@ -36,9 +38,10 @@ public class O_S_ATIVIDADE_INSUMOS_DIA implements Serializable {
 
     private double QTD_APLICADO;
     private String ACAO_INATIVO;
-    private String REGISTRO_DESCARREGADO;
     private String OBSERVACAO;
-    private Integer ID;
+
+    private String REGISTRO_DESCARREGADO;
+
     private boolean EXPORT_PROXIMA_SINC = false;
 
     public O_S_ATIVIDADE_INSUMOS_DIA(Integer ID, Integer ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, Integer ID_INSUMO,

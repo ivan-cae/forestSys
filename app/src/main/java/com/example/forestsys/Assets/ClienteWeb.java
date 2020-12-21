@@ -247,11 +247,12 @@ public class ClienteWeb<client> {
 
             okhttp3.Response resposta = client.newCall(request).execute();
 
-
-            if (resposta.isSuccessful()) {
+            if (resposta.code() == 200) {
                 erroNoOracle = false;
             } else {
                 erroNoOracle = true;
+                conectado = false;
+                finalizouSinc = true;
             }
             resposta.close();
         }
@@ -300,7 +301,6 @@ public class ClienteWeb<client> {
                             obj.put("ID_RESPONSAVEL", todasOsAtividadesDia.get(i).getID_RESPONSAVEL());
                             obj.put("OBSERVACAO", todasOsAtividadesDia.get(i).getOBSERVACAO());
                             obj.put("REGISTRO_DESCARREGADO", todasOsAtividadesDia.get(i).getREGISTRO_DESCARREGADO());
-                            obj.put("STATUS", "A");
 
 
                             if (todasOsAtividadesDia.get(i).getACAO_INATIVO() == null) {
@@ -349,7 +349,6 @@ public class ClienteWeb<client> {
                             obj.put("ID_RESPONSAVEL", todasOsAtividadesDia.get(i).getID_RESPONSAVEL());
                             obj.put("OBSERVACAO", todasOsAtividadesDia.get(i).getOBSERVACAO());
                             obj.put("REGISTRO_DESCARREGADO", todasOsAtividadesDia.get(i).getREGISTRO_DESCARREGADO());
-                            obj.put("STATUS", todasOsAtividadesDia.get(i).getSTATUS());
 
                             String ACAO_INATIVO = todasOsAtividadesDia.get(i).getACAO_INATIVO();
 
@@ -1070,7 +1069,6 @@ public class ClienteWeb<client> {
                     String DATA = obj.getString("DATA");
                     Integer ID_PRESTADOR = obj.getInt("ID_PRESTADOR");
                     Integer ID_RESPONSAVEL = obj.getInt("ID_RESPONSAVEL");
-                    String STATUS = obj.getString("STATUS");
                     String AREA_REALIZADA = String.valueOf(obj.getString("AREA_REALIZADA"));
                     String HH = String.valueOf(obj.getString("HH"));
                     String HM = String.valueOf(obj.getString("HM"));
@@ -1098,7 +1096,6 @@ public class ClienteWeb<client> {
                     oSAtividadesDia.setDATA(DATA);
                     oSAtividadesDia.setID_PRESTADOR(ID_PRESTADOR);
                     oSAtividadesDia.setID_RESPONSAVEL(ID_RESPONSAVEL);
-                    oSAtividadesDia.setSTATUS(STATUS);
                     oSAtividadesDia.setAREA_REALIZADA(AREA_REALIZADA);
                     oSAtividadesDia.setHH(HH);
                     oSAtividadesDia.setHM(HM);

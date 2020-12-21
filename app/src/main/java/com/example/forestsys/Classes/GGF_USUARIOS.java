@@ -28,22 +28,22 @@ public class GGF_USUARIOS implements Serializable {
     @PrimaryKey
     private Integer ID_USUARIO;
 
+    @ColumnInfo(name = "DESCRICAO")
+    private String DESCRICAO;
+
+    private String SENHA;
+
     @ColumnInfo(name = "ID_DEPARTAMENTO")
     private Integer ID_DEPARTAMENTO;
 
     @ColumnInfo(name = "ID_FUNCAO")
     private Integer ID_FUNCAO;
 
-    private String SENHA;
-
-    private Integer ATIVO;
-
     private String EMAIL;
 
-    @ColumnInfo(name = "DESCRICAO")
-    private String DESCRICAO;
-
     private Integer NIVEL_ACESSO;
+
+    private Integer ATIVO;
 
     public GGF_USUARIOS(Integer ID_USUARIO, Integer ID_DEPARTAMENTO, Integer ID_FUNCAO, String SENHA, Integer ATIVO, String EMAIL, String DESCRICAO, Integer NIVEL_ACESSO) {
         this.ID_USUARIO = ID_USUARIO;

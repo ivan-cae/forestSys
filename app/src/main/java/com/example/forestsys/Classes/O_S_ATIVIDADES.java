@@ -52,10 +52,6 @@ public class O_S_ATIVIDADES implements Serializable {
     @ColumnInfo(name = "ID_ATIVIDADE")
     private Integer ID_ATIVIDADE;
 
-    @Nullable
-    @ColumnInfo(name = "ID_RESPONSAVEL")
-    private Integer ID_RESPONSAVEL;
-
     private String DATA_PROGRAMADA;
 
     private double AREA_PROGRAMADA;
@@ -69,6 +65,10 @@ public class O_S_ATIVIDADES implements Serializable {
     private String DATA_FINAL;
 
     private double AREA_REALIZADA;
+
+    @Nullable
+    @ColumnInfo(name = "ID_RESPONSAVEL")
+    private Integer ID_RESPONSAVEL;
 
     private String STATUS;
 

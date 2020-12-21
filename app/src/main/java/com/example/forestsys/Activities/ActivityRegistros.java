@@ -153,6 +153,10 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     private String regDescarregado = "N";
 
     private boolean insumosNaoConforme = false;
+    private String pattern;
+    private static SimpleDateFormat sdf;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -380,56 +384,84 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
         calculaTotais();
 
+
+        pattern = ("dd-MM-yyyy");
+        sdf = new SimpleDateFormat(pattern);
+
         botaoSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (editouRegistro == false && dao.selecionaOsAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
-                        ferramentas.formataDataDb(dataDoApontamento)) != null) {
+                String auxTeste = dataDoApontamento;
+                boolean dataAntesDaProgramada = false;
+                try {
+                    Date date1 = sdf.parse(auxTeste);
+                    Date date2 = sdf.parse((ferramentas.formataDataTextView(osSelecionada.getDATA_PROGRAMADA())));
 
-                    erroGeral = true;
-
-                    AlertDialog dialog = new AlertDialog.Builder(ActivityRegistros.this)
-                            .setTitle("Erro!")
-                            .setMessage("A data selecionada já tem um registro cadastrado.")
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                }
-                            }).create();
-                    dialog.show();
-                } else {
-                    testaConformidade();
-
-                    if (erro == false && (novaArea + osSelecionada.getAREA_REALIZADA()) > osSelecionada.getAREA_PROGRAMADA()) {
-                        DecimalFormat format = new DecimalFormat("###.#####");
-                        Double d = (novaArea + osSelecionada.getAREA_REALIZADA()) - osSelecionada.getAREA_PROGRAMADA();
-                        String diferenca = format.format(Double.valueOf(String.valueOf(d)));
-                        diferenca.replace('.', ',');
-
+                    if (date1.before(date2)) {
+                        dataAntesDaProgramada = true;
                         AlertDialog dialog = new AlertDialog.Builder(ActivityRegistros.this)
-                                .setTitle("O total da área realizada é maior que a área programada")
-                                .setMessage("Diferença: " + diferenca + "\nDeseja salvar mesmo assim?")
-                                .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        if (erro == false && erroInsumos == false && erroGeral == false) {
-                                            if (edicaoReg == false) chamaSalvar();
-                                            else abreDialogoEdicaoReg();
-                                        }
-                                    }
-                                }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                .setTitle("Erro!")
+                                .setMessage("A data selecionada deve ser igual ou posterior a data programada da atividade.")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                     }
                                 }).create();
                         dialog.show();
                     }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                if (dataAntesDaProgramada == false) {
+                    if (editouRegistro == false && dao.selecionaOsAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
+                            ferramentas.formataDataDb(dataDoApontamento)) != null) {
+
+                        erroGeral = true;
+
+                        AlertDialog dialog = new AlertDialog.Builder(ActivityRegistros.this)
+                                .setTitle("Erro!")
+                                .setMessage("A data selecionada já tem um registro cadastrado.")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                }).create();
+                        dialog.show();
+                    } else {
+                        testaConformidade();
+
+                        if (erro == false && (novaArea + osSelecionada.getAREA_REALIZADA()) > osSelecionada.getAREA_PROGRAMADA()) {
+                            DecimalFormat format = new DecimalFormat("###.#####");
+                            Double d = (novaArea + osSelecionada.getAREA_REALIZADA()) - osSelecionada.getAREA_PROGRAMADA();
+                            String diferenca = format.format(Double.valueOf(String.valueOf(d)));
+                            diferenca.replace('.', ',');
+
+                            AlertDialog dialog = new AlertDialog.Builder(ActivityRegistros.this)
+                                    .setTitle("O total da área realizada é maior que a área programada")
+                                    .setMessage("Diferença: " + diferenca + "\nDeseja salvar mesmo assim?")
+                                    .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            if (erro == false && erroInsumos == false && erroGeral == false) {
+                                                if (edicaoReg == false) chamaSalvar();
+                                                else abreDialogoEdicaoReg();
+                                            }
+                                        }
+                                    }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                        }
+                                    }).create();
+                            dialog.show();
+                        }
 
 
-                    if ((novaArea + osSelecionada.getAREA_REALIZADA()) <= osSelecionada.getAREA_PROGRAMADA()) {
-                        if (erro == false && erroInsumos == false && erroGeral == false) {
-                            if (edicaoReg == false) chamaSalvar();
-                            else abreDialogoEdicaoReg();
+                        if ((novaArea + osSelecionada.getAREA_REALIZADA()) <= osSelecionada.getAREA_PROGRAMADA()) {
+                            if (erro == false && erroInsumos == false && erroGeral == false) {
+                                if (edicaoReg == false) chamaSalvar();
+                                else abreDialogoEdicaoReg();
+                            }
                         }
                     }
                 }
@@ -601,10 +633,10 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 boolean temErro = false;
                 String obs1 = "";
                 String obs2 = "";
-                if(obsInsumo1.length()>0) {
+                if (obsInsumo1.length() > 0) {
                     obs1 = obsInsumo1.getText().toString();
                 }
-                if(obsInsumo2.length()>0) {
+                if (obsInsumo2.length() > 0) {
                     obs2 = obsInsumo2.getText().toString();
                 }
 
@@ -626,7 +658,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                         if (obs1 != null) {
                             if (obs1.length() > 0) pegaObs = obs1 + "\n";
                         }
-                            obs1 = pegaObs.concat("Aplicada quantidade fora da faixa em "+ ferramentas.dataAtual() +
+                        obs1 = pegaObs.concat("Aplicada quantidade fora da faixa em " + ferramentas.dataAtual() +
                                 " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorJustificativa1.getText().toString()));
 
                         naoConformeIns1 = true;
@@ -645,10 +677,10 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                         temErro = true;
                     } else {
                         String pegaObs = "";
-                        if (obs2 != null){
+                        if (obs2 != null) {
                             if (obs2.length() > 0) pegaObs = obs2 + "\n";
                         }
-                        obs2 = pegaObs.concat("Aplicada quantidade fora da faixa em "+ ferramentas.dataAtual() +
+                        obs2 = pegaObs.concat("Aplicada quantidade fora da faixa em " + ferramentas.dataAtual() +
                                 " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorJustificativa2.getText().toString()));
                         naoConformeIns2 = true;
                     }
@@ -788,8 +820,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
             boolean temErro = false;
             String auxTeste = (auxDia + "-" + auxMes + "-" + auxAno).trim();
-            String pattern = ("dd-MM-yyyy");
-            SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 
             Ferramentas ferramentas = new Ferramentas();
             if (!auxTeste.equals(dataDoApontamento)) {
@@ -815,7 +845,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     temErro = true;
                     AlertDialog dialog = new AlertDialog.Builder(getContext())
                             .setTitle("Erro!")
-                            .setMessage("A data selecionada deve ser posterior a data programada da atividade.")
+                            .setMessage("A data selecionada deve ser igual ou posterior a data programada da atividade.")
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -916,7 +946,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
             erroPrestador.setError("");
             erroPrestadorBool = true;
-        }else{
+        } else {
 
             erroPrestador.setError(null);
             erroPrestadorBool = false;
@@ -1081,7 +1111,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         }
 
         oSAtividadesDiaAtual.setREGISTRO_DESCARREGADO(regDescarregado);
-        oSAtividadesDiaAtual.setSTATUS("A");
 
         oSAtividadesDiaAtual.setEXPORT_PROXIMA_SINC(true);
         dao.insert(oSAtividadesDiaAtual);
@@ -1117,8 +1146,8 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     persisteInsumosDia.setACAO_INATIVO("EDICAO");
                 }
 
-                if(persisteInsumosDia.getOBSERVACAO() != null) {
-                   // Log.e("Obs " + String.valueOf(i), persisteInsumosDia.getOBSERVACAO());
+                if (persisteInsumosDia.getOBSERVACAO() != null) {
+                    // Log.e("Obs " + String.valueOf(i), persisteInsumosDia.getOBSERVACAO());
                 }
 
                 dao.apagaOsAtividadeInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
@@ -1153,7 +1182,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
                 //Log.e("soma area | soma qtdApl", String.valueOf(somaAreaRealizada)+" | "+String.valueOf(somaQtdApl));
 
-                String divisao = String.valueOf((long)somaQtdApl / (long)somaAreaRealizada);
+                String divisao = String.valueOf((long) somaQtdApl / (long) somaAreaRealizada);
                 //Log.e("Valor divisao", divisao);
 
                 qtdHaAplicado = new BigDecimal(divisao).setScale(2, BigDecimal.ROUND_UP);

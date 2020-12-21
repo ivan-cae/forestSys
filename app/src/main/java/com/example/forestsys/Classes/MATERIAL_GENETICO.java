@@ -11,6 +11,7 @@ public class MATERIAL_GENETICO implements Serializable {
     private Integer ID_MATERIAL_GENETICO;
 
     private String DESCRICAO;
+
     private Integer ATIVO;
 
     public MATERIAL_GENETICO(Integer ID_MATERIAL_GENETICO, String DESCRICAO, Integer ATIVO) {

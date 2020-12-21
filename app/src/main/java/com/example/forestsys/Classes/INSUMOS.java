@@ -20,6 +20,7 @@ public class INSUMOS implements Serializable {
 
 	private String CLASSE;
 	private String DESCRICAO;
+    private String UND_MEDIDA;
 	private double NUTRIENTE_N;
 	private double NUTRIENTE_P2O5;
     private double NUTRIENTE_K2O;
@@ -32,7 +33,6 @@ public class INSUMOS implements Serializable {
     private double NUTRIENTE_AF;
     private double NUTRIENTE_MN;
 	private Integer ATIVO;
-	private String UND_MEDIDA;
 
     public INSUMOS(Integer ID_INSUMO, String ID_INSUMO_RM, String CLASSE, String DESCRICAO, double NUTRIENTE_N,
                    double NUTRIENTE_P2O5, double NUTRIENTE_K2O, double NUTRIENTE_CAO, double NUTRIENTE_MGO,

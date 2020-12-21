@@ -29,6 +29,8 @@ public class INDICADORES_SUBSOLAGEM implements Serializable {
     @NonNull
     private Integer ID_PROGRAMACAO_ATIVIDADE;
 
+    private String DATA;
+
     @NonNull
     @ColumnInfo(name="ID_ATIVIDADE")
     private Integer ID_ATIVIDADE;
@@ -36,8 +38,6 @@ public class INDICADORES_SUBSOLAGEM implements Serializable {
     @NonNull
     @ColumnInfo(name="ID_INDICADOR")
     private Integer ID_INDICADOR;
-
-    private String DATA;
 
     private double VALOR_INDICADOR;
 
