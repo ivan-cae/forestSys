@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.forestsys.Classes.ClassesAuxiliares.Configs;
@@ -47,7 +48,7 @@ import com.example.forestsys.Classes.PRESTADORES;
         AVAL_SUBSOLAGEM.class, OPERADORES.class, CALIBRAGEM_SUBSOLAGEM.class, MAQUINA_IMPLEMENTO.class,
         O_S_ATIVIDADE_INSUMOS.class, ATIVIDADE_INDICADORES.class, ATIVIDADES.class, CADASTRO_FLORESTAL.class, ESPACAMENTOS.class, GEO_REGIONAIS.class,
         GEO_SETORES.class, GGF_DEPARTAMENTOS.class, GGF_FUNCOES.class, GGF_USUARIOS.class, INSUMO_ATIVIDADES.class, MATERIAL_GENETICO.class, O_S_ATIVIDADE_INSUMOS_DIA.class, O_S_ATIVIDADES.class, O_S_ATIVIDADES_DIA.class,
-        PRESTADORES.class, Configs.class, GEO_LOCALIZACAO.class}, version = 1, exportSchema = false)
+        PRESTADORES.class, Configs.class, GEO_LOCALIZACAO.class}, version = 2, exportSchema = false)
 
 
 public abstract class BaseDeDados extends RoomDatabase {
@@ -66,11 +67,18 @@ public abstract class BaseDeDados extends RoomDatabase {
                     BaseDeDados.class, "base_forestsys")
                     .addCallback(roomCallBack)
                     .allowMainThreadQueries()
+                    .addMigrations(MIGRATION_1_2)
                     .build();
         }
         return instance;
     }
 
+    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE Configs ADD COLUMN ultimaDataQueApagou TEXT");
+        }
+    };
 
     private static RoomDatabase.Callback roomCallBack = new RoomDatabase.Callback() {
         @Override
