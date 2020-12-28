@@ -178,14 +178,38 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         auxSavedInstanceState = savedInstanceState;
         setContentView(R.layout.activity_qualidade);
 
-        try {
-            inicializacao();
-        } catch (Exception e) {
-            e.printStackTrace();
+        baseDeDados = BaseDeDados.getInstance(getApplicationContext());
+        dao = baseDeDados.dao();
+        AVAL_SUBSOLAGEM avlSub = dao.selecionaAvalSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+        List<ATIVIDADE_INDICADORES> atvIndicadoresPonto = dao.listaAtividadeIndicadores(osSelecionada.getID_ATIVIDADE(), "N");
+        List<ATIVIDADE_INDICADORES> atvIndicadoresVerion = dao.listaAtividadeIndicadores(osSelecionada.getID_ATIVIDADE(), "S");
+
+        boolean naoPodeAbrir = false;
+
+        if (avlSub == null) naoPodeAbrir = true;
+        if (atvIndicadoresPonto == null) naoPodeAbrir = true;
+        if (atvIndicadoresPonto != null) {
+            if (atvIndicadoresPonto.size() == 0) naoPodeAbrir = true;
+        }
+
+        if (atvIndicadoresVerion == null) naoPodeAbrir = true;
+        if (atvIndicadoresVerion != null) {
+            if (atvIndicadoresVerion.size() == 0) naoPodeAbrir = true;
+        }
+
+        if (naoPodeAbrir == true) {
             Intent it = new Intent(ActivityQualidade.this, ActivityAtividades.class);
             it.putExtra("erroAbrirQualidade", true);
             startActivity(it);
         }
+            try {
+                inicializacao();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Intent it = new Intent(ActivityQualidade.this, ActivityAtividades.class);
+                it.putExtra("erroAbrirQualidade", true);
+                startActivity(it);
+            }
 
         if (savedInstanceState != null) {
             dialogoVerionAberto = savedInstanceState.getBoolean("dialogoVerionAberto");
@@ -707,7 +731,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         String referencia = String.valueOf(atividadeIndicadores.get(0).getLIMITE_SUPERIOR());
-                        ferramentas.mascaraVirgula(mediaEditP1,s, atividadeIndicadores.get(0).getCASAS_DECIMAIS(), referencia, count, before);
+                        ferramentas.mascaraVirgula(mediaEditP1, s, atividadeIndicadores.get(0).getCASAS_DECIMAIS(), referencia, count, before);
                     }
 
                     @Override
@@ -726,7 +750,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         String referencia = String.valueOf(atividadeIndicadores.get(1).getLIMITE_SUPERIOR());
-                        ferramentas.mascaraVirgula(desvioEditP1,s, atividadeIndicadores.get(1).getCASAS_DECIMAIS(), referencia, count, before);
+                        ferramentas.mascaraVirgula(desvioEditP1, s, atividadeIndicadores.get(1).getCASAS_DECIMAIS(), referencia, count, before);
                     }
 
                     @Override
@@ -744,7 +768,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         String referencia = String.valueOf(atividadeIndicadores.get(2).getLIMITE_SUPERIOR());
-                        ferramentas.mascaraVirgula(mediaEditP2,s, atividadeIndicadores.get(2).getCASAS_DECIMAIS(), referencia, count, before);
+                        ferramentas.mascaraVirgula(mediaEditP2, s, atividadeIndicadores.get(2).getCASAS_DECIMAIS(), referencia, count, before);
                     }
 
                     @Override
@@ -763,7 +787,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         String referencia = String.valueOf(atividadeIndicadores.get(3).getLIMITE_SUPERIOR());
-                        ferramentas.mascaraVirgula(desvioEditP2,s, atividadeIndicadores.get(3).getCASAS_DECIMAIS(), referencia, count, before);
+                        ferramentas.mascaraVirgula(desvioEditP2, s, atividadeIndicadores.get(3).getCASAS_DECIMAIS(), referencia, count, before);
                     }
 
                     @Override
@@ -811,7 +835,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         String referencia = String.valueOf(atividadeIndicadores.get(0).getLIMITE_SUPERIOR());
-                        ferramentas.mascaraVirgula(mediaEditP1,s, atividadeIndicadores.get(0).getCASAS_DECIMAIS(), referencia, count, before);
+                        ferramentas.mascaraVirgula(mediaEditP1, s, atividadeIndicadores.get(0).getCASAS_DECIMAIS(), referencia, count, before);
 
                     }
 
@@ -831,7 +855,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         String referencia = String.valueOf(atividadeIndicadores.get(1).getLIMITE_SUPERIOR());
-                        ferramentas.mascaraVirgula(desvioEditP1,s, atividadeIndicadores.get(1).getCASAS_DECIMAIS(), referencia, count, before);
+                        ferramentas.mascaraVirgula(desvioEditP1, s, atividadeIndicadores.get(1).getCASAS_DECIMAIS(), referencia, count, before);
                     }
 
                     @Override
@@ -849,7 +873,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         String referencia = String.valueOf(atividadeIndicadores.get(2).getLIMITE_SUPERIOR());
-                        ferramentas.mascaraVirgula(mediaEditP2,s, atividadeIndicadores.get(2).getCASAS_DECIMAIS(), referencia, count, before);
+                        ferramentas.mascaraVirgula(mediaEditP2, s, atividadeIndicadores.get(2).getCASAS_DECIMAIS(), referencia, count, before);
                     }
 
                     @Override
@@ -868,7 +892,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         String referencia = String.valueOf(atividadeIndicadores.get(3).getLIMITE_SUPERIOR());
-                        ferramentas.mascaraVirgula(desvioEditP2,s, atividadeIndicadores.get(3).getCASAS_DECIMAIS(), referencia, count, before);
+                        ferramentas.mascaraVirgula(desvioEditP2, s, atividadeIndicadores.get(3).getCASAS_DECIMAIS(), referencia, count, before);
                     }
 
                     @Override
@@ -909,14 +933,14 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                         try {
                             //Log.e("Tamanho lista Verion", String.valueOf(listaVerion.size()));
 
-                            if(listaVerion.size() == 0) {
+                            if (listaVerion.size() == 0) {
                                 dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 11, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP1.getText().toString().replace(',', '.'))));
                                 dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 12, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP1.getText().toString().replace(',', '.'))));
                                 dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 13, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP2.getText().toString().replace(',', '.'))));
                                 dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.'))));
                             }
 
-                            if(listaVerion.size()==1){
+                            if (listaVerion.size() == 1) {
                                 listaVerion.get(0).setVALOR_INDICADOR(Double.valueOf(mediaEditP1.getText().toString().replace(',', '.')));
                                 dao.update(listaVerion.get(0));
 
@@ -925,7 +949,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                                 dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.'))));
                             }
 
-                            if(listaVerion.size()==2){
+                            if (listaVerion.size() == 2) {
                                 listaVerion.get(0).setVALOR_INDICADOR(Double.valueOf(mediaEditP1.getText().toString().replace(',', '.')));
                                 listaVerion.get(1).setVALOR_INDICADOR(Double.valueOf(desvioEditP1.getText().toString().replace(',', '.')));
                                 dao.update(listaVerion.get(0));
@@ -935,7 +959,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                                 dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.'))));
                             }
 
-                            if(listaVerion.size()==3){
+                            if (listaVerion.size() == 3) {
                                 listaVerion.get(0).setVALOR_INDICADOR(Double.valueOf(mediaEditP1.getText().toString().replace(',', '.')));
                                 listaVerion.get(1).setVALOR_INDICADOR(Double.valueOf(desvioEditP1.getText().toString().replace(',', '.')));
                                 listaVerion.get(2).setVALOR_INDICADOR(Double.valueOf(mediaEditP2.getText().toString().replace(',', '.')));
@@ -947,16 +971,16 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                                 dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.'))));
                             }
 
-                            if(listaVerion.size()==4){
+                            if (listaVerion.size() == 4) {
                                 listaVerion.get(0).setVALOR_INDICADOR(Double.valueOf(mediaEditP1.getText().toString().replace(',', '.')));
                                 listaVerion.get(1).setVALOR_INDICADOR(Double.valueOf(desvioEditP1.getText().toString().replace(',', '.')));
                                 listaVerion.get(2).setVALOR_INDICADOR(Double.valueOf(mediaEditP2.getText().toString().replace(',', '.')));
                                 listaVerion.get(3).setVALOR_INDICADOR(Double.valueOf(desvioEditP2.getText().toString().replace(',', '.')));
 
-                                for(int i = 0; i<4; i++) {
+                                for (int i = 0; i < 4; i++) {
                                     dao.update(listaVerion.get(i));
                                     //Log.e("Valor Indicador "+ String.valueOf(listaVerion.get(i).getID_INDICADOR()),
-                                            //String.valueOf(listaVerion.get(i).getVALOR_INDICADOR()));
+                                    //String.valueOf(listaVerion.get(i).getVALOR_INDICADOR()));
                                 }
                             }
 
@@ -1017,17 +1041,18 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 }
             });
         } catch (Exception ex) {
-                ex.printStackTrace();
-                    AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
-                            .setTitle("Erro!")
-                            .setMessage("Houve um problema ao abrir a tela de coleta do sistema de precisão.")
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                }
-                            }).create();
-                    dialog.show();
-            }
+            ex.printStackTrace();
+            dialogoVerion.dismiss();
+            AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
+                    .setTitle("Erro!")
+                    .setMessage("Houve um problema ao abrir a tela de coleta do sistema de precisão.")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    }).create();
+            dialog.show();
+        }
     }
 
     public void abreDialogoCorrecao() {
@@ -1342,7 +1367,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     String referencia = String.valueOf(atividadeIndicadores.get(0).getLIMITE_SUPERIOR());
-                    ferramentas.mascaraVirgula(editItem1,s, atividadeIndicadores.get(0).getCASAS_DECIMAIS(), referencia, count, before);
+                    ferramentas.mascaraVirgula(editItem1, s, atividadeIndicadores.get(0).getCASAS_DECIMAIS(), referencia, count, before);
 
                 }
 
@@ -1361,7 +1386,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     String referencia = String.valueOf(atividadeIndicadores.get(1).getLIMITE_SUPERIOR());
-                    ferramentas.mascaraVirgula(editItem2,s, atividadeIndicadores.get(1).getCASAS_DECIMAIS(), referencia, count, before);
+                    ferramentas.mascaraVirgula(editItem2, s, atividadeIndicadores.get(1).getCASAS_DECIMAIS(), referencia, count, before);
                 }
 
                 @Override
@@ -1379,7 +1404,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     String referencia = String.valueOf(atividadeIndicadores.get(2).getLIMITE_SUPERIOR());
-                    ferramentas.mascaraVirgula(editItem3,s, atividadeIndicadores.get(2).getCASAS_DECIMAIS(), referencia, count, before);
+                    ferramentas.mascaraVirgula(editItem3, s, atividadeIndicadores.get(2).getCASAS_DECIMAIS(), referencia, count, before);
                 }
 
                 @Override
@@ -1397,7 +1422,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     String referencia = String.valueOf(atividadeIndicadores.get(3).getLIMITE_SUPERIOR());
-                    ferramentas.mascaraVirgula(editItem4,s, atividadeIndicadores.get(3).getCASAS_DECIMAIS(), referencia, count, before);
+                    ferramentas.mascaraVirgula(editItem4, s, atividadeIndicadores.get(3).getCASAS_DECIMAIS(), referencia, count, before);
                 }
 
                 @Override
@@ -1415,7 +1440,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     String referencia = String.valueOf(atividadeIndicadores.get(5).getLIMITE_SUPERIOR());
-                    ferramentas.mascaraVirgula(editItem6,s, atividadeIndicadores.get(5).getCASAS_DECIMAIS(), referencia, count, before);
+                    ferramentas.mascaraVirgula(editItem6, s, atividadeIndicadores.get(5).getCASAS_DECIMAIS(), referencia, count, before);
                 }
 
                 @Override
@@ -1435,7 +1460,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     String referencia = String.valueOf(atividadeIndicadores.get(9).getLIMITE_SUPERIOR());
-                    ferramentas.mascaraVirgula(editItem10,s, atividadeIndicadores.get(9).getCASAS_DECIMAIS(), referencia, count, before);
+                    ferramentas.mascaraVirgula(editItem10, s, atividadeIndicadores.get(9).getCASAS_DECIMAIS(), referencia, count, before);
                 }
 
                 @Override
@@ -1472,7 +1497,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     String referencia = String.valueOf(atividadeIndicadores.get(0).getLIMITE_SUPERIOR());
-                    ferramentas.mascaraVirgula(editItem1,s, atividadeIndicadores.get(0).getCASAS_DECIMAIS(), referencia, count, before);
+                    ferramentas.mascaraVirgula(editItem1, s, atividadeIndicadores.get(0).getCASAS_DECIMAIS(), referencia, count, before);
 
                 }
 
@@ -1491,7 +1516,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     String referencia = String.valueOf(atividadeIndicadores.get(1).getLIMITE_SUPERIOR());
-                    ferramentas.mascaraVirgula(editItem2,s, atividadeIndicadores.get(1).getCASAS_DECIMAIS(), referencia, count, before);
+                    ferramentas.mascaraVirgula(editItem2, s, atividadeIndicadores.get(1).getCASAS_DECIMAIS(), referencia, count, before);
                 }
 
                 @Override
@@ -1509,7 +1534,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     String referencia = String.valueOf(atividadeIndicadores.get(2).getLIMITE_SUPERIOR());
-                    ferramentas.mascaraVirgula(editItem3,s, atividadeIndicadores.get(2).getCASAS_DECIMAIS(), referencia, count, before);
+                    ferramentas.mascaraVirgula(editItem3, s, atividadeIndicadores.get(2).getCASAS_DECIMAIS(), referencia, count, before);
                 }
 
                 @Override
@@ -1527,7 +1552,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     String referencia = String.valueOf(atividadeIndicadores.get(3).getLIMITE_SUPERIOR());
-                    ferramentas.mascaraVirgula(editItem4,s, atividadeIndicadores.get(3).getCASAS_DECIMAIS(), referencia, count, before);
+                    ferramentas.mascaraVirgula(editItem4, s, atividadeIndicadores.get(3).getCASAS_DECIMAIS(), referencia, count, before);
                 }
 
                 @Override
@@ -1545,7 +1570,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     String referencia = String.valueOf(atividadeIndicadores.get(5).getLIMITE_SUPERIOR());
-                    ferramentas.mascaraVirgula(editItem6,s, atividadeIndicadores.get(5).getCASAS_DECIMAIS(), referencia, count, before);
+                    ferramentas.mascaraVirgula(editItem6, s, atividadeIndicadores.get(5).getCASAS_DECIMAIS(), referencia, count, before);
                 }
 
                 @Override
@@ -1565,7 +1590,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     String referencia = String.valueOf(atividadeIndicadores.get(9).getLIMITE_SUPERIOR());
-                    ferramentas.mascaraVirgula(editItem10,s, atividadeIndicadores.get(9).getCASAS_DECIMAIS(), referencia, count, before);
+                    ferramentas.mascaraVirgula(editItem10, s, atividadeIndicadores.get(9).getCASAS_DECIMAIS(), referencia, count, before);
                 }
 
                 @Override
@@ -1784,10 +1809,11 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             startActivity(it);
             dialogoPonto.dismiss();
         } catch (SQLiteConstraintException | NullPointerException ex) {
+            dialogoPonto.dismiss();
             ex.printStackTrace();
             AlertDialog dialogoErro = new AlertDialog.Builder(ActivityQualidade.this)
                     .setTitle("Erro")
-                    .setMessage("Houve um problema ao salvar a calibração.")
+                    .setMessage("Houve um problema ao salvar o ponto.")
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {

@@ -56,18 +56,6 @@
         app:layout_constraintStart_toStartOf="@+id/textView21"
         app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
-    <EditText
-        android:id="@+id/area_realizada_apontamento"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:digits="1 2 3 4 5 6 7 8 9 0"
-        android:inputType="numberDecimal"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView42"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView42"
-        app:layout_constraintTop_toTopOf="@+id/textView42" />
-
     <TextView
         android:id="@+id/textView46"
         android:layout_width="wrap_content"
@@ -94,22 +82,16 @@
         app:layout_constraintTop_toBottomOf="@+id/textView59" />
 
     <EditText
-        android:id="@+id/hora_operador_escavadeira_apontamento"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:digits="1 2 3 4 5 6 7 8 9 0"
-        android:inputType="numberDecimal"
-        android:maxLength="5"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView56"
-        app:layout_constraintStart_toEndOf="@+id/textView56"
-        app:layout_constraintTop_toTopOf="@+id/textView56" />
-
-    <EditText
         android:id="@+id/hora_operador_apontamento"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:digits="1 2 3 4 5 6 7 8 9 0"
+        android:imeOptions="actionNext"
+        android:nextFocusDown="@+id/hora_maquina_escavadeira_apontamento"
+        android:nextFocusRight="@+id/hora_maquina_escavadeira_apontamento"
+        android:nextFocusUp="@+id/hora_maquina_escavadeira_apontamento"
+        android:nextFocusLeft="@+id/hora_maquina_escavadeira_apontamento"
+        android:nextFocusForward="@+id/hora_maquina_escavadeira_apontamento"
         android:inputType="numberDecimal"
         android:maxLength="5"
         android:textSize="12sp"
@@ -118,22 +100,34 @@
         app:layout_constraintTop_toTopOf="@+id/textView20" />
 
     <EditText
-        android:id="@+id/hora_maquina_apontamento"
+        android:id="@+id/hora_maquina_escavadeira_apontamento"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:digits="1 2 3 4 5 6 7 8 9 0"
+        android:imeOptions="actionNext"
+        android:nextFocusDown="@+id/hora_homem_apontamento"
+        android:nextFocusRight="@+id/hora_homem_apontamento"
+        android:nextFocusUp="@+id/hora_homem_apontamento"
+        android:nextFocusLeft="@+id/hora_homem_apontamento"
+        android:nextFocusForward="@+id/hora_homem_apontamento"
         android:inputType="numberDecimal"
         android:maxLength="5"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView21"
-        app:layout_constraintStart_toEndOf="@+id/textView21"
-        app:layout_constraintTop_toTopOf="@+id/textView21" />
+        app:layout_constraintBottom_toBottomOf="@+id/textView59"
+        app:layout_constraintStart_toEndOf="@+id/textView59"
+        app:layout_constraintTop_toTopOf="@+id/textView59" />
 
     <EditText
         android:id="@+id/hora_homem_apontamento"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:digits="1 2 3 4 5 6 7 8 9 0"
+        android:imeOptions="actionNext"
+        android:nextFocusDown="@+id/hora_operador_escavadeira_apontamento"
+        android:nextFocusRight="@+id/hora_operador_escavadeira_apontamento"
+        android:nextFocusUp="@+id/hora_operador_escavadeira_apontamento"
+        android:nextFocusLeft="@+id/hora_operador_escavadeira_apontamento"
+        android:nextFocusForward="@+id/hora_operador_escavadeira_apontamento"
         android:inputType="numberDecimal"
         android:maxLength="5"
         android:textSize="12sp"
@@ -142,28 +136,71 @@
         app:layout_constraintTop_toTopOf="@+id/textView40" />
 
     <EditText
+        android:id="@+id/hora_operador_escavadeira_apontamento"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:digits="1 2 3 4 5 6 7 8 9 0"
+        android:imeOptions="actionNext"
+        android:nextFocusDown="@+id/hora_maquina_apontamento"
+        android:nextFocusRight="@+id/hora_maquina_apontamento"
+        android:nextFocusUp="@+id/hora_maquina_apontamento"
+        android:nextFocusLeft="@+id/hora_maquina_apontamento"
+        android:nextFocusForward="@+id/hora_maquina_apontamento"
+        android:inputType="numberDecimal"
+        android:maxLength="5"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView56"
+        app:layout_constraintStart_toEndOf="@+id/textView56"
+        app:layout_constraintTop_toTopOf="@+id/textView56" />
+
+    <EditText
+        android:id="@+id/hora_maquina_apontamento"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:digits="1 2 3 4 5 6 7 8 9 0"
+        android:imeOptions="actionNext"
+        android:nextFocusDown="@+id/area_realizada_apontamento"
+        android:nextFocusRight="@+id/area_realizada_apontamento"
+        android:nextFocusUp="@+id/area_realizada_apontamento"
+        android:nextFocusLeft="@+id/area_realizada_apontamento"
+        android:nextFocusForward="@+id/area_realizada_apontamento"
+        android:inputType="numberDecimal"
+        android:maxLength="5"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView21"
+        app:layout_constraintStart_toEndOf="@+id/textView21"
+        app:layout_constraintTop_toTopOf="@+id/textView21" />
+
+    <EditText
+        android:id="@+id/area_realizada_apontamento"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:digits="1 2 3 4 5 6 7 8 9 0"
+        android:imeOptions="actionNext"
+        android:nextFocusDown="@+id/obs_apontamento"
+        android:nextFocusRight="@+id/obs_apontamento"
+        android:nextFocusUp="@+id/obs_apontamento"
+        android:nextFocusLeft="@+id/obs_apontamento"
+        android:nextFocusForward="@+id/obs_apontamento"
+        android:inputType="numberDecimal"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView42"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView42"
+        app:layout_constraintTop_toTopOf="@+id/textView42" />
+
+    <EditText
         android:id="@+id/obs_apontamento"
         android:layout_width="460dp"
         android:layout_height="80dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:imeOptions="actionNext"
         android:scrollbars="vertical"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView41" />
-
-    <EditText
-        android:id="@+id/hora_maquina_escavadeira_apontamento"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:digits="1 2 3 4 5 6 7 8 9 0"
-        android:inputType="numberDecimal"
-        android:maxLength="5"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView59"
-        app:layout_constraintStart_toEndOf="@+id/textView59"
-        app:layout_constraintTop_toTopOf="@+id/textView59" />
 
     <TextView
         android:id="@+id/textView59"

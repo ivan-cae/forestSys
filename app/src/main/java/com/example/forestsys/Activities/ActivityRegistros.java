@@ -568,15 +568,11 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 salva();
             }
         };
-        if (editouRegistro == false) {
             if (insumoConforme1 == false || insumoConforme2 == false) {
                 abreDialogoQtdForaFaixa();
             } else {
                 t.run();
             }
-        } else {
-            t.run();
-        }
     }
 
 

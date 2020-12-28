@@ -506,7 +506,8 @@ public class ActivityAtividades extends AppCompatActivity
         if(it.hasExtra("erroAbrirQualidade")){
             AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
                     .setTitle("Erro!")
-                    .setMessage("Houve um erro ao abrir o módulo de qualidade, favor comunicar ao responsável.")
+                    .setMessage("Houve um erro ao abrir o módulo de qualidade.\n" +
+                            "Favor checar com o responsável se todos os indicadores estão cadastrados no banco de dados.")
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
