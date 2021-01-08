@@ -15,6 +15,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -191,36 +192,60 @@ public class FragmentoInsumos extends Fragment {
     //Poe a virgula automaticamente como separador decimal dos números inseridos nas caixas de texto
     //parâmetros de entrada: Uma instância de uma caixa de texto, um double representando a qtd_ha_recomendado para o insumo,
     //a string contendo os valores inseridos na caixa de texto
-    /*public void mascaraVirgula(EditText edit, double qtd_ha_rec , CharSequence s){
-        int tamanho;
-        String input;
+    public static void mascaraVirgula(EditText edit, CharSequence s, int casasDecimais, String valorReferencia,
+                                      int contAtual, int contAnterior) {
 
-        tamanho = edit.length();
-        input = s.toString();
+        Log.e("Digitado", s.toString());
+        Log.e("Anterior", String.valueOf(contAnterior));
+        Log.e("Atual", String.valueOf(contAtual));
 
-        if (input.length()>0) {
+        if(casasDecimais == 0) casasDecimais = 2;
 
-            String qtdrec = String.valueOf(Double.valueOf(area.replace(',', '.')) * qtd_ha_rec);
+        String input = s.toString();
+        String semFormatar = input.replace(",", "").trim();
+        int tamanho = semFormatar.length();
+        String valorFinal = semFormatar;
+        char[] separaSemFormatar = semFormatar.toCharArray();
+        char[] separaFormatado = input.toCharArray();
+        int nCasasAntesVirgula = 2;
 
-            String[] antesDaVirgula = qtdrec.replace('.', ',').split(",");
+        valorReferencia = valorReferencia.replace(".", ",");
+        String[] antesDaVirgula = valorReferencia.split(",");
+        nCasasAntesVirgula = antesDaVirgula[0].length();
 
-            edit.setFilters(new InputFilter[]{
-                    new InputFilter.LengthFilter(antesDaVirgula[0].length() + 3)});
+        if(nCasasAntesVirgula<=5) nCasasAntesVirgula = 5;
 
-            char[] aux = input.toCharArray();
-            if((tamanho+1) != antesDaVirgula[0].length() && aux[tamanho - 1] == ','){
-                edit.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
-            } else {
-                if(tamanho == antesDaVirgula[0].length()+1) {
-                    char []charAux = input.toCharArray();
-                    String stringAux = String.valueOf(charAux[tamanho-1]);
-                    input = input.substring(0, tamanho-1);
-                    edit.setText(input + ","+ stringAux);
-                    edit.setSelection(edit.getText().toString().length());
+        edit.setFilters(new InputFilter[]{
+                new InputFilter.LengthFilter(nCasasAntesVirgula+3)});
+
+        if (contAnterior != contAtual) {
+            if (tamanho > casasDecimais-1) {
+                if (tamanho == casasDecimais) {
+                    if (contAnterior>contAtual && input.contains(",")) {
+                        valorFinal = "";
+                        valorFinal = (separaSemFormatar[0] + "" + separaSemFormatar[1]).trim();
+                    }
+
+                    if(contAnterior<contAtual && !input.contains(",")){
+                        valorFinal = separaSemFormatar[0] + "," + separaSemFormatar[1];
+                    }
                 }
             }
+
+            if (tamanho > casasDecimais) {
+                valorFinal = "";
+                for (int i = 0; i < tamanho; i++) {
+                    valorFinal += separaSemFormatar[i];
+                    if (i == (tamanho - (casasDecimais+1))) {
+                        valorFinal += ",";
+                    }
+
+                }
+            }
+            edit.setText(valorFinal.trim());
+            edit.setSelection(edit.length());
         }
-    }*/
+    }
 
     //Abre o diálogo para preencher a quantidade aplicada de um insumo.
     //Parâmetro de entrada: instância da classe Join_OS_INSUMOS
@@ -256,7 +281,7 @@ public class FragmentoInsumos extends Fragment {
                 //BigDecimal =
                 //String  = format.format(String.valueOf(Double.valueOf(area.replace(',', '.')) * insere.getQTD_HA_RECOMENDADO()));
 
-                ferramentas.mascaraVirgula(valorDialogoQtd, s, 2, qtd_ha_rec, count, before);
+                mascaraVirgula(valorDialogoQtd, s, 2, qtd_ha_rec, count, before);
             }
 
             @Override

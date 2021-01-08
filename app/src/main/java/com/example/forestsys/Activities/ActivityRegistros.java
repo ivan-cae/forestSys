@@ -393,7 +393,9 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             public void onClick(View v) {
                 String auxTeste = dataDoApontamento;
                 boolean dataAntesDaProgramada = false;
-                try {
+
+                //Pedaço de código responsável por checar se a data selecionada é posterior á programada
+                /*try {
                     Date date1 = sdf.parse(auxTeste);
                     Date date2 = sdf.parse((ferramentas.formataDataTextView(osSelecionada.getDATA_PROGRAMADA())));
 
@@ -411,7 +413,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();
-                }
+                }*/
 
                 if (dataAntesDaProgramada == false) {
                     if (editouRegistro == false && dao.selecionaOsAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
@@ -833,7 +835,8 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 }
             }
 
-            try {
+            //Pedaço de código responsável por checar se a data selecionada é posterior á programada
+            /*try {
                 Date date1 = sdf.parse(auxTeste);
                 Date date2 = sdf.parse((ferramentas.formataDataTextView(osSelecionada.getDATA_PROGRAMADA())));
 
@@ -851,7 +854,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
-            }
+            }*/
 
             try {
                 Date date1 = sdf.parse(auxTeste);
