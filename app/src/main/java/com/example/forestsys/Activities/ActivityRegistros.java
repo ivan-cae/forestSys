@@ -589,7 +589,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         valorJustificativa2 = mView.findViewById(R.id.dialogo_frag_insumos_fora_faixa2);
         TextView titulo1 = mView.findViewById(R.id.dialogo_registros_insumos_titulo1);
         TextView titulo2 = mView.findViewById(R.id.dialogo_registros_insumos_titulo2);
-        Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_insumo_fora_faixa);
+        Button botaoOk = mView.findViewById(R.id.botao_ok_dialogo_insumo_fora_faixa);
 
         if (insumoConforme1 == false) {
             titulo1.setVisibility(View.VISIBLE);
@@ -618,16 +618,11 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             }
         }
 
-
-        mBuilder.setView(mView);
-        dialogoQtdForaFaixa = mBuilder.create();
-        dialogoQtdForaFaixa.setCanceledOnTouchOutside(false);
-        dialogoQtdForaFaixa.show();
-
         botaoOk.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
+            @SuppressLint("LongLogTag")
             @Override
             public void onClick(View view) {
+                Log.e("Clicou no botao ok", "");
                 boolean temErro = false;
                 String obs1 = "";
                 String obs2 = "";
@@ -696,7 +691,9 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     }
 
                     salva();
+                    Log.e("Chamou a funcao salva()", "");
                     dialogoQtdForaFaixa.dismiss();
+                    Log.e("Fechou o dialogo de insumos fora da faixa", "");
                 }
             }
         });
@@ -717,6 +714,11 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 abriuDialogoForaFaixa = false;
             }
         });
+
+        mBuilder.setView(mView);
+        dialogoQtdForaFaixa = mBuilder.create();
+        dialogoQtdForaFaixa.setCanceledOnTouchOutside(false);
+        dialogoQtdForaFaixa.show();
     }
 
 
@@ -726,7 +728,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_registros_editar_registro, null);
         valorEdicaoRegJustificativa = mView.findViewById(R.id.valor_dialogo_editar_registro);
-        Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_editar_registro);
+        Button botaoOk = mView.findViewById(R.id.botao_ok_dialogo_editar_registro);
 
         if (auxSavedInstanceState != null) {
             if (auxSavedInstanceState.getString("valorJustificativa") != null) {
@@ -736,13 +738,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             }
         }
 
-        mBuilder.setView(mView);
-        dialogoEdicaoReg = mBuilder.create();
-        dialogoEdicaoReg.setCanceledOnTouchOutside(false);
-        dialogoEdicaoReg.show();
-
         botaoOk.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
                 String str = valorEdicaoRegJustificativa.getText().toString();
@@ -773,6 +769,11 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 Toast.makeText(ActivityRegistros.this, "Operação cancelada pelo usuário", Toast.LENGTH_SHORT).show();
             }
         });
+
+        mBuilder.setView(mView);
+        dialogoEdicaoReg = mBuilder.create();
+        dialogoEdicaoReg.setCanceledOnTouchOutside(false);
+        dialogoEdicaoReg.show();
     }
 
     public static class FragmentoDatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener {

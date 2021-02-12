@@ -651,7 +651,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             desvioEditP1 = mView.findViewById(R.id.dialogo_qualidade_verion_desvio_padrao_p1);
             desvioEditP2 = mView.findViewById(R.id.dialogo_qualidade_verion_desvio_padrao_p2);
 
-            Button botaoRegistrar = (Button) mView.findViewById(R.id.dialogo_qualidade_verion_botao_registrar);
+            Button botaoRegistrar =  mView.findViewById(R.id.dialogo_qualidade_verion_botao_registrar);
 
             mediaP1Nome.setText(joinOsInsumos.get(0).getDESCRICAO() + " - P1");
             mediaP2Nome.setText(joinOsInsumos.get(1).getDESCRICAO() + " - P2");
@@ -1288,7 +1288,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
         numeroPonto.setText(String.valueOf(listaPonto.size() + 1));
 
-        Button botaoRegistrar = (Button) mView.findViewById(R.id.dialogo_qualidade_ponto_botao_registrar);
+        Button botaoRegistrar =  mView.findViewById(R.id.dialogo_qualidade_ponto_botao_registrar);
         atividadeIndicadores = dao.listaAtividadeIndicadores(osSelecionada.getID_ATIVIDADE(), "N");
 
         textItem1.setText(atividadeIndicadores.get(0).getDESCRICAO());

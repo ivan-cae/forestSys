@@ -195,10 +195,10 @@ public class FragmentoInsumos extends Fragment {
     public static void mascaraVirgula(EditText edit, CharSequence s, int casasDecimais, String valorReferencia,
                                       int contAtual, int contAnterior) {
 
-        Log.e("Digitado", s.toString());
+        /*Log.e("Digitado", s.toString());
         Log.e("Anterior", String.valueOf(contAnterior));
         Log.e("Atual", String.valueOf(contAtual));
-
+*/
         if(casasDecimais == 0) casasDecimais = 2;
 
         String input = s.toString();
@@ -255,7 +255,7 @@ public class FragmentoInsumos extends Fragment {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
         View mView = getLayoutInflater().inflate(R.layout.dialogo_registros_insumos, null);
         valorDialogoQtd = mView.findViewById(R.id.valor_dialogo_insumos);
-        Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_insumos);
+        Button botaoOk =  mView.findViewById(R.id.botao_ok_dialogo_insumos);
         TextView titulo = mView.findViewById(R.id.textview_dialogo_insumos);
         titulo.setText("Digite A Quantidade Aplicada" + "\n" +insumoInsere.getDESCRICAO());
 
@@ -365,7 +365,7 @@ public class FragmentoInsumos extends Fragment {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
         View mView = getLayoutInflater().inflate(R.layout.dialogo_frag_insumos_edicao_insumos, null);
         valorDialogoEdicao = mView.findViewById(R.id.valor_dialogo_editar_insumos);
-        Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_editar_insumos);
+        Button botaoOk =  mView.findViewById(R.id.botao_ok_dialogo_editar_insumos);
 
         if (auxSavedInstanceState != null) {
             if (auxSavedInstanceState.getString("valorDialogoEdicao") != null) {

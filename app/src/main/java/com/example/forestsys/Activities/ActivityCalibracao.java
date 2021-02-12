@@ -558,7 +558,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         });
 
         final TextView numAmostra = mView.findViewById(R.id.dialogo_calib_amostra);
-        Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_calbragem);
+        Button botaoOk =  mView.findViewById(R.id.botao_ok_dialogo_calbragem);
         if (corrigirP1 == 0) numAmostra.setText(String.valueOf(atualP1));
         else numAmostra.setText(String.valueOf(corrigirP1));
 
@@ -935,7 +935,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         if (corrigirP2 == 0) numAmostra.setText(String.valueOf(atualP2));
         else numAmostra.setText(String.valueOf(corrigirP2));
 
-        Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_dialogo_calbragem);
+        Button botaoOk =  mView.findViewById(R.id.botao_ok_dialogo_calbragem);
 
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();

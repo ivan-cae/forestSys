@@ -533,7 +533,7 @@ public class ActivityAtividades extends AppCompatActivity
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityAtividades.this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_atividade_edita_os, null);
         valorDialogoJustificativaEdicaoOs = mView.findViewById(R.id.justificativa_edicao_os);
-        Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_edicao_os);
+        Button botaoOk =  mView.findViewById(R.id.botao_ok_edicao_os);
 
         if (auxSavedInstanceState != null) {
             if (auxSavedInstanceState.getString("valorDialogoJustificativaEdicaoOs") != null) {
@@ -594,7 +594,7 @@ public class ActivityAtividades extends AppCompatActivity
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityAtividades.this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_atividade_justificativa_qtd_pontos, null);
         valorDialogoQtdPontos = mView.findViewById(R.id.justificativa_qtd_pontos);
-        Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_justificativa_qtd_pontos);
+        Button botaoOk =  mView.findViewById(R.id.botao_ok_justificativa_qtd_pontos);
 
         if (auxSavedInstanceState != null) {
             if (auxSavedInstanceState.getString("valorDialogoQtdPontos") != null) {
@@ -652,7 +652,7 @@ public class ActivityAtividades extends AppCompatActivity
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityAtividades.this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_atividade_justificativa_area_realizada, null);
         valorDialogoAreaRealizada = mView.findViewById(R.id.justificativa_area_realizada);
-        Button botaoOk = (Button) mView.findViewById(R.id.botao_ok_justificativa_area_realizada);
+        Button botaoOk =  mView.findViewById(R.id.botao_ok_justificativa_area_realizada);
         TextView texto = mView.findViewById(R.id.textview_dialogo_justificativa_area_realizada);
         if (osSelecionada.getAREA_PROGRAMADA() > osSelecionada.getAREA_REALIZADA())
             texto.setText("Justifique por que a área realizada é menor que a área programada.");

@@ -60,7 +60,7 @@ dependencies {
 
     implementation files('libs/javaluator-3.0.1.jar')
 
-    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.0.0'
 
     implementation 'com.itkacher.okhttpprofiler:okhttpprofiler:1.0.7'
 }
