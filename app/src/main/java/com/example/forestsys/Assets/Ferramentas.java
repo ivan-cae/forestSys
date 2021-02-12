@@ -76,10 +76,10 @@ public class Ferramentas {
     public static void mascaraVirgula(EditText edit, CharSequence s, int casasDecimais, String valorReferencia,
                                       int contAtual, int contAnterior) {
 
-        Log.e("Digitado", s.toString());
+        /*Log.e("Digitado", s.toString());
         Log.e("Anterior", String.valueOf(contAnterior));
         Log.e("Atual", String.valueOf(contAtual));
-
+*/
         if(casasDecimais == 0) casasDecimais = 2;
 
         String input = s.toString();

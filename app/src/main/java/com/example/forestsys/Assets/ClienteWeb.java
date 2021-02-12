@@ -290,7 +290,7 @@ public class ClienteWeb<client> {
                 for (Integer i = 0; i < todasOsAtividadesDia.size(); i++) {
                     if (todasOsAtividadesDia.get(i).isEXPORT_PROXIMA_SINC() == true) {
                         JSONObject obj = new JSONObject();
-                        if (todasOsAtividadesDia.get(i).getID() == null) {
+                        if (todasOsAtividadesDia.get(i).getID() == null || todasOsAtividadesDia.get(i).getID() == JSONObject.NULL) {
                             obj.put("ID_PROGRAMACAO_ATIVIDADE", todasOsAtividadesDia.get(i).getID_PROGRAMACAO_ATIVIDADE());
                             obj.put("DATA", todasOsAtividadesDia.get(i).getDATA() + " 12:00:00");
                             obj.put("AREA_REALIZADA", todasOsAtividadesDia.get(i).getAREA_REALIZADA());
@@ -328,12 +328,22 @@ public class ClienteWeb<client> {
                             obj.put("HM_ESCAVADEIRA", hme);
                             obj.put("HO_ESCAVADEIRA", hoe);
 
-                            String POST = requisicaoPOST(HOST_PORTA + "silvosatividadesdias", obj.toString());
-
-                            JSONObject updateId = new JSONObject(POST);
-                            Integer idRetornado = updateId.getInt("ID");
-                            todasOsAtividadesDia.get(i).setID(idRetornado);
-                            dao.update(todasOsAtividadesDia.get(i));
+                            String POST = null;
+                            boolean fezOPost = false;
+                            try {
+                                POST = requisicaoPOST(HOST_PORTA + "silvosatividadesdias", obj.toString());
+                                fezOPost = true;
+                            } catch (Exception ex) {
+                                fezOPost = false;
+                            }
+                            if (fezOPost == true && POST != null) {
+                                JSONObject updateId = new JSONObject(POST);
+                                Integer idRetornado = updateId.getInt("ID");
+                                if (idRetornado != null || idRetornado != JSONObject.NULL) {
+                                    todasOsAtividadesDia.get(i).setID(idRetornado);
+                                    dao.update(todasOsAtividadesDia.get(i));
+                                }
+                            }
                         } else {
                             naoFazPut = false;
                             obj.put("ID", todasOsAtividadesDia.get(i).getID());
@@ -381,7 +391,7 @@ public class ClienteWeb<client> {
                     if (todasOsAtividadeInsumoDia.get(i).isEXPORT_PROXIMA_SINC() == true) {
                         JSONObject obj = new JSONObject();
 
-                        if (todasOsAtividadeInsumoDia.get(i).getID() == null) {
+                        if (todasOsAtividadeInsumoDia.get(i).getID() == null || todasOsAtividadeInsumoDia.get(i).getID() == JSONObject.NULL) {
                             obj.put("ID_PROGRAMACAO_ATIVIDADE", todasOsAtividadeInsumoDia.get(i).getID_PROGRAMACAO_ATIVIDADE());
                             obj.put("DATA", todasOsAtividadeInsumoDia.get(i).getDATA() + " 12:00:00");
                             obj.put("ID_INSUMO", todasOsAtividadeInsumoDia.get(i).getID_INSUMO());
@@ -401,8 +411,10 @@ public class ClienteWeb<client> {
                             if (fezOPost == true && POST != null) {
                                 JSONObject updateId = new JSONObject(POST);
                                 Integer idRetornado = updateId.getInt("ID");
-                                todasOsAtividadeInsumoDia.get(i).setID(idRetornado);
-                                dao.update(todasOsAtividadeInsumoDia.get(i));
+                                if (idRetornado != null || idRetornado != JSONObject.NULL) {
+                                    todasOsAtividadeInsumoDia.get(i).setID(idRetornado);
+                                    dao.update(todasOsAtividadeInsumoDia.get(i));
+                                }
                             }
                         } else {
                             naoFazPut = false;
@@ -1030,7 +1042,7 @@ public class ClienteWeb<client> {
 
                     boolean ignorarInsert = false;
 
-                    if (STATUS_NUM == 2 && DATA_FINAL != null && configs.getUltimaDataQueApagou()!=null) {
+                    if (STATUS_NUM == 2 && DATA_FINAL != null && configs.getUltimaDataQueApagou() != null) {
                         String pattern = ("yyyy-MM-dd");
                         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
                         Date date1 = sdf.parse(DATA_FINAL.trim());
