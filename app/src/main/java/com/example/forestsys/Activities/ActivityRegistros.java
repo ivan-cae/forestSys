@@ -583,13 +583,24 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     public void abreDialogoQtdForaFaixa() {
         abriuDialogoForaFaixa = true;
 
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityRegistros.this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_registros_insumo_fora_faixa, null);
+        mBuilder.setView(mView);
+        dialogoQtdForaFaixa = mBuilder.create();
+        dialogoQtdForaFaixa.setContentView(mView);
+
+        dialogoQtdForaFaixa.setCanceledOnTouchOutside(false);
+        dialogoQtdForaFaixa.show();
+
         valorJustificativa1 = mView.findViewById(R.id.dialogo_frag_insumos_fora_faixa1);
         valorJustificativa2 = mView.findViewById(R.id.dialogo_frag_insumos_fora_faixa2);
         TextView titulo1 = mView.findViewById(R.id.dialogo_registros_insumos_titulo1);
         TextView titulo2 = mView.findViewById(R.id.dialogo_registros_insumos_titulo2);
         Button botaoOk = mView.findViewById(R.id.botao_ok_dialogo_insumo_fora_faixa);
+
+        botaoOk.setClickable(true);
+        botaoOk.setActivated(true);
+        botaoOk.setEnabled(true);
 
         if (insumoConforme1 == false) {
             titulo1.setVisibility(View.VISIBLE);
@@ -602,7 +613,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             titulo2.setText("Digite a justificativa para o insumo " + listaJoinOsInsumosSelecionados.get(1).getDESCRICAO());
             valorJustificativa2.setVisibility(View.VISIBLE);
         }
-
 
         if (auxSavedInstanceState != null) {
             if (auxSavedInstanceState.getString("valorJustificativa1") != null) {
@@ -618,11 +628,11 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             }
         }
 
+
         botaoOk.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("LongLogTag")
             @Override
             public void onClick(View view) {
-                Log.e("Clicou no botao ok", "");
                 boolean temErro = false;
                 String obs1 = "";
                 String obs2 = "";
@@ -633,15 +643,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     obs2 = obsInsumo2.getText().toString();
                 }
 
-                boolean naoConformeIns1 = false;
-                boolean naoConformeIns2 = false;
-
-                if (diferencaPercentual(listaJoinOsInsumosSelecionados.get(0).getQTD_HA_RECOMENDADO(),
-                        listaJoinOsInsumosSelecionados.get(0).getQTD_APLICADO() *
-                                Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) > 5.0000 ||
-                        diferencaPercentual(listaJoinOsInsumosSelecionados.get(0).getQTD_HA_RECOMENDADO(),
-                                listaJoinOsInsumosSelecionados.get(0).getQTD_APLICADO() *
-                                        Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) < -5.0000) {
+                if (insumoConforme1 == false) {
                     String str1 = valorJustificativa1.getText().toString();
                     if (str1.trim().length() < 3) {
                         valorJustificativa1.setError("Justificativa deve ter mais de 2 caracteres.");
@@ -653,17 +655,10 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                         }
                         obs1 = pegaObs.concat("Aplicada quantidade fora da faixa em " + ferramentas.dataAtual() +
                                 " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorJustificativa1.getText().toString()));
-
-                        naoConformeIns1 = true;
                     }
                 }
 
-                if (diferencaPercentual(listaJoinOsInsumosSelecionados.get(1).getQTD_HA_RECOMENDADO(),
-                        listaJoinOsInsumosSelecionados.get(1).getQTD_APLICADO() *
-                                Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) > 5.0000 ||
-                        diferencaPercentual(listaJoinOsInsumosSelecionados.get(1).getQTD_HA_RECOMENDADO(),
-                                listaJoinOsInsumosSelecionados.get(1).getQTD_APLICADO() *
-                                        Double.valueOf(areaRealizadaApontamento.getText().toString().replace(",", "."))) < -5.0000) {
+                if (insumoConforme2 == false) {
                     String str2 = valorJustificativa2.getText().toString();
                     if (str2.trim().length() < 3) {
                         valorJustificativa2.setError("Justificativa deve ter mais de 2 caracteres.");
@@ -675,17 +670,16 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                         }
                         obs2 = pegaObs.concat("Aplicada quantidade fora da faixa em " + ferramentas.dataAtual() +
                                 " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorJustificativa2.getText().toString()));
-                        naoConformeIns2 = true;
                     }
                 }
 
                 if (temErro == false) {
-                    if (naoConformeIns1 == true) {
+                    if (insumoConforme1 == false) {
                         listaJoinOsInsumosSelecionados.get(0).setOBSERVACAO(obs1);
                         insumosNaoConforme = true;
                     }
 
-                    if (naoConformeIns2 == true) {
+                    if (insumoConforme2 == false) {
                         listaJoinOsInsumosSelecionados.get(1).setOBSERVACAO(obs2);
                         insumosNaoConforme = true;
                     }
@@ -714,18 +708,13 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 abriuDialogoForaFaixa = false;
             }
         });
-
-        mBuilder.setView(mView);
-        dialogoQtdForaFaixa = mBuilder.create();
-        dialogoQtdForaFaixa.setCanceledOnTouchOutside(false);
-        dialogoQtdForaFaixa.show();
     }
 
 
     //Abre o diálogo para edição dos registros
     public void abreDialogoEdicaoReg() {
         abriuDialogoEdicaoReg = true;
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityRegistros.this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_registros_editar_registro, null);
         valorEdicaoRegJustificativa = mView.findViewById(R.id.valor_dialogo_editar_registro);
         Button botaoOk = mView.findViewById(R.id.botao_ok_dialogo_editar_registro);
@@ -737,6 +726,10 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 }
             }
         }
+
+        mBuilder.setView(mView);
+        dialogoEdicaoReg = mBuilder.create();
+        dialogoEdicaoReg.setCanceledOnTouchOutside(false);
 
         botaoOk.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -769,10 +762,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 Toast.makeText(ActivityRegistros.this, "Operação cancelada pelo usuário", Toast.LENGTH_SHORT).show();
             }
         });
-
-        mBuilder.setView(mView);
-        dialogoEdicaoReg = mBuilder.create();
-        dialogoEdicaoReg.setCanceledOnTouchOutside(false);
         dialogoEdicaoReg.show();
     }
 

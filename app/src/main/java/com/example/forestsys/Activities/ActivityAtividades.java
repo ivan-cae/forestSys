@@ -213,7 +213,7 @@ public class ActivityAtividades extends AppCompatActivity
         areaOs.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace(".", ",") + "ha");
         manejoOs.setText(String.valueOf(dao.selecionaManejo(osSelecionada.getID_MANEJO()).getDESCRICAO()));
         dataProgramada.setText(ferramentas.formataDataTextView(osSelecionada.getDATA_PROGRAMADA()));
-        areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()) + "ha");
+        areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()).replace('.',',') + "ha");
 
         obsOs.setMovementMethod(new ScrollingMovementMethod());
 

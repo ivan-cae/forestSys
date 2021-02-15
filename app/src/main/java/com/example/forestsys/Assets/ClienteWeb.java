@@ -1081,7 +1081,6 @@ public class ClienteWeb<client> {
                     String DATA = obj.getString("DATA");
                     Integer ID_PRESTADOR = obj.getInt("ID_PRESTADOR");
                     Integer ID_RESPONSAVEL = obj.getInt("ID_RESPONSAVEL");
-                    String AREA_REALIZADA = String.valueOf(obj.getString("AREA_REALIZADA"));
                     String HH = String.valueOf(obj.getString("HH"));
                     String HM = String.valueOf(obj.getString("HM"));
                     String HO = String.valueOf(obj.getString("HO"));
@@ -1102,13 +1101,27 @@ public class ClienteWeb<client> {
 
                     DATA = ignoraHoras(DATA);
 
+                    Double AREA_REALIZADA = 0.0;
+                    try {
+                        AREA_REALIZADA = obj.getDouble("AREA_REALIZADA");
+                    } catch (Exception ex) {
+                        AREA_REALIZADA = 0.0;
+                        ex.printStackTrace();
+                    }
+                    DecimalFormat format = new DecimalFormat(".##");
+
+                    String s;
+                    s = format.format(AREA_REALIZADA).replace(',', '.');
+                    AREA_REALIZADA = Double.parseDouble(s);
+
+
                     O_S_ATIVIDADES_DIA oSAtividadesDia = new O_S_ATIVIDADES_DIA();
                     oSAtividadesDia.setID_PROGRAMACAO_ATIVIDADE(ID_PROGRAMACAO_ATIVIDADE);
                     oSAtividadesDia.setID(ID);
                     oSAtividadesDia.setDATA(DATA);
                     oSAtividadesDia.setID_PRESTADOR(ID_PRESTADOR);
                     oSAtividadesDia.setID_RESPONSAVEL(ID_RESPONSAVEL);
-                    oSAtividadesDia.setAREA_REALIZADA(AREA_REALIZADA);
+                    oSAtividadesDia.setAREA_REALIZADA(String.valueOf(AREA_REALIZADA).replace('.', ','));
                     oSAtividadesDia.setHH(HH);
                     oSAtividadesDia.setHM(HM);
                     oSAtividadesDia.setHO(HO);
@@ -1120,7 +1133,6 @@ public class ClienteWeb<client> {
                     oSAtividadesDia.setEXPORT_PROXIMA_SINC(false);
 
                     dao.insert(oSAtividadesDia);
-
                 }
             } catch (Exception ex) {
                 Log.e("S18", "Sem resposta Atividades_Dia,json");
