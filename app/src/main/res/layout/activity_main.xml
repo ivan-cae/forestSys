@@ -179,6 +179,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
+            android:visibility="gone"
             app:layout_constraintStart_toEndOf="@+id/searchview"
             app:layout_constraintTop_toBottomOf="@+id/textView99" />
 
@@ -191,6 +192,7 @@
             android:text="Filtrar Pela Prioridade:"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/searchview"
             app:layout_constraintTop_toTopOf="@+id/searchview" />

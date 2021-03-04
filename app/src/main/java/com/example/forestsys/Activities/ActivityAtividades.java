@@ -121,10 +121,6 @@ public class ActivityAtividades extends AppCompatActivity
     private EditText valorDialogoJustificativaEdicaoOs;
     private AlertDialog dialogoEdicaoOs;
 
-    private AlertDialog dialogoQtdPontos;
-    private EditText valorDialogoQtdPontos;
-    private boolean abriuDialogoQtdPontos;
-
     private AlertDialog dialogoAreaRealizada;
     private boolean abriuDialogoAreaRealizada;
     private EditText valorDialogoAreaRealizada;
@@ -142,7 +138,6 @@ public class ActivityAtividades extends AppCompatActivity
 
         abriuDialogoJustificativaEdicaoOs = false;
         abriuDialogoAreaRealizada = false;
-        abriuDialogoQtdPontos = false;
 
         setContentView(R.layout.activity_atividades);
         setTitle(nomeEmpresaPref);
@@ -235,9 +230,6 @@ public class ActivityAtividades extends AppCompatActivity
 
             abriuDialogoAreaRealizada = auxSavedInstanceState.getBoolean("abriuDialogoAreaRealizada");
             if (abriuDialogoAreaRealizada == true) abreDialogoJustificativaAreaRealizada();
-
-            abriuDialogoQtdPontos = auxSavedInstanceState.getBoolean("abriuDialogoQtdPontos");
-            if (abriuDialogoQtdPontos == true) abreDialogoJustificativaQtdPontos();
         }
 
         checaCalibracao();
@@ -401,12 +393,7 @@ public class ActivityAtividades extends AppCompatActivity
                                                     abreDialogoJustificativaAreaRealizada();
                                                 }
                                             }
-                                            if (erroGeral == false) {
-                                                if (qtdPontos < 6) {
-                                                    erroGeral = true;
-                                                    abreDialogoJustificativaQtdPontos();
-                                                }
-                                            }
+
                                             if (erroGeral == false) {
                                                 salvar();
                                             }
@@ -588,64 +575,6 @@ public class ActivityAtividades extends AppCompatActivity
         });
     }
 
-    //Abre diálogo para justificar por que a quantidade de pontos é menor que 6
-    public void abreDialogoJustificativaQtdPontos() {
-        abriuDialogoQtdPontos = true;
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityAtividades.this);
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_atividade_justificativa_qtd_pontos, null);
-        valorDialogoQtdPontos = mView.findViewById(R.id.justificativa_qtd_pontos);
-        Button botaoOk =  mView.findViewById(R.id.botao_ok_justificativa_qtd_pontos);
-
-        if (auxSavedInstanceState != null) {
-            if (auxSavedInstanceState.getString("valorDialogoQtdPontos") != null) {
-                if (auxSavedInstanceState.getString("valorDialogoQtdPontos").length() > 0) {
-                    valorDialogoQtdPontos.setText(auxSavedInstanceState.getString("valorDialogoQtdPontos"));
-                }
-            }
-        }
-
-        mBuilder.setView(mView);
-        dialogoQtdPontos = mBuilder.create();
-        dialogoQtdPontos.show();
-
-        botaoOk.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onClick(View view) {
-                String str = valorDialogoQtdPontos.getText().toString();
-
-                if (str.trim().length() < 3)
-                    valorDialogoQtdPontos.setError("Justificativa deve ter mais de 2 caracteres.");
-                else {
-                    String obs = osSelecionada.getOBSERVACAO();
-                    String pegaObs = "";
-                    if (obs != null || obs.length() > 0) pegaObs = obs + "\n";
-                    obs = pegaObs.concat("Atividade finalizada com menos de seis pontos registrados em " + ferramentas.dataAtual() + " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorDialogoQtdPontos.getText().toString()));
-
-                    osSelecionada.setOBSERVACAO(obs);
-                    salvar();
-                }
-            }
-        });
-
-        dialogoQtdPontos.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                auxSavedInstanceState = null;
-                abriuDialogoQtdPontos = false;
-            }
-        });
-
-        dialogoQtdPontos.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                auxSavedInstanceState = null;
-                osSelecionada = dao.selecionaOs(osSelecionada.getID_ATIVIDADE());
-                if (dialogoAreaRealizada.isShowing()) dialogoAreaRealizada.cancel();
-            }
-        });
-    }
-
     //Abre diálogo para justificar por que a area realizada é maior ou menor que a área realizada da atividade
     public void abreDialogoJustificativaAreaRealizada() {
         abriuDialogoAreaRealizada = true;
@@ -691,8 +620,7 @@ public class ActivityAtividades extends AppCompatActivity
                         obs = pegaObs.concat("Atividade finalizada com a área realizada maior que a área programada em " + ferramentas.dataAtual() + " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorDialogoAreaRealizada.getText().toString()));
 
                     osSelecionada.setOBSERVACAO(obs);
-                    if (qtdPontos < 6) abreDialogoJustificativaQtdPontos();
-                    else salvar();
+                    salvar();
                 }
             }
         });
@@ -847,12 +775,6 @@ public class ActivityAtividades extends AppCompatActivity
             outState.putString("valorDialogoAreaRealizada", valorDialogoAreaRealizada.getText().toString());
         outState.putBoolean("abriuDialogoAreaRealizada", abriuDialogoAreaRealizada);
         if (abriuDialogoAreaRealizada == true) dialogoAreaRealizada.dismiss();
-
-
-        if (abriuDialogoQtdPontos == true)
-            outState.putString("valorDialogoQtdPontos", valorDialogoQtdPontos.getText().toString());
-        outState.putBoolean("abriuDialogoQtdPontos", abriuDialogoQtdPontos);
-        if (abriuDialogoQtdPontos == true) dialogoQtdPontos.dismiss();
 
 
         if (abriuDialogoJustificativaEdicaoOs == true)

@@ -28,6 +28,7 @@
             android:text="Filtrar Pela Prioridade:"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/searchview"
             app:layout_constraintTop_toTopOf="@+id/searchview" />
@@ -37,6 +38,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
+            android:visibility="gone"
             app:layout_constraintStart_toEndOf="@+id/searchview"
             app:layout_constraintTop_toBottomOf="@+id/textView103" />
 

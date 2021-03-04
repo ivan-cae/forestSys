@@ -37,6 +37,8 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import static com.example.forestsys.Activities.ActivityAtividades.editouInsumo1;
+import static com.example.forestsys.Activities.ActivityAtividades.editouInsumo2;
 import static com.example.forestsys.Activities.ActivityAtividades.editouRegistro;
 import static com.example.forestsys.Activities.ActivityRegistros.dataDoApontamento;
 import static com.example.forestsys.Activities.ActivityAtividades.listaJoinOsInsumosSelecionados;
@@ -397,7 +399,8 @@ public class FragmentoInsumos extends Fragment {
                         if (obs.length()>0) pegaObs = obs + "\n";
                     obs = pegaObs.concat("Editado em " + ferramentas.dataAtual() + " ás " + ferramentas.horaAtual() + ". Justificativa: " + (valorDialogoEdicao.getText().toString()));
                     insumoInsere.setOBSERVACAO(obs);
-
+                    if(id==0) editouInsumo1 = true;
+                    if(id==1) editouInsumo2 = true;
                     listaJoinOsInsumosSelecionados.set(id, insumoInsere);
                     setInsumos();
                     dialogoEdicao.dismiss();

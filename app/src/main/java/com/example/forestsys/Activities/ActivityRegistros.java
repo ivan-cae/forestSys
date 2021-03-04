@@ -52,6 +52,8 @@ import java.util.Date;
 import java.util.List;
 
 import static android.view.View.GONE;
+import static com.example.forestsys.Activities.ActivityAtividades.editouInsumo1;
+import static com.example.forestsys.Activities.ActivityAtividades.editouInsumo2;
 import static com.example.forestsys.Activities.ActivityAtividades.editouRegistro;
 import static com.example.forestsys.Activities.ActivityAtividades.erroPrestadorBool;
 import static com.example.forestsys.Activities.ActivityAtividades.joinOsInsumos;
@@ -570,11 +572,25 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                 salva();
             }
         };
-            if (insumoConforme1 == false || insumoConforme2 == false) {
-                abreDialogoQtdForaFaixa();
-            } else {
-                t.run();
-            }
+        boolean temForaFaixa = false;
+
+        if (editouRegistro == true) {
+            if (editouInsumo1 == true && insumoConforme1 == false) insumoConforme1 = false;
+            else insumoConforme1 = true;
+
+            if (editouInsumo2 == true && insumoConforme2 == false) insumoConforme2 = false;
+            else insumoConforme2 = true;
+        }
+
+        if (insumoConforme1 == false || insumoConforme2 == false) {
+            temForaFaixa = true;
+        }
+
+        if (temForaFaixa == true) {
+            abreDialogoQtdForaFaixa();
+        } else {
+            t.run();
+        }
     }
 
 
@@ -1135,10 +1151,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     persisteInsumosDia.setACAO_INATIVO("EDICAO");
                 }
 
-                if (persisteInsumosDia.getOBSERVACAO() != null) {
-                    // Log.e("Obs " + String.valueOf(i), persisteInsumosDia.getOBSERVACAO());
-                }
-
                 dao.apagaOsAtividadeInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
                         dataAntesDoEdit, persisteInsumosDia.getID_INSUMO());
 
@@ -1148,6 +1160,38 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                         persisteInsumosDia.getREGISTRO_DESCARREGADO(), persisteInsumosDia.getOBSERVACAO());
 
                 insereInsumosDia.setEXPORT_PROXIMA_SINC(true);
+                Log.e("Lista batendo ", String.valueOf(i) + " itens");
+
+
+                if (i == 0) {
+                    if (insumoConforme1 == true) {
+                        if (editouInsumo1 == false) {
+                            if (obsInsumo1.getText().toString().length() == 0) {
+                                insereInsumosDia.setOBSERVACAO(null);
+                            }
+
+                            if(obsInsumo1.getText().toString().length()>0){
+                                insereInsumosDia.setOBSERVACAO(obsInsumo1.getText().toString());
+                            }
+                        }
+                    }
+                }
+
+                if (i == 1) {
+                    if (insumoConforme2 == true) {
+                        if (editouInsumo2 == false) {
+                            if (obsInsumo2.getText().toString().length() == 0) {
+                                insereInsumosDia.setOBSERVACAO(null);
+                            }
+
+                            if(obsInsumo2.getText().toString().length()>0){
+                                insereInsumosDia.setOBSERVACAO(obsInsumo2.getText().toString());
+                            }
+                        }
+                    }
+                }
+
+
                 dao.insert(insereInsumosDia);
 
                 DecimalFormat format = new DecimalFormat(".##");
@@ -1202,15 +1246,20 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         if (osSelecionada.getSTATUS_NUM() == 0) {
             osSelecionada.setSTATUS("Andamento");
             osSelecionada.setSTATUS_NUM(1);
-            osSelecionada.setDATA_INICIAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
             dao.update(osSelecionada);
         }
 
+        listaAtividades = dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+        osSelecionada.setDATA_INICIAL(listaAtividades.get(listaAtividades.size() - 1).getDATA());
         dao.update(osSelecionada);
 
+        Log.e("Apontamento mais antigo", ferramentas.formataDataTextView(osSelecionada.getDATA_INICIAL()));
         edicaoReg = false;
         editouRegistro = false;
         oSAtividadesDiaAtual = null;
+        editouInsumo1 = false;
+        editouInsumo2 = false;
+
         listaJoinOsInsumosSelecionados = new ArrayList<Join_OS_INSUMOS>();
         area = "";
         ho = "";
@@ -1219,6 +1268,8 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         hoe = "";
         hme = "";
         obs = "";
+        obsInsumo1.setText("");
+        obsInsumo2.setText("");
 
         Intent it = new Intent(ActivityRegistros.this, ActivityRegistros.class);
         startActivity(it);
