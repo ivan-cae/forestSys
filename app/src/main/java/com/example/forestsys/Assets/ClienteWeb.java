@@ -1192,10 +1192,15 @@ public class ClienteWeb<client> {
                     Integer ATIVO = obj.getInt("ATIVO");
                     String VERION = obj.getString("VERION");
                     String FORMULA = obj.getString("FORMULA");
+                    String UNIDADE_MEDIDA = obj.getString("UNIDADE_MEDIDA");
                     Integer INDICADOR_CORRIGIVEL;
                     Integer LIMITE_INFERIOR;
                     Integer LIMITE_SUPERIOR;
                     Integer CASAS_DECIMAIS;
+
+                    if (UNIDADE_MEDIDA == null || UNIDADE_MEDIDA == "null") {
+                        UNIDADE_MEDIDA = "";
+                    }
 
                     if (FORMULA == null || FORMULA == "null") {
                         FORMULA = null;
@@ -1225,7 +1230,9 @@ public class ClienteWeb<client> {
                     }
 
                     try {
-                        dao.insert(new ATIVIDADE_INDICADORES(ID_INDICADOR, ID_ATIVIDADE, ORDEM_INDICADOR, REFERENCIA, DESCRICAO, ATIVO, VERION, LIMITE_SUPERIOR, LIMITE_INFERIOR, CASAS_DECIMAIS, INDICADOR_CORRIGIVEL, FORMULA));
+                        dao.insert(new ATIVIDADE_INDICADORES(ID_INDICADOR, ID_ATIVIDADE, ORDEM_INDICADOR, REFERENCIA,
+                                DESCRICAO, ATIVO, VERION, LIMITE_SUPERIOR, LIMITE_INFERIOR, CASAS_DECIMAIS,
+                                INDICADOR_CORRIGIVEL, FORMULA, UNIDADE_MEDIDA));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

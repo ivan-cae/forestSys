@@ -653,15 +653,15 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
             Button botaoRegistrar =  mView.findViewById(R.id.dialogo_qualidade_verion_botao_registrar);
 
-            mediaP1Nome.setText(joinOsInsumos.get(0).getDESCRICAO() + " - P1");
-            mediaP2Nome.setText(joinOsInsumos.get(1).getDESCRICAO() + " - P2");
-            desvioP1Nome.setText(joinOsInsumos.get(0).getDESCRICAO() + " - P1");
-            desvioP2Nome.setText(joinOsInsumos.get(1).getDESCRICAO() + " - P2");
+            mediaP1Nome.setText(atividadeIndicadores.get(0).getREFERENCIA()+"-"+joinOsInsumos.get(0).getDESCRICAO());
+            desvioP1Nome.setText(atividadeIndicadores.get(1).getREFERENCIA()+"-"+joinOsInsumos.get(0).getDESCRICAO());
+            mediaP2Nome.setText(atividadeIndicadores.get(2).getREFERENCIA()+"-"+joinOsInsumos.get(1).getDESCRICAO());
+            desvioP2Nome.setText(atividadeIndicadores.get(3).getREFERENCIA()+"-"+joinOsInsumos.get(1).getDESCRICAO());
 
-            letraItem1.setText(atividadeIndicadores.get(0).getREFERENCIA());
-            letraItem2.setText(atividadeIndicadores.get(1).getREFERENCIA());
-            letraItem3.setText(atividadeIndicadores.get(2).getREFERENCIA());
-            letraItem4.setText(atividadeIndicadores.get(3).getREFERENCIA());
+            letraItem1.setText(atividadeIndicadores.get(0).getUNIDADE_MEDIDA());
+            letraItem2.setText(atividadeIndicadores.get(1).getUNIDADE_MEDIDA());
+            letraItem3.setText(atividadeIndicadores.get(2).getUNIDADE_MEDIDA());
+            letraItem4.setText(atividadeIndicadores.get(3).getUNIDADE_MEDIDA());
 
 
             if (jaTemVerion == true) {
@@ -736,7 +736,6 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                     @Override
                     public void afterTextChanged(Editable s) {
-
                     }
                 });
 
@@ -1291,27 +1290,27 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         Button botaoRegistrar =  mView.findViewById(R.id.dialogo_qualidade_ponto_botao_registrar);
         atividadeIndicadores = dao.listaAtividadeIndicadores(osSelecionada.getID_ATIVIDADE(), "N");
 
-        textItem1.setText(atividadeIndicadores.get(0).getDESCRICAO());
-        textItem2.setText(atividadeIndicadores.get(1).getDESCRICAO());
-        textItem3.setText(atividadeIndicadores.get(2).getDESCRICAO());
-        textItem4.setText(atividadeIndicadores.get(3).getDESCRICAO());
-        textItem5.setText(atividadeIndicadores.get(4).getDESCRICAO());
-        textItem6.setText(atividadeIndicadores.get(5).getDESCRICAO());
-        textItem7.setText(atividadeIndicadores.get(6).getDESCRICAO());
-        textItem8.setText(atividadeIndicadores.get(7).getDESCRICAO());
-        textItem9.setText(atividadeIndicadores.get(8).getDESCRICAO());
-        textItem10.setText(atividadeIndicadores.get(9).getDESCRICAO());
+        textItem1.setText(atividadeIndicadores.get(0).getREFERENCIA()+"-"+atividadeIndicadores.get(0).getDESCRICAO());
+        textItem2.setText(atividadeIndicadores.get(1).getREFERENCIA()+"-"+atividadeIndicadores.get(1).getDESCRICAO());
+        textItem3.setText(atividadeIndicadores.get(2).getREFERENCIA()+"-"+atividadeIndicadores.get(2).getDESCRICAO());
+        textItem4.setText(atividadeIndicadores.get(3).getREFERENCIA()+"-"+atividadeIndicadores.get(3).getDESCRICAO());
+        textItem5.setText(atividadeIndicadores.get(4).getREFERENCIA()+"-"+atividadeIndicadores.get(4).getDESCRICAO());
+        textItem6.setText(atividadeIndicadores.get(5).getREFERENCIA()+"-"+atividadeIndicadores.get(5).getDESCRICAO());
+        textItem7.setText(atividadeIndicadores.get(6).getREFERENCIA()+"-"+atividadeIndicadores.get(6).getDESCRICAO());
+        textItem8.setText(atividadeIndicadores.get(7).getREFERENCIA()+"-"+atividadeIndicadores.get(7).getDESCRICAO());
+        textItem9.setText(atividadeIndicadores.get(8).getREFERENCIA()+"-"+atividadeIndicadores.get(8).getDESCRICAO());
+        textItem10.setText(atividadeIndicadores.get(9).getREFERENCIA()+"-"+atividadeIndicadores.get(9).getDESCRICAO());
 
-        textLetra1.setText(atividadeIndicadores.get(0).getREFERENCIA());
-        textLetra2.setText(atividadeIndicadores.get(1).getREFERENCIA());
-        textLetra3.setText(atividadeIndicadores.get(2).getREFERENCIA());
-        textLetra4.setText(atividadeIndicadores.get(3).getREFERENCIA());
-        textLetra5.setText(atividadeIndicadores.get(4).getREFERENCIA());
-        textLetra6.setText(atividadeIndicadores.get(5).getREFERENCIA());
-        textLetra7.setText(atividadeIndicadores.get(6).getREFERENCIA());
-        textLetra8.setText(atividadeIndicadores.get(7).getREFERENCIA());
-        textLetra9.setText(atividadeIndicadores.get(8).getREFERENCIA());
-        textLetra10.setText(atividadeIndicadores.get(9).getREFERENCIA());
+        textLetra1.setText(atividadeIndicadores.get(0).getUNIDADE_MEDIDA());
+        textLetra2.setText(atividadeIndicadores.get(1).getUNIDADE_MEDIDA());
+        textLetra3.setText(atividadeIndicadores.get(2).getUNIDADE_MEDIDA());
+        textLetra4.setText(atividadeIndicadores.get(3).getUNIDADE_MEDIDA());
+        //textLetra5.setText(atividadeIndicadores.get(4).getUNIDADE_MEDIDA());
+        textLetra6.setText(atividadeIndicadores.get(5).getUNIDADE_MEDIDA());
+        //textLetra7.setText(atividadeIndicadores.get(6).getUNIDADE_MEDIDA());
+        //textLetra8.setText(atividadeIndicadores.get(7).getUNIDADE_MEDIDA());
+        //textLetra9.setText(atividadeIndicadores.get(8).getUNIDADE_MEDIDA());
+        textLetra10.setText(atividadeIndicadores.get(9).getUNIDADE_MEDIDA());
 
         editItem1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -1368,7 +1367,6 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     String referencia = String.valueOf(atividadeIndicadores.get(0).getLIMITE_SUPERIOR());
                     ferramentas.mascaraVirgula(editItem1, s, atividadeIndicadores.get(0).getCASAS_DECIMAIS(), referencia, count, before);
-
                 }
 
                 @Override

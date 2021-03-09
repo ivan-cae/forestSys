@@ -42,9 +42,10 @@ public class ATIVIDADE_INDICADORES implements Serializable {
     private Integer LIMITE_INFERIOR;
     private Integer LIMITE_SUPERIOR;
     private Integer CASAS_DECIMAIS;
+    private String UNIDADE_MEDIDA;
 
     public ATIVIDADE_INDICADORES(Integer ID_INDICADOR, Integer ID_ATIVIDADE, Integer ORDEM_INDICADOR, String REFERENCIA, String DESCRICAO,
-                                 Integer ATIVO, String VERION, Integer LIMITE_SUPERIOR, Integer LIMITE_INFERIOR, Integer CASAS_DECIMAIS, Integer INDICADOR_CORRIGIVEL, String FORMULA) {
+                                 Integer ATIVO, String VERION, Integer LIMITE_SUPERIOR, Integer LIMITE_INFERIOR, Integer CASAS_DECIMAIS, Integer INDICADOR_CORRIGIVEL, String FORMULA, String UNIDADE_MEDIDA) {
         this.ID_ATIVIDADE = ID_ATIVIDADE;
         this.ID_INDICADOR = ID_INDICADOR;
         this.ORDEM_INDICADOR = ORDEM_INDICADOR;
@@ -57,6 +58,7 @@ public class ATIVIDADE_INDICADORES implements Serializable {
         this.CASAS_DECIMAIS = CASAS_DECIMAIS;
         this.INDICADOR_CORRIGIVEL = INDICADOR_CORRIGIVEL;
         this.FORMULA = FORMULA;
+        this.UNIDADE_MEDIDA = UNIDADE_MEDIDA;
     }
 
     public Integer getID_ATIVIDADE() {
@@ -153,5 +155,13 @@ public class ATIVIDADE_INDICADORES implements Serializable {
 
     public void setCASAS_DECIMAIS(Integer CASAS_DECIMAIS) {
         this.CASAS_DECIMAIS = CASAS_DECIMAIS;
+    }
+
+    public String getUNIDADE_MEDIDA() {
+        return UNIDADE_MEDIDA;
+    }
+
+    public void setUNIDADE_MEDIDA(String UNIDADE_MEDIDA) {
+        this.UNIDADE_MEDIDA = UNIDADE_MEDIDA;
     }
 }
