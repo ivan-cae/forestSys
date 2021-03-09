@@ -477,7 +477,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             int nc10 = dao.qtdNaoConformeForaDaFaixa(idProg, 10, aval_subsolagem.getLOCALIZACAO_INSUMO_INFERIOR(), aval_subsolagem.getLOCALIZACAO_INSUMO_SUPERIOR());
 
             double percNc1 = formulas.subsolagem_profundidade(nc1, dao.qtdIndicador(idProg, 1));
-            double percNc2 = formulas.subsolagem_largura_estrondamento(nc1, dao.qtdIndicador(idProg, 1));
+            double percNc2 = formulas.subsolagem_largura_estrondamento(nc2, dao.qtdIndicador(idProg, 1));
             double percNc3 = formulas.subsolagem_faixa_solo(nc3, dao.qtdIndicador(idProg, 3));
             double percNc4 = formulas.subsolagem_profundidade_adubo(nc4, dao.qtdIndicador(idProg, 4));
             double percNc5 = formulas.subsolagem_presenca_adubo(nc5, dao.qtdIndicador(idProg, 5));
