@@ -181,9 +181,9 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
 
                 adaptador.setOrdens(listaOs);
                 recyclerView.setAdapter(adaptador);
-                ordenaData.setText("Período Prog."+setaDesc);
-                ordenaSetor.setText("Setor"+setaDesc);
-                ordenaTalhao.setText("Talhão"+setaDesc);
+                ordenaData.setText(setaDesc+"Período Prog.");
+                ordenaSetor.setText(setaDesc+"Setor");
+                ordenaTalhao.setText(setaDesc+"Talhão");
             }
 
             @Override
@@ -196,23 +196,23 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         ordenaTalhao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ordenaSetor.setText("Setor"+setaDesc);
-                ordenaData.setText("Período Prog."+setaDesc);
+                ordenaSetor.setText(setaDesc+"Setor");
+                ordenaData.setText(setaDesc+"Período Prog.");
                 if (posicaoSpinnerPrioridade == 0) {
                     if (ordenaTalhaoBool == false){
                         listaOs = dao.listaOsTalhaoSemPrioridadeDesc();
-                        ordenaTalhao.setText("Talhão"+setaDesc);
+                        ordenaTalhao.setText(setaDesc+"Talhão");
                 }                    else {
                     listaOs = dao.listaOsTalhaoSemPrioridadeAsc();
-                        ordenaTalhao.setText("Talhão"+setaAsc);
+                        ordenaTalhao.setText(setaAsc+"Talhão");
                     }
                 } else {
                     if (ordenaTalhaoBool == false) {
                         listaOs = dao.listaOsTalhaoDesc(posicaoSpinnerPrioridade);
-                        ordenaTalhao.setText("Talhão"+setaDesc);
+                        ordenaTalhao.setText(setaDesc+"Talhão");
                     }else{
                         listaOs = dao.listaOsTalhaoAsc(posicaoSpinnerPrioridade);
-                        ordenaTalhao.setText("Talhão"+setaAsc);
+                        ordenaTalhao.setText(setaAsc+"Talhão");
                     }
                 }
                 adaptador.setOrdens(listaOs);
@@ -225,23 +225,23 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         ordenaSetor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ordenaTalhao.setText("Talhão"+setaDesc);
-                ordenaData.setText("Período Prog."+setaDesc);
+                ordenaTalhao.setText(setaDesc+"Talhão");
+                ordenaData.setText(setaDesc+"Período Prog.");
                 if(posicaoSpinnerPrioridade==0){
                     if (ordenaSetorBool == false) {
                         listaOs = dao.listaOsSetorSemPrioridadeDesc();
-                        ordenaSetor.setText("Setor"+setaDesc);
+                        ordenaSetor.setText(setaDesc+"Setor");
                     }else{
                         listaOs = dao.listaOsSetorSemPrioridadeAsc();
-                        ordenaSetor.setText("Setor"+setaAsc);
+                        ordenaSetor.setText(setaAsc+"Setor");
                     }
                 }else {
                     if (ordenaSetorBool == false) {
                         listaOs = dao.listaOsSetorDesc(posicaoSpinnerPrioridade);
-                        ordenaSetor.setText("Setor"+setaDesc);
+                        ordenaSetor.setText(setaDesc+"Setor");
                     }else{
                         listaOs = dao.listaOsSetorAsc(posicaoSpinnerPrioridade);
-                        ordenaSetor.setText("Setor"+setaAsc);
+                        ordenaSetor.setText(setaAsc+"Setor");
                     }
                 }
                 adaptador.setOrdens(listaOs);
@@ -253,23 +253,23 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         ordenaData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ordenaSetor.setText("Setor"+setaDesc);
-                ordenaTalhao.setText("Talhão"+setaDesc);
+                ordenaSetor.setText(setaDesc+"Setor");
+                ordenaTalhao.setText(setaDesc+"Talhão");
                 if(posicaoSpinnerPrioridade==0){
                     if (ordenaDataBool == false) {
                         listaOs = dao.listaOsDataSemPrioridadeDesc();
-                        ordenaData.setText("Período Prog."+setaDesc);
+                        ordenaData.setText(setaDesc+"Período Prog.");
                     }else {
                         listaOs = dao.listaOsDataSemPrioridadeAsc();
-                        ordenaData.setText("Período Prog."+setaAsc);
+                        ordenaData.setText(setaAsc+"Período Prog.");
                     }
                 }else {
                     if (ordenaDataBool == false) {
                         listaOs = dao.listaOsDataDesc(posicaoSpinnerPrioridade);
-                        ordenaData.setText("Período Prog."+setaDesc);
+                        ordenaData.setText(setaDesc+"Período Prog.");
                     }else {
                         listaOs = dao.listaOsDataAsc(posicaoSpinnerPrioridade);
-                        ordenaData.setText("Período Prog."+setaAsc);
+                        ordenaData.setText(setaAsc+"Período Prog.");
                     }
                 }
                 adaptador.setOrdens(listaOs);

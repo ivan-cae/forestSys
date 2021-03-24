@@ -5,7 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@color/secondaryLightColor"
     tools:context=".Activities.ActivityLogin"
     tools:menu="@menu/menu_login_lateral">
 
@@ -13,7 +13,7 @@
     <ImageView
         android:id="@+id/imagem_login"
         android:layout_width="450dp"
-        android:layout_height="200dp"
+        android:layout_height="125dp"
         android:layout_marginBottom="100dp"
         android:adjustViewBounds="true"
         android:background="@mipmap/logo_gelf_completo"
@@ -33,49 +33,18 @@
         android:scaleType="fitXY"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+    />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="74dp"
-        android:layout_marginEnd="74dp"
         android:layout_marginBottom="250dp"
-        android:background="#75A9EB"
+        android:background="@color/secondaryLightColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:id="@+id/textView28"
-            android:layout_width="85dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="340dp"
-            android:background="#75A9EB"
-            android:text="Usuário"
-            android:textColor="#000000"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView29"
-            android:layout_width="85dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="340dp"
-            android:background="#75A9EB"
-            android:text="Senha"
-            android:textColor="#000000"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/username" />
 
         <EditText
             android:id="@+id/username"
@@ -83,15 +52,19 @@
             android:layout_height="wrap_content"
 
             android:layout_marginStart="25dp"
-            android:layout_marginEnd="25dp"
-            android:background="#FFFFFF"
+            android:layout_marginTop="8dp"
+            android:background="@color/secondaryDarkColor"
             android:enabled="true"
+            android:hint="Usuário"
             android:inputType="text"
             android:selectAllOnFocus="true"
-            android:textSize="24sp"
+            android:textColor="@color/secondaryTextColor"
+            android:textColorHint="@color/secondaryTextColor"
+            android:textSize="36sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView28" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/password"
@@ -99,34 +72,60 @@
             android:layout_height="wrap_content"
 
             android:layout_marginStart="25dp"
-            android:layout_marginEnd="25dp"
-            android:background="#FFFFFF"
+            android:layout_marginTop="24dp"
+            android:background="@color/secondaryDarkColor"
             android:enabled="true"
+            android:hint="Senha"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:selectAllOnFocus="true"
-            android:textSize="24sp"
+            android:textColor="@color/secondaryTextColor"
+            android:textColorHint="@color/secondaryTextColor"
+            android:textSize="36sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView29" />
+            app:layout_constraintTop_toBottomOf="@+id/username" />
 
         <Button
             android:id="@+id/botao_login"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="148dp"
+            android:layout_marginStart="130dp"
             android:layout_marginTop="32dp"
-            android:layout_marginEnd="147dp"
+            android:layout_marginEnd="130dp"
             android:layout_marginBottom="8dp"
-            android:background="#FFFFFF"
+            android:background="@drawable/botao_arredondado_cor_primaria_light"
             android:enabled="true"
             android:text="Acessar"
-            android:textColor="#000000"
-            android:textSize="30sp"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="40sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/password" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/icone_usuario"
+            app:layout_constraintBottom_toBottomOf="@+id/username"
+            app:layout_constraintEnd_toStartOf="@+id/username"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icone_usuario" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/icone_senha"
+            app:layout_constraintBottom_toBottomOf="@+id/password"
+            app:layout_constraintEnd_toStartOf="@+id/password"
+            app:layout_constraintTop_toTopOf="@+id/password"
+            app:srcCompat="@drawable/icone_senha" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
@@ -136,26 +135,26 @@
         android:layout_marginStart="2dp"
         android:layout_marginEnd="165dp"
         android:layout_marginBottom="21dp"
-        android:background="@drawable/logo_final"
+        android:background="@drawable/logo_final_colorida"
         android:scaleType="centerInside"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView13" />
 
-    <TextView
-        android:id="@+id/textView13"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="165dp"
-        android:layout_marginBottom="21dp"
-        android:text="Desenvolvido Por"
-        android:textAlignment="textEnd"
-        android:textColor="#000000"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/logo_rodape"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/logo_rodape" />
+<TextView
+android:id="@+id/textView13"
+android:layout_height="0dp"
+android:layout_marginBottom="21dp"
+android:layout_marginStart="165dp"
+android:layout_width="0dp"
+android:text="Desenvolvido Por"
+android:textAlignment="textEnd"
+android:textColor="#000000"
+android:visibility="visible"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toStartOf="@+id/logo_rodape"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="@+id/logo_rodape" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>

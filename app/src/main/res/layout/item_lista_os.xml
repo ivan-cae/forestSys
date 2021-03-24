@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="30dp"
+    android:layout_height="50dp"
     android:background="@drawable/custom_ripple">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/bordas"
@@ -15,97 +16,90 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/manejo_item_lista"
+            android:layout_width="100dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="13dp"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/area_item_lista"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/setor_item_lista"
+            android:layout_width="105dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="13dp"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/data_item_lista"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/data_item_lista"
+            android:layout_width="105dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="13dp"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/status_item_lista"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/area_item_lista"
+            android:layout_width="60dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="13dp"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/talhao_item_lista"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/talhao_item_lista"
+            android:layout_width="77dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="13dp"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/setor_item_lista"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/status_item_lista"
+            android:layout_width="95dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="13dp"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/madeira_item_lista"
+            android:layout_width="55dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="13dp"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/manejo_item_lista"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/setor_item_lista"
-        android:layout_width="80dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="5dp"
-        android:textAlignment="center"
-        android:textSize="13sp"
-        android:textStyle="normal"
-        app:layout_constraintStart_toEndOf="@+id/data_item_lista"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/data_item_lista"
-        android:layout_width="99dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="5dp"
-        android:textAlignment="center"
-        android:textSize="13sp"
-        android:textStyle="normal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/madeira_item_lista"
-        android:layout_width="55dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="13sp"
-        android:textStyle="normal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/status_item_lista"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/talhao_item_lista"
-        android:layout_width="60dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="5dp"
-        android:textAlignment="center"
-        android:textSize="13sp"
-        android:textStyle="normal"
-        app:layout_constraintStart_toEndOf="@+id/setor_item_lista"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/prioridade_item_lista"
-        android:layout_width="70dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="5dp"
-        android:textAlignment="center"
-        android:textSize="13sp"
-        android:textStyle="normal"
-        app:layout_constraintStart_toEndOf="@+id/manejo_item_lista"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/manejo_item_lista"
-        android:layout_width="85dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="5dp"
-        android:textAlignment="center"
-        android:textSize="13sp"
-        android:textStyle="normal"
-        app:layout_constraintStart_toEndOf="@+id/area_item_lista"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/status_item_lista"
-        android:layout_width="70dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="5dp"
-        android:textAlignment="center"
-        android:textSize="13sp"
-        android:textStyle="normal"
-        app:layout_constraintStart_toEndOf="@+id/prioridade_item_lista"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/area_item_lista"
-        android:layout_width="65dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="5dp"
-        android:textAlignment="center"
-        android:textSize="13sp"
-        android:textStyle="normal"
-        app:layout_constraintStart_toEndOf="@+id/talhao_item_lista"
-        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

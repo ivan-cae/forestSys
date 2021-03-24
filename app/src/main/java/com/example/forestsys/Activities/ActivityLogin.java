@@ -7,12 +7,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -67,6 +69,7 @@ public class ActivityLogin extends AppCompatActivity {
 
     private ProgressDialog dialogoProgresso;
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_login);
@@ -79,6 +82,9 @@ public class ActivityLogin extends AppCompatActivity {
         dialogoProgresso = new ProgressDialog(ActivityLogin.this);
         dialogoProgresso.setTitle("Sincronizando com o servidor");
         dialogoProgresso.setMessage("Aguarde um momento...");
+        //dialogoProgresso.setIndeterminate(true);
+        //dialogoProgresso.setIndeterminateDrawable(getResources().getDrawable(R.mipmap.icone_progresso));
+
         dialogoProgresso.setCancelable(false);
         dialogoProgresso.setCanceledOnTouchOutside(false);
 

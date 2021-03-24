@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF">
+        android:background="@color/secondaryLightColor">
 
         <TextView
             android:id="@+id/textView"
@@ -36,7 +36,7 @@
             android:layout_marginTop="210dp"
             android:text="Não Iniciados"
             android:textAlignment="center"
-            android:textColor="#6CBBB2"
+            android:textColor="@color/primaryLightColor"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:text="Em Andamento"
             android:textAlignment="center"
-            android:textColor="#6CBBB2"
+            android:textColor="@color/primaryLightColor"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -62,7 +62,7 @@
             android:layout_marginEnd="16dp"
             android:text="Finalizados"
             android:textAlignment="center"
-            android:textColor="#6CBBB2"
+            android:textColor="@color/primaryLightColor"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -76,7 +76,7 @@
             android:layout_marginTop="480dp"
             android:text="Média  Hora Homem"
             android:textAlignment="center"
-            android:textColor="#6CBBB2"
+            android:textColor="@color/primaryLightColor"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -90,7 +90,7 @@
             android:layout_marginEnd="80dp"
             android:text="Média  Hora Máquina"
             android:textAlignment="center"
-            android:textColor="#6CBBB2"
+            android:textColor="@color/primaryLightColor"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -161,7 +161,7 @@
                 android:id="@+id/toolbar_dash"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="#4183B1"
+                android:background="@color/primaryColor"
                 android:elevation="4dp"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />

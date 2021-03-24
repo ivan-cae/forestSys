@@ -17,7 +17,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF">
+        android:background="@color/secondaryLightColor">
 
         <TextView
             android:id="@+id/textView103"
@@ -46,7 +46,7 @@
             android:id="@+id/botao_main_voltar"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:background="#FFFFFF"
+            android:background="@color/secondaryLightColor"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,6 +61,7 @@
             android:layout_marginEnd="100dp"
             android:text="Subsolagem com Adubação"
             android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -73,7 +74,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:background="#FFFFFF"
+            android:background="@color/secondaryTextColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -93,51 +94,36 @@
 
         <TextView
             android:id="@+id/textView105"
-            android:layout_width="180dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:text="Madeira no Talhão"
+            android:text="Madeira"
             android:textAlignment="center"
-            android:textColor="#8fad7a"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/main_status"
-            app:layout_constraintTop_toTopOf="@+id/main_data" />
-
-        <TextView
-            android:id="@+id/main_status"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:text="Status"
-            android:textAlignment="center"
-            android:textColor="#8fad7a"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/main_prioridade"
-            app:layout_constraintTop_toTopOf="@+id/main_data" />
-
-        <TextView
-            android:id="@+id/main_prioridade"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:text="Prioridade"
-            android:textAlignment="center"
-            android:textColor="#8fad7a"
+            android:textColor="@color/primaryLightColor"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/textView123"
             app:layout_constraintTop_toTopOf="@+id/main_data" />
 
         <TextView
+            android:id="@+id/main_status"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:text="Status"
+            android:textAlignment="center"
+            android:textColor="@color/primaryLightColor"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/main_data" />
+
+        <TextView
             android:id="@+id/textView123"
-            android:layout_width="100dp"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:text="Manejo"
             android:textAlignment="center"
-            android:textColor="#8fad7a"
+            android:textColor="@color/primaryLightColor"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/textView122"
@@ -145,11 +131,11 @@
 
         <TextView
             android:id="@+id/textView122"
-            android:layout_width="80dp"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:text="Área(ha)"
             android:textAlignment="center"
-            android:textColor="#8fad7a"
+            android:textColor="@color/primaryLightColor"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/main_talhao"
@@ -157,12 +143,12 @@
 
         <TextView
             android:id="@+id/main_talhao"
-            android:layout_width="86dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:text="Talhão"
             android:textAlignment="center"
-            android:textColor="#8fad7a"
+            android:textColor="@color/primaryLightColor"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/main_setor"
@@ -170,12 +156,12 @@
 
         <TextView
             android:id="@+id/main_setor"
-            android:layout_width="100dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:text="Setor"
             android:textAlignment="center"
-            android:textColor="#8fad7a"
+            android:textColor="@color/primaryLightColor"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/main_data"
@@ -185,15 +171,14 @@
             android:id="@+id/main_data"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
             android:clickable="true"
-            android:text="Período Prog."
+            android:text="Periodo Prog."
             android:textAlignment="center"
-            android:textColor="#8fad7a"
+            android:textColor="@color/primaryLightColor"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/main_status"
             app:layout_constraintTop_toBottomOf="@+id/searchview" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -216,7 +201,7 @@
                 android:id="@+id/toolbar_main"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="#4183B1"
+                android:background="@color/primaryColor"
                 android:elevation="4dp"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 android:visibility="visible"

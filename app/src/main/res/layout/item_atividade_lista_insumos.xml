@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="28dp"
-    android:background="#FFFFFF">
+    android:background="@color/secondaryLightColor">
 
         <TextView
             android:id="@+id/item_insumos_descricao"
@@ -12,6 +12,7 @@
             android:layout_height="18dp"
             android:layout_marginStart="8dp"
             android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
             android:textSize="12sp"
             android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
@@ -22,6 +23,7 @@
             android:layout_width="90dp"
             android:layout_height="18dp"
             android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
             android:textSize="12sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/item_insumos_qtd_rec"
@@ -32,6 +34,7 @@
             android:layout_width="105dp"
             android:layout_height="18dp"
             android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
             android:textSize="12sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/item_insumos_descricao"
@@ -42,6 +45,7 @@
             android:layout_width="115dp"
             android:layout_height="18dp"
             android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
             android:textSize="12sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/item_insumos_qtd_prog"
@@ -52,6 +56,7 @@
             android:layout_width="195dp"
             android:layout_height="18dp"
             android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
             android:textSize="12sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/item_insumos_rec"

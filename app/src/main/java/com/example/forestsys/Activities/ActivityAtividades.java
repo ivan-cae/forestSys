@@ -1,6 +1,7 @@
 package com.example.forestsys.Activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -25,6 +26,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -132,6 +134,7 @@ public class ActivityAtividades extends AppCompatActivity
 
     public static boolean ncInsumo1Justificada;
     public static boolean ncInsumo2Justificada;
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -258,18 +261,17 @@ public class ActivityAtividades extends AppCompatActivity
 
         if (osSelecionada.getSTATUS_NUM() == 2) {
             botaoQualidade.setEnabled(true);
-            botaoQualidade.setBackgroundColor(Color.parseColor("#75A9EB"));
+            botaoQualidade.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.primaryLightColor));
 
             botaoCalibracao.setEnabled(true);
-            botaoCalibracao.setBackgroundColor(Color.parseColor("#75A9EB"));
+            botaoCalibracao.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.primaryLightColor));
 
             botaoRegistros.setEnabled(true);
-            botaoRegistros.setBackgroundColor(Color.parseColor("#75A9EB"));
+            botaoRegistros.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.primaryLightColor));
 
             botaoFinalizarOs.setVisibility(View.VISIBLE);
             botaoFinalizarOs.setEnabled(true);
-            botaoFinalizarOs.setBackgroundColor(Color.parseColor("#32CD32"));
-        }
+            botaoFinalizarOs.setBackgroundResource(R.drawable.botao_arredondado_cor_primaria_light);        }
 
         botaoCalibracao.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -751,6 +753,7 @@ public class ActivityAtividades extends AppCompatActivity
     }
 
     //Verifica se há calibração ou apontamento ou coleta de ponto cadastrados
+    @SuppressLint("ResourceAsColor")
     private void checaCalibragemRegistro() {
         List<CALIBRAGEM_SUBSOLAGEM> listaCalib = dao.listaCalibragem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
         List<O_S_ATIVIDADES_DIA> listaOsAtiDia = dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
@@ -763,7 +766,7 @@ public class ActivityAtividades extends AppCompatActivity
         if (listaCalib.size() > 0 || listaOsAtiDia.size() > 0 || listaInsDia.size() > 0 || qtdPontos > 0) {
             botaoFinalizarOs.setVisibility(View.VISIBLE);
             botaoFinalizarOs.setEnabled(true);
-            botaoFinalizarOs.setBackgroundColor(Color.parseColor("#32CD32"));
+            botaoFinalizarOs.setBackgroundResource(R.drawable.botao_arredondado_cor_primaria_light);
         }
     }
 
