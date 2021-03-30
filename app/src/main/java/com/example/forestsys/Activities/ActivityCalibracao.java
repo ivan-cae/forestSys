@@ -673,7 +673,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
             todosConformeP1 = false;
         } else {
-            dif1_P1.setTextColor(Color.parseColor("#32CD32"));
+            dif1_P1.setTextColor(Color.parseColor("#FF1A9C1A"));
         }
         if (((diferencaPercentual(amostrasP1[0], amostrasP1[1]).isInfinite()) || diferencaPercentual(amostrasP1[0], amostrasP1[1]).isNaN()))
             dif1_P1.setText("");
@@ -686,7 +686,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
             todosConformeP1 = false;
         } else {
-            dif2_P1.setTextColor(Color.parseColor("#32CD32"));
+            dif2_P1.setTextColor(Color.parseColor("#FF1A9C1A"));
         }
         if (((diferencaPercentual(amostrasP1[1], amostrasP1[2]).isNaN() || diferencaPercentual(amostrasP1[1], amostrasP1[2]).isInfinite())))
             dif2_P1.setText("");
@@ -698,7 +698,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             dif3_P1.setTextColor(Color.parseColor("#FF0000"));
             todosConformeP1 = false;
         } else {
-            dif3_P1.setTextColor(Color.parseColor("#32CD32"));
+            dif3_P1.setTextColor(Color.parseColor("#FF1A9C1A"));
 
         }
         if (((diferencaPercentual(amostrasP1[2], amostrasP1[3]).isInfinite() || diferencaPercentual(amostrasP1[2], amostrasP1[3]).isNaN())))
@@ -713,7 +713,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             todosConformeP1 = false;
 
         } else {
-            dif4_P1.setTextColor(Color.parseColor("#32CD32"));
+            dif4_P1.setTextColor(Color.parseColor("#FF1A9C1A"));
         }
         if (((diferencaPercentual(amostrasP1[3], amostrasP1[4]).isInfinite() || diferencaPercentual(amostrasP1[3], amostrasP1[4]).isNaN())))
             dif4_P1.setText("");
@@ -793,7 +793,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             todosConformeP2 = false;
 
         } else {
-            dif1_P2.setTextColor(Color.parseColor("#32CD32"));
+            dif1_P2.setTextColor(Color.parseColor("#FF1A9C1A"));
         }
         if (((diferencaPercentual(amostrasP2[0], amostrasP2[1]).isInfinite()) || diferencaPercentual(amostrasP2[0], amostrasP2[1]).isNaN()))
             dif1_P2.setText("");
@@ -805,7 +805,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             dif2_P2.setTextColor(Color.parseColor("#FF0000"));
             todosConformeP2 = false;
         } else {
-            dif2_P2.setTextColor(Color.parseColor("#32CD32"));
+            dif2_P2.setTextColor(Color.parseColor("#FF1A9C1A"));
         }
         if (((diferencaPercentual(amostrasP2[1], amostrasP2[2]).isNaN() || diferencaPercentual(amostrasP2[1], amostrasP2[2]).isInfinite())))
             dif2_P2.setText("");
@@ -817,7 +817,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             dif3_P2.setTextColor(Color.parseColor("#FF0000"));
             todosConformeP2 = false;
         } else {
-            dif3_P2.setTextColor(Color.parseColor("#32CD32"));
+            dif3_P2.setTextColor(Color.parseColor("#FF1A9C1A"));
         }
         if (((diferencaPercentual(amostrasP2[2], amostrasP2[3]).isInfinite() || diferencaPercentual(amostrasP2[2], amostrasP2[3]).isNaN())))
             dif3_P2.setText("");
@@ -829,7 +829,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             dif4_P2.setTextColor(Color.parseColor("#FF0000"));
             todosConformeP2 = false;
         } else {
-            dif4_P2.setTextColor(Color.parseColor("#32CD32"));
+            dif4_P2.setTextColor(Color.parseColor("#FF1A9C1A"));
         }
         if (((diferencaPercentual(amostrasP2[3], amostrasP2[4]).isInfinite() || diferencaPercentual(amostrasP2[3], amostrasP2[4]).isNaN())))
             dif4_P2.setText("");

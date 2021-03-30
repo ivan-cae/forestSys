@@ -47,8 +47,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_calibracao"
-            android:layout_width="604dp"
-            android:layout_height="100dp"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
             android:background="@color/secondaryTextColor"
             app:layout_constraintEnd_toEndOf="@+id/textView27"
             app:layout_constraintStart_toStartOf="@+id/textView26"
@@ -57,10 +57,10 @@
 
         <TextView
             android:id="@+id/textView9"
-            android:layout_width="65dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:background="@color/secondaryLightColor"
-            android:text="P2 Media"
+            android:text="P2 Med"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="14sp"
@@ -70,10 +70,10 @@
 
         <TextView
             android:id="@+id/textView27"
-            android:layout_width="65dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:background="@color/secondaryLightColor"
-            android:text="P2 Desvio"
+            android:text="P2 Des"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="14sp"
@@ -83,10 +83,10 @@
 
         <TextView
             android:id="@+id/textView38"
-            android:layout_width="65dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:background="@color/secondaryLightColor"
-            android:text="P1 Desvio"
+            android:text="P1 Des"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="14sp"
@@ -96,7 +96,7 @@
 
         <TextView
             android:id="@+id/textView10"
-            android:layout_width="60dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:background="@color/secondaryLightColor"
             android:text="Maquina"
@@ -109,7 +109,7 @@
 
         <TextView
             android:id="@+id/textView11"
-            android:layout_width="70dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:background="@color/secondaryLightColor"
             android:text="Operador"
@@ -122,7 +122,7 @@
 
         <TextView
             android:id="@+id/textView15"
-            android:layout_width="88dp"
+            android:layout_width="95dp"
             android:layout_height="wrap_content"
             android:background="@color/secondaryLightColor"
             android:text="Implemento"
@@ -135,10 +135,10 @@
 
         <TextView
             android:id="@+id/textView22"
-            android:layout_width="65dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:background="@color/secondaryLightColor"
-            android:text="P1 Media"
+            android:text="P1 Med"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="14sp"
@@ -148,7 +148,7 @@
 
         <TextView
             android:id="@+id/textView25"
-            android:layout_width="40dp"
+            android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:background="@color/secondaryLightColor"
             android:text="Turno"
@@ -161,7 +161,7 @@
 
         <TextView
             android:id="@+id/textView26"
-            android:layout_width="65dp"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:background="@color/secondaryLightColor"
             android:text="Data"
@@ -201,9 +201,10 @@
             android:id="@+id/turno_os_calibragem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView19"
             app:layout_constraintTop_toTopOf="@+id/textView19" />
 
@@ -223,9 +224,10 @@
             android:id="@+id/talhao_os_calibragem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView14"
             app:layout_constraintTop_toTopOf="@+id/textView14" />
 
@@ -267,9 +269,10 @@
             android:id="@+id/data_os_calibragem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView12"
             app:layout_constraintTop_toTopOf="@+id/textView12" /><![CDATA[
 
@@ -1005,13 +1008,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
             android:background="@drawable/botao_arredondado_cor_primaria_light"
-            android:text="Finalizar"
+            android:text="Salvar"
             android:textColor="@color/secondaryTextColor"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/botao_calibragem_voltar" />
 
         <ImageButton
             android:id="@+id/botao_calibragem_voltar"
@@ -1020,6 +1022,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
             android:background="@color/secondaryLightColor"
+            android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/ic_voltar_24dp" />
@@ -1039,7 +1042,7 @@
             android:id="@+id/textView39"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:text="Resumo de Calibrações:"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"

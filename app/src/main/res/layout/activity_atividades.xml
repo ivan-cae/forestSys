@@ -18,9 +18,8 @@
 
         <TextView
             android:id="@+id/textView119"
-            android:layout_width="80dp"
+            android:layout_width="180dp"
             android:layout_height="20dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:background="@color/tituloColunaListas"
             android:text="Insumo"
@@ -37,7 +36,7 @@
             android:layout_height="20dp"
             android:layout_marginTop="16dp"
             android:background="@color/tituloColunaListas"
-            android:text="Qtde. Prog"
+            android:text="Qtd. Total"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="16sp"
@@ -47,11 +46,11 @@
 
         <TextView
             android:id="@+id/textView113"
-            android:layout_width="115dp"
+            android:layout_width="90dp"
             android:layout_height="20dp"
             android:layout_marginTop="16dp"
             android:background="@color/tituloColunaListas"
-            android:text="Qtde. Aplicada"
+            android:text="Qtd. Apl"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="16sp"
@@ -61,11 +60,11 @@
 
         <TextView
             android:id="@+id/textView111"
-            android:layout_width="195dp"
+            android:layout_width="120dp"
             android:layout_height="20dp"
             android:layout_marginTop="16dp"
             android:background="@color/tituloColunaListas"
-            android:text="Qtde. Recomenda(Kg/ha)"
+            android:text="Qtd. Rec(Kg/ha)"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="16sp"
@@ -75,7 +74,7 @@
 
         <TextView
             android:id="@+id/textView109"
-            android:layout_width="105dp"
+            android:layout_width="120dp"
             android:layout_height="20dp"
             android:layout_marginTop="16dp"
             android:background="@color/tituloColunaListas"
@@ -92,6 +91,7 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:background="@color/secondaryLightColor"
+            android:scaleType="fitXY"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -100,7 +100,7 @@
         <Button
             android:id="@+id/botao_detalhes_qualidade"
             android:layout_width="150dp"
-            android:layout_height="0dp"
+            android:layout_height="50dp"
             android:layout_gravity="start"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
@@ -117,7 +117,7 @@
         <Button
             android:id="@+id/botao_detalhes_calibracao"
             android:layout_width="150dp"
-            android:layout_height="45dp"
+            android:layout_height="50dp"
             android:layout_gravity="start"
             android:layout_marginStart="32dp"
             android:background="@drawable/botao_arredondado_cor_primaria_light"
@@ -132,7 +132,7 @@
         <Button
             android:id="@+id/botao_apontamentos_geral"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_gravity="start"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
@@ -163,10 +163,11 @@
             android:id="@+id/os_detalhes_status"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:background="@color/secondaryLightColor"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView42"
             app:layout_constraintTop_toTopOf="@+id/textView42" />
 
@@ -174,9 +175,10 @@
             android:id="@+id/os_detalhes_area_prog"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView46"
             app:layout_constraintTop_toTopOf="@+id/textView46" />
 
@@ -184,9 +186,10 @@
             android:id="@+id/os_detalhes_area_realizada"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView97"
             app:layout_constraintTop_toTopOf="@+id/textView97" />
 
@@ -194,9 +197,10 @@
             android:id="@+id/os_detalhes_data_prog"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView96"
             app:layout_constraintTop_toTopOf="@+id/textView96" />
 
@@ -204,9 +208,10 @@
             android:id="@+id/os_detalhes_manejo"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView56"
             app:layout_constraintTop_toTopOf="@+id/textView56" />
 
@@ -214,9 +219,10 @@
             android:id="@+id/os_detalhes_madeira"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView59"
             app:layout_constraintTop_toTopOf="@+id/textView59" />
 
@@ -227,9 +233,10 @@
             android:clickable="true"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView20"
-            app:layout_constraintTop_toTopOf="@+id/textView20" />
+            app:layout_constraintTop_toTopOf="@+id/textView20"
+            android:layout_marginStart="4dp" />
 
         <TextView
             android:id="@+id/os_detalhes_obs"
@@ -240,7 +247,7 @@
             android:scrollbars="vertical"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -363,13 +370,16 @@
         <Button
             android:id="@+id/botao_finalizar_os"
             android:layout_width="150dp"
-            android:layout_height="45dp"
+            android:layout_height="50dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="100dp"
             android:background="@drawable/botao_arredondado_cor_secundaria_dark"
             android:enabled="false"
             android:text="Finalizar"
+            android:textAlignment="center"
+            android:textAllCaps="false"
             android:textColor="#FFFFFF"
+            android:textSize="20sp"
             android:visibility="visible"
             app:layout_constraintStart_toEndOf="@+id/map"
             app:layout_constraintTop_toBottomOf="@+id/botao_detalhes_qualidade" />

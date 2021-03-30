@@ -6,105 +6,123 @@
     android:layout_height="30dp"
     android:background="#FFFFFF">
 
-    <TextView
-        android:id="@+id/item_calibragem_operador"
-        android:layout_width="70dp"
-        android:layout_height="15dp"
-        android:textAlignment="center"
-        android:textColor="@color/primaryTextColor"
-        android:textSize="10sp"
-        android:textStyle="normal"
-        app:layout_constraintStart_toEndOf="@+id/item_calibragem_implemento"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/item_calibragem_turno"
-        android:layout_width="40dp"
-        android:layout_height="15dp"
-        android:textAlignment="center"
-        android:textColor="@color/primaryTextColor"
-        android:textSize="10sp"
-        android:textStyle="normal"
-        app:layout_constraintStart_toEndOf="@+id/item_calibragem_data"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/item_calibragem_implemento"
-        android:layout_width="88dp"
-        android:layout_height="15dp"
-        android:textAlignment="center"
-        android:textColor="@color/primaryTextColor"
-        android:textSize="10sp"
-        android:textStyle="normal"
-        app:layout_constraintStart_toEndOf="@+id/item_calibragem_maquina"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/item_calibragem_p1_media"
-        android:layout_width="65dp"
-        android:layout_height="15dp"
-        android:textAlignment="center"
-        android:textColor="@color/primaryTextColor"
-        android:textSize="10sp"
-        android:textStyle="normal"
-        app:layout_constraintStart_toEndOf="@+id/item_calibragem_operador"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/item_calibragem_p2_media"
-        android:layout_width="65dp"
-        android:layout_height="15dp"
-        android:textAlignment="center"
-        android:textColor="@color/primaryTextColor"
-        android:textSize="10sp"
-        android:textStyle="normal"
-        app:layout_constraintStart_toEndOf="@+id/item_calibragem_p1_media"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/item_calibragem_p1_desvio"
-        android:layout_width="65dp"
-        android:layout_height="15dp"
-        android:textAlignment="center"
-        android:textColor="@color/primaryTextColor"
-        android:textSize="10sp"
-        android:textStyle="normal"
-        app:layout_constraintStart_toEndOf="@+id/item_calibragem_p2_media"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/item_calibragem_p2_desvio"
-        android:layout_width="65dp"
-        android:layout_height="15dp"
-        android:layout_marginEnd="9dp"
-        android:textAlignment="center"
-        android:textColor="@color/primaryTextColor"
-        android:textSize="10sp"
-        android:textStyle="normal"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bordas"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/item_calibragem_p1_desvio"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/item_calibragem_maquina"
-        android:layout_width="60dp"
-        android:layout_height="15dp"
-        android:textAlignment="center"
-        android:textColor="@color/primaryTextColor"
-        android:textSize="10sp"
-        android:textStyle="normal"
-        app:layout_constraintStart_toEndOf="@+id/item_calibragem_turno"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/item_calibragem_data"
-        android:layout_width="65dp"
-        android:layout_height="15dp"
-        android:layout_marginStart="8dp"
-        android:textAlignment="center"
-        android:textColor="@color/primaryTextColor"
-        android:textSize="10sp"
-        android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/item_calibragem_p2_media"
+            android:layout_width="50dp"
+            android:layout_height="18dp"
+            android:layout_marginTop="6dp"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/item_calibragem_p1_media"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/item_calibragem_operador"
+            android:layout_width="90dp"
+            android:layout_height="18dp"
+            android:layout_marginTop="6dp"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/item_calibragem_implemento"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/item_calibragem_implemento"
+            android:layout_width="95dp"
+            android:layout_height="18dp"
+            android:layout_marginTop="6dp"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/item_calibragem_maquina"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/item_calibragem_data"
+            android:layout_width="70dp"
+            android:layout_height="18dp"
+            android:layout_marginTop="6dp"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/item_calibragem_p1_media"
+            android:layout_width="50dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="6dp"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/item_calibragem_operador"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/item_calibragem_p1_desvio"
+            android:layout_width="50dp"
+            android:layout_height="18dp"
+            android:layout_marginTop="6dp"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/item_calibragem_p2_media"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/item_calibragem_maquina"
+            android:layout_width="90dp"
+            android:layout_height="18dp"
+            android:layout_marginTop="6dp"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/item_calibragem_turno"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/item_calibragem_turno"
+            android:layout_width="55dp"
+            android:layout_height="18dp"
+            android:layout_marginTop="6dp"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/item_calibragem_data"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/item_calibragem_p2_desvio"
+            android:layout_width="50dp"
+            android:layout_height="18dp"
+            android:layout_marginTop="6dp"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/item_calibragem_p1_desvio"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

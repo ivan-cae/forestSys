@@ -346,7 +346,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialiconsoutlined/lock/outline_lock_24.xml" />
+                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/schedule/baseline_schedule_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -356,8 +356,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="ff9f75" />
-                            <entry key="outputName" value="icone_senha" />
+                            <entry key="color" value="a9d18e" />
+                            <entry key="outputName" value="status_nao_iniciado" />
                             <entry key="sourceFile" value="C:\Users\ivanm" />
                           </map>
                         </option>

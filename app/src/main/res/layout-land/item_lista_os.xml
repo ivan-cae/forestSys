@@ -23,7 +23,7 @@
             android:layout_marginTop="17.5dp"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/area_item_lista"
             app:layout_constraintTop_toTopOf="parent" />
@@ -35,7 +35,7 @@
             android:layout_marginTop="17.5dp"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/data_item_lista"
             app:layout_constraintTop_toTopOf="parent" />
@@ -47,7 +47,7 @@
             android:layout_marginTop="17.5dp"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/status_item_lista"
             app:layout_constraintTop_toTopOf="parent" />
@@ -59,7 +59,7 @@
             android:layout_marginTop="17.5dp"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/talhao_item_lista"
             app:layout_constraintTop_toTopOf="parent" />
@@ -71,21 +71,21 @@
             android:layout_marginTop="17.5dp"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/setor_item_lista"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/status_item_lista"
-            android:layout_width="150dp"
+            android:layout_width="125dp"
             android:layout_height="25dp"
             android:layout_marginTop="17.5dp"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="normal"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/icone_status"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -95,9 +95,17 @@
             android:layout_marginTop="17.5dp"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/manejo_item_lista"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/icone_status"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="17dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

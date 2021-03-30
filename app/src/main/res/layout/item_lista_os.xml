@@ -66,7 +66,7 @@
 
         <TextView
             android:id="@+id/talhao_item_lista"
-            android:layout_width="77dp"
+            android:layout_width="60dp"
             android:layout_height="25dp"
             android:layout_marginTop="13dp"
             android:textAlignment="center"
@@ -78,14 +78,14 @@
 
         <TextView
             android:id="@+id/status_item_lista"
-            android:layout_width="95dp"
+            android:layout_width="91dp"
             android:layout_height="25dp"
             android:layout_marginTop="13dp"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="16sp"
             android:textStyle="normal"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/icone_status"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -98,6 +98,14 @@
             android:textSize="16sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/manejo_item_lista"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/icone_status"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="13dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

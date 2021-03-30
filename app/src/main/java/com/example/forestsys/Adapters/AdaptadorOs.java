@@ -2,11 +2,13 @@ package com.example.forestsys.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,20 +53,30 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
 
         ordem = ordens.get(position);
 
-        //aberta-verde
-        if (ordem.getSTATUS_NUM() == 0) corFundo = (Color.parseColor("#a9d18e"));
+        Drawable d;
+
+        //holder.status.setBackgroundColor(corFundo);
+        // aberta-verde
+        //        if (ordem.getSTATUS_NUM() == 0) corFundo = (Color.parseColor("#a9d18e"));
+        //        //andamento-bege
+        //        if (ordem.getSTATUS_NUM() == 1) corFundo = (Color.parseColor("#fff2cc"));
+        //
+        //        //azul-finalizada
+        //        if (ordem.getSTATUS_NUM() == 2) corFundo = (Color.parseColor("#9dc3e6"));
+
+        // aberta-verde
+        if (ordem.getSTATUS_NUM() == 0) holder.iconeStatus.setBackgroundResource(R.drawable.status_nao_iniciado);
         //andamento-bege
-        if (ordem.getSTATUS_NUM() == 1) corFundo = (Color.parseColor("#fff2cc"));
+        if (ordem.getSTATUS_NUM() == 1) holder.iconeStatus.setBackgroundResource(R.drawable.status_andamento);
         //azul-finalizada
-        if (ordem.getSTATUS_NUM() == 2) corFundo = (Color.parseColor("#9dc3e6"));
+        if (ordem.getSTATUS_NUM() == 2) holder.iconeStatus.setBackgroundResource(R.drawable.status_finalizado);
 
-        holder.status.setBackgroundColor(corFundo);
 
+        holder.status.setText(ordem.getSTATUS());
         holder.setor.setText(String.valueOf(dao.selecionaSetor(ordem.getID_SETOR()).getDESCRICAO()));
         Ferramentas ferramentas = new Ferramentas();
         holder.data.setText(String.valueOf(ferramentas.formataDataTextView(ordem.getDATA_PROGRAMADA())));
         holder.talhao.setText(String.valueOf(ordem.getTALHAO()));
-        holder.status.setText(ordem.getSTATUS());
         holder.area.setText(String.valueOf(ordem.getAREA_PROGRAMADA()).replace(".", ","));
         holder.manejo.setText(dao.selecionaManejo(ordem.getID_MANEJO()).getDESCRICAO());
 
@@ -101,11 +113,10 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
         private TextView area;
         private TextView data;
         private TextView manejo;
-
+        private ImageView iconeStatus;
 
         public OsHolder(@NonNull View itemView) {
             super(itemView);
-
 
             status = itemView.findViewById(R.id.status_item_lista);
             setor = itemView.findViewById(R.id.setor_item_lista);
@@ -114,6 +125,7 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
             data = itemView.findViewById(R.id.data_item_lista);
             madeira = itemView.findViewById(R.id.madeira_item_lista);
             manejo = itemView.findViewById(R.id.manejo_item_lista);
+            iconeStatus = itemView.findViewById(R.id.icone_status);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -168,7 +180,7 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             ordens.clear();
-            if(results.values!=null ){
+            if (results.values != null) {
                 ordens.addAll((List) results.values);
             }
             notifyDataSetChanged();

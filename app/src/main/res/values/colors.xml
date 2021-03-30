@@ -9,5 +9,5 @@
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#ffffff</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="tituloColunaListas">#BDB8B8</color>
+    <color name="tituloColunaListas">#B8BDB8</color>
 </resources>

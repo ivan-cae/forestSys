@@ -33,6 +33,7 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:background="@color/secondaryLightColor"
+            android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/ic_voltar_24dp" />
@@ -498,7 +499,7 @@
             android:inputType="textPersonName"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView83"
             app:layout_constraintTop_toTopOf="@+id/textView83" />
 
@@ -510,7 +511,7 @@
             android:inputType="textPersonName"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView84"
             app:layout_constraintTop_toTopOf="@+id/textView84" />
 
@@ -522,7 +523,7 @@
             android:inputType="textPersonName"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView87"
             app:layout_constraintTop_toTopOf="@+id/textView87" />
 
@@ -534,7 +535,7 @@
             android:inputType="textPersonName"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView88"
             app:layout_constraintTop_toTopOf="@+id/textView88" />
 
@@ -546,7 +547,7 @@
             android:inputType="textPersonName"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView89"
             app:layout_constraintTop_toTopOf="@+id/textView89" />
 
@@ -558,7 +559,7 @@
             android:inputType="textPersonName"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView85"
             app:layout_constraintTop_toTopOf="@+id/textView85" />
 
