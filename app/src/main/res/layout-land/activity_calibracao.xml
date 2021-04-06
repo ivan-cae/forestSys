@@ -48,7 +48,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_calibracao"
             android:layout_width="0dp"
-            android:layout_height="150dp"
+            android:layout_height="100dp"
             android:background="@color/secondaryTextColor"
             app:layout_constraintEnd_toEndOf="@+id/textView27"
             app:layout_constraintStart_toStartOf="@+id/textView26"
@@ -979,41 +979,54 @@
             app:layout_constraintStart_toEndOf="@+id/p2_media"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-        <ImageButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/botao_calibragem_media_p1"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginStart="32dp"
-            android:background="@color/secondaryLightColor"
-            android:scaleType="fitCenter"
+            android:layout_marginEnd="24dp"
+            android:adjustViewBounds="false"
+            android:backgroundTint="@color/primaryLightColor"
+            android:backgroundTintMode="src_in"
+            android:scaleType="fitXY"
+            android:src="@drawable/botao_adicionar_circular"
+            app:backgroundTint="@color/primaryLightColor"
+            app:fabCustomSize="60dp"
+            app:fabSize="normal"
+            app:maxImageSize="60dp"
             app:layout_constraintBottom_toBottomOf="@+id/media_dif_p1"
             app:layout_constraintStart_toEndOf="@+id/textView4"
-            app:layout_constraintTop_toTopOf="@+id/textView43"
-            app:srcCompat="@drawable/botao_adicionar_circular" />
+            app:layout_constraintTop_toTopOf="@+id/textView43" />
 
-        <ImageButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/botao_calibragem_media_p2"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginStart="32dp"
-            android:background="@color/secondaryLightColor"
-            android:scaleType="fitCenter"
+            android:layout_marginEnd="24dp"
+            android:adjustViewBounds="false"
+            android:backgroundTint="@color/primaryLightColor"
+            android:backgroundTintMode="src_in"
+            android:scaleType="fitXY"
+            android:src="@drawable/botao_adicionar_circular"
+            app:backgroundTint="@color/primaryLightColor"
+            app:fabCustomSize="60dp"
+            app:fabSize="normal"
+            app:maxImageSize="60dp"
             app:layout_constraintBottom_toBottomOf="@+id/media_dif_p2"
             app:layout_constraintStart_toEndOf="@+id/desvio_produto2"
-            app:layout_constraintTop_toTopOf="@+id/textView54"
-            app:srcCompat="@drawable/botao_adicionar_circular" />
+            app:layout_constraintTop_toTopOf="@+id/textView54" />
 
         <Button
             android:id="@+id/botao_calibragem_confirma"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/botao_arredondado_cor_primaria_light"
             android:text="Salvar"
             android:textColor="@color/secondaryTextColor"
             android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/botao_calibragem_voltar" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <ImageButton
             android:id="@+id/botao_calibragem_voltar"
@@ -1042,7 +1055,7 @@
             android:id="@+id/textView39"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:text="Resumo de Calibrações:"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"

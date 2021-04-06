@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout_continuar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:visibility="visible"
+    tools:openDrawer="start">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/secondaryLightColor"
+        tools:context=".Activities.ActivityListaRegistros">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/botao_adicionar_registros"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="16dp"
+            android:adjustViewBounds="false"
+            android:backgroundTint="@color/primaryLightColor"
+            android:backgroundTintMode="src_in"
+            android:scaleType="fitXY"
+            android:src="@drawable/botao_adicionar_circular"
+            app:backgroundTint="@color/primaryLightColor"
+            app:fabCustomSize="45dp"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:maxImageSize="45dp" />
+
+        <TextView
+            android:id="@+id/textView65"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:background="@color/tituloColunaListas"
+            android:text="H.M."
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/textView74"
+            app:layout_constraintTop_toTopOf="@+id/textView74" />
+
+        <TextView
+            android:id="@+id/textView63"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:background="@color/tituloColunaListas"
+            android:text="H.M.E"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/textView71"
+            app:layout_constraintTop_toTopOf="@+id/textView71" />
+
+        <TextView
+            android:id="@+id/textView71"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:background="@color/tituloColunaListas"
+            android:text="H.O.E"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/textView65"
+            app:layout_constraintTop_toTopOf="@+id/textView65" />
+
+        <TextView
+            android:id="@+id/textView68"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:background="@color/tituloColunaListas"
+            android:text="H.A."
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/textView77"
+            app:layout_constraintTop_toTopOf="@+id/textView77" />
+
+        <TextView
+            android:id="@+id/textView70"
+            android:layout_width="100dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/tituloColunaListas"
+            android:text="Data"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+        <TextView
+            android:id="@+id/textView73"
+            android:layout_width="100dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="3dp"
+            android:background="@color/secondaryLightColor"
+            android:text="Total"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
+
+        <TextView
+            android:id="@+id/registros_total_area"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="3dp"
+            android:background="@color/secondaryLightColor"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/textView73"
+            app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
+
+        <TextView
+            android:id="@+id/registros_total_hh"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="3dp"
+            android:background="@color/secondaryLightColor"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/registros_total_area"
+            app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
+
+        <TextView
+            android:id="@+id/registros_total_ho"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="3dp"
+            android:background="@color/secondaryLightColor"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/registros_total_hh"
+            app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
+
+        <TextView
+            android:id="@+id/registros_total_hm"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="3dp"
+            android:background="@color/secondaryLightColor"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/registros_total_ho"
+            app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
+
+        <TextView
+            android:id="@+id/registros_total_hme"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="3dp"
+            android:background="@color/secondaryLightColor"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/registros_total_hoe"
+            app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
+
+        <TextView
+            android:id="@+id/textView92"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:background="@color/secondaryLightColor"
+            android:text="Dif %"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="@+id/registros_total_hme"
+            app:layout_constraintTop_toBottomOf="@+id/registros_total_hme" />
+
+        <TextView
+            android:id="@+id/registros_total_insumo2"
+            android:layout_width="155dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="3dp"
+            android:background="@color/secondaryLightColor"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/registros_total_insumo1"
+            app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
+
+        <TextView
+            android:id="@+id/registros_total_insumo1"
+            android:layout_width="155dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="3dp"
+            android:background="@color/secondaryLightColor"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/registros_total_hme"
+            app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
+
+        <TextView
+            android:id="@+id/registros_dif_insumo1"
+            android:layout_width="155dp"
+            android:layout_height="20dp"
+            android:background="@color/secondaryLightColor"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/textView92"
+            app:layout_constraintTop_toBottomOf="@+id/registros_total_insumo2" />
+
+        <TextView
+            android:id="@+id/registros_dif_insumo2"
+            android:layout_width="155dp"
+            android:layout_height="20dp"
+            android:background="@color/secondaryLightColor"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/registros_dif_insumo1"
+            app:layout_constraintTop_toBottomOf="@+id/registros_total_insumo2" />
+
+        <TextView
+            android:id="@+id/registros_total_hoe"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="3dp"
+            android:background="@color/secondaryLightColor"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/registros_total_hm"
+            app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
+
+        <TextView
+            android:id="@+id/textView77"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:background="@color/tituloColunaListas"
+            android:text="Area"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/textView70"
+            app:layout_constraintTop_toTopOf="@+id/textView70" />
+
+        <TextView
+            android:id="@+id/textView75"
+            android:layout_width="150dp"
+            android:layout_height="25dp"
+            android:background="@color/tituloColunaListas"
+            android:text="Responsável"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/textView78"
+            app:layout_constraintTop_toTopOf="@+id/textView78" />
+
+        <TextView
+            android:id="@+id/registros_insumo2"
+            android:layout_width="155dp"
+            android:layout_height="25dp"
+            android:background="@color/tituloColunaListas"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/registros_insumo1"
+            app:layout_constraintTop_toTopOf="@+id/registros_insumo1" />
+
+        <TextView
+            android:id="@+id/registros_insumo1"
+            android:layout_width="155dp"
+            android:layout_height="25dp"
+            android:background="@color/tituloColunaListas"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/textView63"
+            app:layout_constraintTop_toTopOf="@+id/textView63" />
+
+        <TextView
+            android:id="@+id/textView78"
+            android:layout_width="155dp"
+            android:layout_height="25dp"
+            android:background="@color/tituloColunaListas"
+            android:text="Prestador"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/registros_insumo2"
+            app:layout_constraintTop_toTopOf="@+id/registros_insumo2" />
+
+        <TextView
+            android:id="@+id/textView74"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:background="@color/tituloColunaListas"
+            android:text="H.O."
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/textView68"
+            app:layout_constraintTop_toTopOf="@+id/textView68" />
+
+        <TextView
+            android:id="@+id/data_apontamento_lista_registros"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/textView81"
+            app:layout_constraintTop_toTopOf="@+id/textView81" />
+
+        <ImageButton
+            android:id="@+id/botao_voltar_lista_registros"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@color/secondaryLightColor"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_voltar_24dp" />
+
+        <TextView
+            android:id="@+id/status_lista_registros"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/textView42"
+            app:layout_constraintTop_toTopOf="@+id/textView42" />
+
+        <TextView
+            android:id="@+id/area_prog_lista_registros"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/textView46"
+            app:layout_constraintTop_toTopOf="@+id/textView46" />
+
+        <TextView
+            android:id="@+id/area_realizada_lista_registros"
+            android:layout_width="60dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/textView101"
+            app:layout_constraintTop_toTopOf="@+id/textView101" />
+
+        <TextView
+            android:id="@+id/talhao_lista_registros"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/textView20"
+            app:layout_constraintTop_toTopOf="@+id/textView20" />
+
+        <TextView
+            android:id="@+id/textView81"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="70dp"
+            android:text="Data Programada:"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/status_lista_registros"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView42"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="70dp"
+            android:text="Status:"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/area_realizada_lista_registros"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView46"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="70dp"
+            android:text="Área:"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/talhao_lista_registros"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView101"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="70dp"
+            android:text="Área Realizada:"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/area_prog_lista_registros"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="70dp"
+            android:text="Talhão:"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/registros_lista"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="50dp"
+            android:background="@color/secondaryTextColor"
+            app:layout_constraintBottom_toTopOf="@+id/botao_voltar_lista_registros"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView65">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="150dp"
+            android:layout_marginEnd="8dp"
+            android:text="Registros"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/area_realizada_lista_registros" />
+
+        <ProgressBar
+            android:id="@+id/barra_progresso_lista_registros"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="200dp"
+            android:layout_marginEnd="200dp"
+            android:layout_marginBottom="32dp"
+            android:maxHeight="50dp"
+            android:minHeight="50dp"
+            android:progressTint="@color/primaryDarkColor"
+            android:scaleY="8"
+            app:layout_constraintBottom_toTopOf="@+id/textView16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/titulo_barra_percentual"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toTopOf="@+id/barra_progresso_lista_registros"
+            app:layout_constraintEnd_toEndOf="@+id/barra_progresso_lista_registros"
+            app:layout_constraintStart_toEndOf="@+id/textView61" />
+
+        <TextView
+            android:id="@+id/textView61"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Progresso Atual:"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/barra_progresso_lista_registros"
+            app:layout_constraintStart_toStartOf="@+id/barra_progresso_lista_registros" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_layou_lista_registros"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <FrameLayout
+            android:id="@+id/fragment_container_lista_registros"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_lista_registros"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/primaryColor"
+                android:elevation="4dp"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                android:visibility="visible"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view_lista_registros"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:maxWidth="230dp"
+        android:visibility="visible"
+        app:menu="@menu/menu_main_lateral" />
+
+</androidx.drawerlayout.widget.DrawerLayout>
+

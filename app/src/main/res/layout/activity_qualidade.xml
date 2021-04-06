@@ -782,31 +782,41 @@
             app:layout_constraintStart_toStartOf="@+id/textView139"
             app:layout_constraintTop_toBottomOf="@+id/qualidade_percentual_nc_profundidade_subsolagem" />
 
-        <ImageButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/qualidade_botao_verion"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginStart="32dp"
-            android:background="@color/secondaryLightColor"
-            android:scaleType="fitCenter"
+            android:layout_marginStart="8dp"
+            android:adjustViewBounds="false"
+            android:backgroundTint="@color/primaryLightColor"
+            android:backgroundTintMode="src_in"
+            android:scaleType="fitXY"
+            android:src="@drawable/botao_adicionar_circular"
+            app:backgroundTint="@color/primaryLightColor"
+            app:fabCustomSize="60dp"
+            app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="@+id/qualidade_desvio_padrao_p2"
             app:layout_constraintStart_toEndOf="@+id/qualidade_desvio_padrao_p2"
             app:layout_constraintTop_toTopOf="@+id/textView102"
-            app:srcCompat="@drawable/botao_adicionar_circular" />
+            app:maxImageSize="60dp" />
 
-        <ImageButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/qualidade_botao_ponto"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginStart="270dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="270dp"
-            android:background="@color/secondaryLightColor"
-            android:scaleType="fitCenter"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp"
+            android:adjustViewBounds="false"
+            android:backgroundTint="@color/primaryLightColor"
+            android:backgroundTintMode="src_in"
+            android:scaleType="fitXY"
+            android:src="@drawable/botao_adicionar_circular"
+            app:backgroundTint="@color/primaryLightColor"
+            app:fabCustomSize="60dp"
+            app:fabSize="normal"
+            app:layout_constraintEnd_toEndOf="@+id/textView130"
+            app:layout_constraintStart_toStartOf="@+id/textView130"
             app:layout_constraintTop_toBottomOf="@+id/textView130"
-            app:srcCompat="@drawable/botao_adicionar_circular" />
+            app:maxImageSize="60dp" />
 
         <TextView
             android:id="@+id/textView130"

@@ -49,6 +49,7 @@ import com.example.forestsys.Classes.CALIBRAGEM_SUBSOLAGEM;
 import com.example.forestsys.Classes.MAQUINAS;
 import com.example.forestsys.Classes.OPERADORES;
 import com.example.forestsys.Classes.Joins.Join_MAQUINA_IMPLEMENTO;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import org.w3c.dom.Text;
@@ -112,7 +113,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     private TextView osData;
     private TextView osTurno;
 
-    private ImageButton botaoMediaP1;
+    private FloatingActionButton botaoMediaP1;
     private ImageButton botaoMediaP2;
     private Button botaoConfirma;
     private ImageButton botaoVoltar;

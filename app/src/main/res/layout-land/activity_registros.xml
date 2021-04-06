@@ -15,174 +15,22 @@
         android:background="@color/secondaryLightColor"
         tools:context=".Activities.ActivityRegistros">
 
-        <TextView
-            android:id="@+id/registros_total_insumo1"
-            android:layout_width="85dp"
-            android:layout_height="15dp"
-            android:layout_marginTop="1dp"
-            android:background="@color/tituloColunaListas"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/registros_total_hme"
-            app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
-
-        <TextView
-            android:id="@+id/registros_total_ho"
-            android:layout_width="30dp"
-            android:layout_height="15dp"
-            android:layout_marginTop="1dp"
-            android:background="@color/tituloColunaListas"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/registros_total_hh"
-            app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
-
-        <TextView
-            android:id="@+id/textView80"
-            android:layout_width="55dp"
-            android:layout_height="15dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="1dp"
-            android:background="@color/tituloColunaListas"
-            android:text="Total"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
-
-        <TextView
-            android:id="@+id/registros_dif_insumo2"
-            android:layout_width="85dp"
-            android:layout_height="15dp"
-            android:background="@color/tituloColunaListas"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/registros_dif_insumo1"
-            app:layout_constraintTop_toBottomOf="@+id/registros_total_insumo2" />
-
-        <TextView
-            android:id="@+id/registros_total_hme"
-            android:layout_width="35dp"
-            android:layout_height="15dp"
-            android:layout_marginTop="1dp"
-            android:background="@color/tituloColunaListas"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/registros_total_hoe"
-            app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
-
-        <TextView
-            android:id="@+id/registros_total_hh"
-            android:layout_width="30dp"
-            android:layout_height="15dp"
-            android:layout_marginTop="1dp"
-            android:background="@color/tituloColunaListas"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/registros_total_area"
-            app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
-
-        <TextView
-            android:id="@+id/registros_total_area"
-            android:layout_width="35dp"
-            android:layout_height="15dp"
-            android:layout_marginTop="1dp"
-            android:background="@color/tituloColunaListas"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/textView80"
-            app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
-
-        <TextView
-            android:id="@+id/textView82"
-            android:layout_width="35dp"
-            android:layout_height="15dp"
-            android:background="@color/tituloColunaListas"
-            android:text="Dif %"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toStartOf="@+id/registros_total_hme"
-            app:layout_constraintTop_toBottomOf="@+id/registros_total_hme" />
-
-        <TextView
-            android:id="@+id/registros_dif_insumo1"
-            android:layout_width="85dp"
-            android:layout_height="15dp"
-            android:background="@color/tituloColunaListas"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/textView82"
-            app:layout_constraintTop_toBottomOf="@+id/registros_total_insumo1" />
-
-        <TextView
-            android:id="@+id/registros_total_hoe"
-            android:layout_width="35dp"
-            android:layout_height="15dp"
-            android:layout_marginTop="1dp"
-            android:background="@color/tituloColunaListas"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/registros_total_hm"
-            app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
-
-        <TextView
-            android:id="@+id/registros_total_hm"
-            android:layout_width="30dp"
-            android:layout_height="15dp"
-            android:layout_marginTop="1dp"
-            android:background="@color/tituloColunaListas"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/registros_total_ho"
-            app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
-
-        <TextView
-            android:id="@+id/registros_total_insumo2"
-            android:layout_width="85dp"
-            android:layout_height="15dp"
-            android:layout_marginTop="1dp"
-            android:background="@color/tituloColunaListas"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/registros_total_insumo1"
-            app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
-
-        <Button
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/botao_prosseguir_continuar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/botao_arredondado_cor_primaria_light"
-            android:text="Finalizar"
-            android:textColor="@color/secondaryTextColor"
-            android:visibility="visible"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="200dp"
+            android:layout_marginBottom="8dp"
+            android:adjustViewBounds="false"
+            android:backgroundTint="@color/primaryLightColor"
+            android:backgroundTintMode="src_in"
+            android:scaleType="fitXY"
+            android:src="@drawable/botao_finalizar_registro"
+            app:backgroundTint="@color/primaryLightColor"
+            app:fabCustomSize="60dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/registro_fragmento_insumos" />
+            app:maxImageSize="60dp" />
 
         <TextView
             android:id="@+id/data_apontamento"
@@ -195,15 +43,23 @@
             app:layout_constraintStart_toEndOf="@+id/textView81"
             app:layout_constraintTop_toTopOf="@+id/textView81" />
 
-        <ImageButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/botao_continuar_voltar"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:background="@color/secondaryLightColor"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="200dp"
+            android:layout_marginBottom="8dp"
+            android:adjustViewBounds="false"
+            android:backgroundTint="@color/secondaryDarkColor"
+            android:backgroundTintMode="src_in"
             android:scaleType="fitXY"
+
+            android:src="@drawable/botao_cancelar_registros"
+            app:backgroundTint="@color/secondaryDarkColor"
+            app:fabCustomSize="60dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/ic_voltar_24dp" />
+            app:maxImageSize="60dp" />
 
         <TextView
             android:id="@+id/status_os_continuar"
@@ -314,35 +170,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/botao_apontamentos_geral"
-            android:layout_width="250dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/botao_arredondado_cor_titulo_lista"
-            android:text="Rendimento"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/registro_fragmento_rendimento"
-            app:layout_constraintStart_toStartOf="@+id/registro_fragmento_rendimento"
-            app:layout_constraintTop_toBottomOf="@+id/area_prog_os_continuar" />
-
-        <Button
-            android:id="@+id/botao_apontamentos_insumos"
-            android:layout_width="250dp"
-            android:layout_height="40dp"
-            android:background="@drawable/botao_arredondado_cor_titulo_lista"
-            android:text="Insumos"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/registro_fragmento_insumos"
-            app:layout_constraintStart_toStartOf="@+id/registro_fragmento_insumos"
-            app:layout_constraintTop_toTopOf="@+id/botao_apontamentos_geral" />
-
         <ImageButton
             android:id="@+id/botao_date_picker"
             android:layout_width="41dp"
@@ -358,187 +185,33 @@
             android:id="@+id/textView94"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:layout_marginTop="8dp"
             android:text="Toque No Insumo Para Adicionar a Aplicação"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/registro_fragmento_insumos"
             app:layout_constraintStart_toStartOf="@+id/registro_fragmento_insumos"
-            app:layout_constraintTop_toBottomOf="@+id/botao_apontamentos_insumos" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/registros_lista"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="15dp"
-            android:background="@color/secondaryTextColor"
-            app:layout_constraintBottom_toTopOf="@+id/botao_continuar_voltar"
-            app:layout_constraintEnd_toEndOf="@+id/textView75"
-            app:layout_constraintStart_toStartOf="@+id/textView70"
-            app:layout_constraintTop_toBottomOf="@+id/textView65" />
+            app:layout_constraintTop_toBottomOf="@+id/data_apontamento" />
 
         <FrameLayout
             android:id="@+id/registro_fragmento_rendimento"
-            android:layout_width="480dp"
-            android:layout_height="240dp"
+            android:layout_width="350dp"
+            android:layout_height="320dp"
             android:layout_marginStart="8dp"
             android:background="@color/secondaryLightColor"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/botao_apontamentos_geral">
+            app:layout_constraintTop_toBottomOf="@+id/textView29">
 
         </FrameLayout>
 
-        <TextView
-            android:id="@+id/registros_insumo1"
-            android:layout_width="85dp"
-            android:layout_height="15dp"
-            android:background="@color/tituloColunaListas"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/textView63"
-            app:layout_constraintTop_toTopOf="@+id/textView63" />
-
-        <TextView
-            android:id="@+id/registros_insumo2"
-            android:layout_width="85dp"
-            android:layout_height="15dp"
-            android:background="@color/tituloColunaListas"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/registros_insumo1"
-            app:layout_constraintTop_toTopOf="@+id/registros_insumo1" />
-
-        <TextView
-            android:id="@+id/textView75"
-            android:layout_width="82dp"
-            android:layout_height="15dp"
-            android:background="@color/tituloColunaListas"
-            android:text="Responsável"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/textView78"
-            app:layout_constraintTop_toTopOf="@+id/textView78" />
-
-        <TextView
-            android:id="@+id/textView78"
-            android:layout_width="82dp"
-            android:layout_height="15dp"
-            android:background="@color/tituloColunaListas"
-            android:text="Prestador"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/registros_insumo2"
-            app:layout_constraintTop_toTopOf="@+id/registros_insumo2" />
-
-        <TextView
-            android:id="@+id/textView63"
-            android:layout_width="35dp"
-            android:layout_height="15dp"
-            android:background="@color/tituloColunaListas"
-            android:text="H.M.E"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/textView71"
-            app:layout_constraintTop_toTopOf="@+id/textView71" />
-
-        <TextView
-            android:id="@+id/textView65"
-            android:layout_width="30dp"
-            android:layout_height="15dp"
-            android:background="@color/tituloColunaListas"
-            android:text="H.M."
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/textView74"
-            app:layout_constraintTop_toTopOf="@+id/textView74" />
-
-        <TextView
-            android:id="@+id/textView74"
-            android:layout_width="30dp"
-            android:layout_height="15dp"
-            android:background="@color/tituloColunaListas"
-            android:text="H.O."
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/textView68"
-            app:layout_constraintTop_toTopOf="@+id/textView68" />
-
-        <TextView
-            android:id="@+id/textView71"
-            android:layout_width="35dp"
-            android:layout_height="15dp"
-            android:background="@color/tituloColunaListas"
-            android:text="H.O.E"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/textView65"
-            app:layout_constraintTop_toTopOf="@+id/textView65" />
-
-        <TextView
-            android:id="@+id/textView70"
-            android:layout_width="55dp"
-            android:layout_height="15dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/tituloColunaListas"
-            android:text="Data"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toStartOf="@+id/registro_fragmento_rendimento"
-            app:layout_constraintTop_toBottomOf="@+id/registro_fragmento_rendimento" />
-
-        <TextView
-            android:id="@+id/textView68"
-            android:layout_width="30dp"
-            android:layout_height="15dp"
-            android:background="@color/tituloColunaListas"
-            android:text="H.A."
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/textView76"
-            app:layout_constraintTop_toTopOf="@+id/textView76" />
-
-        <TextView
-            android:id="@+id/textView76"
-            android:layout_width="35dp"
-            android:layout_height="15dp"
-            android:background="@color/tituloColunaListas"
-            android:text="Area"
-            android:textAlignment="center"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/textView70"
-            app:layout_constraintTop_toTopOf="@+id/textView70" />
-
         <FrameLayout
             android:id="@+id/registro_fragmento_insumos"
-            android:layout_width="350dp"
-            android:layout_height="280dp"
-            android:layout_marginStart="8dp"
+            android:layout_width="580dp"
+            android:layout_height="320dp"
             android:layout_marginEnd="8dp"
             android:background="@color/secondaryLightColor"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/registros_lista"
             app:layout_constraintTop_toBottomOf="@+id/textView94">
 
         </FrameLayout>
@@ -570,6 +243,19 @@
             </LinearLayout>
 
         </FrameLayout>
+
+        <TextView
+            android:id="@+id/textView29"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Rendimento"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/registro_fragmento_rendimento"
+            app:layout_constraintStart_toStartOf="@+id/registro_fragmento_rendimento"
+            app:layout_constraintTop_toBottomOf="@+id/talhao_os_continuar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

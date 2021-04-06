@@ -18,19 +18,21 @@
         android:icon="@mipmap/icone_gelf"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.ActivityQualidade"
+        <activity android:name=".Activities.ActivityListaRegistros"></activity>
+        <activity
+            android:name=".Activities.ActivityQualidade"
             android:screenOrientation="fullSensor"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".Activities.FragmentoInsumos"
             android:screenOrientation="portrait"
-            tools:ignore="Instantiatable,LockedOrientationActivity"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustNothing"
+            tools:ignore="Instantiatable,LockedOrientationActivity" />
         <activity
             android:name=".Activities.FragmentoRendimento"
             android:screenOrientation="portrait"
-            tools:ignore="Instantiatable,LockedOrientationActivity"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustNothing"
+            tools:ignore="Instantiatable,LockedOrientationActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -46,37 +48,37 @@
         <activity
             android:name=".Activities.ActivityMain"
             android:screenOrientation="fullSensor"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".Activities.ActivityConfiguracoes"
             android:screenOrientation="fullSensor"
-            tools:ignore="LockedOrientationActivity"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustNothing"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Activities.ActivityCalibracao"
             android:screenOrientation="fullSensor"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".Activities.ActivityRegistros"
             android:screenOrientation="fullSensor"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".Activities.ActivityAtividades"
             android:screenOrientation="fullSensor"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".Activities.ActivityDashboard"
             android:screenOrientation="fullSensor"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".Calculadora.CalculadoraMain"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustNothing"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Activities.ActivityLogin"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".Activities.ActivityInicializacao"
             android:label="@string/apk_name"

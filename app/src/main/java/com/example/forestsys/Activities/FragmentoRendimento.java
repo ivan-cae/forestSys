@@ -46,7 +46,6 @@ import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
 import static com.example.forestsys.Activities.ActivityRegistros.auxSavedInstanceState;
 
 public class FragmentoRendimento extends Fragment {
-    public static NDSpinner spinnerResponsavel;
     public static NDSpinner spinnerPrestador;
     public static EditText areaRealizadaApontamento;
     public static EditText HOEscavadeiraApontamento;
@@ -91,7 +90,6 @@ public class FragmentoRendimento extends Fragment {
                     if (i < usuarios.size()) {
                         if (usuarios.get(i).getID_USUARIO() == oSAtividadesDiaAtual.getID_RESPONSAVEL())
                             posicaoResponsavel = usuarios.get(i).getID_USUARIO();
-                        spinnerResponsavel.setSelection(posicaoResponsavel - 1);
                     }
 
                     if (i < prestadores.size()) {
@@ -102,9 +100,6 @@ public class FragmentoRendimento extends Fragment {
                 }
                 spinnerPrestador.setAdapter(adapterPrestadores);
                 spinnerPrestador.setSelection(posicaoPrestador - 1);
-
-                spinnerResponsavel.setAdapter(adapterUsuarios);
-                spinnerResponsavel.setSelection(posicaoResponsavel - 1);
             } else obsApontamento.setFocusable(true);
 
 
@@ -112,10 +107,6 @@ public class FragmentoRendimento extends Fragment {
                 posicaoResponsavel = savedInstanceState.getInt("posicaoResponsavel");
                 posicaoPrestador = savedInstanceState.getInt("posicaoPrestador");
 
-                if (posicaoResponsavel != -1) {
-                    spinnerResponsavel.setAdapter(adapterUsuarios);
-                    spinnerResponsavel.setSelection(posicaoResponsavel);
-                }
                 if (posicaoPrestador != -1) {
                     spinnerPrestador.setAdapter(adapterPrestadores);
                     spinnerPrestador.setSelection(posicaoPrestador);
@@ -174,9 +165,9 @@ public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
 
     //inicialização dos itens na tela e variáveis
     public void inicializacao() {
-        spinnerResponsavel = getView().findViewById(R.id.spinner_responsavel_apontamento);
         spinnerPrestador = getView().findViewById(R.id.spinner_prestador_apontamento);
         areaRealizadaApontamento = getView().findViewById(R.id.area_realizada_apontamento);
+        areaRealizadaApontamento.requestFocus();
         HOEscavadeiraApontamento = getView().findViewById(R.id.hora_operador_escavadeira_apontamento);
         HOApontamento = getView().findViewById(R.id.hora_operador_apontamento);
         HMApontamento = getView().findViewById(R.id.hora_maquina_apontamento);
@@ -203,14 +194,6 @@ public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
         adapterUsuarios = new ArrayAdapter<GGF_USUARIOS>(getActivity(),
                 android.R.layout.simple_spinner_item, usuarios);
         adapterUsuarios.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinnerResponsavel.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (contSpinnerResponsavel == 0) spinnerResponsavel.setAdapter(adapterUsuarios);
-                return false;
-            }
-        });
 
         spinnerPrestador.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -397,28 +380,10 @@ public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
             }
         });
 
-        spinnerResponsavel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (contSpinnerResponsavel > 0) {
-                    position++;
-                    posicaoResponsavel = position;
-                }
-                contSpinnerResponsavel++;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
 
         if (oSAtividadesDiaAtual != null) populaInfo(oSAtividadesDiaAtual);
 
-
         if (osSelecionada.getSTATUS_NUM() == 2) {
-            spinnerResponsavel.setEnabled(false);
-            spinnerResponsavel.setVisibility(View.GONE);
 
             spinnerPrestador.setEnabled(false);
             spinnerPrestador.setVisibility(View.GONE);
@@ -484,7 +449,6 @@ public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
         posicaoPrestador = osAtv.getID_PRESTADOR();
         posicaoResponsavel = osAtv.getID_RESPONSAVEL();
 
-        spinnerResponsavel.setSelection(osAtv.getID_RESPONSAVEL() - 1, true);
         spinnerPrestador.setSelection(osAtv.getID_PRESTADOR() - 1, true);
 
         if (osAtv.getAREA_REALIZADA() != null) {

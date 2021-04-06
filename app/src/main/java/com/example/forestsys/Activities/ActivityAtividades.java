@@ -134,6 +134,7 @@ public class ActivityAtividades extends AppCompatActivity
 
     public static boolean ncInsumo1Justificada;
     public static boolean ncInsumo2Justificada;
+
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,7 +212,7 @@ public class ActivityAtividades extends AppCompatActivity
         areaOs.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace(".", ",") + "ha");
         manejoOs.setText(String.valueOf(dao.selecionaManejo(osSelecionada.getID_MANEJO()).getDESCRICAO()));
         dataProgramada.setText(ferramentas.formataDataTextView(osSelecionada.getDATA_PROGRAMADA()));
-        areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()).replace('.',',') + "ha");
+        areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()).replace('.', ',') + "ha");
 
         obsOs.setMovementMethod(new ScrollingMovementMethod());
 
@@ -261,17 +262,18 @@ public class ActivityAtividades extends AppCompatActivity
 
         if (osSelecionada.getSTATUS_NUM() == 2) {
             botaoQualidade.setEnabled(true);
-            botaoQualidade.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.primaryLightColor));
+            botaoQualidade.setBackgroundResource(R.drawable.botao_arredondado_cor_primaria_light);
 
             botaoCalibracao.setEnabled(true);
-            botaoCalibracao.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.primaryLightColor));
+            botaoCalibracao.setBackgroundResource(R.drawable.botao_arredondado_cor_primaria_light);
 
             botaoRegistros.setEnabled(true);
-            botaoRegistros.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.primaryLightColor));
+            botaoRegistros.setBackgroundResource(R.drawable.botao_arredondado_cor_primaria_light);
 
             botaoFinalizarOs.setVisibility(View.VISIBLE);
             botaoFinalizarOs.setEnabled(true);
-            botaoFinalizarOs.setBackgroundResource(R.drawable.botao_arredondado_cor_primaria_light);        }
+            botaoFinalizarOs.setBackgroundResource(R.drawable.botao_arredondado_cor_primaria_light);
+        }
 
         botaoCalibracao.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -284,25 +286,49 @@ public class ActivityAtividades extends AppCompatActivity
         botaoRegistros.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checaCalibracao() == false) {
-                    AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
-                            .setTitle("Calibração Não Encontrada.")
-                            .setMessage("Não Há Calibração No Dia Atual, Deseja Continuar Mesmo Assim?")
-                            .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Intent it = new Intent(ActivityAtividades.this, ActivityRegistros.class);
-                                    startActivity(it);
-                                }
-                            }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                }
-                            }).create();
-                    dialog.show();
+                if (osSelecionada.getSTATUS_NUM() == 2) {
+                    if (dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()).isEmpty()) {
+                        AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
+                                .setTitle("Não é possível abrir o módulo.")
+                                .setMessage("Não há nenhum registro cadastrado")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                }).create();
+                        dialog.show();
+                    }else{
+                        Intent it = new Intent(ActivityAtividades.this, ActivityListaRegistros.class);
+                        startActivity(it);
+                    }
                 } else {
-                    Intent it = new Intent(ActivityAtividades.this, ActivityRegistros.class);
-                    startActivity(it);
+                    if (checaCalibracao() == false) {
+                        AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
+                                .setTitle("Calibração Não Encontrada.")
+                                .setMessage("Não Há Calibração No Dia Atual, Deseja Continuar Mesmo Assim?")
+                                .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent it = new Intent(ActivityAtividades.this, ActivityListaRegistros.class);
+                                        if (dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()).isEmpty()) {
+                                            it = new Intent(ActivityAtividades.this, ActivityRegistros.class);
+                                        };
+                                        startActivity(it);
+                                    }
+                                }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                }).create();
+                        dialog.show();
+                    } else {
+                        Intent it = new Intent(ActivityAtividades.this, ActivityListaRegistros.class);
+                        if (dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()).isEmpty()) {
+                            it = new Intent(ActivityAtividades.this, ActivityRegistros.class);
+                        }
+                        ;
+                        startActivity(it);
+                    }
                 }
             }
         });
@@ -333,7 +359,7 @@ public class ActivityAtividades extends AppCompatActivity
             }
         });
 
-        if(osSelecionada.getSTATUS_NUM()!=2){
+        if (osSelecionada.getSTATUS_NUM() != 2) {
             Toast.makeText(ActivityAtividades.this, "Toque no número do talhão para mostra-lo no mapa",
                     Toast.LENGTH_LONG).show();
         }
@@ -466,7 +492,7 @@ public class ActivityAtividades extends AppCompatActivity
         });
 
         Intent it = getIntent();
-        if(it.hasExtra("erroAbrirRegistros")){
+        if (it.hasExtra("erroAbrirRegistros")) {
             AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
                     .setTitle("Erro!")
                     .setMessage("Houve um erro ao abrir o módulo de registros, favor comunicar ao responsável.")
@@ -479,7 +505,7 @@ public class ActivityAtividades extends AppCompatActivity
             dialog.show();
         }
 
-        if(it.hasExtra("erroAbrirCalibracao")){
+        if (it.hasExtra("erroAbrirCalibracao")) {
             AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
                     .setTitle("Erro!")
                     .setMessage("Houve um erro ao abrir o módulo de calibrações, favor comunicar ao responsável.")
@@ -492,7 +518,7 @@ public class ActivityAtividades extends AppCompatActivity
             dialog.show();
         }
 
-        if(it.hasExtra("erroAbrirQualidade")){
+        if (it.hasExtra("erroAbrirQualidade")) {
             AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
                     .setTitle("Erro!")
                     .setMessage("Houve um erro ao abrir o módulo de qualidade.\n" +
@@ -510,7 +536,6 @@ public class ActivityAtividades extends AppCompatActivity
     public void salvar() {
         osSelecionada.setSTATUS_NUM(2);
         osSelecionada.setSTATUS("Finalizado");
-        osSelecionada.setDATA_FINAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
         dao.update(osSelecionada);
         Toast.makeText(ActivityAtividades.this, "Atividade Finalizada Com Sucesso!", Toast.LENGTH_LONG).show();
         Intent it = new Intent(ActivityAtividades.this, ActivityMain.class);
@@ -522,7 +547,7 @@ public class ActivityAtividades extends AppCompatActivity
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityAtividades.this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_atividade_edita_os, null);
         valorDialogoJustificativaEdicaoOs = mView.findViewById(R.id.justificativa_edicao_os);
-        Button botaoOk =  mView.findViewById(R.id.botao_ok_edicao_os);
+        Button botaoOk = mView.findViewById(R.id.botao_ok_edicao_os);
 
         if (auxSavedInstanceState != null) {
             if (auxSavedInstanceState.getString("valorDialogoJustificativaEdicaoOs") != null) {
@@ -583,7 +608,7 @@ public class ActivityAtividades extends AppCompatActivity
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityAtividades.this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_atividade_justificativa_area_realizada, null);
         valorDialogoAreaRealizada = mView.findViewById(R.id.justificativa_area_realizada);
-        Button botaoOk =  mView.findViewById(R.id.botao_ok_justificativa_area_realizada);
+        Button botaoOk = mView.findViewById(R.id.botao_ok_justificativa_area_realizada);
         TextView texto = mView.findViewById(R.id.textview_dialogo_justificativa_area_realizada);
         if (osSelecionada.getAREA_PROGRAMADA() > osSelecionada.getAREA_REALIZADA())
             texto.setText("Justifique por que a área realizada é menor que a área programada.");
@@ -698,7 +723,7 @@ public class ActivityAtividades extends AppCompatActivity
         mMap = googleMap;
 
         GEO_LOCALIZACAO geoLocalizacao = dao.selecionaGeoLocal(osSelecionada.getTALHAO());
-        if(geoLocalizacao!=null){
+        if (geoLocalizacao != null) {
             talhao = new LatLng(geoLocalizacao.getLATITUDE(), geoLocalizacao.getLONGITUDE());
         }
 

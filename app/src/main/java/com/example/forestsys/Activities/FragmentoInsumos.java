@@ -43,7 +43,6 @@ import static com.example.forestsys.Activities.ActivityAtividades.editouRegistro
 import static com.example.forestsys.Activities.ActivityRegistros.dataDoApontamento;
 import static com.example.forestsys.Activities.ActivityAtividades.listaJoinOsInsumosSelecionados;
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
-import static com.example.forestsys.Activities.ActivityRegistros.pegaDescInsumos;
 import static com.example.forestsys.Activities.ActivityAtividades.insumoInsere;
 import static com.example.forestsys.Activities.ActivityAtividades.area;
 
@@ -118,13 +117,6 @@ public class FragmentoInsumos extends Fragment {
                 listaJoinOsInsumosSelecionados = dao.listaJoinInsumoAtividadesdia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), ferramentas.formataDataDb(dataDoApontamento));
             }
 
-            nomeInsumo1.setText("OBS: "+pegaDescInsumos[0]);
-            nomeInsumo2.setText("OBS: "+pegaDescInsumos[1]);
-
-            nomeInsumo1.setMovementMethod(new ScrollingMovementMethod());
-            nomeInsumo2.setMovementMethod(new ScrollingMovementMethod());
-
-
             if (listaJoinOsInsumosSelecionados.size()>0) {
                 if (listaJoinOsInsumosSelecionados.size() >= 1)
                     obsInsumo1.setText(listaJoinOsInsumosSelecionados.get(0).getOBSERVACAO());
@@ -140,6 +132,11 @@ public class FragmentoInsumos extends Fragment {
                 listaJoinOsInsumosSelecionados.get(1).setID_INSUMO(dao.selecionaInsumoPorRm(listaJoinOsInsumos.get(1).getID_INSUMO_RM()));
             }
 
+            nomeInsumo1.setText("OBS: "+listaJoinOsInsumosSelecionados.get(0).getDESCRICAO());
+            nomeInsumo2.setText("OBS: "+listaJoinOsInsumosSelecionados.get(1).getDESCRICAO());
+
+            nomeInsumo1.setMovementMethod(new ScrollingMovementMethod());
+            nomeInsumo2.setMovementMethod(new ScrollingMovementMethod());
 
             setInsumos();
 
