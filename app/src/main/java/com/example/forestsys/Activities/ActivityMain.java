@@ -66,6 +66,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
     private AdaptadorOs adaptador;
     private ImageButton botaoMainVoltar;
     private TextView ordenaSetor;
+
     private TextView ordenaTalhao;
     private TextView ordenaData;
     private BaseDeDados baseDeDados;
