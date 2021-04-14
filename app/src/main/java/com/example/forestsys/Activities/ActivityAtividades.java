@@ -110,6 +110,9 @@ public class ActivityAtividades extends AppCompatActivity
     public static String obs;
     public static boolean erroPrestadorBool;
 
+    public static boolean insumoRec1 = false;
+    public static boolean insumoRec2 = false;
+
     public static boolean editouInsumo1;
     public static boolean editouInsumo2;
     public static Join_OS_INSUMOS insumoInsere;

@@ -30,6 +30,7 @@ import com.example.forestsys.Classes.GGF_USUARIOS;
 import com.example.forestsys.Classes.O_S_ATIVIDADES_DIA;
 import com.example.forestsys.Classes.PRESTADORES;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import static com.example.forestsys.Activities.ActivityAtividades.editouRegistro;
@@ -444,6 +445,20 @@ public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
         return s.length() == 0 ? 0 : (s.charAt(0) == c ? 1 : 0) + contaVirgula(s.substring(1), c);
     }
 
+    private String corrigeCasasDecimais(String valorReferencia){
+        if(!valorReferencia.contains(","))
+            return valorReferencia;
+
+        String[] antesDaVirgula = valorReferencia.split(",");
+        int casasDecimais = antesDaVirgula[1].length();
+        Log.e("depois da virgula", String.valueOf(casasDecimais));
+        if(casasDecimais==1) {
+            valorReferencia = valorReferencia + "0";
+        }
+
+        return valorReferencia;
+    }
+
     //Mostra as informações do apontamento nos seus respectivos campos
     public void populaInfo(O_S_ATIVIDADES_DIA osAtv) {
         posicaoPrestador = osAtv.getID_PRESTADOR();
@@ -452,32 +467,38 @@ public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
         spinnerPrestador.setSelection(osAtv.getID_PRESTADOR() - 1, true);
 
         if (osAtv.getAREA_REALIZADA() != null) {
-            areaRealizadaApontamento.setText(osAtv.getAREA_REALIZADA().replace(".", ","));
+            String s = corrigeCasasDecimais(osAtv.getAREA_REALIZADA().replace(".", ","));
+            areaRealizadaApontamento.setText(s);
             area = areaRealizadaApontamento.getText().toString();
         } else area = "";
 
         if (osAtv.getHO() != null) {
-            HOApontamento.setText((osAtv.getHO()).replace(".", ","));
+            String s = corrigeCasasDecimais((osAtv.getHO()).replace(".", ","));
+            HOApontamento.setText(s);
             ho = HOApontamento.getText().toString();
         } else ho = "";
 
         if (osAtv.getHH() != null) {
-            HHApontamento.setText((osAtv.getHH()).replace(".", ","));
+            String s = corrigeCasasDecimais((osAtv.getHH()).replace(".", ","));
+            HHApontamento.setText(s);
             hh = HHApontamento.getText().toString();
         } else hh = "";
 
         if (osAtv.getHM() != null) {
-            HMApontamento.setText((osAtv.getHM()).replace(".", ","));
+            String s = corrigeCasasDecimais((osAtv.getHM()).replace(".", ","));
+            HMApontamento.setText(s);
             hm = HMApontamento.getText().toString();
         } else hm = "";
 
         if (osAtv.getHM_ESCAVADEIRA() != null) {
-            HMEscavadeiraApontamento.setText((osAtv.getHM_ESCAVADEIRA()).replace(".", ","));
+            String s = corrigeCasasDecimais((osAtv.getHM_ESCAVADEIRA()).replace(".", ","));
+            HMEscavadeiraApontamento.setText(s);
             hme = HMEscavadeiraApontamento.getText().toString();
         } else hme = "";
 
         if (osAtv.getHO_ESCAVADEIRA() != null) {
-            HOEscavadeiraApontamento.setText((osAtv.getHO_ESCAVADEIRA()).replace(".", ","));
+            String s = corrigeCasasDecimais((osAtv.getHO_ESCAVADEIRA()).replace(".", ","));
+            HOEscavadeiraApontamento.setText(s);
             hoe = HOEscavadeiraApontamento.getText().toString();
         } else hoe = "";
 

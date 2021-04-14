@@ -16,6 +16,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -57,6 +58,8 @@ import static com.example.forestsys.Activities.ActivityAtividades.editouInsumo1;
 import static com.example.forestsys.Activities.ActivityAtividades.editouInsumo2;
 import static com.example.forestsys.Activities.ActivityAtividades.editouRegistro;
 import static com.example.forestsys.Activities.ActivityAtividades.erroPrestadorBool;
+import static com.example.forestsys.Activities.ActivityAtividades.insumoRec1;
+import static com.example.forestsys.Activities.ActivityAtividades.insumoRec2;
 import static com.example.forestsys.Activities.ActivityAtividades.joinOsInsumos;
 import static com.example.forestsys.Activities.ActivityAtividades.listaJoinOsInsumosSelecionados;
 import static com.example.forestsys.Activities.ActivityAtividades.oSAtividadesDiaAtual;
@@ -424,22 +427,27 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     obsInsumo1.setText("");
                     obsInsumo2.setText("");
 
+                    insumoRec1 = false;
+                    insumoRec2 = false;
+
                     oSAtividadesDiaAtual = null;
                     Intent it = new Intent(ActivityRegistros.this, ActivityListaRegistros.class);
-                    if(dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()).isEmpty()){
+                    if (dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()).isEmpty()) {
                         it = new Intent(ActivityRegistros.this, ActivityAtividades.class);
-                    };
+                    }
+                    ;
                     startActivity(it);
                 } else {
                     if (osSelecionada.getSTATUS_NUM() == 2) {
                         Intent it = new Intent(ActivityRegistros.this, ActivityListaRegistros.class);
-                        if(dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()).isEmpty()){
+                        if (dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()).isEmpty()) {
                             it = new Intent(ActivityRegistros.this, ActivityAtividades.class);
-                        };
+                        }
+                        ;
                         startActivity(it);
                     } else {
                         AlertDialog dialog = new AlertDialog.Builder(ActivityRegistros.this)
-                                .setTitle("Voltar Para a tela da atividade?")
+                                .setTitle("Voltar para a listagem de registros?")
                                 .setMessage("Caso clique em SIM, você perderá os dados não salvos!")
                                 .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                                     @Override
@@ -462,11 +470,15 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                                         obsInsumo1.setText("");
                                         obsInsumo2.setText("");
 
+                                        insumoRec1 = false;
+                                        insumoRec2 = false;
+
                                         oSAtividadesDiaAtual = null;
                                         Intent it = new Intent(ActivityRegistros.this, ActivityListaRegistros.class);
-                                        if(dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()).isEmpty()){
+                                        if (dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()).isEmpty()) {
                                             it = new Intent(ActivityRegistros.this, ActivityAtividades.class);
-                                        };
+                                        }
+                                        ;
                                         startActivity(it);
                                     }
                                 }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
@@ -915,15 +927,40 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             erroGeral = true;
         }
 
+
+        try {
+            if (listaJoinOsInsumosSelecionados.get(0).getRECOMENDACAO() == 1) {
+                insumoRec1 = true;
+            }
+        } catch (Exception ex) {
+            insumoRec1 = false;
+            ex.printStackTrace();
+        }
+
+        try {
+            if (listaJoinOsInsumosSelecionados.get(1).getRECOMENDACAO() == 1) {
+                insumoRec2 = true;
+            }
+        } catch (Exception ex) {
+            insumoRec2 = false;
+            ex.printStackTrace();
+        }
+
+
         if (listaJoinOsInsumosSelecionados.size() == 2) {
-            if (listaJoinOsInsumosSelecionados.get(0).getQTD_APLICADO() == 0) {
-                erroGeral = true;
-                erroInsumos = true;
+
+            if (insumoRec1 == true) {
+                if (listaJoinOsInsumosSelecionados.get(0).getQTD_APLICADO() == 0) {
+                    erroGeral = true;
+                    erroInsumos = true;
+                }
             }
 
-            if (listaJoinOsInsumosSelecionados.get(1).getQTD_APLICADO() == 0) {
-                erroGeral = true;
-                erroInsumos = true;
+            if (insumoRec2 == true) {
+                if (listaJoinOsInsumosSelecionados.get(1).getQTD_APLICADO() == 0) {
+                    erroGeral = true;
+                    erroInsumos = true;
+                }
             }
         }
 
@@ -1104,7 +1141,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                                 insereInsumosDia.setOBSERVACAO(null);
                             }
 
-                            if(obsInsumo1.getText().toString().length()>0){
+                            if (obsInsumo1.getText().toString().length() > 0) {
                                 insereInsumosDia.setOBSERVACAO(obsInsumo1.getText().toString());
                             }
                         }
@@ -1118,7 +1155,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                                 insereInsumosDia.setOBSERVACAO(null);
                             }
 
-                            if(obsInsumo2.getText().toString().length()>0){
+                            if (obsInsumo2.getText().toString().length() > 0) {
                                 insereInsumosDia.setOBSERVACAO(obsInsumo2.getText().toString());
                             }
                         }
@@ -1206,11 +1243,14 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         obs = "";
         obsInsumo1.setText("");
         obsInsumo2.setText("");
+        insumoRec1 = false;
+        insumoRec2 = false;
 
         Intent it = new Intent(ActivityRegistros.this, ActivityListaRegistros.class);
-        if(dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()).isEmpty()){
+        if (dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()).isEmpty()) {
             it = new Intent(ActivityRegistros.this, ActivityAtividades.class);
-        };
+        }
+        ;
         startActivity(it);
     }
 
@@ -1286,6 +1326,9 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     hme = "";
                     obs = "";
 
+                    insumoRec1 = false;
+                    insumoRec2 = false;
+
                     oSAtividadesDiaAtual = null;
 
                     Intent it = new Intent(ActivityRegistros.this, ActivityDashboard.class);
@@ -1323,6 +1366,9 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     hoe = "";
                     hme = "";
                     obs = "";
+
+                    insumoRec1 = false;
+                    insumoRec2 = false;
 
                     oSAtividadesDiaAtual = null;
 

@@ -220,6 +220,24 @@ public class ClienteWeb<client> {
 
     }
 
+    public static double corrigeDec(String s) {
+        s = s.replace(".",",");
+
+        if (s.contains(",")) {
+            String[] antesDaVirgula = s.split(",");
+            if (antesDaVirgula.length > 1) {
+                int casasDecimais = antesDaVirgula[1].length();
+                if (casasDecimais > 2) {
+                    String corrigeDecimais = antesDaVirgula[1].substring(0, 2);
+                    s = antesDaVirgula[0] + "," + corrigeDecimais;
+                }
+            }
+        }
+        s = s.replace(",",".");
+        Log.e("Valor indicador", s);
+        return Double.valueOf(s);
+    }
+
     @SuppressLint("LongLogTag")
     public static void populaBdComWebService() throws IOException, Exception {
         finalizouSinc = false;
@@ -992,10 +1010,12 @@ public class ClienteWeb<client> {
                         AREA_REALIZADA = 0.0;
                         ex.printStackTrace();
                     }
-                    DecimalFormat format = new DecimalFormat(".##");
 
+
+                    DecimalFormat format = new DecimalFormat(".##");
                     String s;
                     s = format.format(AREA_REALIZADA).replace(',', '.');
+
                     AREA_REALIZADA = Double.parseDouble(s);
 
                     String DATA_PROGRAMADA = obj.getString("DATA_PROGRAMADA");
@@ -1109,11 +1129,9 @@ public class ClienteWeb<client> {
                         ex.printStackTrace();
                     }
                     DecimalFormat format = new DecimalFormat(".##");
-
                     String s;
                     s = format.format(AREA_REALIZADA).replace(',', '.');
                     AREA_REALIZADA = Double.parseDouble(s);
-
 
                     O_S_ATIVIDADES_DIA oSAtividadesDia = new O_S_ATIVIDADES_DIA();
                     oSAtividadesDia.setID_PROGRAMACAO_ATIVIDADE(ID_PROGRAMACAO_ATIVIDADE);
@@ -1426,6 +1444,7 @@ public class ClienteWeb<client> {
                     Integer ID_INDICADOR = obj.getInt("ID_INDICADOR");
                     double VALOR_INDICADOR = obj.getDouble("VALOR_INDICADOR");
 
+                    VALOR_INDICADOR = corrigeDec(String.valueOf(VALOR_INDICADOR));
                     DATA = ignoraHoras(DATA);
 
                     try {
@@ -1457,6 +1476,8 @@ public class ClienteWeb<client> {
                     } catch (Exception e) {
                         VALOR_INDICADOR = 0;
                     }
+
+                    VALOR_INDICADOR = corrigeDec(String.valueOf(VALOR_INDICADOR));
 
                     double COORDENADA_X;
                     try {

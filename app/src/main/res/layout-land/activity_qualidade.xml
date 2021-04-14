@@ -18,14 +18,55 @@
         android:visibility="visible">
 
         <TextView
-            android:id="@+id/textView98"
+            android:id="@+id/textView76"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
-            android:layout_marginStart="201dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="Conformidade Total:"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/barra_progresso_qualidade"
+            app:layout_constraintStart_toStartOf="@+id/barra_progresso_qualidade" />
+
+        <TextView
+            android:id="@+id/qualidade_conformidade_total"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:maxLength="5"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/barra_progresso_qualidade"
+            app:layout_constraintStart_toEndOf="@+id/textView76"
+            app:layout_constraintTop_toTopOf="@+id/textView76" />
+
+        <ProgressBar
+            android:id="@+id/barra_progresso_qualidade"
+            style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
+            android:layout_width="600dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="32dp"
+            android:foregroundTintMode="src_in"
+            android:maxHeight="30dp"
+            android:minHeight="30dp"
+            android:progressTint="@color/primaryDarkColor"
+            android:scaleY="8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/botao_qualidade_voltar" />
+
+        <TextView
+            android:id="@+id/textView98"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginTop="8dp"
+            android:text="Avaliação de pontos"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/qualidade_indicador_1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView85" />
 
@@ -42,13 +83,13 @@
         <TextView
             android:id="@+id/qualidade_percentual_nc_bolsoes"
             android:layout_width="60dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginTop="4dp"
 
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="@+id/textView139"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/textView139"
@@ -57,13 +98,13 @@
         <TextView
             android:id="@+id/qualidade_percentual_nc_local"
             android:layout_width="60dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginTop="4dp"
 
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="@+id/textView139"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/textView139"
@@ -72,13 +113,13 @@
         <TextView
             android:id="@+id/qualidade_percentual_nc_presenca_fosfato"
             android:layout_width="60dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginTop="4dp"
 
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="@+id/textView139"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/textView139"
@@ -87,13 +128,13 @@
         <TextView
             android:id="@+id/qualidade_percentual_nc_presenca_torroes"
             android:layout_width="60dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginTop="4dp"
 
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="@+id/textView139"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/textView139"
@@ -102,13 +143,13 @@
         <TextView
             android:id="@+id/qualidade_percentual_nc_largura_linhas"
             android:layout_width="60dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginTop="4dp"
 
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="@+id/textView139"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/textView139"
@@ -117,13 +158,13 @@
         <TextView
             android:id="@+id/qualidade_percentual_nc_espelhamento"
             android:layout_width="60dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginTop="4dp"
 
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="@+id/textView139"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/textView139"
@@ -132,13 +173,13 @@
         <TextView
             android:id="@+id/qualidade_percentual_nc_faixa"
             android:layout_width="60dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginTop="4dp"
 
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="@+id/textView139"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/textView139"
@@ -147,13 +188,13 @@
         <TextView
             android:id="@+id/qualidade_percentual_nc_profundidade_fosfato"
             android:layout_width="60dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginTop="4dp"
 
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="@+id/textView139"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/textView139"
@@ -162,13 +203,13 @@
         <TextView
             android:id="@+id/qualidade_nc_largura_linhas"
             android:layout_width="60dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginTop="4dp"
 
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="@+id/textView138"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/textView138"
@@ -177,13 +218,13 @@
         <TextView
             android:id="@+id/qualidade_nc_presenca_torroes"
             android:layout_width="60dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginTop="4dp"
 
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="@+id/textView138"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/textView138"
@@ -192,13 +233,13 @@
         <TextView
             android:id="@+id/qualidade_nc_espelhamento"
             android:layout_width="60dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginTop="4dp"
 
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="@+id/textView138"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/textView138"
@@ -207,13 +248,13 @@
         <TextView
             android:id="@+id/qualidade_nc_bolsoes"
             android:layout_width="60dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginTop="4dp"
 
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="@+id/textView138"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/textView138"
@@ -222,13 +263,13 @@
         <TextView
             android:id="@+id/qualidade_nc_local"
             android:layout_width="60dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginTop="4dp"
 
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="@+id/textView138"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/textView138"
@@ -237,13 +278,13 @@
         <TextView
             android:id="@+id/qualidade_nc_profundidade_fosfato"
             android:layout_width="60dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginTop="4dp"
 
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="@+id/textView138"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/textView138"
@@ -252,13 +293,13 @@
         <TextView
             android:id="@+id/qualidade_nc_presenca_fosfato"
             android:layout_width="60dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginTop="4dp"
 
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="@+id/textView138"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/textView138"
@@ -267,65 +308,65 @@
         <TextView
             android:id="@+id/qualidade_indicador_6"
             android:layout_width="430dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:textAllCaps="false"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/qualidade_indicador_5" />
 
         <TextView
             android:id="@+id/qualidade_indicador_9"
             android:layout_width="430dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:textAllCaps="false"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/qualidade_indicador_8" />
 
         <TextView
             android:id="@+id/qualidade_indicador_8"
             android:layout_width="430dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:textAllCaps="false"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/qualidade_indicador_7" />
 
         <TextView
             android:id="@+id/qualidade_indicador_7"
             android:layout_width="430dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:textAllCaps="false"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/qualidade_indicador_6" />
 
         <TextView
             android:id="@+id/qualidade_indicador_10"
             android:layout_width="430dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:textAllCaps="false"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/qualidade_indicador_9" />
 
@@ -334,7 +375,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:text="Pontos realizados:"
             android:textColor="@color/primaryTextColor"
             android:textSize="17sp"
@@ -345,10 +386,10 @@
         <TextView
             android:id="@+id/qualidade_pontos_realizados"
             android:layout_width="200dp"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:textColor="@color/primaryTextColor"
             android:textSize="17sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView137"
             app:layout_constraintTop_toTopOf="@+id/textView137" />
 
@@ -381,65 +422,65 @@
         <TextView
             android:id="@+id/qualidade_indicador_1"
             android:layout_width="430dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:textAllCaps="true"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView98" />
 
         <TextView
             android:id="@+id/qualidade_indicador_4"
             android:layout_width="430dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:textAllCaps="true"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/qualidade_indicador_3" />
 
         <TextView
             android:id="@+id/qualidade_indicador_3"
             android:layout_width="430dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:textAllCaps="true"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/qualidade_indicador_2" />
 
         <TextView
             android:id="@+id/qualidade_indicador_5"
             android:layout_width="430dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:textAllCaps="false"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/qualidade_indicador_4" />
 
         <TextView
             android:id="@+id/qualidade_indicador_2"
             android:layout_width="430dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:textAllCaps="true"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/qualidade_indicador_1" />
 
@@ -486,18 +527,18 @@
             android:id="@+id/textView89"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="70dp"
             android:text="Manejo:"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView83" />
+            app:layout_constraintStart_toEndOf="@+id/qualidade_area_realizada"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/qualidade_talhao"
-            android:layout_width="100dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
@@ -509,7 +550,7 @@
 
         <TextView
             android:id="@+id/qualidade_area"
-            android:layout_width="100dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
@@ -571,24 +612,22 @@
             android:id="@+id/textView90"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="200dp"
-            android:layout_marginBottom="12dp"
+            android:layout_marginTop="8dp"
             android:text="Dados do Sistema de Precisão"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/textView93"
             app:layout_constraintEnd_toEndOf="@+id/textView102"
             app:layout_constraintHorizontal_bias="0.54"
             app:layout_constraintStart_toStartOf="@+id/textView93"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView87" />
 
         <TextView
             android:id="@+id/textView93"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="4dp"
             android:background="@color/tituloColunaListas"
             android:text="Insumo"
             android:textAlignment="center"
@@ -601,10 +640,10 @@
         <TextView
             android:id="@+id/qualidade_insumo_p1"
             android:layout_width="120dp"
-            android:layout_height="20dp"
+            android:layout_height="18dp"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="14sp"
+            android:textSize="15sp"
             android:textStyle="normal"
             app:layout_constraintStart_toStartOf="@+id/textView93"
             app:layout_constraintTop_toBottomOf="@+id/textView93" />
@@ -612,10 +651,10 @@
         <TextView
             android:id="@+id/qualidade_media_p2"
             android:layout_width="80dp"
-            android:layout_height="20dp"
+            android:layout_height="18dp"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="18sp"
+            android:textSize="15sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/qualidade_insumo_p2"
             app:layout_constraintTop_toBottomOf="@+id/qualidade_media_p1" />
@@ -623,10 +662,10 @@
         <TextView
             android:id="@+id/qualidade_desvio_padrao_p2"
             android:layout_width="130dp"
-            android:layout_height="20dp"
+            android:layout_height="18dp"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="18sp"
+            android:textSize="15sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/qualidade_media_p2"
             app:layout_constraintTop_toBottomOf="@+id/qualidade_desvio_padrao_p1" />
@@ -634,10 +673,10 @@
         <TextView
             android:id="@+id/qualidade_insumo_p2"
             android:layout_width="120dp"
-            android:layout_height="20dp"
+            android:layout_height="18dp"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="14sp"
+            android:textSize="15sp"
             android:textStyle="normal"
             app:layout_constraintStart_toStartOf="@+id/qualidade_insumo_p1"
             app:layout_constraintTop_toBottomOf="@+id/qualidade_insumo_p1" />
@@ -645,10 +684,10 @@
         <TextView
             android:id="@+id/qualidade_media_p1"
             android:layout_width="80dp"
-            android:layout_height="20dp"
+            android:layout_height="18dp"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="18sp"
+            android:textSize="15sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/qualidade_insumo_p1"
             app:layout_constraintTop_toBottomOf="@+id/textView100" />
@@ -656,10 +695,10 @@
         <TextView
             android:id="@+id/qualidade_desvio_padrao_p1"
             android:layout_width="130dp"
-            android:layout_height="20dp"
+            android:layout_height="18dp"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="18sp"
+            android:textSize="15sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/qualidade_media_p1"
             app:layout_constraintTop_toBottomOf="@+id/textView102" />
@@ -694,19 +733,19 @@
             android:id="@+id/textView138"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
-            android:layout_marginStart="260dp"
+            android:layout_marginStart="24dp"
             android:text="NC"
+            android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/textView98"
-            app:layout_constraintTop_toTopOf="@+id/textView98"
-            android:textColor="@color/primaryTextColor" />
+            app:layout_constraintStart_toEndOf="@+id/qualidade_indicador_1"
+            app:layout_constraintTop_toTopOf="@+id/textView98" />
 
         <TextView
             android:id="@+id/textView139"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
-            android:layout_marginStart="55dp"
+            android:layout_marginStart="40dp"
             android:text="%NC"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
@@ -717,13 +756,13 @@
         <TextView
             android:id="@+id/qualidade_nc_profundidade_subsolagem"
             android:layout_width="60dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginTop="4dp"
 
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="@+id/textView138"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/textView138"
@@ -732,13 +771,13 @@
         <TextView
             android:id="@+id/qualidade_nc_largura_estrondamento"
             android:layout_width="60dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginTop="4dp"
 
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="@+id/textView138"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/textView138"
@@ -747,13 +786,13 @@
         <TextView
             android:id="@+id/qualidade_nc_faixa"
             android:layout_width="60dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginTop="4dp"
 
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="@+id/textView138"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/textView138"
@@ -762,13 +801,13 @@
         <TextView
             android:id="@+id/qualidade_percentual_nc_profundidade_subsolagem"
             android:layout_width="60dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginTop="4dp"
 
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="@+id/textView139"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/textView139"
@@ -777,13 +816,13 @@
         <TextView
             android:id="@+id/qualidade_percentual_nc_largura_estrondamento"
             android:layout_width="60dp"
-            android:layout_height="25dp"
+            android:layout_height="18dp"
             android:layout_marginTop="4dp"
 
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="@+id/textView139"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/textView139"
@@ -791,8 +830,26 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/qualidade_botao_verion"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="32dp"
+            android:adjustViewBounds="false"
+            android:backgroundTint="@color/primaryLightColor"
+            android:backgroundTintMode="src_in"
+            android:scaleType="fitXY"
+            android:src="@drawable/botao_adicionar_circular"
+            app:backgroundTint="@color/primaryLightColor"
+            app:fabCustomSize="45dp"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="@+id/qualidade_desvio_padrao_p2"
+            app:layout_constraintStart_toEndOf="@+id/qualidade_desvio_padrao_p1"
+            app:layout_constraintTop_toTopOf="@+id/textView102"
+            app:maxImageSize="60dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/qualidade_botao_ponto"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_marginTop="8dp"
             android:adjustViewBounds="false"
             android:backgroundTint="@color/primaryLightColor"
@@ -800,48 +857,32 @@
             android:scaleType="fitXY"
             android:src="@drawable/botao_adicionar_circular"
             app:backgroundTint="@color/primaryLightColor"
-            app:fabCustomSize="60dp"
-            app:fabSize="normal"
-            app:layout_constraintEnd_toEndOf="@+id/qualidade_desvio_padrao_p2"
-            app:layout_constraintStart_toStartOf="@+id/qualidade_insumo_p2"
-            app:layout_constraintTop_toBottomOf="@+id/qualidade_media_p2"
-            app:maxImageSize="60dp" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/qualidade_botao_ponto"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:adjustViewBounds="false"
-            android:backgroundTint="@color/primaryLightColor"
-            android:backgroundTintMode="src_in"
-            android:scaleType="fitXY"
-            android:src="@drawable/botao_adicionar_circular"
-            app:backgroundTint="@color/primaryLightColor"
-            app:fabCustomSize="60dp"
+            app:fabCustomSize="45dp"
             app:fabSize="normal"
             app:layout_constraintEnd_toEndOf="@+id/textView130"
             app:layout_constraintStart_toStartOf="@+id/textView130"
             app:layout_constraintTop_toBottomOf="@+id/textView130"
-            app:maxImageSize="60dp" />
+            app:maxImageSize="45dp" />
 
         <Button
             android:id="@+id/qualidade_botao_correcao"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginStart="70dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/botao_arredondado_cor_primaria_light"
             android:text="Correções"
             android:textColor="#FFFFFF"
-            app:layout_constraintBottom_toBottomOf="@+id/textView130"
-            app:layout_constraintStart_toEndOf="@+id/textView130"
-            app:layout_constraintTop_toTopOf="@+id/textView130" />
+            app:layout_constraintBottom_toBottomOf="@+id/qualidade_botao_ponto"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView137" />
 
         <TextView
             android:id="@+id/textView130"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
             android:text="Adicionar ponto"
             android:textColor="@color/primaryTextColor"
@@ -850,6 +891,33 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/qualidade_percentual_nc_local" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout4"
+            android:layout_width="580dp"
+            android:layout_height="335dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/borda_separa_fragmento"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView83">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="160dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/borda_separa_fragmento"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/qualidade_percentual_nc_largura_estrondamento"
+            app:layout_constraintTop_toBottomOf="@+id/qualidade_area_realizada">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

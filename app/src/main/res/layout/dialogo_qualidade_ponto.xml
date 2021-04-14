@@ -4,7 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:minWidth="550dp">
+    android:minWidth="600dp"
+    android:minHeight="850dp">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/botao_cancelar_dialogo_qualidade"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="106dp"
+        android:adjustViewBounds="false"
+        android:backgroundTintMode="src_in"
+        android:scaleType="fitXY"
+
+        android:src="@drawable/botao_cancelar_registros"
+        app:backgroundTint="@color/secondaryDarkColor"
+        app:fabCustomSize="60dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_item10"
+        app:maxImageSize="60dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/dialogo_qualidade_ponto_botao_registrar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="100dp"
+        android:adjustViewBounds="false"
+        android:backgroundTint="@color/primaryLightColor"
+        android:backgroundTintMode="src_in"
+        android:scaleType="fitXY"
+        android:src="@drawable/botao_finalizar_registro"
+        app:backgroundTint="@color/primaryLightColor"
+        app:fabCustomSize="60dp"
+        app:fabSize="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/botao_cancelar_dialogo_qualidade"
+        app:maxImageSize="60dp" />
 
     <CheckBox
         android:id="@+id/dialogo_qualidade_ponto_edit_item8"
@@ -34,27 +69,13 @@
         app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_item7"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item7" />
 
-    <Button
-        android:id="@+id/dialogo_qualidade_ponto_botao_registrar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/botao_arredondado_cor_primaria_light"
-        android:text="Registrar"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_edit_item10" />
-
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_letra_item7"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintStart_toStartOf="@+id/dialogo_qualidade_ponto_letra_item6"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item7" />
 
@@ -65,7 +86,7 @@
         android:layout_marginTop="4dp"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintStart_toStartOf="@+id/dialogo_qualidade_ponto_letra_item7"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item8" />
 
@@ -75,7 +96,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintStart_toStartOf="@+id/dialogo_qualidade_ponto_letra_item4"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item5" />
 
@@ -85,7 +106,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_edit_item10"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item10" />
 
@@ -95,7 +116,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintStart_toStartOf="@+id/dialogo_qualidade_ponto_letra_item8"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item9" />
 
@@ -118,7 +139,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_edit_item6"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item6" />
 
@@ -128,7 +149,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_edit_item3"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item3" />
 
@@ -138,7 +159,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_edit_item4"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item4" />
 
@@ -148,7 +169,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_edit_item2"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item2" />
 
@@ -235,130 +256,130 @@
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_item10"
         android:layout_width="425dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="30dp"
         android:textAllCaps="true"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_item9" />
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_item9"
         android:layout_width="425dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="30dp"
         android:textAllCaps="true"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_item8" />
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_item5"
         android:layout_width="425dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="30dp"
         android:textAllCaps="true"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_item4" />
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_item6"
         android:layout_width="425dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="30dp"
         android:textAllCaps="true"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_item5" />
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_item8"
         android:layout_width="425dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="30dp"
         android:textAllCaps="true"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_item7" />
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_item7"
         android:layout_width="425dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="30dp"
         android:textAllCaps="true"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_item6" />
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_item4"
         android:layout_width="425dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="30dp"
         android:textAllCaps="true"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_item3" />
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_item2"
         android:layout_width="425dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="30dp"
         android:textAllCaps="true"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_item1" />
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_item1"
         android:layout_width="425dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="32dp"
         android:textAllCaps="true"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView133" />
 
     <TextView
         android:id="@+id/dialogo_qualidade_ponto_item3"
         android:layout_width="425dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="30dp"
         android:textAllCaps="true"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_item2" />
 
@@ -383,7 +404,7 @@
         android:layout_marginEnd="8dp"
         android:textColor="@color/primaryTextColor"
         android:textSize="30sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView133"
         app:layout_constraintTop_toTopOf="parent" />
@@ -411,7 +432,7 @@
         android:layout_height="28dp"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_edit_item1"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item1" />
 

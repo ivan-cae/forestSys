@@ -42,38 +42,62 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
         if(insumo.getQTD_APLICADO()!=0.0) holder.QTDApl.setText(String.valueOf(insumo.getQTD_APLICADO()).replace(".", ","));
 
         holder.descricao.setText(String.valueOf(insumo.getDESCRICAO()));
-        if(area!=null && area!="" && area.length()>0){
-            String auxString = area;
-            if(auxString.contains(",")) auxString = auxString.replace(",", ".");
 
-            double auxDouble = NULL;
-            auxDouble = Double.valueOf(auxString);
-            if(auxDouble != NULL) {
-                DecimalFormat format = new DecimalFormat(".##");
 
-                String s = format.format(insumo.getQTD_HA_RECOMENDADO() * auxDouble).replace(',', '.');
+        boolean rec = false;
+        try{
+            if(insumo.getRECOMENDACAO() == 1){
+                rec = true;
+                holder.itemView.setClickable(true);
+                holder.itemView.setEnabled(true);
 
-                holder.QTDRec.setText(s);
-                if(diferencaPercentual((insumo.getQTD_HA_RECOMENDADO() * auxDouble), insumo.getQTD_APLICADO()) > 5.0000 ||
-                        diferencaPercentual((insumo.getQTD_HA_RECOMENDADO() * auxDouble), insumo.getQTD_APLICADO()) < -5.0000){
-                    if(holder.QTDApl.getText().toString().length()>0){
-                        if(position == 0) insumoConforme1 = false;
-                        if(position == 1) insumoConforme2 = false;
-                        holder.QTDApl.setBackgroundColor(Color.parseColor("#FF0000"));
-                        holder.QTDApl.setTextColor(Color.parseColor("#FFFFFFFF"));
-                    }
-                }
-                else{
-                    if(holder.QTDApl.getText().toString().length()>0){
-                        if(position == 0) insumoConforme1 = true;
-                        if(position == 1) insumoConforme2 = true;
-                        holder.QTDApl.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        holder.QTDApl.setTextColor(holder.descricao.getCurrentTextColor());
+                if(area!=null && area!="" && area.length()>0){
+                    String auxString = area;
+                    if(auxString.contains(",")) auxString = auxString.replace(",", ".");
 
+                    double auxDouble = NULL;
+                    auxDouble = Double.valueOf(auxString);
+                    if(auxDouble != NULL) {
+                        DecimalFormat format = new DecimalFormat(".##");
+
+                        String s = format.format(insumo.getQTD_HA_RECOMENDADO() * auxDouble).replace(',', '.');
+
+                        holder.QTDRec.setText(s);
+                        if(diferencaPercentual((insumo.getQTD_HA_RECOMENDADO() * auxDouble), insumo.getQTD_APLICADO()) > 5.0000 ||
+                                diferencaPercentual((insumo.getQTD_HA_RECOMENDADO() * auxDouble), insumo.getQTD_APLICADO()) < -5.0000){
+                            if(holder.QTDApl.getText().toString().length()>0){
+                                if(position == 0) insumoConforme1 = false;
+                                if(position == 1) insumoConforme2 = false;
+                                holder.QTDApl.setBackgroundColor(Color.parseColor("#FF0000"));
+                                holder.QTDApl.setTextColor(Color.parseColor("#FFFFFFFF"));
+                            }
+                        }
+                        else{
+                            if(holder.QTDApl.getText().toString().length()>0){
+                                if(position == 0) insumoConforme1 = true;
+                                if(position == 1) insumoConforme2 = true;
+                                holder.QTDApl.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                                holder.QTDApl.setTextColor(holder.descricao.getCurrentTextColor());
+
+                            }
+                        }
                     }
                 }
             }
+        }catch(Exception ex){
+            rec= false;
+            ex.printStackTrace();
+
         }
+
+    if(rec == false){
+        holder.itemView.setClickable(false);
+        holder.itemView.setEnabled(false);
+        holder.QTDApl.setText("0");
+        holder.QTDRec.setText("0");
+        insumoConforme1 = true;
+        insumoConforme2 = true;
+    }
     }
 
     //Calcula a diferença percentual entre dois números do tipo Double
@@ -116,6 +140,7 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
                 }
             });
         }
+
     }
 
     public interface OnItemClickListener {

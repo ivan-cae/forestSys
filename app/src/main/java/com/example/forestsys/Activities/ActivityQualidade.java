@@ -34,6 +34,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.forestsys.Adapters.AdaptadorCorrecaoQualidade;
@@ -53,6 +54,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import android.widget.Toast;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -170,6 +172,10 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     public static TextView naoHaNCNaoTratada;
     public static Button botaoCorrecaoRegistrar;
 
+    private TextView valorPercentual;
+    private ProgressBar barraProgressoQualidade;
+
+    double nItensNconforme;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -415,6 +421,10 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         indicador9.setText(atividadeIndicadores.get(8).getDESCRICAO());
         indicador10.setText(atividadeIndicadores.get(9).getDESCRICAO());
 
+        barraProgressoQualidade = findViewById(R.id.barra_progresso_qualidade);
+        valorPercentual = findViewById(R.id.qualidade_conformidade_total);
+
+
         if (listaVerion.size() > 0) {
             listaInsumoP1.setText(joinOsInsumos.get(0).getDESCRICAO());
             listaInsumoP2.setText(joinOsInsumos.get(1).getDESCRICAO());
@@ -534,8 +544,32 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
             ncLocalizacao.setText(String.valueOf(nc10).replace('.', ','));
             ncPercLocalizacao.setText(String.valueOf(percNc10).replace('.', ','));
-            if (percNc10 > 5.0)
+            if (percNc10 > 5.0) {
                 ncPercLocalizacao.setTextColor(Color.parseColor("#FF0000"));
+            }
+
+            nItensNconforme = (nc1+nc2+nc3+nc4+nc5+nc6+nc7+nc8+nc9+nc10)*100;
+            double auxQtdPontos = listaPonto.get(listaPonto.size() - 1).getPONTO();
+            double calculoPontosReg = auxQtdPontos*10;
+
+            Log.e("Qtd itens nc", String.valueOf(nItensNconforme));
+            Log.e("Qtd pontos", String.valueOf(calculoPontosReg));
+
+            double percentualQualidade;
+            try{
+                percentualQualidade = nItensNconforme/calculoPontosReg;
+                Log.e("Percentual Qualidade", String.valueOf(percentualQualidade));
+            }catch(Exception e){
+                e.printStackTrace();
+                percentualQualidade = 0;
+                Log.e("Percentual Qualidade", "deu erro: 0");
+            }
+
+            percentualQualidade = (100 - percentualQualidade);
+            int perc = (int) percentualQualidade;
+
+            barraProgressoQualidade.setProgress(perc);
+            valorPercentual.setText(String.valueOf(percentualQualidade)+"%");
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_qualidade);
@@ -651,7 +685,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             desvioEditP1 = mView.findViewById(R.id.dialogo_qualidade_verion_desvio_padrao_p1);
             desvioEditP2 = mView.findViewById(R.id.dialogo_qualidade_verion_desvio_padrao_p2);
 
-            Button botaoRegistrar =  mView.findViewById(R.id.dialogo_qualidade_verion_botao_registrar);
+            FloatingActionButton botaoRegistrar =  mView.findViewById(R.id.dialogo_qualidade_verion_botao_registrar);
+            FloatingActionButton botaoCancelar =  mView.findViewById(R.id.dialogo_qualidade_verion_botao_cancelar);
 
             mediaP1Nome.setText(atividadeIndicadores.get(0).getREFERENCIA()+"-"+joinOsInsumos.get(0).getDESCRICAO());
             desvioP1Nome.setText(atividadeIndicadores.get(1).getREFERENCIA()+"-"+joinOsInsumos.get(0).getDESCRICAO());
@@ -905,7 +940,14 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             dialogoVerion = mBuilder.create();
             dialogoVerion.show();
             dialogoVerion.setCanceledOnTouchOutside(false);
+            dialogoVerion.setCancelable(false);
 
+            botaoCancelar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogoVerion.cancel();
+                }
+            });
 
             botaoRegistrar.setOnClickListener(new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.N)
@@ -1287,7 +1329,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
         numeroPonto.setText(String.valueOf(listaPonto.size() + 1));
 
-        Button botaoRegistrar =  mView.findViewById(R.id.dialogo_qualidade_ponto_botao_registrar);
+        FloatingActionButton botaoRegistrar =  mView.findViewById(R.id.dialogo_qualidade_ponto_botao_registrar);
+        FloatingActionButton botaoCancelar =  mView.findViewById(R.id.botao_cancelar_dialogo_qualidade);
         atividadeIndicadores = dao.listaAtividadeIndicadores(osSelecionada.getID_ATIVIDADE(), "N");
 
         textItem1.setText(atividadeIndicadores.get(0).getREFERENCIA()+"-"+atividadeIndicadores.get(0).getDESCRICAO());
@@ -1632,6 +1675,14 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         dialogoPonto = mBuilder.create();
         dialogoPonto.show();
         dialogoPonto.setCanceledOnTouchOutside(false);
+        dialogoPonto.setCancelable(false);
+
+        botaoCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogoPonto.cancel();
+            }
+        });
 
 
         botaoRegistrar.setOnClickListener(new View.OnClickListener() {

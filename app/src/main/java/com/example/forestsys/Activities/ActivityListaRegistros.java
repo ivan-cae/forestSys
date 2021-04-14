@@ -177,7 +177,7 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
                 totalHm.setText(String.valueOf(hmAux).replace(".", ","));
                 totalHoe.setText(String.valueOf(hoeAux).replace(".", ","));
                 totalHme.setText(String.valueOf(hmeAux).replace(".", ","));
-                totalArea.setText(String.valueOf(areaAux).replace(".", ","));
+                totalArea.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()).replace(".", ","));
                 totalInsumo1.setText(String.valueOf(ins1).replace(".", ","));
                 totalInsumo2.setText(String.valueOf(ins2).replace(".", ","));
 
@@ -225,6 +225,17 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setSubtitle(usuarioLogado.getDESCRICAO());
+
+        drawer = findViewById(R.id.drawer_layout_lista_registros);
+        NavigationView navigationView = findViewById(R.id.nav_view_lista_registros);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
 
 
         baseDeDados = BaseDeDados.getInstance(getApplicationContext());
