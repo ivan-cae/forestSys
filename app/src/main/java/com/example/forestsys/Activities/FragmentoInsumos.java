@@ -40,6 +40,7 @@ import java.util.List;
 import static com.example.forestsys.Activities.ActivityAtividades.editouInsumo1;
 import static com.example.forestsys.Activities.ActivityAtividades.editouInsumo2;
 import static com.example.forestsys.Activities.ActivityAtividades.editouRegistro;
+import static com.example.forestsys.Activities.ActivityAtividades.joinOsInsumos;
 import static com.example.forestsys.Activities.ActivityRegistros.dataDoApontamento;
 import static com.example.forestsys.Activities.ActivityAtividades.listaJoinOsInsumosSelecionados;
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
@@ -132,6 +133,7 @@ public class FragmentoInsumos extends Fragment {
                 listaJoinOsInsumosSelecionados.get(1).setID_INSUMO(dao.selecionaInsumoPorRm(listaJoinOsInsumos.get(1).getID_INSUMO_RM()));
             }
 
+
             nomeInsumo1.setText("OBS: "+listaJoinOsInsumosSelecionados.get(0).getDESCRICAO());
             nomeInsumo2.setText("OBS: "+listaJoinOsInsumosSelecionados.get(1).getDESCRICAO());
 
@@ -185,6 +187,35 @@ public class FragmentoInsumos extends Fragment {
             });
             if(obsInsumo2.length()==0 && editouRegistro ==false) obsInsumo1.setHint("Digite as observações aqui");
             if(obsInsumo2.length()==0 && editouRegistro ==false) obsInsumo2.setHint("Digite as observações aqui");
+        }
+
+        int recP1 = 0;
+        int recP2 = 0;
+
+        try{
+            if(joinOsInsumos.get(0).getRECOMENDACAO() == 1){
+                recP1 = 1;
+            }
+        }catch(Exception ex){
+            recP1 = 0;
+        }
+
+        try{
+            if(joinOsInsumos.get(1).getRECOMENDACAO() == 1){
+                recP2 = 1;
+            }
+        }catch(Exception ex){
+            recP2 = 0;
+        }
+
+        if(recP1 == 0){
+            obsInsumo1.setVisibility(View.GONE);
+            nomeInsumo1.setVisibility(View.GONE);
+        }
+
+        if(recP2 == 0){
+            obsInsumo2.setVisibility(View.GONE);
+            nomeInsumo2.setVisibility(View.GONE);
         }
     }
 

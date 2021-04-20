@@ -895,13 +895,13 @@
             android:id="@+id/textView69"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="38dp"
             android:text="Conformidade Total:"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/barra_progresso_qualidade"
-            app:layout_constraintTop_toBottomOf="@+id/qualidade_botao_correcao" />
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout5" />
 
         <TextView
             android:id="@+id/qualidade_conformidade_total"

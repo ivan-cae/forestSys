@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/borda_separa_fragmento"
     android:minWidth="600dp"
     android:minHeight="850dp">
 
@@ -16,13 +17,13 @@
         android:adjustViewBounds="false"
         android:backgroundTintMode="src_in"
         android:scaleType="fitXY"
-
         android:src="@drawable/botao_cancelar_registros"
         app:backgroundTint="@color/secondaryDarkColor"
         app:fabCustomSize="60dp"
+        app:maxImageSize="60dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_item10"
-        app:maxImageSize="60dp" />
+         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/dialogo_qualidade_ponto_botao_registrar"
@@ -37,9 +38,10 @@
         app:backgroundTint="@color/primaryLightColor"
         app:fabCustomSize="60dp"
         app:fabSize="normal"
+        app:maxImageSize="60dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/botao_cancelar_dialogo_qualidade"
-        app:maxImageSize="60dp" />
+         />
 
     <CheckBox
         android:id="@+id/dialogo_qualidade_ponto_edit_item8"
@@ -391,7 +393,7 @@
         android:layout_marginTop="16dp"
         android:text="Ponto: "
         android:textColor="@color/primaryTextColor"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -403,7 +405,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:textColor="@color/primaryTextColor"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView133"
@@ -449,5 +451,20 @@
         app:layout_constraintEnd_toStartOf="@+id/dialogo_qualidade_ponto_letra_item5"
         app:layout_constraintStart_toEndOf="@+id/dialogo_qualidade_ponto_item5"
         app:layout_constraintTop_toTopOf="@+id/dialogo_qualidade_ponto_item5" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="80dp"
+        android:background="@drawable/borda_separa_fragmento"
+        app:layout_constraintBottom_toTopOf="@+id/dialogo_qualidade_ponto_botao_registrar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialogo_qualidade_ponto_numero">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

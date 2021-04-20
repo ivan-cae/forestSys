@@ -78,8 +78,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     private Ferramentas ferramentas;
     private DAO dao;
     private BaseDeDados baseDeDados;
-    private ImageButton botaoVerion;
-    private ImageButton botaoPonto;
+    private FloatingActionButton botaoVerion;
+    private FloatingActionButton botaoPonto;
     private Button botaoCorrecoes;
 
     private EditText mediaEditP1;
@@ -170,7 +170,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     private int qtdPontos = 0;
 
     public static TextView naoHaNCNaoTratada;
-    public static Button botaoCorrecaoRegistrar;
+    public static FloatingActionButton botaoCorrecaoRegistrar;
 
     private TextView valorPercentual;
     private ProgressBar barraProgressoQualidade;
@@ -1102,7 +1102,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_qualidade_correcao_ponto, null);
-        Button botaoCorrecaoCancelar;
+        FloatingActionButton botaoCorrecaoCancelar;
         mBuilder.setView(mView);
 
         naoHaNCNaoTratada = mView.findViewById(R.id.dialogo_correcao_nao_ha_nc);

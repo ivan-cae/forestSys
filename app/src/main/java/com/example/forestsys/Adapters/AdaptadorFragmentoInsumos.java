@@ -1,5 +1,6 @@
 package com.example.forestsys.Adapters;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import static com.example.forestsys.Activities.ActivityAtividades.area;
+import static com.example.forestsys.R.color.secondaryDarkColor;
 import static java.sql.Types.NULL;
 
 public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFragmentoInsumos.FragmentoInsumosHolder> {
@@ -35,6 +37,7 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
         return new AdaptadorFragmentoInsumos.FragmentoInsumosHolder(itemView);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull AdaptadorFragmentoInsumos.FragmentoInsumosHolder holder, int position) {
         Join_OS_INSUMOS insumo = insumos.get(position);
@@ -93,6 +96,9 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
     if(rec == false){
         holder.itemView.setClickable(false);
         holder.itemView.setEnabled(false);
+        holder.descricao.setTextColor(secondaryDarkColor);
+        holder.QTDApl.setTextColor(secondaryDarkColor);
+        holder.QTDRec.setTextColor(secondaryDarkColor);
         holder.QTDApl.setText("0");
         holder.QTDRec.setText("0");
         insumoConforme1 = true;

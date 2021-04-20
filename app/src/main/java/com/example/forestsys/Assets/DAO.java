@@ -306,9 +306,14 @@ public interface DAO {
     @Query("DELETE FROM GEO_LOCALIZACAO")
     void apagaTodasGeoLocal();
 
+    @Query("SELECT * FROM GEO_LOCALIZACAO")
+    List<GEO_LOCALIZACAO> todasGeoLocalizacao();
+
+
     //Scripts Configurações
     @Query("SELECT * FROM Configs WHERE idConfig=1")
     Configs selecionaConfigs();
+
 
     //Scripts GGF_USUARIOS
     @Query("SELECT * FROM GGF_USUARIOS ORDER BY ID_USUARIO asc")

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
@@ -66,6 +67,8 @@ import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresa
 import static com.example.forestsys.Activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
 import static com.example.forestsys.Activities.ActivityAtividades.joinOsInsumos;
+import static com.example.forestsys.R.color.secondaryDarkColor;
+import static com.example.forestsys.R.color.secondaryDarkColor;
 import static java.sql.Types.NULL;
 
 public class ActivityCalibracao extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -114,7 +117,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     private TextView osTurno;
 
     private FloatingActionButton botaoMediaP1;
-    private ImageButton botaoMediaP2;
+    private FloatingActionButton botaoMediaP2;
     private Button botaoConfirma;
     private ImageButton botaoVoltar;
 
@@ -174,6 +177,10 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
     private boolean mudouOrientacao;
     private Bundle auxSavedInstanceState = null;
+
+    private int recP1 = 0;
+    private int recP2 = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -669,60 +676,61 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
         todosConformeP1 = true;
 
-        if (diferencaPercentual(amostrasP1[0], amostrasP1[1]) > 5.00 || diferencaPercentual(amostrasP1[0], amostrasP1[1]) < -5.00) {
-            dif1_P1.setTextColor(Color.parseColor("#FF0000"));
+        if(recP1 == 1) {
+            if (diferencaPercentual(amostrasP1[0], amostrasP1[1]) > 5.00 || diferencaPercentual(amostrasP1[0], amostrasP1[1]) < -5.00) {
+                dif1_P1.setTextColor(Color.parseColor("#FF0000"));
 
-            todosConformeP1 = false;
-        } else {
-            dif1_P1.setTextColor(Color.parseColor("#FF1A9C1A"));
-        }
-        if (((diferencaPercentual(amostrasP1[0], amostrasP1[1]).isInfinite()) || diferencaPercentual(amostrasP1[0], amostrasP1[1]).isNaN()))
-            dif1_P1.setText("");
-        else
-            dif1_P1.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP1[0], amostrasP1[1])))).replace('.', ','));
-
-
-        if (diferencaPercentual(amostrasP1[1], amostrasP1[2]) > 5.00 || diferencaPercentual(amostrasP1[1], amostrasP1[2]) < -5.00) {
-            dif2_P1.setTextColor(Color.parseColor("#FF0000"));
-
-            todosConformeP1 = false;
-        } else {
-            dif2_P1.setTextColor(Color.parseColor("#FF1A9C1A"));
-        }
-        if (((diferencaPercentual(amostrasP1[1], amostrasP1[2]).isNaN() || diferencaPercentual(amostrasP1[1], amostrasP1[2]).isInfinite())))
-            dif2_P1.setText("");
-        else
-            dif2_P1.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP1[1], amostrasP1[2])))).replace('.', ','));
+                todosConformeP1 = false;
+            } else {
+                dif1_P1.setTextColor(Color.parseColor("#FF1A9C1A"));
+            }
+            if (((diferencaPercentual(amostrasP1[0], amostrasP1[1]).isInfinite()) || diferencaPercentual(amostrasP1[0], amostrasP1[1]).isNaN()))
+                dif1_P1.setText("");
+            else
+                dif1_P1.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP1[0], amostrasP1[1])))).replace('.', ','));
 
 
-        if (diferencaPercentual(amostrasP1[2], amostrasP1[3]) > 5.00 || diferencaPercentual(amostrasP1[2], amostrasP1[3]) < -5.00) {
-            dif3_P1.setTextColor(Color.parseColor("#FF0000"));
-            todosConformeP1 = false;
-        } else {
-            dif3_P1.setTextColor(Color.parseColor("#FF1A9C1A"));
+            if (diferencaPercentual(amostrasP1[1], amostrasP1[2]) > 5.00 || diferencaPercentual(amostrasP1[1], amostrasP1[2]) < -5.00) {
+                dif2_P1.setTextColor(Color.parseColor("#FF0000"));
 
-        }
-        if (((diferencaPercentual(amostrasP1[2], amostrasP1[3]).isInfinite() || diferencaPercentual(amostrasP1[2], amostrasP1[3]).isNaN())))
-            dif3_P1.setText("");
-        else
-            dif3_P1.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP1[2], amostrasP1[3])))).replace('.', ','));
-
-
-        if (diferencaPercentual(amostrasP1[3], amostrasP1[4]) > 5.00 || diferencaPercentual(amostrasP1[3], amostrasP1[4]) < -5.00) {
-            dif4_P1.setTextColor(Color.parseColor("#FF0000"));
-
-            todosConformeP1 = false;
-
-        } else {
-            dif4_P1.setTextColor(Color.parseColor("#FF1A9C1A"));
-        }
-        if (((diferencaPercentual(amostrasP1[3], amostrasP1[4]).isInfinite() || diferencaPercentual(amostrasP1[3], amostrasP1[4]).isNaN())))
-            dif4_P1.setText("");
-        else
-            dif4_P1.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP1[3], amostrasP1[4])))).replace('.', ','));
+                todosConformeP1 = false;
+            } else {
+                dif2_P1.setTextColor(Color.parseColor("#FF1A9C1A"));
+            }
+            if (((diferencaPercentual(amostrasP1[1], amostrasP1[2]).isNaN() || diferencaPercentual(amostrasP1[1], amostrasP1[2]).isInfinite())))
+                dif2_P1.setText("");
+            else
+                dif2_P1.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP1[1], amostrasP1[2])))).replace('.', ','));
 
 
-        //testando p2
+            if (diferencaPercentual(amostrasP1[2], amostrasP1[3]) > 5.00 || diferencaPercentual(amostrasP1[2], amostrasP1[3]) < -5.00) {
+                dif3_P1.setTextColor(Color.parseColor("#FF0000"));
+                todosConformeP1 = false;
+            } else {
+                dif3_P1.setTextColor(Color.parseColor("#FF1A9C1A"));
+
+            }
+            if (((diferencaPercentual(amostrasP1[2], amostrasP1[3]).isInfinite() || diferencaPercentual(amostrasP1[2], amostrasP1[3]).isNaN())))
+                dif3_P1.setText("");
+            else
+                dif3_P1.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP1[2], amostrasP1[3])))).replace('.', ','));
+
+
+            if (diferencaPercentual(amostrasP1[3], amostrasP1[4]) > 5.00 || diferencaPercentual(amostrasP1[3], amostrasP1[4]) < -5.00) {
+                dif4_P1.setTextColor(Color.parseColor("#FF0000"));
+
+                todosConformeP1 = false;
+
+            } else {
+                dif4_P1.setTextColor(Color.parseColor("#FF1A9C1A"));
+            }
+            if (((diferencaPercentual(amostrasP1[3], amostrasP1[4]).isInfinite() || diferencaPercentual(amostrasP1[3], amostrasP1[4]).isNaN())))
+                dif4_P1.setText("");
+            else
+                dif4_P1.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP1[3], amostrasP1[4])))).replace('.', ','));
+
+
+            //testando p2
         /*todosConformeP2 = true;
         if (diferencaPercentual(amostrasP2[0], amostrasP2[1]) > 5.00 || diferencaPercentual(amostrasP2[0], amostrasP2[1]) < -5.00) {
             todosConformeP2 = false;
@@ -738,49 +746,48 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         }
 */
 
-        mediaPercentualP1 = (
-                diferencaPercentual(amostrasP1[0], amostrasP1[1]) +
-                        diferencaPercentual(amostrasP1[1], amostrasP1[2]) +
-                        diferencaPercentual(amostrasP1[2], amostrasP1[3]) +
-                        diferencaPercentual(amostrasP1[3], amostrasP1[4])) / 4;
+            mediaPercentualP1 = (
+                    diferencaPercentual(amostrasP1[0], amostrasP1[1]) +
+                            diferencaPercentual(amostrasP1[1], amostrasP1[2]) +
+                            diferencaPercentual(amostrasP1[2], amostrasP1[3]) +
+                            diferencaPercentual(amostrasP1[3], amostrasP1[4])) / 4;
 
-        Double maiorDif = 0.0;
-        int posicaoMaiorDif = 0;
+            Double maiorDif = 0.0;
+            int posicaoMaiorDif = 0;
 
-        if (atualP1 >= 5) {
-            for (int i = 0; i < 4; i++) {
-                if (Math.abs(diferencaPercentual(amostrasP1[i], amostrasP1[i + 1])) > maiorDif) {
-                    maiorDif = Math.abs(diferencaPercentual(amostrasP1[i], amostrasP1[i + 1]));
-                    posicaoMaiorDif = i + 1;
+            if (atualP1 >= 5) {
+                for (int i = 0; i < 4; i++) {
+                    if (Math.abs(diferencaPercentual(amostrasP1[i], amostrasP1[i + 1])) > maiorDif) {
+                        maiorDif = Math.abs(diferencaPercentual(amostrasP1[i], amostrasP1[i + 1]));
+                        posicaoMaiorDif = i + 1;
+                    }
+                }
+
+                if (maiorDif > 5.0) {
+                    if (posicaoMaiorDif == 1) {
+                        dif1_P1.setTextColor(Color.parseColor("#FF0000"));
+                    } else if (posicaoMaiorDif == 2) {
+                        dif2_P1.setTextColor(Color.parseColor("#FF0000"));
+                    } else if (posicaoMaiorDif == 3) {
+                        dif3_P1.setTextColor(Color.parseColor("#FF0000"));
+                    } else if (posicaoMaiorDif == 4) {
+                        dif4_P1.setTextColor(Color.parseColor("#FF0000"));
+                    }
                 }
             }
 
-            if (maiorDif > 5.0) {
-                if (posicaoMaiorDif == 1) {
-                    dif1_P1.setTextColor(Color.parseColor("#FF0000"));
-                } else if (posicaoMaiorDif == 2) {
-                    dif2_P1.setTextColor(Color.parseColor("#FF0000"));
-                } else if (posicaoMaiorDif == 3) {
-                    dif3_P1.setTextColor(Color.parseColor("#FF0000"));
-                } else if (posicaoMaiorDif == 4) {
-                    dif4_P1.setTextColor(Color.parseColor("#FF0000"));
-                }
+            mediaGeralP1 = (amostrasP1[0] + amostrasP1[1] + amostrasP1[2] + amostrasP1[3] + amostrasP1[4]) / 5;
+            mediaGeralP1 = arredonda3Casas(mediaGeralP1);
+
+            if (mediaPercentualP1.isInfinite() || mediaPercentualP1.isNaN()) mediaDifP1.setText("");
+            else {
+                mediaDifP1.setText(String.valueOf((-1 * arredonda1Casa(mediaPercentualP1))).replace('.', ','));
             }
+
+            P1Media.setText(String.valueOf((mediaGeralP1)).replace('.', ','));
+            Double aux1 = arredonda2Casas(desvioPadrao(amostrasP1));
+            desvioP1.setText(String.valueOf((aux1)).replace('.', ','));
         }
-
-        mediaGeralP1 = (amostrasP1[0] + amostrasP1[1] + amostrasP1[2] + amostrasP1[3] + amostrasP1[4]) / 5;
-        mediaGeralP1 = arredonda3Casas(mediaGeralP1);
-
-        if (mediaPercentualP1.isInfinite() || mediaPercentualP1.isNaN()) mediaDifP1.setText("");
-        else {
-            mediaDifP1.setText(String.valueOf((-1 * arredonda1Casa(mediaPercentualP1))).replace('.', ','));
-        }
-
-        P1Media.setText(String.valueOf((mediaGeralP1)).replace('.', ','));
-        Double aux1 = arredonda2Casas(desvioPadrao(amostrasP1));
-        desvioP1.setText(String.valueOf((aux1)).replace('.', ','));
-
-        //Log.e("todosConformeP1", String.valueOf(todosConformeP1));
 
     }
 
@@ -788,57 +795,57 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     public void testaP2() {
 
         todosConformeP2 = true;
+        if(recP2 == 1) {
+            if (diferencaPercentual(amostrasP2[0], amostrasP2[1]) > 5.00 || diferencaPercentual(amostrasP2[0], amostrasP2[1]) < -5.00) {
+                dif1_P2.setTextColor(Color.parseColor("#FF0000"));
+                todosConformeP2 = false;
 
-        if (diferencaPercentual(amostrasP2[0], amostrasP2[1]) > 5.00 || diferencaPercentual(amostrasP2[0], amostrasP2[1]) < -5.00) {
-            dif1_P2.setTextColor(Color.parseColor("#FF0000"));
-            todosConformeP2 = false;
-
-        } else {
-            dif1_P2.setTextColor(Color.parseColor("#FF1A9C1A"));
-        }
-        if (((diferencaPercentual(amostrasP2[0], amostrasP2[1]).isInfinite()) || diferencaPercentual(amostrasP2[0], amostrasP2[1]).isNaN()))
-            dif1_P2.setText("");
-        else
-            dif1_P2.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP2[0], amostrasP2[1])))).replace('.', ','));
-
-
-        if (diferencaPercentual(amostrasP2[1], amostrasP2[2]) > 5.00 || diferencaPercentual(amostrasP2[1], amostrasP2[2]) < -5.00) {
-            dif2_P2.setTextColor(Color.parseColor("#FF0000"));
-            todosConformeP2 = false;
-        } else {
-            dif2_P2.setTextColor(Color.parseColor("#FF1A9C1A"));
-        }
-        if (((diferencaPercentual(amostrasP2[1], amostrasP2[2]).isNaN() || diferencaPercentual(amostrasP2[1], amostrasP2[2]).isInfinite())))
-            dif2_P2.setText("");
-        else
-            dif2_P2.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP2[1], amostrasP2[2])))).replace('.', ','));
+            } else {
+                dif1_P2.setTextColor(Color.parseColor("#FF1A9C1A"));
+            }
+            if (((diferencaPercentual(amostrasP2[0], amostrasP2[1]).isInfinite()) || diferencaPercentual(amostrasP2[0], amostrasP2[1]).isNaN()))
+                dif1_P2.setText("");
+            else
+                dif1_P2.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP2[0], amostrasP2[1])))).replace('.', ','));
 
 
-        if (diferencaPercentual(amostrasP2[2], amostrasP2[3]) > 5.00 || diferencaPercentual(amostrasP2[2], amostrasP2[3]) < -5.00) {
-            dif3_P2.setTextColor(Color.parseColor("#FF0000"));
-            todosConformeP2 = false;
-        } else {
-            dif3_P2.setTextColor(Color.parseColor("#FF1A9C1A"));
-        }
-        if (((diferencaPercentual(amostrasP2[2], amostrasP2[3]).isInfinite() || diferencaPercentual(amostrasP2[2], amostrasP2[3]).isNaN())))
-            dif3_P2.setText("");
-        else
-            dif3_P2.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP2[2], amostrasP2[3])))).replace('.', ','));
+            if (diferencaPercentual(amostrasP2[1], amostrasP2[2]) > 5.00 || diferencaPercentual(amostrasP2[1], amostrasP2[2]) < -5.00) {
+                dif2_P2.setTextColor(Color.parseColor("#FF0000"));
+                todosConformeP2 = false;
+            } else {
+                dif2_P2.setTextColor(Color.parseColor("#FF1A9C1A"));
+            }
+            if (((diferencaPercentual(amostrasP2[1], amostrasP2[2]).isNaN() || diferencaPercentual(amostrasP2[1], amostrasP2[2]).isInfinite())))
+                dif2_P2.setText("");
+            else
+                dif2_P2.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP2[1], amostrasP2[2])))).replace('.', ','));
 
 
-        if (diferencaPercentual(amostrasP2[3], amostrasP2[4]) > 5.00 || diferencaPercentual(amostrasP2[3], amostrasP2[4]) < -5.00) {
-            dif4_P2.setTextColor(Color.parseColor("#FF0000"));
-            todosConformeP2 = false;
-        } else {
-            dif4_P2.setTextColor(Color.parseColor("#FF1A9C1A"));
-        }
-        if (((diferencaPercentual(amostrasP2[3], amostrasP2[4]).isInfinite() || diferencaPercentual(amostrasP2[3], amostrasP2[4]).isNaN())))
-            dif4_P2.setText("");
-        else
-            dif4_P2.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP2[3], amostrasP2[4])))).replace('.', ','));
+            if (diferencaPercentual(amostrasP2[2], amostrasP2[3]) > 5.00 || diferencaPercentual(amostrasP2[2], amostrasP2[3]) < -5.00) {
+                dif3_P2.setTextColor(Color.parseColor("#FF0000"));
+                todosConformeP2 = false;
+            } else {
+                dif3_P2.setTextColor(Color.parseColor("#FF1A9C1A"));
+            }
+            if (((diferencaPercentual(amostrasP2[2], amostrasP2[3]).isInfinite() || diferencaPercentual(amostrasP2[2], amostrasP2[3]).isNaN())))
+                dif3_P2.setText("");
+            else
+                dif3_P2.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP2[2], amostrasP2[3])))).replace('.', ','));
 
 
-        //testando p1
+            if (diferencaPercentual(amostrasP2[3], amostrasP2[4]) > 5.00 || diferencaPercentual(amostrasP2[3], amostrasP2[4]) < -5.00) {
+                dif4_P2.setTextColor(Color.parseColor("#FF0000"));
+                todosConformeP2 = false;
+            } else {
+                dif4_P2.setTextColor(Color.parseColor("#FF1A9C1A"));
+            }
+            if (((diferencaPercentual(amostrasP2[3], amostrasP2[4]).isInfinite() || diferencaPercentual(amostrasP2[3], amostrasP2[4]).isNaN())))
+                dif4_P2.setText("");
+            else
+                dif4_P2.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP2[3], amostrasP2[4])))).replace('.', ','));
+
+
+            //testando p1
         /*todosConformeP1 = true;
         if (diferencaPercentual(amostrasP1[0], amostrasP1[1]) > 5.00 || diferencaPercentual(amostrasP1[0], amostrasP1[1]) < -5.00) {
             todosConformeP1 = false;
@@ -854,49 +861,49 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         }*/
 
 
-        mediaPercentualP2 = (
-                diferencaPercentual(amostrasP2[0], amostrasP2[1]) +
-                        diferencaPercentual(amostrasP2[1], amostrasP2[2]) +
-                        diferencaPercentual(amostrasP2[2], amostrasP2[3]) +
-                        diferencaPercentual(amostrasP2[3], amostrasP2[4])) / 4;
+            mediaPercentualP2 = (
+                    diferencaPercentual(amostrasP2[0], amostrasP2[1]) +
+                            diferencaPercentual(amostrasP2[1], amostrasP2[2]) +
+                            diferencaPercentual(amostrasP2[2], amostrasP2[3]) +
+                            diferencaPercentual(amostrasP2[3], amostrasP2[4])) / 4;
 
-        Double maiorDif = 0.0;
-        int posicaoMaiorDif = 0;
+            Double maiorDif = 0.0;
+            int posicaoMaiorDif = 0;
 
-        if (atualP2 >= 5) {
-            for (int i = 0; i < 4; i++) {
-                if (Math.abs(diferencaPercentual(amostrasP2[i], amostrasP2[i + 1])) > maiorDif) {
-                    maiorDif = Math.abs(diferencaPercentual(amostrasP2[i], amostrasP2[i + 1]));
-                    posicaoMaiorDif = i + 1;
+            if (atualP2 >= 5) {
+                for (int i = 0; i < 4; i++) {
+                    if (Math.abs(diferencaPercentual(amostrasP2[i], amostrasP2[i + 1])) > maiorDif) {
+                        maiorDif = Math.abs(diferencaPercentual(amostrasP2[i], amostrasP2[i + 1]));
+                        posicaoMaiorDif = i + 1;
+                    }
+                }
+
+                if (maiorDif > 5.0) {
+                    if (posicaoMaiorDif == 1) {
+                        dif1_P2.setTextColor(Color.parseColor("#FF0000"));
+                    } else if (posicaoMaiorDif == 2) {
+                        dif2_P2.setTextColor(Color.parseColor("#FF0000"));
+                    } else if (posicaoMaiorDif == 3) {
+                        dif3_P2.setTextColor(Color.parseColor("#FF0000"));
+                    } else if (posicaoMaiorDif == 4) {
+                        dif4_P2.setTextColor(Color.parseColor("#FF0000"));
+                    }
                 }
             }
 
-            if (maiorDif > 5.0) {
-                if (posicaoMaiorDif == 1) {
-                    dif1_P2.setTextColor(Color.parseColor("#FF0000"));
-                } else if (posicaoMaiorDif == 2) {
-                    dif2_P2.setTextColor(Color.parseColor("#FF0000"));
-                } else if (posicaoMaiorDif == 3) {
-                    dif3_P2.setTextColor(Color.parseColor("#FF0000"));
-                } else if (posicaoMaiorDif == 4) {
-                    dif4_P2.setTextColor(Color.parseColor("#FF0000"));
-                }
+            mediaGeralP2 = (amostrasP2[0] + amostrasP2[1] + amostrasP2[2] + amostrasP2[3] + amostrasP2[4]) / 5;
+            mediaGeralP2 = arredonda3Casas(mediaGeralP2);
+
+            if (mediaPercentualP2.isInfinite() || mediaPercentualP2.isNaN()) mediaDifP2.setText("");
+            else {
+                mediaDifP2.setText(String.valueOf((-1 * arredonda1Casa(mediaPercentualP2))).replace('.', ','));
             }
+
+            P2Media.setText(String.valueOf((mediaGeralP2)).replace('.', ','));
+            Double aux1 = arredonda2Casas(desvioPadrao(amostrasP2));
+            desvioP2.setText(String.valueOf((aux1)).replace('.', ','));
+
         }
-
-        mediaGeralP2 = (amostrasP2[0] + amostrasP2[1] + amostrasP2[2] + amostrasP2[3] + amostrasP2[4]) / 5;
-        mediaGeralP2 = arredonda3Casas(mediaGeralP2);
-
-        if (mediaPercentualP2.isInfinite() || mediaPercentualP2.isNaN()) mediaDifP2.setText("");
-        else {
-            mediaDifP2.setText(String.valueOf((-1 * arredonda1Casa(mediaPercentualP2))).replace('.', ','));
-        }
-
-        P2Media.setText(String.valueOf((mediaGeralP2)).replace('.', ','));
-        Double aux1 = arredonda2Casas(desvioPadrao(amostrasP2));
-        desvioP2.setText(String.valueOf((aux1)).replace('.', ','));
-
-        //Log.e("todosConformeP2", String.valueOf(todosConformeP2));
     }
 
     //Abre caixa de diálogo para preencher amostras do produto
@@ -1188,6 +1195,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     }
 
     //Inicializa todos os itens na tela e seta valores de variáveis
+    @SuppressLint("ResourceAsColor")
     public void inicializacao() {
         setContentView(R.layout.activity_calibracao);
         setTitle(nomeEmpresaPref);
@@ -1301,6 +1309,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         adapterMaquinas = new ArrayAdapter<MAQUINAS>(this,
                 android.R.layout.simple_spinner_item, maquinas);
         adapterMaquinas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
 
 
         spinnerOperador.setOnTouchListener(new View.OnTouchListener() {
@@ -1648,6 +1657,134 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                 }
             }
         });
+
+        try{
+            if(joinOsInsumos.get(0).getRECOMENDACAO() == 1){
+                recP1 = 1;
+            }
+        }catch(Exception ex){
+            recP1 = 0;
+        }
+
+        try{
+            if(joinOsInsumos.get(1).getRECOMENDACAO() == 1){
+                recP2 = 1;
+            }
+        }catch(Exception ex){
+            recP2 = 0;
+        }
+
+        if(recP1 == 0){
+            for(int i = 0; i<amostrasP1.length; i++){
+                amostrasP1[i] = 0;
+            }
+            P1_a1.setText("0");
+            P1_a2.setText("0");
+            P1_a3.setText("0");
+            P1_a4.setText("0");
+            P1_a5.setText("0");
+
+            dif1_P1.setText("0");
+            dif2_P1.setText("0");
+            dif3_P1.setText("0");
+            dif4_P1.setText("0");
+
+            mediaDifP1.setText("0");
+            desvioP1.setText("0");
+            P1Media.setText("0");
+            P1_a1.setEnabled(false);
+            P1_a2.setEnabled(false);
+            P1_a3.setEnabled(false);
+            P1_a4.setEnabled(false);
+            P1_a5.setEnabled(false);
+
+            dif1_P1.setEnabled(false);
+            dif2_P1.setEnabled(false);
+            dif3_P1.setEnabled(false);
+            dif4_P1.setEnabled(false);
+
+            mediaDifP1.setEnabled(false);
+            desvioP1.setEnabled(false);
+            P1Media.setEnabled(false);
+
+            P1_a1.setTextColor(secondaryDarkColor);
+            P1_a2.setTextColor(secondaryDarkColor);
+            P1_a3.setTextColor(secondaryDarkColor);
+            P1_a4.setTextColor(secondaryDarkColor);
+            P1_a5.setTextColor(secondaryDarkColor);
+
+            dif1_P1.setTextColor(secondaryDarkColor);
+            dif2_P1.setTextColor(secondaryDarkColor);
+            dif3_P1.setTextColor(secondaryDarkColor);
+            dif4_P1.setTextColor(secondaryDarkColor);
+
+            mediaDifP1.setTextColor(secondaryDarkColor);
+            desvioP1.setTextColor(secondaryDarkColor);
+            P1Media.setTextColor(secondaryDarkColor);
+
+            atualP1 = 6;
+            botaoMediaP1.setClickable(false);
+            botaoMediaP1.setEnabled(false);
+            botaoMediaP1.setVisibility(GONE);
+            nomeProduto1.setTextColor(secondaryDarkColor);
+        }
+
+        if(recP2 == 0){
+            for(int i = 0; i<amostrasP2.length; i++){
+                amostrasP2[i] = 0;
+            }
+            P2_a1.setText("0");
+            P2_a2.setText("0");
+            P2_a3.setText("0");
+            P2_a4.setText("0");
+            P2_a5.setText("0");
+
+            dif1_P2.setText("0");
+            dif2_P2.setText("0");
+            dif3_P2.setText("0");
+            dif4_P2.setText("0");
+
+            mediaDifP2.setText("0");
+            desvioP2.setText("0");
+            P2Media.setText("0");
+
+            P2_a1.setEnabled(false);
+            P2_a2.setEnabled(false);
+            P2_a3.setEnabled(false);
+            P2_a4.setEnabled(false);
+            P2_a5.setEnabled(false);
+
+            dif1_P2.setEnabled(false);
+            dif2_P2.setEnabled(false);
+            dif3_P2.setEnabled(false);
+            dif4_P2.setEnabled(false);
+
+            mediaDifP2.setEnabled(false);
+            desvioP2.setEnabled(false);
+            P2Media.setEnabled(false);
+
+            P2_a1.setTextColor(secondaryDarkColor);
+            P2_a2.setTextColor(secondaryDarkColor);
+            P2_a3.setTextColor(secondaryDarkColor);
+            P2_a4.setTextColor(secondaryDarkColor);
+            P2_a5.setTextColor(secondaryDarkColor);
+
+            dif1_P2.setTextColor(secondaryDarkColor);
+            dif2_P2.setTextColor(secondaryDarkColor);
+            dif3_P2.setTextColor(secondaryDarkColor);
+            dif4_P2.setTextColor(secondaryDarkColor);
+
+            mediaDifP2.setTextColor(secondaryDarkColor);
+            desvioP2.setTextColor(secondaryDarkColor);
+            P2Media.setTextColor(secondaryDarkColor);
+            atualP2 = 6;
+
+            botaoMediaP2.setClickable(false);
+            botaoMediaP2.setEnabled(false);
+            botaoMediaP2.setVisibility(GONE);
+
+            nomeProduto2.setTextColor(secondaryDarkColor);
+        }
 
         mudouOrientacao = false;
     }
