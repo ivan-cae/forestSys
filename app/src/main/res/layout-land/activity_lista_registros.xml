@@ -15,6 +15,15 @@
         android:background="@color/secondaryLightColor"
         tools:context=".Activities.ActivityListaRegistros">
 
+        <view
+            android:id="@+id/barra_progresso_lista_registros"
+            class="com.github.mikephil.charting.charts.PieChart"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="70dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/botao_adicionar_registros"
             android:layout_width="45dp"
@@ -401,27 +410,25 @@
             android:id="@+id/textView81"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="70dp"
             android:text="Data Programada:"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/status_lista_registros"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="@+id/textView101"
+            app:layout_constraintTop_toTopOf="@+id/textView42" />
 
         <TextView
             android:id="@+id/textView42"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="32dp"
             android:text="Status:"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/area_realizada_lista_registros"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
         <TextView
             android:id="@+id/textView46"
@@ -479,57 +486,14 @@
             android:id="@+id/textView16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="150dp"
-            android:layout_marginEnd="8dp"
             android:text="Registros"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/area_realizada_lista_registros" />
-
-        <ProgressBar
-            android:id="@+id/barra_progresso_lista_registros"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="200dp"
-            android:layout_marginEnd="200dp"
-            android:layout_marginBottom="32dp"
-            android:maxHeight="50dp"
-            android:minHeight="50dp"
-            android:progressTint="@color/primaryDarkColor"
-            android:scaleY="8"
-            app:layout_constraintBottom_toTopOf="@+id/textView16"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/titulo_barra_percentual"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginBottom="8dp"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="18sp"
-            android:textStyle="normal"
-            app:layout_constraintBottom_toTopOf="@+id/barra_progresso_lista_registros"
-            app:layout_constraintEnd_toEndOf="@+id/barra_progresso_lista_registros"
-            app:layout_constraintStart_toEndOf="@+id/textView61" />
-
-        <TextView
-            android:id="@+id/textView61"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Progresso Atual:"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/barra_progresso_lista_registros"
-            app:layout_constraintStart_toStartOf="@+id/barra_progresso_lista_registros" />
+            app:layout_constraintTop_toBottomOf="@+id/textView101" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

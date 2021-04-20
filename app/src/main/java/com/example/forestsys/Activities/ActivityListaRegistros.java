@@ -7,25 +7,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,55 +26,31 @@ import com.example.forestsys.Assets.BaseDeDados;
 import com.example.forestsys.Assets.DAO;
 import com.example.forestsys.Assets.Ferramentas;
 import com.example.forestsys.Calculadora.CalculadoraMain;
-import com.example.forestsys.Classes.Joins.Join_OS_INSUMOS;
 import com.example.forestsys.Classes.O_S_ATIVIDADES_DIA;
 import com.example.forestsys.Classes.O_S_ATIVIDADE_INSUMOS;
-import com.example.forestsys.Classes.O_S_ATIVIDADE_INSUMOS_DIA;
 import com.example.forestsys.R;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import static android.view.View.GONE;
-import static com.example.forestsys.Activities.ActivityAtividades.area;
-import static com.example.forestsys.Activities.ActivityAtividades.editouInsumo1;
-import static com.example.forestsys.Activities.ActivityAtividades.editouInsumo2;
 import static com.example.forestsys.Activities.ActivityAtividades.editouRegistro;
-import static com.example.forestsys.Activities.ActivityAtividades.erroPrestadorBool;
-import static com.example.forestsys.Activities.ActivityAtividades.hh;
-import static com.example.forestsys.Activities.ActivityAtividades.hm;
-import static com.example.forestsys.Activities.ActivityAtividades.hme;
-import static com.example.forestsys.Activities.ActivityAtividades.ho;
-import static com.example.forestsys.Activities.ActivityAtividades.hoe;
 import static com.example.forestsys.Activities.ActivityAtividades.joinOsInsumos;
-import static com.example.forestsys.Activities.ActivityAtividades.listaJoinOsInsumosSelecionados;
 import static com.example.forestsys.Activities.ActivityAtividades.oSAtividadesDiaAtual;
-import static com.example.forestsys.Activities.ActivityAtividades.obs;
 import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresaPref;
 import static com.example.forestsys.Activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
-import static com.example.forestsys.Activities.FragmentoInsumos.obsInsumo1;
-import static com.example.forestsys.Activities.FragmentoInsumos.obsInsumo2;
-import static com.example.forestsys.Activities.FragmentoRendimento.HHApontamento;
-import static com.example.forestsys.Activities.FragmentoRendimento.HMApontamento;
-import static com.example.forestsys.Activities.FragmentoRendimento.HMEscavadeiraApontamento;
-import static com.example.forestsys.Activities.FragmentoRendimento.HOApontamento;
-import static com.example.forestsys.Activities.FragmentoRendimento.HOEscavadeiraApontamento;
-import static com.example.forestsys.Activities.FragmentoRendimento.areaRealizadaApontamento;
-import static com.example.forestsys.Activities.FragmentoRendimento.erroPrestador;
-import static com.example.forestsys.Activities.FragmentoRendimento.obsApontamento;
-import static com.example.forestsys.Activities.FragmentoRendimento.posicaoPrestador;
-import static com.example.forestsys.Adapters.AdaptadorFragmentoInsumos.insumoConforme1;
-import static com.example.forestsys.Adapters.AdaptadorFragmentoInsumos.insumoConforme2;
-import static java.sql.Types.NULL;
 
 public class ActivityListaRegistros extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -132,8 +100,7 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
     private String pattern;
     private static SimpleDateFormat sdf;
 
-    private TextView tituloBarraProgresso;
-    private ProgressBar barraProgresso;
+    private PieChart graficoListaReg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -264,16 +231,48 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
         difInsumo1 = findViewById(R.id.registros_dif_insumo1);
         difInsumo2 = findViewById(R.id.registros_dif_insumo2);
 
-        barraProgresso = findViewById(R.id.barra_progresso_lista_registros);
-        tituloBarraProgresso = findViewById(R.id.titulo_barra_percentual);
+        graficoListaReg = findViewById(R.id.barra_progresso_lista_registros);
 
-        double percentual = (osSelecionada.getAREA_REALIZADA()/osSelecionada.getAREA_PROGRAMADA())*100;
-        barraProgresso.setProgress((int) percentual);
+        float percentual = (float) ((osSelecionada.getAREA_REALIZADA()/osSelecionada.getAREA_PROGRAMADA())*100);
 
-        DecimalFormat df = new DecimalFormat("###.##");
-        String percentualFormatado = df.format(percentual).replace(',', '.');
+        List <PieEntry>valoresRegistroApontamento = new ArrayList();
+        valoresRegistroApontamento.add(new PieEntry(percentual, 0));
+        valoresRegistroApontamento.add(new PieEntry(100-percentual, 1));
 
-        tituloBarraProgresso.setText(percentualFormatado+"%");
+        valoresRegistroApontamento.get(0).setLabel("Trabalhado");
+        valoresRegistroApontamento.get(1).setLabel("Não Trabalhado");
+        PieDataSet dataSetListaReg = new PieDataSet(valoresRegistroApontamento, null);
+
+        dataSetListaReg.setYValuePosition(PieDataSet.ValuePosition.INSIDE_SLICE);
+        dataSetListaReg.setValueFormatter(new PercentFormatter(graficoListaReg));
+        //dataSetListaReg.setDrawValues(false);
+        PieData dadosListaReg = new PieData(dataSetListaReg);
+
+        dadosListaReg.setValueTextSize(14);
+        dataSetListaReg.setColors(ColorTemplate.COLORFUL_COLORS);
+
+        graficoListaReg.animateXY(2000, 2000);
+        graficoListaReg.setMaxAngle(180);
+        graficoListaReg.setRotationAngle(180);
+        graficoListaReg.setCenterTextSize(14);
+        graficoListaReg.setCenterText("Área Trabalhada");
+        graficoListaReg.setDrawSliceText(false);
+        graficoListaReg.getDescription().setEnabled(false);
+        graficoListaReg.setUsePercentValues(true);
+        graficoListaReg.setClickable(false);
+        graficoListaReg.setDrawCenterText(true);
+        graficoListaReg.setEntryLabelTextSize(14);
+
+        Legend legendaListaReg = graficoListaReg.getLegend();
+        legendaListaReg.setFormSize(14);
+        legendaListaReg.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        legendaListaReg.setOrientation(Legend.LegendOrientation.VERTICAL);
+        legendaListaReg.setTextSize(14);
+        legendaListaReg.setDrawInside(false);
+
+        graficoListaReg.setData(dadosListaReg);
+
+
         insumo1.setText(joinOsInsumos.get(0).getDESCRICAO());
         insumo2.setText(joinOsInsumos.get(1).getDESCRICAO());
 

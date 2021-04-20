@@ -49,6 +49,13 @@ import com.example.forestsys.Classes.AVAL_PONTO_SUBSOLAGEM;
 import com.example.forestsys.Classes.AVAL_SUBSOLAGEM;
 import com.example.forestsys.Classes.CADASTRO_FLORESTAL;
 import com.example.forestsys.Classes.INDICADORES_SUBSOLAGEM;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
@@ -172,8 +179,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     public static TextView naoHaNCNaoTratada;
     public static FloatingActionButton botaoCorrecaoRegistrar;
 
-    private TextView valorPercentual;
-    private ProgressBar barraProgressoQualidade;
+    private PieChart graficoQualidade;
 
     double nItensNconforme;
     @Override
@@ -393,6 +399,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()));
         manejo.setText(String.valueOf(dao.selecionaManejo(osSelecionada.getID_MANEJO()).getDESCRICAO()));
 
+        graficoQualidade = findViewById(R.id.barra_progresso_lista_registros);
+
         indicador1 = findViewById(R.id.qualidade_indicador_1);
         indicador2 = findViewById(R.id.qualidade_indicador_2);
         indicador3 = findViewById(R.id.qualidade_indicador_3);
@@ -421,8 +429,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         indicador9.setText(atividadeIndicadores.get(8).getDESCRICAO());
         indicador10.setText(atividadeIndicadores.get(9).getDESCRICAO());
 
-        barraProgressoQualidade = findViewById(R.id.barra_progresso_qualidade);
-        valorPercentual = findViewById(R.id.qualidade_conformidade_total);
+        graficoQualidade = findViewById(R.id.barra_progresso_qualidade);
 
 
         if (listaVerion.size() > 0) {
@@ -453,7 +460,10 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
         listaPonto = dao.listaAvalPontoSubsolagem(idProg);
 
-        if (listaPonto.size() == 0) pontosRealizados.setText("0");
+        if (listaPonto.size() == 0) {
+            pontosRealizados.setText("0");
+            graficoQualidade.setVisibility(View.INVISIBLE);
+        }
         else {
 
             pontosRealizados.setText(String.valueOf(listaPonto.get(listaPonto.size() - 1).getPONTO()));
@@ -555,9 +565,9 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             Log.e("Qtd itens nc", String.valueOf(nItensNconforme));
             Log.e("Qtd pontos", String.valueOf(calculoPontosReg));
 
-            double percentualQualidade;
+            float percentualQualidade;
             try{
-                percentualQualidade = nItensNconforme/calculoPontosReg;
+                percentualQualidade = (float) (nItensNconforme/calculoPontosReg);
                 Log.e("Percentual Qualidade", String.valueOf(percentualQualidade));
             }catch(Exception e){
                 e.printStackTrace();
@@ -566,10 +576,43 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             }
 
             percentualQualidade = (100 - percentualQualidade);
-            int perc = (int) percentualQualidade;
 
-            barraProgressoQualidade.setProgress(perc);
-            valorPercentual.setText(String.valueOf(percentualQualidade)+"%");
+            List <PieEntry>valoresRegistroApontamento = new ArrayList();
+            valoresRegistroApontamento.add(new PieEntry(percentualQualidade, 0));
+            valoresRegistroApontamento.add(new PieEntry(100 - percentualQualidade, 1));
+
+            valoresRegistroApontamento.get(0).setLabel("Conforme");
+            valoresRegistroApontamento.get(1).setLabel("Não Conforme");
+            PieDataSet dataSetQualidade = new PieDataSet(valoresRegistroApontamento, null);
+
+            dataSetQualidade.setYValuePosition(PieDataSet.ValuePosition.INSIDE_SLICE);
+            dataSetQualidade.setValueFormatter(new PercentFormatter(graficoQualidade));
+            //dataSetQualidade.setDrawValues(false);
+            PieData dadosQualidade = new PieData(dataSetQualidade);
+
+            dadosQualidade.setValueTextSize(14);
+            dataSetQualidade.setColors(ColorTemplate.COLORFUL_COLORS);
+
+            graficoQualidade.animateXY(2000, 2000);
+            graficoQualidade.setMaxAngle(180);
+            graficoQualidade.setRotationAngle(180);
+            graficoQualidade.setCenterTextSize(14);
+            graficoQualidade.setCenterText("Conformidade");
+            graficoQualidade.setDrawSliceText(false);
+            graficoQualidade.getDescription().setEnabled(false);
+            graficoQualidade.setUsePercentValues(true);
+            graficoQualidade.setClickable(false);
+            graficoQualidade.setDrawCenterText(true);
+            graficoQualidade.setEntryLabelTextSize(14);
+
+            Legend legendaQualidade = graficoQualidade.getLegend();
+            legendaQualidade.setFormSize(14);
+            legendaQualidade.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+            legendaQualidade.setOrientation(Legend.LegendOrientation.VERTICAL);
+            legendaQualidade.setTextSize(14);
+            legendaQualidade.setDrawInside(false);
+
+            graficoQualidade.setData(dadosQualidade);
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_qualidade);

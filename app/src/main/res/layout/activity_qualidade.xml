@@ -17,22 +17,15 @@
         android:background="@color/secondaryLightColor"
         android:foregroundTint="#dc5356">
 
-        <ProgressBar
+        <view
             android:id="@+id/barra_progresso_qualidade"
-            style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
-            android:layout_width="350dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
+            class="com.github.mikephil.charting.charts.PieChart"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="70dp"
             android:layout_marginEnd="8dp"
-            android:foregroundTintMode="src_in"
-            android:maxHeight="30dp"
-            android:minHeight="30dp"
-            android:progressTint="@color/primaryDarkColor"
-            android:scaleY="8"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView69" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView98"
@@ -387,7 +380,7 @@
             android:id="@+id/textView84"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
             android:text="Área:"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
@@ -464,50 +457,52 @@
             android:id="@+id/textView85"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:text="Data:"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/qualidade_talhao"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView84" />
 
         <TextView
             android:id="@+id/textView87"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:text="Área Realizada:"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/textView85"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView85" />
 
         <TextView
             android:id="@+id/textView88"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="68dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:text="Status:"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/qualidade_area_realizada"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView87" />
 
         <TextView
             android:id="@+id/textView89"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:text="Manejo:"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/textView88"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView88" />
 
         <TextView
@@ -586,21 +581,22 @@
             android:id="@+id/textView90"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="32dp"
             android:text="Dados do Sistema de Precisão"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/textView93"
             app:layout_constraintEnd_toEndOf="@+id/textView102"
-            app:layout_constraintStart_toStartOf="@+id/textView93" />
+            app:layout_constraintHorizontal_bias="0.457"
+            app:layout_constraintStart_toStartOf="@+id/textView93"
+            app:layout_constraintTop_toBottomOf="@+id/qualidade_manejo" />
 
         <TextView
             android:id="@+id/textView93"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="72dp"
+            android:layout_marginTop="8dp"
             android:background="@color/tituloColunaListas"
             android:text="Insumo"
             android:textAlignment="center"
@@ -608,7 +604,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView87" />
+            app:layout_constraintTop_toBottomOf="@+id/textView90" />
 
         <TextView
             android:id="@+id/qualidade_insumo_p1"
@@ -866,11 +862,12 @@
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="152dp"
             android:layout_marginEnd="4dp"
             android:background="@drawable/borda_separa_fragmento"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView84">
 
@@ -890,29 +887,6 @@
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/textView69"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_marginTop="38dp"
-            android:text="Conformidade Total:"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/barra_progresso_qualidade"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout5" />
-
-        <TextView
-            android:id="@+id/qualidade_conformidade_total"
-            android:layout_width="0dp"
-            android:layout_height="25dp"
-            android:maxLength="5"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@+id/barra_progresso_qualidade"
-            app:layout_constraintStart_toEndOf="@+id/textView69"
-            app:layout_constraintTop_toTopOf="@+id/textView69" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

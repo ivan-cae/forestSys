@@ -294,8 +294,6 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
 
         float percConforme = 100 - percNaoConforme;
 
-        Log.e("Qtd todos Pontos", String.valueOf(qtdTodosPontos));
-        Log.e("Qtd pontos NC", String.valueOf(totalNc));
 
 
         List <PieEntry>valoresRegistroApontamento = new ArrayList();
@@ -386,7 +384,7 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
             mMap.setMyLocationEnabled(true);
             //CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 25,25,5);
             mMap.setMaxZoomPreference(100.0f);
-            mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+            mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
             mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 15));
         }
     }
