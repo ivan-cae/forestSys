@@ -300,8 +300,8 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
         valoresRegistroApontamento.add(new PieEntry(percConforme, 0));
         valoresRegistroApontamento.add(new PieEntry(percNaoConforme, 1));
 
-        valoresRegistroApontamento.get(0).setLabel("Realizado");
-        valoresRegistroApontamento.get(1).setLabel("Não Realizado");
+        valoresRegistroApontamento.get(0).setLabel("Realizada");
+        valoresRegistroApontamento.get(1).setLabel("Não Realizada");
         PieDataSet dataSetApontamento = new PieDataSet(valoresRegistroApontamento, null);
 
         dataSetApontamento.setYValuePosition(PieDataSet.ValuePosition.INSIDE_SLICE);
@@ -316,7 +316,7 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
         graficoApontamento.setMaxAngle(180);
         graficoApontamento.setRotationAngle(180);
         graficoApontamento.setCenterTextSize(14);
-        graficoApontamento.setCenterText("Área Total Dos Apontamentos");
+        graficoApontamento.setCenterText("Área Realizada");
         graficoApontamento.setDrawSliceText(false);
         graficoApontamento.getDescription().setEnabled(false);
         graficoApontamento.setUsePercentValues(true);
