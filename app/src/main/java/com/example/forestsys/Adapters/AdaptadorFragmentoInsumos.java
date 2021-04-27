@@ -49,7 +49,7 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
 
         boolean rec = false;
         try{
-            if(insumo.getRECOMENDACAO() == 1){
+            if(insumo.getQTD_HA_RECOMENDADO() != 0){
                 rec = true;
                 holder.itemView.setClickable(true);
                 holder.itemView.setEnabled(true);

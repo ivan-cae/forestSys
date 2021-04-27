@@ -193,7 +193,7 @@ public class FragmentoInsumos extends Fragment {
         int recP2 = 0;
 
         try{
-            if(joinOsInsumos.get(0).getRECOMENDACAO() == 1){
+            if(joinOsInsumos.get(0).getQTD_HA_RECOMENDADO() != 0){
                 recP1 = 1;
             }
         }catch(Exception ex){
@@ -201,7 +201,7 @@ public class FragmentoInsumos extends Fragment {
         }
 
         try{
-            if(joinOsInsumos.get(1).getRECOMENDACAO() == 1){
+            if(joinOsInsumos.get(1).getQTD_HA_RECOMENDADO() !=0){
                 recP2 = 1;
             }
         }catch(Exception ex){
