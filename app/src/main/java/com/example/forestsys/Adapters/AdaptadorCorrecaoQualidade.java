@@ -61,7 +61,7 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
         String pegaEspacamento[] = dao.selecionaEspacamento(cadastro_florestal.getID_ESPACAMENTO()).getDESCRICAO().trim().replace(',', '.').split("X");
         double teste;
         try {
-            teste = Double.parseDouble(pegaEspacamento[0]);
+            teste = Double.valueOf(pegaEspacamento[0]);
         } catch (NumberFormatException | NullPointerException n) {
             teste = 3;
         }

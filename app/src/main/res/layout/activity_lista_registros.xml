@@ -105,7 +105,7 @@
             android:background="@color/secondaryLightColor"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView73"
             app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
@@ -118,7 +118,7 @@
             android:background="@color/secondaryLightColor"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/registros_total_area"
             app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
@@ -131,7 +131,7 @@
             android:background="@color/secondaryLightColor"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/registros_total_hh"
             app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
@@ -144,7 +144,7 @@
             android:background="@color/secondaryLightColor"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/registros_total_ho"
             app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
@@ -157,7 +157,7 @@
             android:background="@color/secondaryLightColor"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/registros_total_hoe"
             app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
@@ -183,7 +183,7 @@
             android:background="@color/secondaryLightColor"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/registros_total_insumo1"
             app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
@@ -196,7 +196,7 @@
             android:background="@color/secondaryLightColor"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/registros_total_hme"
             app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
@@ -208,7 +208,7 @@
             android:background="@color/secondaryLightColor"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView92"
             app:layout_constraintTop_toBottomOf="@+id/registros_total_insumo2" />
@@ -220,7 +220,7 @@
             android:background="@color/secondaryLightColor"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/registros_dif_insumo1"
             app:layout_constraintTop_toBottomOf="@+id/registros_total_insumo2" />
@@ -233,7 +233,7 @@
             android:background="@color/secondaryLightColor"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/registros_total_hm"
             app:layout_constraintTop_toBottomOf="@+id/registros_lista" />
@@ -362,6 +362,7 @@
             android:layout_width="150dp"
             android:layout_height="0dp"
             android:layout_marginStart="4dp"
+            android:maxLength="8"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
             android:textStyle="normal"

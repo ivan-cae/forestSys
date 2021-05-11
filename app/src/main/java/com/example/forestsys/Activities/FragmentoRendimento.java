@@ -424,7 +424,7 @@ public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
                 if (limite != 0) {
                     double teste = 0;
                     try {
-                        teste = Double.parseDouble(str.replace(',', '.'));
+                        teste = Double.valueOf(str.replace(',', '.'));
                     } catch (NumberFormatException | NullPointerException n) {
                         teste = 0;
                     }

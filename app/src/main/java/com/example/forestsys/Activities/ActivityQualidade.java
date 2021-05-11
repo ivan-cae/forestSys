@@ -41,6 +41,8 @@ import com.example.forestsys.Adapters.AdaptadorCorrecaoQualidade;
 import com.example.forestsys.Assets.BaseDeDados;
 import com.example.forestsys.Assets.DAO;
 import com.example.forestsys.Assets.Ferramentas;
+import com.example.forestsys.Classes.O_S_ATIVIDADES;
+import com.example.forestsys.Classes.O_S_ATIVIDADES_DIA;
 import com.example.forestsys.R;
 import com.example.forestsys.Assets.Formulas;
 import com.example.forestsys.Calculadora.CalculadoraMain;
@@ -62,6 +64,7 @@ import com.google.android.material.navigation.NavigationView;
 import android.widget.Toast;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -192,6 +195,9 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
         baseDeDados = BaseDeDados.getInstance(getApplicationContext());
         dao = baseDeDados.dao();
+
+            calculaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+
         AVAL_SUBSOLAGEM avlSub = dao.selecionaAvalSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
         List<ATIVIDADE_INDICADORES> atvIndicadoresPonto = dao.listaAtividadeIndicadores(osSelecionada.getID_ATIVIDADE(), "N");
         List<ATIVIDADE_INDICADORES> atvIndicadoresVerion = dao.listaAtividadeIndicadores(osSelecionada.getID_ATIVIDADE(), "S");
@@ -337,6 +343,32 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         }
     }
 
+    private void calculaAreaRealizada(int id){
+        double calcula = 0;
+        List <O_S_ATIVIDADES_DIA> listaReg = dao.listaAtividadesDia(id);
+        for(int i=0; i <listaReg.size(); i++){
+            String s = listaReg.get(i).getAREA_REALIZADA().replace(',', '.');
+            double d = 0;
+            try {
+                d = Double.valueOf(s);
+            }catch(Exception e){
+                e.printStackTrace();
+                d = 0;
+            }
+            calcula+=d;
+        }
+        O_S_ATIVIDADES atividade = dao.selecionaOs(id);
+
+        BigDecimal bd = BigDecimal.valueOf(calcula);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+
+        atividade.setAREA_REALIZADA(bd.doubleValue());
+        osSelecionada.setAREA_REALIZADA(bd.doubleValue());
+        dao.update(atividade);
+        Log.e("Area Realizada", String.valueOf(bd.doubleValue()));
+
+    }
+
     private void inicializacao() {
 
         formulas = new Formulas();
@@ -395,8 +427,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         talhao.setText(osSelecionada.getTALHAO());
         data.setText(ferramentas.dataAtual());
         status.setText(osSelecionada.getSTATUS());
-        area.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()));
-        areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()));
+        area.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()) + "ha");
+        areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA())+"ha");
         manejo.setText(String.valueOf(dao.selecionaManejo(osSelecionada.getID_MANEJO()).getDESCRICAO()));
 
         graficoQualidade = findViewById(R.id.barra_progresso_lista_registros);
@@ -479,7 +511,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             String pegaEspacamento[] = dao.selecionaEspacamento(cadastro_florestal.getID_ESPACAMENTO()).getDESCRICAO().trim().replace(',', '.').split("X");
             double teste = 3;
             try {
-                teste = Double.parseDouble(pegaEspacamento[0]);
+                teste = Double.valueOf(pegaEspacamento[0]);
             } catch (NumberFormatException | NullPointerException n) {
                 n.printStackTrace();
                 teste = 3;
@@ -1015,8 +1047,6 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                         dialog.show();
                     } else {
                         try {
-                            //Log.e("Tamanho lista Verion", String.valueOf(listaVerion.size()));
-
                             if (listaVerion.size() == 0) {
                                 dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 11, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP1.getText().toString().replace(',', '.'))));
                                 dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 12, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP1.getText().toString().replace(',', '.'))));
@@ -1091,8 +1121,21 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                             dialogoVerion.dismiss();
 
                         } catch (Exception ex) {
-                            dialogoVerion.dismiss();
+                            listaVerion = dao.listaIndicadoresSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), osSelecionada.getID_ATIVIDADE());
+
+                            listaMediaP1.setText(String.valueOf(listaVerion.get(0).getVALOR_INDICADOR()).replace('.', ','));
+                            listaDesvioP1.setText(String.valueOf(listaVerion.get(1).getVALOR_INDICADOR()).replace('.', ','));
+                            listaMediaP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
+                            listaDesvioP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
+
                             ex.printStackTrace();
+                            dialogoVerion.dismiss();
+
+                            /*
+                            for(int i = 0; i<listaVerion.size(); i++){
+                                listaVerion.get(i).setVALOR_INDICADOR(0);
+                                dao.update(listaVerion.get(i));
+                            }
                             AlertDialog dialogoErro = new AlertDialog.Builder(ActivityQualidade.this)
                                     .setTitle("Erro")
                                     .setMessage("Houve um problema ao salvar a avaliação.")
@@ -1102,6 +1145,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                                         }
                                     }).create();
                             dialogoErro.show();
+                             */
                         }
 
                     }
@@ -1242,7 +1286,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             String pegaEspacamento[] = dao.selecionaEspacamento(cadastro_florestal.getID_ESPACAMENTO()).getDESCRICAO().trim().replace(',', '.').split("X");
             double teste;
             try {
-                teste = Double.parseDouble(pegaEspacamento[0]);
+                teste = Double.valueOf(pegaEspacamento[0]);
             } catch (NumberFormatException | NullPointerException n) {
                 teste = 3;
             }
@@ -1919,7 +1963,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     private boolean converteuPonto(EditText valor, int limiteInf, int limiteSup) {
         double teste;
         try {
-            teste = Double.parseDouble(valor.getText().toString().replace(',', '.'));
+            teste = Double.valueOf(valor.getText().toString().replace(',', '.'));
         } catch (NumberFormatException | NullPointerException n) {
             valor.setError("Valor Inválido");
             return false;
@@ -1935,7 +1979,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     private boolean converteuPrecisao(EditText valor) {
         double teste;
         try {
-            teste = Double.parseDouble(valor.getText().toString().replace(',', '.'));
+            teste = Double.valueOf(valor.getText().toString().replace(',', '.'));
         } catch (NumberFormatException | NullPointerException n) {
             valor.setError("Valor Inválido");
             return false;

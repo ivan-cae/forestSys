@@ -535,6 +535,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
+            android:maxLength="8"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
             android:textStyle="normal"

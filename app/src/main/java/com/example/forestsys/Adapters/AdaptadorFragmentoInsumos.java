@@ -14,6 +14,7 @@ import com.example.forestsys.R;
 import com.example.forestsys.Classes.Joins.Join_OS_INSUMOS;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,9 +62,13 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
                     double auxDouble = NULL;
                     auxDouble = Double.valueOf(auxString);
                     if(auxDouble != NULL) {
-                        DecimalFormat format = new DecimalFormat(".##");
 
-                        String s = format.format(insumo.getQTD_HA_RECOMENDADO() * auxDouble).replace(',', '.');
+
+                        double d = insumo.getQTD_HA_RECOMENDADO() * auxDouble;
+                        BigDecimal bd = BigDecimal.valueOf(d);
+                        bd = bd.setScale(2, RoundingMode.HALF_UP);
+
+                        String s = String.valueOf(bd.doubleValue());
 
                         holder.QTDRec.setText(s);
                         if(diferencaPercentual((insumo.getQTD_HA_RECOMENDADO() * auxDouble), insumo.getQTD_APLICADO()) > 5.0000 ||

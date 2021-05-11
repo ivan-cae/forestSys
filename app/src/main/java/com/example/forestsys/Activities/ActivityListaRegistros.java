@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ import com.example.forestsys.Assets.BaseDeDados;
 import com.example.forestsys.Assets.DAO;
 import com.example.forestsys.Assets.Ferramentas;
 import com.example.forestsys.Calculadora.CalculadoraMain;
+import com.example.forestsys.Classes.O_S_ATIVIDADES;
 import com.example.forestsys.Classes.O_S_ATIVIDADES_DIA;
 import com.example.forestsys.Classes.O_S_ATIVIDADE_INSUMOS;
 import com.example.forestsys.R;
@@ -39,6 +41,8 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -119,7 +123,11 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
         } catch (NumberFormatException | NullPointerException n) {
             teste = 0;
         }
-        return teste;
+
+        BigDecimal bd = BigDecimal.valueOf(teste);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+
+        return bd.doubleValue();
     }
 
     //Calcula os totalizadores na lista de registros
@@ -139,11 +147,11 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
                 double ins1 = dao.qtdAplicadaTodosInsumos(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), atividade_insumos.get(0).getID_INSUMO());
                 double ins2 = dao.qtdAplicadaTodosInsumos(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), atividade_insumos.get(1).getID_INSUMO());
 
-                totalHh.setText(String.valueOf(hhAux).replace(".", ","));
-                totalHo.setText(String.valueOf(hoAux).replace(".", ","));
-                totalHm.setText(String.valueOf(hmAux).replace(".", ","));
-                totalHoe.setText(String.valueOf(hoeAux).replace(".", ","));
-                totalHme.setText(String.valueOf(hmeAux).replace(".", ","));
+                totalHh.setText(String.valueOf(checaConversao(String.valueOf(hhAux))).replace(".", ","));
+                totalHo.setText(String.valueOf(checaConversao(String.valueOf(hoAux))).replace(".", ","));
+                totalHm.setText(String.valueOf(checaConversao(String.valueOf(hmAux))).replace(".", ","));
+                totalHoe.setText(String.valueOf(checaConversao(String.valueOf(hoeAux))).replace(".", ","));
+                totalHme.setText(String.valueOf(checaConversao(String.valueOf(hmeAux))).replace(".", ","));
                 totalArea.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()).replace(".", ","));
                 totalInsumo1.setText(String.valueOf(ins1).replace(".", ","));
                 totalInsumo2.setText(String.valueOf(ins2).replace(".", ","));
@@ -208,6 +216,8 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
         baseDeDados = BaseDeDados.getInstance(getApplicationContext());
         dao = baseDeDados.dao();
 
+        calculaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+
         listaAtividades = dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
         atividade_insumos = dao.listaInsumosatividade(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
@@ -239,8 +249,8 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
         valoresRegistroApontamento.add(new PieEntry(percentual, 0));
         valoresRegistroApontamento.add(new PieEntry(100-percentual, 1));
 
-        valoresRegistroApontamento.get(0).setLabel("Trabalhado");
-        valoresRegistroApontamento.get(1).setLabel("Não Trabalhado");
+        valoresRegistroApontamento.get(0).setLabel("Realizado");
+        valoresRegistroApontamento.get(1).setLabel("Não Realizado");
         PieDataSet dataSetListaReg = new PieDataSet(valoresRegistroApontamento, null);
 
         dataSetListaReg.setYValuePosition(PieDataSet.ValuePosition.INSIDE_SLICE);
@@ -255,7 +265,7 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
         graficoListaReg.setMaxAngle(180);
         graficoListaReg.setRotationAngle(180);
         graficoListaReg.setCenterTextSize(14);
-        graficoListaReg.setCenterText("Área Trabalhada");
+        graficoListaReg.setCenterText("Área Realizada");
         graficoListaReg.setDrawSliceText(false);
         graficoListaReg.getDescription().setEnabled(false);
         graficoListaReg.setUsePercentValues(true);
@@ -279,8 +289,8 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
         talhaoOs.setText(String.valueOf(osSelecionada.getTALHAO()));
 
         statusOs.setText(String.valueOf(osSelecionada.getSTATUS()));
-        areaOs.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace(".", ","));
-        areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()).replace(".", ","));
+        areaOs.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace(".", ",") + "ha");
+        areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()).replace(".", ",")+"ha");
         dataProgramada.setText(Ferramentas.formataDataTextView(osSelecionada.getDATA_PROGRAMADA()));
         voltar = findViewById(R.id.botao_voltar_lista_registros);
         botaoAdicionarRegistro = findViewById(R.id.botao_adicionar_registros);
@@ -345,6 +355,31 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
                 }
             }
         });
+    }
+
+    private void calculaAreaRealizada(int id){
+        double calcula = 0;
+        List <O_S_ATIVIDADES_DIA> listaReg = dao.listaAtividadesDia(id);
+        for(int i=0; i <listaReg.size(); i++){
+            String s = listaReg.get(i).getAREA_REALIZADA().replace(',', '.');
+            double d = 0;
+            try {
+                d = Double.valueOf(s);
+            }catch(Exception e){
+                e.printStackTrace();
+                d = 0;
+            }
+            calcula+=d;
+        }
+        O_S_ATIVIDADES atividade = dao.selecionaOs(id);
+
+        BigDecimal bd = BigDecimal.valueOf(calcula);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+
+        atividade.setAREA_REALIZADA(bd.doubleValue());
+        osSelecionada.setAREA_REALIZADA(bd.doubleValue());
+        dao.update(atividade);
+        Log.e("Area Realizada", String.valueOf(bd.doubleValue()));
     }
 
 

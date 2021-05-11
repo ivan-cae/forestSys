@@ -532,29 +532,15 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     public void abreDialogoP1() {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_calibracao, null);
-        final EditText valor = mView.findViewById(R.id.valor_dialogo_calibragem);
-        valor.addTextChangedListener(new TextWatcher() {
+        final EditText valorP1 = mView.findViewById(R.id.valor_dialogo_calibragem);
+        valorP1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                String input = s.toString();
-
-                if (input.length() > 0) {
-                    DecimalFormat format = new DecimalFormat("##,###");
-                    input = input.replace(",", "");
-                    String novoValor = format.format(Double.parseDouble(input));
-
-                    valor.removeTextChangedListener(this);
-
-                    valor.setText(novoValor.replace('.', ','));
-                    valor.setSelection(novoValor.length());
-
-                    valor.addTextChangedListener(this);
-                }
+                ferramentas.mascaraVirgula(valorP1, s, 3, "99.999", count, before);
             }
 
             @Override
@@ -575,11 +561,11 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             public void onClick(View view) {
                 String[] s = new String[2];
                 String aux;
-                aux = String.valueOf(valor.getText());
+                aux = String.valueOf(valorP1.getText());
                 boolean naoPermiteCentena = false;
                 int cont = 0;
 
-                if (aux.length() == 0) valor.setError("Valor não pode ser vazio!");
+                if (aux.length() == 0) valorP1.setError("Valor não pode ser vazio!");
                 if (aux.length() > 0 && !aux.contains(",") && aux.length() > 2) {
                     naoPermiteCentena = true;
                 }
@@ -589,7 +575,8 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                 }
 
                 if (aux.length() > 0 && aux.length() < 5 && aux.contains(","))
-                    valor.setError("Digite 3 Casas Decimais!");
+                    valorP1.setError("Digite 3 Casas Decimais!");
+
                 //else if (aux.length()>0 && aux.length() > 5) valor.setError("Digite 3 Casas Decimais!");
                 if (aux.length() > 0 && aux.length() >= 5) {
                     for (int i = 0; i < aux.length(); i++) {
@@ -597,10 +584,21 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                         if (c[i] == ',') cont++;
                     }
                 }
-                if (aux.length() > 0 && aux.length() >= 5 && aux.contains(",") && cont == 1 && naoPermiteCentena == false) {
+
+                boolean valorZerado = false;
+                if (aux.length() > 0) {
+                    double d = Double.valueOf(aux.replace(',', '.'));
+                    if (d == 0) {
+                        valorZerado = true;
+                        valorP1.setError("Não permitido valor zerado");
+                    }
+                }
+
+                if (aux.length() > 0 && aux.length() >= 5 && aux.contains(",") &&
+                        cont == 1 && naoPermiteCentena == false && valorZerado == false) {
                     s = aux.split("\\,");
                     if (s[1].length() < 3 || s[1].length() > 3) {
-                        valor.setError("Digite 3 Casas Decimais!");
+                        valorP1.setError("Digite 3 Casas Decimais!");
                     }
                     if (s[1].length() == 3) {
                         valorCorreto = aux;
@@ -661,7 +659,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                     }
                 }
                 if (naoPermiteCentena == true)
-                    valor.setError("Valor incorreto: Permitido unidades e dezenas.");
+                    valorP1.setError("Valor incorreto: Permitido unidades e dezenas.");
                 if (atualP1 > 5) testaP1();
                 if (atualP2 > 5) testaP2();
             }
@@ -900,30 +898,16 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
     public void abreDialogoP2() {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_calibracao, null);
-        final EditText valor = mView.findViewById(R.id.valor_dialogo_calibragem);
+        final EditText valorP2 = mView.findViewById(R.id.valor_dialogo_calibragem);
         final TextView numAmostra = mView.findViewById(R.id.dialogo_calib_amostra);
-        valor.addTextChangedListener(new TextWatcher() {
+        valorP2.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                String input = s.toString();
-
-                if (input.length() > 0) {
-                    DecimalFormat format = new DecimalFormat("##,###");
-                    input = input.replace(",", "");
-                    String novoValor = format.format(Double.parseDouble(input));
-
-                    valor.removeTextChangedListener(this);
-
-                    valor.setText(novoValor.replace('.', ','));
-                    valor.setSelection(novoValor.length());
-
-                    valor.addTextChangedListener(this);
-                }
+                ferramentas.mascaraVirgula(valorP2, s, 3, "99.999", count, before);
             }
 
             @Override
@@ -944,11 +928,11 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             public void onClick(View view) {
                 String[] s = new String[2];
                 String aux;
-                aux = String.valueOf(valor.getText());
+                aux = String.valueOf(valorP2.getText());
                 boolean naoPermiteCentena = false;
                 int cont = 0;
 
-                if (aux.length() == 0) valor.setError("Valor não pode ser vazio!");
+                if (aux.length() == 0) valorP2.setError("Valor não pode ser vazio!");
                 if (aux.length() > 0 && !aux.contains(",") && aux.length() > 2) {
                     naoPermiteCentena = true;
                 }
@@ -957,7 +941,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                 }
 
                 if (aux.length() > 0 && aux.length() < 5 && aux.contains(","))
-                    valor.setError("Digite 3 Casas Decimais!");
+                    valorP2.setError("Digite 3 Casas Decimais!");
                 //else if (aux.length()>0 && aux.length() > 5) valor.setError("Digite 3 Casas Decimais!");
                 if (aux.length() > 0 && aux.length() >= 5) {
                     for (int i = 0; i < aux.length(); i++) {
@@ -965,10 +949,21 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                         if (c[i] == ',') cont++;
                     }
                 }
-                if (aux.length() > 0 && aux.length() >= 5 && aux.contains(",") && cont == 1 && naoPermiteCentena == false) {
+
+                boolean valorZerado = false;
+                if (aux.length() > 0) {
+                    double d = Double.valueOf(aux.replace(',', '.'));
+                    if (d == 0) {
+                        valorZerado = true;
+                        valorP2.setError("Não permitido valor zerado");
+                    }
+                }
+
+                if (aux.length() > 0 && aux.length() >= 5 && aux.contains(",") &&
+                        cont == 1 && naoPermiteCentena == false && valorZerado == false) {
                     s = aux.split("\\,");
                     if (s[1].length() < 3 || s[1].length() > 3) {
-                        valor.setError("Digite 3 Casas Decimais!");
+                        valorP2.setError("Digite 3 Casas Decimais!");
                     }
 
                     if (s[1].length() == 3) {
@@ -1030,7 +1025,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                     }
                 }
                 if (naoPermiteCentena == true)
-                    valor.setError("Valor incorreto: Permitido unidade e dezena.");
+                    valorP2.setError("Valor incorreto: Permitido unidade e dezena.");
 
                 if (atualP2 > 5) testaP2();
                 if (atualP1 > 5) testaP1();
@@ -1647,8 +1642,8 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
             }
         });
 
-    mudouOrientacao =false;
-}
+        mudouOrientacao = false;
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

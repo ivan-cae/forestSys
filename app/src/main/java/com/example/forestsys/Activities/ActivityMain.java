@@ -10,6 +10,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,6 +36,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.forestsys.Adapters.AdaptadorOs;
 import com.example.forestsys.Assets.ClienteWeb;
 import com.example.forestsys.Classes.ClassesAuxiliares.Configs;
+import com.example.forestsys.Classes.O_S_ATIVIDADES_DIA;
 import com.example.forestsys.R;
 import com.example.forestsys.Assets.BaseDeDados;
 import com.example.forestsys.Assets.DAO;
@@ -46,6 +48,8 @@ import com.google.android.material.navigation.NavigationView;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.util.List;
 
@@ -126,6 +130,11 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
 
         adaptador = new AdaptadorOs();
         listaOs = dao.listaOsDataSemPrioridadeAsc();
+
+        for(int i =0; i <listaOs.size(); i++) {
+            calculaAreaRealizada(listaOs.get(i).getID_PROGRAMACAO_ATIVIDADE());
+        }
+
         adaptador.setOrdens(listaOs);
         recyclerView.setAdapter(adaptador);
 
@@ -178,13 +187,13 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                     listaOs = dao.listaOsDataSemPrioridadeAsc();
                 }
 
-                posicaoSpinnerPrioridade=position;
+                posicaoSpinnerPrioridade = position;
 
                 adaptador.setOrdens(listaOs);
                 recyclerView.setAdapter(adaptador);
-                ordenaData.setText(setaDesc+"Período Prog.");
-                ordenaSetor.setText(setaDesc+"Setor");
-                ordenaTalhao.setText(setaDesc+"Talhão");
+                ordenaData.setText(setaDesc + "Período Prog.");
+                ordenaSetor.setText(setaDesc + "Setor");
+                ordenaTalhao.setText(setaDesc + "Talhão");
             }
 
             @Override
@@ -197,23 +206,23 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         ordenaTalhao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ordenaSetor.setText(setaDesc+"Setor");
-                ordenaData.setText(setaDesc+"Período Prog.");
+                ordenaSetor.setText(setaDesc + "Setor");
+                ordenaData.setText(setaDesc + "Período Prog.");
                 if (posicaoSpinnerPrioridade == 0) {
-                    if (ordenaTalhaoBool == false){
+                    if (ordenaTalhaoBool == false) {
                         listaOs = dao.listaOsTalhaoSemPrioridadeDesc();
-                        ordenaTalhao.setText(setaDesc+"Talhão");
-                }                    else {
-                    listaOs = dao.listaOsTalhaoSemPrioridadeAsc();
-                        ordenaTalhao.setText(setaAsc+"Talhão");
+                        ordenaTalhao.setText(setaDesc + "Talhão");
+                    } else {
+                        listaOs = dao.listaOsTalhaoSemPrioridadeAsc();
+                        ordenaTalhao.setText(setaAsc + "Talhão");
                     }
                 } else {
                     if (ordenaTalhaoBool == false) {
                         listaOs = dao.listaOsTalhaoDesc(posicaoSpinnerPrioridade);
-                        ordenaTalhao.setText(setaDesc+"Talhão");
-                    }else{
+                        ordenaTalhao.setText(setaDesc + "Talhão");
+                    } else {
                         listaOs = dao.listaOsTalhaoAsc(posicaoSpinnerPrioridade);
-                        ordenaTalhao.setText(setaAsc+"Talhão");
+                        ordenaTalhao.setText(setaAsc + "Talhão");
                     }
                 }
                 adaptador.setOrdens(listaOs);
@@ -226,23 +235,23 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         ordenaSetor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ordenaTalhao.setText(setaDesc+"Talhão");
-                ordenaData.setText(setaDesc+"Período Prog.");
-                if(posicaoSpinnerPrioridade==0){
+                ordenaTalhao.setText(setaDesc + "Talhão");
+                ordenaData.setText(setaDesc + "Período Prog.");
+                if (posicaoSpinnerPrioridade == 0) {
                     if (ordenaSetorBool == false) {
                         listaOs = dao.listaOsSetorSemPrioridadeDesc();
-                        ordenaSetor.setText(setaDesc+"Setor");
-                    }else{
+                        ordenaSetor.setText(setaDesc + "Setor");
+                    } else {
                         listaOs = dao.listaOsSetorSemPrioridadeAsc();
-                        ordenaSetor.setText(setaAsc+"Setor");
+                        ordenaSetor.setText(setaAsc + "Setor");
                     }
-                }else {
+                } else {
                     if (ordenaSetorBool == false) {
                         listaOs = dao.listaOsSetorDesc(posicaoSpinnerPrioridade);
-                        ordenaSetor.setText(setaDesc+"Setor");
-                    }else{
+                        ordenaSetor.setText(setaDesc + "Setor");
+                    } else {
                         listaOs = dao.listaOsSetorAsc(posicaoSpinnerPrioridade);
-                        ordenaSetor.setText(setaAsc+"Setor");
+                        ordenaSetor.setText(setaAsc + "Setor");
                     }
                 }
                 adaptador.setOrdens(listaOs);
@@ -254,23 +263,23 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         ordenaData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ordenaSetor.setText(setaDesc+"Setor");
-                ordenaTalhao.setText(setaDesc+"Talhão");
-                if(posicaoSpinnerPrioridade==0){
+                ordenaSetor.setText(setaDesc + "Setor");
+                ordenaTalhao.setText(setaDesc + "Talhão");
+                if (posicaoSpinnerPrioridade == 0) {
                     if (ordenaDataBool == false) {
                         listaOs = dao.listaOsDataSemPrioridadeDesc();
-                        ordenaData.setText(setaDesc+"Período Prog.");
-                    }else {
+                        ordenaData.setText(setaDesc + "Período Prog.");
+                    } else {
                         listaOs = dao.listaOsDataSemPrioridadeAsc();
-                        ordenaData.setText(setaAsc+"Período Prog.");
+                        ordenaData.setText(setaAsc + "Período Prog.");
                     }
-                }else {
+                } else {
                     if (ordenaDataBool == false) {
                         listaOs = dao.listaOsDataDesc(posicaoSpinnerPrioridade);
-                        ordenaData.setText(setaDesc+"Período Prog.");
-                    }else {
+                        ordenaData.setText(setaDesc + "Período Prog.");
+                    } else {
                         listaOs = dao.listaOsDataAsc(posicaoSpinnerPrioridade);
-                        ordenaData.setText(setaAsc+"Período Prog.");
+                        ordenaData.setText(setaAsc + "Período Prog.");
                     }
                 }
                 adaptador.setOrdens(listaOs);
@@ -297,9 +306,33 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                 dialogoVoltar();
             }
         });
+    }
 
+    private void calculaAreaRealizada(int id){
+        double calcula = 0;
+        List <O_S_ATIVIDADES_DIA> listaReg = dao.listaAtividadesDia(id);
+        for(int i=0; i <listaReg.size(); i++){
+            String s = listaReg.get(i).getAREA_REALIZADA().replace(',', '.');
+            double d = 0;
+            try {
+                d = Double.valueOf(s);
+            }catch(Exception e){
+                e.printStackTrace();
+                d = 0;
+            }
+            calcula+=d;
+        }
+        O_S_ATIVIDADES atividade = dao.selecionaOs(id);
+
+        BigDecimal bd = BigDecimal.valueOf(calcula);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+
+        atividade.setAREA_REALIZADA(bd.doubleValue());
+        dao.update(atividade);
+        Log.e("Area Realizada", String.valueOf(bd.doubleValue()));
 
     }
+
 
     //Abre caixa de diálogo perguntando se o usuário deseja realmente voltar para a tela anterior
     public void dialogoVoltar() {
@@ -332,7 +365,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void checaFimDaSinc(){
+    private void checaFimDaSinc() {
         if (temRede() == true) {
 
             dialogoProgresso.show();
@@ -346,24 +379,25 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
 
                 @Override
                 protected Void doInBackground(Void... params) {
-                    while (finalizouSinc==false){}
+                    while (finalizouSinc == false) {
+                    }
                     return null;
                 }
 
                 @SuppressLint("StaticFieldLeak")
                 @Override
                 protected void onPostExecute(Void aVoid) {
-                    if(conectado == true){
-                        if(dialogoProgresso.isShowing()) {
+                    if (conectado == true) {
+                        if (dialogoProgresso.isShowing()) {
                             dialogoProgresso.dismiss();
                         }
                         String s = "Sincronizado com " + HOST_PORTA;
                         //if(contadorDeErros>0) s = "Houveram erros na sincronização, favor comunicar ao responsável.";
-                        Toast.makeText(ActivityMain.this,s , Toast.LENGTH_LONG).show();
+                        Toast.makeText(ActivityMain.this, s, Toast.LENGTH_LONG).show();
                         Intent it = new Intent(ActivityMain.this, ActivityMain.class);
                         startActivity(it);
-                    }else{
-                        if(dialogoProgresso.isShowing()) {
+                    } else {
+                        if (dialogoProgresso.isShowing()) {
                             dialogoProgresso.dismiss();
                         }
                         @SuppressLint("StaticFieldLeak") AlertDialog dialog = new AlertDialog.Builder(ActivityMain.this)
@@ -379,11 +413,12 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                                     }
                                 }).create();
                         dialog.show();
-                    }                    super.onPostExecute(aVoid);
+                    }
+                    super.onPostExecute(aVoid);
                 }
             }.execute();
 
-        }else{
+        } else {
             AlertDialog dialog = new AlertDialog.Builder(ActivityMain.this)
                     .setTitle("Erro de rede.")
                     .setMessage("Não há conexão com a rede.")
@@ -395,6 +430,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
             dialog.show();
         }
     }
+
     private boolean temRede() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
@@ -499,7 +535,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(dialogoProgresso.isShowing()) {
+        if (dialogoProgresso.isShowing()) {
             dialogoProgresso.dismiss();
         }
     }

@@ -35,6 +35,7 @@ import com.example.forestsys.Adapters.AdaptadorApontamentos;
 import com.example.forestsys.Assets.BaseDeDados;
 import com.example.forestsys.Assets.DAO;
 import com.example.forestsys.Assets.Ferramentas;
+import com.example.forestsys.Classes.O_S_ATIVIDADES;
 import com.example.forestsys.R;
 import com.example.forestsys.Calculadora.CalculadoraMain;
 import com.example.forestsys.Classes.O_S_ATIVIDADES_DIA;
@@ -45,6 +46,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -255,6 +257,8 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
         atividade_insumos = dao.listaInsumosatividade(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
+        calculaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+
         dataApontamento = findViewById(R.id.data_apontamento);
         talhaoOs = findViewById(R.id.talhao_os_continuar);
         statusOs = findViewById(R.id.status_os_continuar);
@@ -265,8 +269,8 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         talhaoOs.setText(String.valueOf(osSelecionada.getTALHAO()));
 
         statusOs.setText(String.valueOf(osSelecionada.getSTATUS()));
-        areaOs.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace(".", ","));
-        areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()).replace(".", ","));
+        areaOs.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace(".", ",")+"ha");
+        areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()).replace(".", ",") + "ha");
 
         voltar = findViewById(R.id.botao_continuar_voltar);
         botaoSalvar = findViewById(R.id.botao_prosseguir_continuar);
@@ -1039,7 +1043,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     public void salva() {
 
         double somaQtdApl;
-        double somaAreaRealizada;
         String dataAntesDoEdit = null;
 
 
@@ -1167,12 +1170,9 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
                 DecimalFormat format = new DecimalFormat(".##");
                 BigDecimal qtdHaAplicado;
-                somaAreaRealizada = dao.somaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
                 somaQtdApl = dao.qtdAplicadaTodosInsumos(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), persisteInsumosDia.getID_INSUMO());
                 String s = format.format(somaQtdApl).replace(',', '.');
-
-                // Log.e("Valor somaAreaRealizada", String.valueOf(somaAreaRealizada));
 
                 try {
                     somaQtdApl = Double.valueOf(s);
@@ -1183,10 +1183,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     somaQtdApl = 1;
                 }
 
-
-                //Log.e("soma area | soma qtdApl", String.valueOf(somaAreaRealizada)+" | "+String.valueOf(somaQtdApl));
-
-                String divisao = String.valueOf((long) somaQtdApl / (long) somaAreaRealizada);
+                String divisao = String.valueOf((long) somaQtdApl / (long) osSelecionada.getAREA_REALIZADA());
                 //Log.e("Valor divisao", divisao);
 
                 qtdHaAplicado = new BigDecimal(divisao).setScale(2, BigDecimal.ROUND_UP);
@@ -1210,9 +1207,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             ex.printStackTrace();
         }
 
-        somaAreaRealizada = dao.somaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
-        osSelecionada.setAREA_REALIZADA(somaAreaRealizada);
 
         if (osSelecionada.getSTATUS_NUM() == 0) {
             osSelecionada.setSTATUS("Andamento");
@@ -1252,6 +1247,32 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         }
         ;
         startActivity(it);
+    }
+
+    private void calculaAreaRealizada(int id){
+        double calcula = 0;
+        List <O_S_ATIVIDADES_DIA> listaReg = dao.listaAtividadesDia(id);
+        for(int i=0; i <listaReg.size(); i++){
+            String s = listaReg.get(i).getAREA_REALIZADA().replace(',', '.');
+            double d = 0;
+            try {
+                d = Double.valueOf(s);
+            }catch(Exception e){
+                e.printStackTrace();
+                d = 0;
+            }
+            calcula+=d;
+        }
+        O_S_ATIVIDADES atividade = dao.selecionaOs(id);
+
+        BigDecimal bd = BigDecimal.valueOf(calcula);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+
+        atividade.setAREA_REALIZADA(bd.doubleValue());
+        osSelecionada.setAREA_REALIZADA(bd.doubleValue());
+        dao.update(atividade);
+        Log.e("Area Realizada", String.valueOf(bd.doubleValue()));
+
     }
 
     //Adiciona o botão de atualização a barra de ação

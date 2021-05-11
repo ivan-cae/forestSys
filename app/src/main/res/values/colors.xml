@@ -1,13 +1,13 @@
 <!--?xml version="1.0" encoding="UTF-8"?-->
 <resources>
-    <color name="primaryColor">#e56f48</color>
+    <color name="primaryColor">#e6714b</color>
     <color name="primaryLightColor">#ff9f75</color>
     <color name="primaryDarkColor">#ae401e</color>
-    <color name="secondaryColor">#646b72</color>
+    <color name="secondaryColor">#666d74</color>
     <color name="secondaryLightColor">#e0e0e0</color>
     <color name="secondaryDarkColor">#3a4047</color>
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#ffffff</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="tituloColunaListas">#B8BDB8</color>
+    <color name="colorAccent">#d81b60</color>
+    <color name="tituloColunaListas">#b8bdB8</color>
 </resources>

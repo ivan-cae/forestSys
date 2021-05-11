@@ -71,15 +71,14 @@ public class Ferramentas {
     }
 
     //Poe a virgula automaticamente como separador decimal dos números inseridos nas caixas de texto
-    //parâmetros de entrada: Uma instância de uma caixa de texto, um inteiro representando quantos números virão antes da virgula,
-    //uma string contendo os valores inseridos na caixa de texto
+    //parâmetros de entrada: Uma instância de uma caixa de texto, um CharSequence contendo o valor a ser formatado,
+    //Um inteiro representando o número de casas decimais
+    //Uma string com um valor de referência para calcular o número de casas antes da virgula
+    //Um inteiro contendo o tamanho do CharSequence antes da formatação
+    //Um inteiro contendo o tamanho do CharSequence depois da formatação
     public static void mascaraVirgula(EditText edit, CharSequence s, int casasDecimais, String valorReferencia,
                                       int contAtual, int contAnterior) {
 
-        /*Log.e("Digitado", s.toString());
-        Log.e("Anterior", String.valueOf(contAnterior));
-        Log.e("Atual", String.valueOf(contAtual));
-*/
         if(casasDecimais == 0) casasDecimais = 2;
 
         String input = s.toString();
@@ -87,8 +86,8 @@ public class Ferramentas {
         int tamanho = semFormatar.length();
         String valorFinal = semFormatar;
         char[] separaSemFormatar = semFormatar.toCharArray();
-        char[] separaFormatado = input.toCharArray();
-        int nCasasAntesVirgula = 2;
+        //char[] separaFormatado = input.toCharArray();
+        int nCasasAntesVirgula;
 
         valorReferencia = valorReferencia.replace(".", ",");
         String[] antesDaVirgula = valorReferencia.split(",");
@@ -96,11 +95,10 @@ public class Ferramentas {
 
 
         edit.setFilters(new InputFilter[]{
-                new InputFilter.LengthFilter(nCasasAntesVirgula+3)});
+                new InputFilter.LengthFilter(nCasasAntesVirgula+1+casasDecimais)});
 
         if (contAnterior != contAtual) {
-            if (tamanho > casasDecimais-1) {
-                if (tamanho == casasDecimais) {
+                /*if (tamanho == casasDecimais) {
                     if (contAnterior>contAtual && input.contains(",")) {
                         valorFinal = "";
                         valorFinal = (separaSemFormatar[0] + "" + separaSemFormatar[1]).trim();
@@ -110,7 +108,7 @@ public class Ferramentas {
                         valorFinal = separaSemFormatar[0] + "," + separaSemFormatar[1];
                     }
                 }
-            }
+*/
 
             if (tamanho > casasDecimais) {
                 valorFinal = "";
@@ -122,6 +120,11 @@ public class Ferramentas {
 
                 }
             }
+
+            Log.e("Digitado", s.toString());
+            Log.e("Anterior", String.valueOf(contAnterior));
+            Log.e("Atual", String.valueOf(contAtual));
+
             edit.setText(valorFinal.trim());
             edit.setSelection(edit.length());
         }

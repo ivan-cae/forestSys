@@ -44,6 +44,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.DecimalFormat;
@@ -61,6 +63,7 @@ import okhttp3.RequestBody;
 import static com.example.forestsys.Activities.ActivityConfiguracoes.calculaDataParaApagarDados;
 import static com.example.forestsys.Activities.ActivityInicializacao.HOST_PORTA;
 import static com.example.forestsys.Activities.ActivityInicializacao.conectado;
+import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
 
 public class ClienteWeb<client> {
 
@@ -192,6 +195,34 @@ public class ClienteWeb<client> {
         return s;
     }
 
+    private static void calculaAreaRealizada(int id, Context context){
+        baseDeDados = BaseDeDados.getInstance(context);
+        dao = baseDeDados.dao();
+
+        double calcula = 0;
+        List <O_S_ATIVIDADES_DIA> listaReg = dao.listaAtividadesDia(id);
+        for(int i=0; i <listaReg.size(); i++){
+            String s = listaReg.get(i).getAREA_REALIZADA().replace(',', '.');
+            double d = 0;
+            try {
+                d = Double.valueOf(s);
+            }catch(Exception e){
+                e.printStackTrace();
+                d = 0;
+            }
+            calcula+=d;
+        }
+        O_S_ATIVIDADES atividade = dao.selecionaOs(id);
+
+        BigDecimal bd = BigDecimal.valueOf(calcula);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+
+        atividade.setAREA_REALIZADA(bd.doubleValue());
+        dao.update(atividade);
+        Log.e("Area Realizada", String.valueOf(bd.doubleValue()));
+
+    }
+
     @SuppressLint("LongLogTag")
     public static void sincronizaWebService() throws Exception, IOException {
         contadorDeErros = 0;
@@ -234,7 +265,7 @@ public class ClienteWeb<client> {
             }
         }
         s = s.replace(",",".");
-        Log.e("Valor indicador", s);
+        //Log.e("Valor indicador", s);
         return Double.valueOf(s);
     }
 
@@ -504,8 +535,9 @@ public class ClienteWeb<client> {
                             obj.put("DATA_FINAL", todasOsAtividades.get(i).getDATA_FINAL() + " 12:00:00");
                         }
 
-                        obj.put("AREA_REALIZADA", todasOsAtividades.get(i).getAREA_REALIZADA());
+                        Log.e("Area Realizada put", String.valueOf(dao.somaAreaRealizada(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE())));
 
+                        obj.put("AREA_REALIZADA", dao.somaAreaRealizada(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE()));
 
                         requisicaoPUT(HOST_PORTA + "silvosatividades" + "/" +
                                 String.valueOf(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE()), obj.toString());
@@ -1003,26 +1035,15 @@ public class ClienteWeb<client> {
                         ex.printStackTrace();
                     }
 
-                    Double AREA_REALIZADA = 0.0;
-                    try {
-                        AREA_REALIZADA = obj.getDouble("AREA_REALIZADA");
-                    } catch (Exception ex) {
-                        AREA_REALIZADA = 0.0;
-                        ex.printStackTrace();
-                    }
-
 
                     DecimalFormat format = new DecimalFormat(".##");
                     String s;
-                    s = format.format(AREA_REALIZADA).replace(',', '.');
-
-                    AREA_REALIZADA = Double.parseDouble(s);
 
                     String DATA_PROGRAMADA = obj.getString("DATA_PROGRAMADA");
-                    Double AREA_PROGRAMADA = obj.getDouble("AREA_PROGRAMADA");
+                    double AREA_PROGRAMADA = obj.getDouble("AREA_PROGRAMADA");
 
                     s = format.format(AREA_PROGRAMADA).replace(',', '.');
-                    AREA_PROGRAMADA = Double.parseDouble(s);
+                    AREA_PROGRAMADA = Double.valueOf(s);
 
                     String STATUS = obj.getString("STATUS");
 
@@ -1077,7 +1098,7 @@ public class ClienteWeb<client> {
                         try {
                             dao.insert(new O_S_ATIVIDADES(ID_PROGRAMACAO_ATIVIDADE, ID_REGIONAL, ID_SETOR, TALHAO, CICLO,
                                     ID_MANEJO, ID_ATIVIDADE, ID_RESPONSAVEL, DATA_PROGRAMADA, AREA_PROGRAMADA, PRIORIDADE,
-                                    EXPERIMENTO, MADEIRA_NO_TALHAO, OBSERVACAO, DATA_INICIAL, DATA_FINAL, AREA_REALIZADA,
+                                    EXPERIMENTO, MADEIRA_NO_TALHAO, OBSERVACAO, DATA_INICIAL, DATA_FINAL, 0,
                                     STATUS, STATUS_NUM));
                         } catch (Exception ex) {
                             ex.printStackTrace();
@@ -1121,7 +1142,7 @@ public class ClienteWeb<client> {
 
                     DATA = ignoraHoras(DATA);
 
-                    Double AREA_REALIZADA = 0.0;
+                    double AREA_REALIZADA = 0.0;
                     try {
                         AREA_REALIZADA = obj.getDouble("AREA_REALIZADA");
                     } catch (Exception ex) {
@@ -1131,7 +1152,7 @@ public class ClienteWeb<client> {
                     DecimalFormat format = new DecimalFormat(".##");
                     String s;
                     s = format.format(AREA_REALIZADA).replace(',', '.');
-                    AREA_REALIZADA = Double.parseDouble(s);
+                    AREA_REALIZADA = Double.valueOf(s);
 
                     O_S_ATIVIDADES_DIA oSAtividadesDia = new O_S_ATIVIDADES_DIA();
                     oSAtividadesDia.setID_PROGRAMACAO_ATIVIDADE(ID_PROGRAMACAO_ATIVIDADE);
@@ -1151,6 +1172,7 @@ public class ClienteWeb<client> {
                     oSAtividadesDia.setEXPORT_PROXIMA_SINC(false);
 
                     dao.insert(oSAtividadesDia);
+
                 }
             } catch (Exception ex) {
                 Log.e("S18", "Sem resposta Atividades_Dia,json");
@@ -1327,10 +1349,10 @@ public class ClienteWeb<client> {
 
                     String s;
                     s = format.format(QTD_HA_RECOMENDADO).replace(',', '.');
-                    QTD_HA_RECOMENDADO = Double.parseDouble(s);
+                    QTD_HA_RECOMENDADO = Double.valueOf(s);
 
                     s = format.format(QTD_HA_APLICADO).replace(',', '.');
-                    QTD_HA_APLICADO = Double.parseDouble(s);
+                    QTD_HA_APLICADO = Double.valueOf(s);
 
                     try {
                         dao.insert(new O_S_ATIVIDADE_INSUMOS(ID_INSUMO, ID_PROGRAMACAO_ATIVIDADE, RECOMENDACAO, QTD_HA_RECOMENDADO, QTD_HA_APLICADO));
@@ -1536,7 +1558,18 @@ public class ClienteWeb<client> {
                 contadorDeErros++;
             }
 
+            /*List<O_S_ATIVIDADES> listaOs = dao.todasOs();
+            for (Integer i = 0; i < listaOs.size(); i++) {
+                listaOs.get(i).setAREA_REALIZADA(dao.somaAreaRealizada(listaOs.get(i).getID_PROGRAMACAO_ATIVIDADE()));
+                dao.update(listaOs.get(i));
+            }
+*/
+            List<O_S_ATIVIDADES> listaOs = dao.todasOs();
+            for(int i =0; i <listaOs.size(); i++) {
+                calculaAreaRealizada(listaOs.get(i).getID_PROGRAMACAO_ATIVIDADE(), activity);
+            }
+
             finalizouSinc = true;
-        }
+    }
     }
 }

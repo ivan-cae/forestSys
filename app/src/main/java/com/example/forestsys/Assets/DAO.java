@@ -501,7 +501,7 @@ public interface DAO {
     @Query("SELECT * FROM O_S_ATIVIDADES_DIA WHERE ID=:idOracle")
     O_S_ATIVIDADES_DIA selecionaAtvDiaOracle(Integer idOracle);
 
-    @Query("SELECT SUM(AREA_REALIZADA) FROM O_S_ATIVIDADES_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg")
+    @Query("SELECT ROUND (SUM(CAST(AREA_REALIZADA AS DECIMAL)), 2) FROM O_S_ATIVIDADES_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg")
     double somaAreaRealizada(Integer idProg);
 
 
@@ -549,7 +549,7 @@ public interface DAO {
     @Query("SELECT QTD_APLICADO FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_INSUMO=:idIns AND DATA=:data")
     double qtdAplInsDia(Integer idProg, Integer idIns, String data);
 
-    @Query("SELECT SUM(QTD_APLICADO) FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_INSUMO=:idIns")
+    @Query("SELECT ROUND(SUM(QTD_APLICADO), 2) FROM O_S_ATIVIDADE_INSUMOS_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg AND ID_INSUMO=:idIns")
     double qtdAplicadaTodosInsumos(Integer idProg, Integer idIns);
 
     @Query("SELECT * FROM O_S_ATIVIDADE_INSUMOS_DIA")

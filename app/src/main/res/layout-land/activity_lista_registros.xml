@@ -389,6 +389,7 @@
             android:layout_width="60dp"
             android:layout_height="0dp"
             android:layout_marginStart="4dp"
+            android:maxLength="8"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
             android:textStyle="normal"

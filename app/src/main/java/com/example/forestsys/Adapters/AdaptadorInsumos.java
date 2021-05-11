@@ -55,7 +55,7 @@ public class AdaptadorInsumos extends RecyclerView.Adapter<AdaptadorInsumos.Insu
 
         String s;
         s = format.format(QTD_PROGRAMADA).replace(',', '.');
-        double qtdProg = Double.parseDouble(s);
+        double qtdProg = Double.valueOf(s);
         holder.qtdProgramada.setText(String.valueOf(qtdProg).replace(".", ","));
 
         String rec = "Não";

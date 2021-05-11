@@ -229,7 +229,7 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
             double teste = 3;
             try {
                 String pegaEspacamento[] = dao.selecionaEspacamento(cadastro_florestal.getID_ESPACAMENTO()).getDESCRICAO().trim().replace(',', '.').split("X");
-                teste = Double.parseDouble(pegaEspacamento[0]);
+                teste = Double.valueOf(pegaEspacamento[0]);
             } catch (NumberFormatException | NullPointerException n) {
                 n.printStackTrace();
                 teste = 3;

@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,6 +38,7 @@ import com.example.forestsys.Assets.BaseDeDados;
 import com.example.forestsys.Assets.DAO;
 import com.example.forestsys.Assets.Ferramentas;
 import com.example.forestsys.Classes.GEO_LOCALIZACAO;
+import com.example.forestsys.Classes.O_S_ATIVIDADES;
 import com.example.forestsys.R;
 import com.example.forestsys.Calculadora.CalculadoraMain;
 import com.example.forestsys.Classes.AVAL_PONTO_SUBSOLAGEM;
@@ -54,6 +56,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -181,6 +185,10 @@ public class ActivityAtividades extends AppCompatActivity
         dao = baseDeDados.dao();
         joinOsInsumos = dao.listaJoinInsumoAtividades(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
+        calculaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+        dao.update(osSelecionada);
+
+
         recyclerView = findViewById(R.id.os_detalhes_recycler_insumos);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
@@ -229,6 +237,7 @@ public class ActivityAtividades extends AppCompatActivity
         botaoCalibracao = findViewById(R.id.botao_detalhes_calibracao);
         botaoQualidade = findViewById(R.id.botao_detalhes_qualidade);
         botaoRegistros = findViewById(R.id.botao_apontamentos_geral);
+
 
         if (savedInstanceState != null) {
             auxSavedInstanceState = savedInstanceState;
@@ -534,6 +543,33 @@ public class ActivityAtividades extends AppCompatActivity
                     }).create();
             dialog.show();
         }
+
+
+    }
+
+    private void calculaAreaRealizada(int id){
+        double calcula = 0;
+        List <O_S_ATIVIDADES_DIA> listaReg = dao.listaAtividadesDia(id);
+        for(int i=0; i <listaReg.size(); i++){
+            String s = listaReg.get(i).getAREA_REALIZADA().replace(',', '.');
+            double d = 0;
+            try {
+                d = Double.valueOf(s);
+            }catch(Exception e){
+                e.printStackTrace();
+                d = 0;
+            }
+            calcula+=d;
+        }
+        O_S_ATIVIDADES atividade = dao.selecionaOs(id);
+
+        BigDecimal bd = BigDecimal.valueOf(calcula);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+
+        atividade.setAREA_REALIZADA(bd.doubleValue());
+        osSelecionada.setAREA_REALIZADA(bd.doubleValue());
+        dao.update(atividade);
+        Log.e("Area Realizada", String.valueOf(bd.doubleValue()));
     }
 
     public void salvar() {
