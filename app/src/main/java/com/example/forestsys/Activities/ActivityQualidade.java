@@ -30,6 +30,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -41,6 +43,8 @@ import com.example.forestsys.Adapters.AdaptadorCorrecaoQualidade;
 import com.example.forestsys.Assets.BaseDeDados;
 import com.example.forestsys.Assets.DAO;
 import com.example.forestsys.Assets.Ferramentas;
+import com.example.forestsys.Assets.NDSpinner;
+import com.example.forestsys.Classes.GGF_USUARIOS;
 import com.example.forestsys.Classes.O_S_ATIVIDADES;
 import com.example.forestsys.Classes.O_S_ATIVIDADES_DIA;
 import com.example.forestsys.R;
@@ -69,6 +73,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.view.View.GONE;
+import static com.example.forestsys.Activities.ActivityAtividades.erroPrestadorBool;
 import static com.example.forestsys.Activities.ActivityAtividades.joinOsInsumos;
 import static com.example.forestsys.Activities.ActivityAtividades.listaCorrecoes;
 import static com.example.forestsys.Activities.ActivityAtividades.listaPontosCorrecaoAux;
@@ -90,6 +95,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     private BaseDeDados baseDeDados;
     private FloatingActionButton botaoVerion;
     private FloatingActionButton botaoPonto;
+    private FloatingActionButton botaoEditarPonto;
+
     private Button botaoCorrecoes;
 
     private EditText mediaEditP1;
@@ -104,6 +111,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     private boolean dialogoVerionAberto;
     private boolean dialogoPontoAberto;
     private boolean dialogoCorrecaoAberto;
+    private boolean dialogoEdicaoAberto;
 
     private EditText editItem1;
     private EditText editItem2;
@@ -163,6 +171,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     private AlertDialog dialogoVerion;
     private AlertDialog dialogoPonto;
     private AlertDialog dialogoCorrecao;
+    private AlertDialog dialogoEdicao;
 
     private Formulas formulas;
 
@@ -184,7 +193,11 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
     private PieChart graficoQualidade;
 
-    double nItensNconforme;
+    private double nItensNconforme;
+    private Integer itemSelecionadoSpinnerEdicao;
+
+    private Integer numeroPontoAtual = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -196,7 +209,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         baseDeDados = BaseDeDados.getInstance(getApplicationContext());
         dao = baseDeDados.dao();
 
-            calculaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+        calculaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
         AVAL_SUBSOLAGEM avlSub = dao.selecionaAvalSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
         List<ATIVIDADE_INDICADORES> atvIndicadoresPonto = dao.listaAtividadeIndicadores(osSelecionada.getID_ATIVIDADE(), "N");
@@ -220,26 +233,33 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             it.putExtra("erroAbrirQualidade", true);
             startActivity(it);
         }
-            try {
-                inicializacao();
-            } catch (Exception e) {
-                e.printStackTrace();
-                Intent it = new Intent(ActivityQualidade.this, ActivityAtividades.class);
-                it.putExtra("erroAbrirQualidade", true);
-                startActivity(it);
-            }
+        try {
+            inicializacao();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Intent it = new Intent(ActivityQualidade.this, ActivityAtividades.class);
+            it.putExtra("erroAbrirQualidade", true);
+            startActivity(it);
+        }
 
         if (savedInstanceState != null) {
             dialogoVerionAberto = savedInstanceState.getBoolean("dialogoVerionAberto");
             dialogoPontoAberto = savedInstanceState.getBoolean("dialogoPontoAberto");
             dialogoCorrecaoAberto = savedInstanceState.getBoolean("dialogoCorrecaoAberto");
+            dialogoEdicaoAberto = savedInstanceState.getBoolean("dialogoEdicaoAberto");
 
-            if (dialogoPontoAberto == true) abreDialogoPonto();
+            numeroPontoAtual = savedInstanceState.getInt("numeroPontoAtual");
+
+            if(dialogoEdicaoAberto==true) {
+                itemSelecionadoSpinnerEdicao = savedInstanceState.getInt("itemSelecionadoSpinnerEdicao");
+            }
+            if (dialogoPontoAberto == true) abreDialogoPonto(null);
             if (dialogoVerionAberto == true) abreDialogoVerion();
             if (dialogoCorrecaoAberto == true) abreDialogoCorrecao();
+            if (dialogoEdicaoAberto == true) abreDialogoEdicao();
         }
 
-        if (dialogoPontoAberto == false && dialogoVerionAberto == false && dialogoCorrecaoAberto == false) {
+        if (dialogoPontoAberto == false && dialogoVerionAberto == false && dialogoCorrecaoAberto == false && dialogoEdicaoAberto == false) {
             savedInstanceState = null;
             auxSavedInstanceState = null;
         }
@@ -276,9 +296,24 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         botaoPonto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                abreDialogoPonto();
+                abreDialogoPonto(null);
             }
         });
+
+        if(listaPonto.size()>0) {
+            botaoEditarPonto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    abreDialogoEdicao();
+                }
+            });
+        }else{
+            botaoEditarPonto.setEnabled(false);
+            botaoEditarPonto.setVisibility(GONE);
+
+            TextView textoEditarPonto = findViewById(R.id.qualidade_text_edit_ponto);
+            textoEditarPonto.setVisibility(GONE);
+        }
 
         if (listaPonto.size() > 0) {
             qtdPontos = listaPonto.get(listaPonto.size() - 1).getPONTO();
@@ -335,27 +370,37 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
 
         if (osSelecionada.getSTATUS_NUM() == 2) {
+            TextView textoAddPonto = findViewById(R.id.qualidade_text_add_ponto);
+            textoAddPonto.setEnabled(false);
+            textoAddPonto.setVisibility(GONE);
+
             botaoPonto.setEnabled(false);
             botaoPonto.setVisibility(GONE);
 
             botaoVerion.setEnabled(false);
             botaoVerion.setVisibility(GONE);
+
+            botaoEditarPonto.setEnabled(false);
+            botaoEditarPonto.setVisibility(GONE);
+
+            TextView textoEditarPonto = findViewById(R.id.qualidade_text_edit_ponto);
+            textoEditarPonto.setVisibility(GONE);
         }
     }
 
-    private void calculaAreaRealizada(int id){
+    private void calculaAreaRealizada(int id) {
         double calcula = 0;
-        List <O_S_ATIVIDADES_DIA> listaReg = dao.listaAtividadesDia(id);
-        for(int i=0; i <listaReg.size(); i++){
+        List<O_S_ATIVIDADES_DIA> listaReg = dao.listaAtividadesDia(id);
+        for (int i = 0; i < listaReg.size(); i++) {
             String s = listaReg.get(i).getAREA_REALIZADA().replace(',', '.');
             double d = 0;
             try {
                 d = Double.valueOf(s);
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 d = 0;
             }
-            calcula+=d;
+            calcula += d;
         }
         O_S_ATIVIDADES atividade = dao.selecionaOs(id);
 
@@ -379,6 +424,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         dialogoPontoAberto = false;
         dialogoVerionAberto = false;
         dialogoCorrecaoAberto = false;
+        dialogoEdicaoAberto = false;
 
         idProg = osSelecionada.getID_PROGRAMACAO_ATIVIDADE();
 
@@ -390,6 +436,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         manejo = findViewById(R.id.qualidade_manejo);
         botaoVerion = findViewById(R.id.qualidade_botao_verion);
         botaoPonto = findViewById(R.id.qualidade_botao_ponto);
+        botaoEditarPonto = findViewById(R.id.qualidade_botao_editar_ponto);
         botaoCorrecoes = findViewById(R.id.qualidade_botao_correcao);
         pontosRealizados = findViewById(R.id.qualidade_pontos_realizados);
         botaoVoltar = findViewById(R.id.botao_qualidade_voltar);
@@ -428,7 +475,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         data.setText(ferramentas.dataAtual());
         status.setText(osSelecionada.getSTATUS());
         area.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()) + "ha");
-        areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA())+"ha");
+        areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()) + "ha");
         manejo.setText(String.valueOf(dao.selecionaManejo(osSelecionada.getID_MANEJO()).getDESCRICAO()));
 
         graficoQualidade = findViewById(R.id.barra_progresso_lista_registros);
@@ -495,8 +542,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         if (listaPonto.size() == 0) {
             pontosRealizados.setText("0");
             graficoQualidade.setVisibility(View.INVISIBLE);
-        }
-        else {
+        } else {
 
             pontosRealizados.setText(String.valueOf(listaPonto.get(listaPonto.size() - 1).getPONTO()));
 
@@ -590,18 +636,18 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 ncPercLocalizacao.setTextColor(Color.parseColor("#FF0000"));
             }
 
-            nItensNconforme = (nc1+nc2+nc3+nc4+nc5+nc6+nc7+nc8+nc9+nc10)*100;
+            nItensNconforme = (nc1 + nc2 + nc3 + nc4 + nc5 + nc6 + nc7 + nc8 + nc9 + nc10) * 100;
             double auxQtdPontos = listaPonto.get(listaPonto.size() - 1).getPONTO();
-            double calculoPontosReg = auxQtdPontos*10;
+            double calculoPontosReg = auxQtdPontos * 10;
 
             Log.e("Qtd itens nc", String.valueOf(nItensNconforme));
             Log.e("Qtd pontos", String.valueOf(calculoPontosReg));
 
             float percentualQualidade;
-            try{
-                percentualQualidade = (float) (nItensNconforme/calculoPontosReg);
+            try {
+                percentualQualidade = (float) (nItensNconforme / calculoPontosReg);
                 Log.e("Percentual Qualidade", String.valueOf(percentualQualidade));
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 percentualQualidade = 0;
                 Log.e("Percentual Qualidade", "deu erro: 0");
@@ -609,7 +655,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
             percentualQualidade = (100 - percentualQualidade);
 
-            List <PieEntry>valoresRegistroApontamento = new ArrayList();
+            List<PieEntry> valoresRegistroApontamento = new ArrayList();
             valoresRegistroApontamento.add(new PieEntry(percentualQualidade, 0));
             valoresRegistroApontamento.add(new PieEntry(100 - percentualQualidade, 1));
 
@@ -663,6 +709,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        itemSelecionadoSpinnerEdicao = 0;
     }
 
     //Poe a virgula automaticamente como separador decimal dos números inseridos nas caixas de teste
@@ -760,13 +808,13 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             desvioEditP1 = mView.findViewById(R.id.dialogo_qualidade_verion_desvio_padrao_p1);
             desvioEditP2 = mView.findViewById(R.id.dialogo_qualidade_verion_desvio_padrao_p2);
 
-            FloatingActionButton botaoRegistrar =  mView.findViewById(R.id.dialogo_qualidade_verion_botao_registrar);
-            FloatingActionButton botaoCancelar =  mView.findViewById(R.id.dialogo_qualidade_verion_botao_cancelar);
+            FloatingActionButton botaoRegistrar = mView.findViewById(R.id.dialogo_qualidade_verion_botao_registrar);
+            FloatingActionButton botaoCancelar = mView.findViewById(R.id.dialogo_qualidade_verion_botao_cancelar);
 
-            mediaP1Nome.setText(atividadeIndicadores.get(0).getREFERENCIA()+"-"+joinOsInsumos.get(0).getDESCRICAO());
-            desvioP1Nome.setText(atividadeIndicadores.get(1).getREFERENCIA()+"-"+joinOsInsumos.get(0).getDESCRICAO());
-            mediaP2Nome.setText(atividadeIndicadores.get(2).getREFERENCIA()+"-"+joinOsInsumos.get(1).getDESCRICAO());
-            desvioP2Nome.setText(atividadeIndicadores.get(3).getREFERENCIA()+"-"+joinOsInsumos.get(1).getDESCRICAO());
+            mediaP1Nome.setText(atividadeIndicadores.get(0).getREFERENCIA() + "-" + joinOsInsumos.get(0).getDESCRICAO());
+            desvioP1Nome.setText(atividadeIndicadores.get(1).getREFERENCIA() + "-" + joinOsInsumos.get(0).getDESCRICAO());
+            mediaP2Nome.setText(atividadeIndicadores.get(2).getREFERENCIA() + "-" + joinOsInsumos.get(1).getDESCRICAO());
+            desvioP2Nome.setText(atividadeIndicadores.get(3).getREFERENCIA() + "-" + joinOsInsumos.get(1).getDESCRICAO());
 
             letraItem1.setText(atividadeIndicadores.get(0).getUNIDADE_MEDIDA());
             letraItem2.setText(atividadeIndicadores.get(1).getUNIDADE_MEDIDA());
@@ -1373,8 +1421,103 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         return aux;
     }
 
+    //Abre caixa de diálogo para edição dos dados de um ponto
+    public void abreDialogoEdicao() {
+        dialogoEdicaoAberto = true;
+
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+        View mView = getLayoutInflater().inflate(R.layout.dialogo_qualidade_edicao_ponto, null);
+
+        NDSpinner spinnerEdicaoPonto = mView.findViewById(R.id.spinner_dialogo_edicao_ponto);
+        Button botaoConfirmar = mView.findViewById(R.id.dialogo_confirmar_edicao_ponto);
+        Button botaoCancelar = mView.findViewById(R.id.dialogo_cancelar_edicao_ponto);
+
+        mBuilder.setView(mView);
+
+        dialogoEdicao = mBuilder.create();
+        dialogoEdicao.show();
+        dialogoEdicao.setCanceledOnTouchOutside(false);
+        dialogoEdicao.setCancelable(false);
+
+        ArrayAdapter<AVAL_PONTO_SUBSOLAGEM> adapterPonto;
+
+        adapterPonto = new ArrayAdapter<AVAL_PONTO_SUBSOLAGEM>(this,
+                android.R.layout.simple_spinner_item, listaPonto);
+        adapterPonto.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerEdicaoPonto.setAdapter(adapterPonto);
+
+        spinnerEdicaoPonto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                itemSelecionadoSpinnerEdicao = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                itemSelecionadoSpinnerEdicao = 0;
+            }
+        });
+
+        if(itemSelecionadoSpinnerEdicao == null) itemSelecionadoSpinnerEdicao = 0;
+
+        spinnerEdicaoPonto.setSelection(itemSelecionadoSpinnerEdicao);
+
+
+        itemSelecionadoSpinnerEdicao = spinnerEdicaoPonto.getSelectedItemPosition();
+
+
+        dialogoEdicao.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                auxSavedInstanceState = null;
+                dialogoEdicaoAberto = false;
+                Toast.makeText(ActivityQualidade.this, "Operação cancelada pelo usuário", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        dialogoEdicao.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                auxSavedInstanceState = null;
+                dialogoEdicaoAberto = false;
+            }
+        });
+
+        botaoCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemSelecionadoSpinnerEdicao = 0;
+                numeroPontoAtual = null;
+                dialogoEdicao.cancel();
+            }
+        });
+
+        botaoConfirmar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(usuarioLogado.getNIVEL_ACESSO() == 0 &&
+                        listaPonto.get(itemSelecionadoSpinnerEdicao).getUPDATED_AT()!=null){
+                    AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
+                            .setTitle("Erro")
+                            .setMessage("O usuário não tem permissão para editar o ponto selecionado")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                }
+                            }).create();
+                    dialog.show();
+                }else {
+                    dialogoEdicaoAberto = false;
+                    abreDialogoPonto(listaPonto.get(itemSelecionadoSpinnerEdicao));
+                }
+                }
+        });
+    }
+
+
     //Abre caixa de diálogo para preenchimento dos dados do ponto
-    public void abreDialogoPonto() {
+    public void abreDialogoPonto(AVAL_PONTO_SUBSOLAGEM ponto) {
         dialogoPontoAberto = true;
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_qualidade_ponto, null);
@@ -1414,22 +1557,78 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         editItem9 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item9);
         editItem10 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item10);
 
-        numeroPonto.setText(String.valueOf(listaPonto.size() + 1));
-
-        FloatingActionButton botaoRegistrar =  mView.findViewById(R.id.dialogo_qualidade_ponto_botao_registrar);
-        FloatingActionButton botaoCancelar =  mView.findViewById(R.id.botao_cancelar_dialogo_qualidade);
+        FloatingActionButton botaoRegistrar = mView.findViewById(R.id.dialogo_qualidade_ponto_botao_registrar);
+        FloatingActionButton botaoCancelar = mView.findViewById(R.id.botao_cancelar_dialogo_qualidade);
         atividadeIndicadores = dao.listaAtividadeIndicadores(osSelecionada.getID_ATIVIDADE(), "N");
 
-        textItem1.setText(atividadeIndicadores.get(0).getREFERENCIA()+"-"+atividadeIndicadores.get(0).getDESCRICAO());
-        textItem2.setText(atividadeIndicadores.get(1).getREFERENCIA()+"-"+atividadeIndicadores.get(1).getDESCRICAO());
-        textItem3.setText(atividadeIndicadores.get(2).getREFERENCIA()+"-"+atividadeIndicadores.get(2).getDESCRICAO());
-        textItem4.setText(atividadeIndicadores.get(3).getREFERENCIA()+"-"+atividadeIndicadores.get(3).getDESCRICAO());
-        textItem5.setText(atividadeIndicadores.get(4).getREFERENCIA()+"-"+atividadeIndicadores.get(4).getDESCRICAO());
-        textItem6.setText(atividadeIndicadores.get(5).getREFERENCIA()+"-"+atividadeIndicadores.get(5).getDESCRICAO());
-        textItem7.setText(atividadeIndicadores.get(6).getREFERENCIA()+"-"+atividadeIndicadores.get(6).getDESCRICAO());
-        textItem8.setText(atividadeIndicadores.get(7).getREFERENCIA()+"-"+atividadeIndicadores.get(7).getDESCRICAO());
-        textItem9.setText(atividadeIndicadores.get(8).getREFERENCIA()+"-"+atividadeIndicadores.get(8).getDESCRICAO());
-        textItem10.setText(atividadeIndicadores.get(9).getREFERENCIA()+"-"+atividadeIndicadores.get(9).getDESCRICAO());
+        if(numeroPontoAtual == null){
+            numeroPontoAtual = (listaPonto.size() + 1);
+        }
+
+        if(ponto == null) {
+            numeroPonto.setText(String.valueOf(numeroPontoAtual));
+        }else{
+            dialogoEdicao.dismiss();
+            numeroPontoAtual = ponto.getPONTO();
+            numeroPonto.setText(String.valueOf(numeroPontoAtual));
+            editItem1.setText(String.valueOf(dao.selecionaAvalPontoSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
+                    atividadeIndicadores.get(0).getID_INDICADOR(), ponto.getPONTO()).getVALOR_INDICADOR()).replace('.', ','));
+
+            editItem2.setText(String.valueOf(dao.selecionaAvalPontoSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
+                    atividadeIndicadores.get(1).getID_INDICADOR(), ponto.getPONTO()).getVALOR_INDICADOR()).replace('.', ','));
+
+            editItem3.setText(String.valueOf(dao.selecionaAvalPontoSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
+                    atividadeIndicadores.get(2).getID_INDICADOR(), ponto.getPONTO()).getVALOR_INDICADOR()).replace('.', ','));
+
+            editItem4.setText(String.valueOf(dao.selecionaAvalPontoSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
+                    atividadeIndicadores.get(3).getID_INDICADOR(), ponto.getPONTO()).getVALOR_INDICADOR()).replace('.', ','));
+
+            if(dao.selecionaAvalPontoSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
+                    atividadeIndicadores.get(4).getID_INDICADOR(), ponto.getPONTO()).getVALOR_INDICADOR() == 1){
+                editItem5.setChecked(true);
+            }else{
+                editItem5.setChecked(false);
+            }
+
+            editItem6.setText(String.valueOf(dao.selecionaAvalPontoSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
+                    atividadeIndicadores.get(5).getID_INDICADOR(), ponto.getPONTO()).getVALOR_INDICADOR()).replace('.', ','));
+
+            if(dao.selecionaAvalPontoSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
+                    atividadeIndicadores.get(6).getID_INDICADOR(), ponto.getPONTO()).getVALOR_INDICADOR() == 1){
+                editItem7.setChecked(true);
+            }else{
+                editItem7.setChecked(false);
+            }
+
+            if(dao.selecionaAvalPontoSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
+                    atividadeIndicadores.get(7).getID_INDICADOR(), ponto.getPONTO()).getVALOR_INDICADOR() == 1){
+                editItem8.setChecked(true);
+            }else{
+                editItem8.setChecked(false);
+            }
+
+            if(dao.selecionaAvalPontoSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
+                    atividadeIndicadores.get(8).getID_INDICADOR(), ponto.getPONTO()).getVALOR_INDICADOR() == 1){
+                editItem9.setChecked(true);
+            }else{
+                editItem9.setChecked(false);
+            }
+
+            editItem10.setText(String.valueOf(dao.selecionaAvalPontoSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
+                    atividadeIndicadores.get(9).getID_INDICADOR(), ponto.getPONTO()).getVALOR_INDICADOR()).replace('.', ','));
+        }
+
+
+        textItem1.setText(atividadeIndicadores.get(0).getREFERENCIA() + "-" + atividadeIndicadores.get(0).getDESCRICAO());
+        textItem2.setText(atividadeIndicadores.get(1).getREFERENCIA() + "-" + atividadeIndicadores.get(1).getDESCRICAO());
+        textItem3.setText(atividadeIndicadores.get(2).getREFERENCIA() + "-" + atividadeIndicadores.get(2).getDESCRICAO());
+        textItem4.setText(atividadeIndicadores.get(3).getREFERENCIA() + "-" + atividadeIndicadores.get(3).getDESCRICAO());
+        textItem5.setText(atividadeIndicadores.get(4).getREFERENCIA() + "-" + atividadeIndicadores.get(4).getDESCRICAO());
+        textItem6.setText(atividadeIndicadores.get(5).getREFERENCIA() + "-" + atividadeIndicadores.get(5).getDESCRICAO());
+        textItem7.setText(atividadeIndicadores.get(6).getREFERENCIA() + "-" + atividadeIndicadores.get(6).getDESCRICAO());
+        textItem8.setText(atividadeIndicadores.get(7).getREFERENCIA() + "-" + atividadeIndicadores.get(7).getDESCRICAO());
+        textItem9.setText(atividadeIndicadores.get(8).getREFERENCIA() + "-" + atividadeIndicadores.get(8).getDESCRICAO());
+        textItem10.setText(atividadeIndicadores.get(9).getREFERENCIA() + "-" + atividadeIndicadores.get(9).getDESCRICAO());
 
         textLetra1.setText(atividadeIndicadores.get(0).getUNIDADE_MEDIDA());
         textLetra2.setText(atividadeIndicadores.get(1).getUNIDADE_MEDIDA());
@@ -1768,6 +1967,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             @Override
             public void onClick(View v) {
                 dialogoPonto.cancel();
+                numeroPontoAtual = null;
+                itemSelecionadoSpinnerEdicao = 0;
             }
         });
 
@@ -1842,11 +2043,11 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        salvaPonto();
+                                        salvaPonto(ponto);
                                     }
                                 }).create();
                         dialog.show();
-                    } else salvaPonto();
+                    } else salvaPonto(ponto);
                 }
             }
         });
@@ -1868,8 +2069,15 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         });
     }
 
-    public void salvaPonto() {
+    public void salvaPonto(AVAL_PONTO_SUBSOLAGEM ponto) {
         double check = 0;
+        String dataAtual = null;
+
+        if(ponto==null){
+            dataAtual = ferramentas.formataDataDb(data.getText().toString());
+        }else{
+            dataAtual = ponto.getDATA();
+        }
         try {
             /*DecimalFormat df = new DecimalFormat(".####");
             String s = df.format(String.valueOf(latitude));
@@ -1878,60 +2086,173 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             s = df.format(String.valueOf(longitude));
             longitude = Double.valueOf(s);
 */
+
+            BigDecimal bd = BigDecimal.valueOf(latitude);
+            bd = bd.setScale(5, RoundingMode.HALF_EVEN);
+            latitude = bd.doubleValue();
+
+            bd = BigDecimal.valueOf(longitude);
+            bd = bd.setScale(5, RoundingMode.HALF_EVEN);
+            longitude = bd.doubleValue();
+
             //Log.e("Latitude", String.valueOf(latitude));
             //Log.e("Longitude", String.valueOf(longitude));
 
-            AVAL_PONTO_SUBSOLAGEM insere;
-            insere = new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
-                    listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(0).getID_INDICADOR(),
-                    Double.valueOf(editItem1.getText().toString().replace(',', '.')), latitude, longitude, 0);
+            if(ponto == null) {
+                AVAL_PONTO_SUBSOLAGEM insere;
+                insere = new AVAL_PONTO_SUBSOLAGEM(idProg, dataAtual, numeroPontoAtual
+                        , osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(0).getID_INDICADOR(),
+                        Double.valueOf(editItem1.getText().toString().replace(',', '.')), latitude, longitude, 0, null, 0);
 
-            dao.insert(insere);
+                dao.insert(insere);
 
 
-            dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
-                    listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(1).getID_INDICADOR(),
-                    Double.valueOf(editItem2.getText().toString().replace(',', '.')), latitude, longitude, 0));
+                dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataAtual,
+                        numeroPontoAtual, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(1).getID_INDICADOR(),
+                        Double.valueOf(editItem2.getText().toString().replace(',', '.')), latitude, longitude, 0, null, 0));
 
-            dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
-                    listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(2).getID_INDICADOR(),
-                    Double.valueOf(editItem3.getText().toString().replace(',', '.')), latitude, longitude, 0));
+                dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataAtual,
+                        numeroPontoAtual, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(2).getID_INDICADOR(),
+                        Double.valueOf(editItem3.getText().toString().replace(',', '.')), latitude, longitude, 0, null, 0));
 
-            dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
-                    listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(3).getID_INDICADOR(),
-                    Double.valueOf(editItem4.getText().toString().replace(',', '.')), latitude, longitude, 0));
+                dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataAtual,
+                        numeroPontoAtual, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(3).getID_INDICADOR(),
+                        Double.valueOf(editItem4.getText().toString().replace(',', '.')), latitude, longitude, 0, null, 0));
 
-            if (editItem5.isChecked()) check = 1;
-            else check = 0;
-            dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
-                    listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(4).getID_INDICADOR(),
-                    check, latitude, longitude, 0));
+                if (editItem5.isChecked()) check = 1;
+                else check = 0;
+                dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataAtual,
+                        numeroPontoAtual, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(4).getID_INDICADOR(),
+                        check, latitude, longitude, 0, null, 0));
 
-            dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
-                    listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(5).getID_INDICADOR(),
-                    Double.valueOf(editItem6.getText().toString().replace(',', '.')), latitude, longitude, 0));
+                dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataAtual,
+                        numeroPontoAtual, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(5).getID_INDICADOR(),
+                        Double.valueOf(editItem6.getText().toString().replace(',', '.')), latitude, longitude, 0, null, 0));
 
-            if (editItem7.isChecked()) check = 1;
-            else check = 0;
-            dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
-                    listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(6).getID_INDICADOR(),
-                    check, latitude, longitude, 0));
+                if (editItem7.isChecked()) check = 1;
+                else check = 0;
+                dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataAtual,
+                        numeroPontoAtual, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(6).getID_INDICADOR(),
+                        check, latitude, longitude, 0, null, 0));
 
-            if (editItem8.isChecked()) check = 1;
-            else check = 0;
-            dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
-                    listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(7).getID_INDICADOR(),
-                    check, latitude, longitude, 0));
+                if (editItem8.isChecked()) check = 1;
+                else check = 0;
+                dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataAtual,
+                        numeroPontoAtual, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(7).getID_INDICADOR(),
+                        check, latitude, longitude, 0, null, 0));
 
-            if (editItem9.isChecked()) check = 1;
-            else check = 0;
-            dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
-                    listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(8).getID_INDICADOR(),
-                    check, latitude, longitude, 0));
+                if (editItem9.isChecked()) check = 1;
+                else check = 0;
+                dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataAtual,
+                        numeroPontoAtual, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(8).getID_INDICADOR(),
+                        check, latitude, longitude, 0, null, 0));
 
-            dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, ferramentas.formataDataDb(data.getText().toString()),
-                    listaPonto.size() + 1, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(9).getID_INDICADOR(),
-                    Double.valueOf(editItem10.getText().toString().replace(',', '.')), latitude, longitude, 0));
+                dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataAtual,
+                        numeroPontoAtual, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(9).getID_INDICADOR(),
+                        Double.valueOf(editItem10.getText().toString().replace(',', '.')), latitude, longitude, 0, null, 0));
+            }else{
+                List<AVAL_PONTO_SUBSOLAGEM> todosIndicadoresPonto =
+                        dao.todosIndicadoresPonto(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), numeroPontoAtual);
+                AVAL_PONTO_SUBSOLAGEM insere;
+                Integer fazPut = 0;
+
+                if(todosIndicadoresPonto.get(0).getUPDATED_AT()!=null){
+                    fazPut = 1;
+                }
+
+                insere = new AVAL_PONTO_SUBSOLAGEM(idProg, dataAtual, numeroPontoAtual
+                        , osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(0).getID_INDICADOR(),
+                        Double.valueOf(editItem1.getText().toString().replace(',', '.')),
+                        todosIndicadoresPonto.get(0).getCOORDENADA_X(),
+                        todosIndicadoresPonto.get(0).getCOORDENADA_Y(),
+                        todosIndicadoresPonto.get(0).getNC_TRATADA(),
+                        todosIndicadoresPonto.get(0).getUPDATED_AT(), fazPut);
+
+                dao.insert(insere);
+
+
+                dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataAtual,
+                        numeroPontoAtual, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(1).getID_INDICADOR(),
+                        Double.valueOf(editItem2.getText().toString().replace(',', '.')),
+                        todosIndicadoresPonto.get(1).getCOORDENADA_X(),
+                        todosIndicadoresPonto.get(1).getCOORDENADA_Y(),
+                        todosIndicadoresPonto.get(1).getNC_TRATADA(),
+                        todosIndicadoresPonto.get(1).getUPDATED_AT(), fazPut));
+
+
+                dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataAtual,
+                        numeroPontoAtual, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(2).getID_INDICADOR(),
+                        Double.valueOf(editItem3.getText().toString().replace(',', '.')),
+                        todosIndicadoresPonto.get(2).getCOORDENADA_X(),
+                        todosIndicadoresPonto.get(2).getCOORDENADA_Y(),
+                        todosIndicadoresPonto.get(2).getNC_TRATADA(),
+                        todosIndicadoresPonto.get(2).getUPDATED_AT(), fazPut));
+
+                dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataAtual,
+                        numeroPontoAtual, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(3).getID_INDICADOR(),
+                        Double.valueOf(editItem4.getText().toString().replace(',', '.')),
+                        todosIndicadoresPonto.get(3).getCOORDENADA_X(),
+                        todosIndicadoresPonto.get(3).getCOORDENADA_Y(),
+                        todosIndicadoresPonto.get(3).getNC_TRATADA(),
+                        todosIndicadoresPonto.get(3).getUPDATED_AT(), fazPut));
+
+                if (editItem5.isChecked()) check = 1;
+                else check = 0;
+                dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataAtual,
+                        numeroPontoAtual, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(4).getID_INDICADOR(),
+                        check,
+                        todosIndicadoresPonto.get(4).getCOORDENADA_X(),
+                        todosIndicadoresPonto.get(4).getCOORDENADA_Y(),
+                        todosIndicadoresPonto.get(4).getNC_TRATADA(),
+                        todosIndicadoresPonto.get(4).getUPDATED_AT(), fazPut));
+
+                dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataAtual,
+                        numeroPontoAtual, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(5).getID_INDICADOR(),
+                        Double.valueOf(editItem6.getText().toString().replace(',', '.')),
+                        todosIndicadoresPonto.get(5).getCOORDENADA_X(),
+                        todosIndicadoresPonto.get(5).getCOORDENADA_Y(),
+                        todosIndicadoresPonto.get(5).getNC_TRATADA(),
+                        todosIndicadoresPonto.get(5).getUPDATED_AT(), fazPut));
+
+                if (editItem7.isChecked()) check = 1;
+                else check = 0;
+                dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataAtual,
+                        numeroPontoAtual, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(6).getID_INDICADOR(),
+                        check,
+                        todosIndicadoresPonto.get(6).getCOORDENADA_X(),
+                        todosIndicadoresPonto.get(6).getCOORDENADA_Y(),
+                        todosIndicadoresPonto.get(6).getNC_TRATADA(),
+                        todosIndicadoresPonto.get(6).getUPDATED_AT(), fazPut));
+
+                if (editItem8.isChecked()) check = 1;
+                else check = 0;
+                dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataAtual,
+                        numeroPontoAtual, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(7).getID_INDICADOR(),
+                        check,
+                        todosIndicadoresPonto.get(7).getCOORDENADA_X(),
+                        todosIndicadoresPonto.get(7).getCOORDENADA_Y(),
+                        todosIndicadoresPonto.get(7).getNC_TRATADA(),
+                        todosIndicadoresPonto.get(7).getUPDATED_AT(), fazPut));
+
+                if (editItem9.isChecked()) check = 1;
+                else check = 0;
+                dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataAtual,
+                        numeroPontoAtual, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(8).getID_INDICADOR(),
+                        check,
+                        todosIndicadoresPonto.get(8).getCOORDENADA_X(),
+                        todosIndicadoresPonto.get(8).getCOORDENADA_Y(),
+                        todosIndicadoresPonto.get(8).getNC_TRATADA(),
+                        todosIndicadoresPonto.get(8).getUPDATED_AT(), fazPut));
+
+                dao.insert(new AVAL_PONTO_SUBSOLAGEM(idProg, dataAtual,
+                        numeroPontoAtual, osSelecionada.getID_ATIVIDADE(), atividadeIndicadores.get(9).getID_INDICADOR(),
+                        Double.valueOf(editItem10.getText().toString().replace(',', '.')),
+                        todosIndicadoresPonto.get(9).getCOORDENADA_X(),
+                        todosIndicadoresPonto.get(9).getCOORDENADA_Y(),
+                        todosIndicadoresPonto.get(9).getNC_TRATADA(),
+                        todosIndicadoresPonto.get(9).getUPDATED_AT(), fazPut));
+            }
+
 
             if (osSelecionada.getSTATUS_NUM() == 0) {
                 osSelecionada.setSTATUS("Andamento");
@@ -1995,6 +2316,10 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         outState.putBoolean("dialogoPontoAberto", dialogoPontoAberto);
         outState.putBoolean("dialogoVerionAberto", dialogoVerionAberto);
         outState.putBoolean("dialogoCorrecaoAberto", dialogoCorrecaoAberto);
+        outState.putBoolean("dialogoEdicaoAberto", dialogoEdicaoAberto);
+        if(dialogoEdicaoAberto==true) {
+            outState.putInt("itemSelecionadoSpinnerEdicao", itemSelecionadoSpinnerEdicao);
+        }
 
         if (dialogoPontoAberto == true) {
             boolean item5 = false;
@@ -2019,6 +2344,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             outState.putString("editItem10", editItem10.getText().toString());
 
             outState.putInt("ultimoFocus", ultimoFocus);
+
+            outState.putInt("numeroPontoAtual", numeroPontoAtual);
         }
 
         if (dialogoVerionAberto == true) {
@@ -2037,6 +2364,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         if (dialogoVerionAberto == true) dialogoVerion.dismiss();
         if (dialogoPontoAberto == true) dialogoPonto.dismiss();
         if (dialogoCorrecaoAberto == true) dialogoCorrecao.dismiss();
+        if (dialogoEdicaoAberto == true) dialogoEdicao.dismiss();
     }
 
     @Override

@@ -109,7 +109,10 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
                 holder.editItem1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(holder.editItem1.isChecked()) listaPontosCorrecaoAux.get(position).get(0).setNC_TRATADA(1);
+                        if(holder.editItem1.isChecked()){
+                            listaPontosCorrecaoAux.get(position).get(0).setNC_TRATADA(1);
+                            listaPontosCorrecaoAux.get(position).get(0).setEditou(1);
+                        }
                         else listaPontosCorrecaoAux.get(position).get(0).setNC_TRATADA(0);
                     }
                 });
@@ -143,7 +146,10 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
                 holder.editItem2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(holder.editItem2.isChecked()) listaPontosCorrecaoAux.get(position).get(1).setNC_TRATADA(1);
+                        if(holder.editItem2.isChecked()){
+                            listaPontosCorrecaoAux.get(position).get(1).setNC_TRATADA(1);
+                            listaPontosCorrecaoAux.get(position).get(1).setEditou(1);
+                        }
                         else listaPontosCorrecaoAux.get(position).get(1).setNC_TRATADA(0);
                     }
                 });
@@ -176,7 +182,10 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
                 holder.editItem3.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(holder.editItem3.isChecked()) listaPontosCorrecaoAux.get(position).get(2).setNC_TRATADA(1);
+                        if(holder.editItem3.isChecked()){
+                            listaPontosCorrecaoAux.get(position).get(2).setNC_TRATADA(1);
+                            listaPontosCorrecaoAux.get(position).get(2).setEditou(1);
+                        }
                         else listaPontosCorrecaoAux.get(position).get(2).setNC_TRATADA(0);
                     }
                 });
@@ -209,7 +218,10 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
                 holder.editItem4.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(holder.editItem4.isChecked()) listaPontosCorrecaoAux.get(position).get(3).setNC_TRATADA(1);
+                        if(holder.editItem4.isChecked()){
+                            listaPontosCorrecaoAux.get(position).get(3).setNC_TRATADA(1);
+                            listaPontosCorrecaoAux.get(position).get(3).setEditou(1);
+                        }
                         else listaPontosCorrecaoAux.get(position).get(3).setNC_TRATADA(0);
                     }
                 });
@@ -242,7 +254,11 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
                 holder.editItem5.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(holder.editItem5.isChecked()) listaPontosCorrecaoAux.get(position).get(4).setNC_TRATADA(1);
+                        if(holder.editItem5.isChecked()){
+                            listaPontosCorrecaoAux.get(position).get(4).setNC_TRATADA(1);
+                            listaPontosCorrecaoAux.get(position).get(4).setEditou(1);
+                        }
+
                         else listaPontosCorrecaoAux.get(position).get(4).setNC_TRATADA(0);
                     }
                 });
@@ -275,7 +291,10 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
                 holder.editItem6.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(holder.editItem6.isChecked()) listaPontosCorrecaoAux.get(position).get(5).setNC_TRATADA(1);
+                        if(holder.editItem6.isChecked()){
+                            listaPontosCorrecaoAux.get(position).get(5).setNC_TRATADA(1);
+                            listaPontosCorrecaoAux.get(position).get(5).setEditou(1);
+                        }
                         else listaPontosCorrecaoAux.get(position).get(5).setNC_TRATADA(0);
                     }
                 });
@@ -308,7 +327,10 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
                 holder.editItem7.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(holder.editItem7.isChecked()) listaPontosCorrecaoAux.get(position).get(6).setNC_TRATADA(1);
+                        if(holder.editItem7.isChecked()){
+                            listaPontosCorrecaoAux.get(position).get(6).setNC_TRATADA(1);
+                            listaPontosCorrecaoAux.get(position).get(6).setEditou(1);
+                        }
                         else listaPontosCorrecaoAux.get(position).get(6).setNC_TRATADA(0);
                     }
                 });
@@ -342,7 +364,10 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
                 holder.editItem8.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(holder.editItem8.isChecked()) listaPontosCorrecaoAux.get(position).get(7).setNC_TRATADA(1);
+                        if(holder.editItem8.isChecked()) {
+                            listaPontosCorrecaoAux.get(position).get(7).setNC_TRATADA(1);
+                            listaPontosCorrecaoAux.get(position).get(7).setEditou(1);
+                        }
                         else listaPontosCorrecaoAux.get(position).get(7).setNC_TRATADA(0);
                     }
                 });
@@ -375,7 +400,10 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
                 holder.editItem9.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(holder.editItem9.isChecked()) listaPontosCorrecaoAux.get(position).get(8).setNC_TRATADA(1);
+                        if(holder.editItem9.isChecked()){
+                            listaPontosCorrecaoAux.get(position).get(8).setNC_TRATADA(1);
+                            listaPontosCorrecaoAux.get(position).get(8).setEditou(1);
+                        }
                         else listaPontosCorrecaoAux.get(position).get(8).setNC_TRATADA(0);
                     }
                 });
@@ -407,7 +435,10 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
                 holder.editItem10.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(holder.editItem10.isChecked()) listaPontosCorrecaoAux.get(position).get(9).setNC_TRATADA(1);
+                        if(holder.editItem10.isChecked()){
+                            listaPontosCorrecaoAux.get(position).get(9).setNC_TRATADA(1);
+                            listaPontosCorrecaoAux.get(position).get(9).setEditou(1);
+                        }
                         else listaPontosCorrecaoAux.get(position).get(9).setNC_TRATADA(0);
                     }
                 });

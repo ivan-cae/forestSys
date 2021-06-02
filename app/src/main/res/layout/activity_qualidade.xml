@@ -17,6 +17,36 @@
         android:background="@color/secondaryLightColor"
         android:foregroundTint="#dc5356">
 
+        <TextView
+            android:id="@+id/qualidade_text_edit_ponto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="45dp"
+            android:text="Editar Ponto"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/qualidade_pontos_realizados"
+            app:layout_constraintTop_toTopOf="@+id/qualidade_pontos_realizados" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/qualidade_botao_editar_ponto"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="8dp"
+            android:adjustViewBounds="false"
+            android:backgroundTint="@color/primaryLightColor"
+            android:backgroundTintMode="src_in"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_botao_editar"
+            app:backgroundTint="@color/primaryLightColor"
+            app:fabCustomSize="60dp"
+            app:fabSize="normal"
+            app:layout_constraintEnd_toEndOf="@+id/qualidade_text_edit_ponto"
+            app:layout_constraintStart_toStartOf="@+id/qualidade_text_edit_ponto"
+            app:layout_constraintTop_toBottomOf="@+id/qualidade_text_edit_ponto"
+            app:maxImageSize="60dp" />
+
         <view
             android:id="@+id/barra_progresso_qualidade"
             class="com.github.mikephil.charting.charts.PieChart"
@@ -355,7 +385,7 @@
 
         <TextView
             android:id="@+id/qualidade_pontos_realizados"
-            android:layout_width="200dp"
+            android:layout_width="100dp"
             android:layout_height="25dp"
             android:textColor="@color/primaryTextColor"
             android:textSize="17sp"
@@ -829,21 +859,20 @@
             app:backgroundTint="@color/primaryLightColor"
             app:fabCustomSize="60dp"
             app:fabSize="normal"
-            app:layout_constraintEnd_toEndOf="@+id/textView130"
-            app:layout_constraintStart_toStartOf="@+id/textView130"
-            app:layout_constraintTop_toBottomOf="@+id/textView130"
+            app:layout_constraintEnd_toEndOf="@+id/qualidade_text_add_ponto"
+            app:layout_constraintStart_toStartOf="@+id/qualidade_text_add_ponto"
+            app:layout_constraintTop_toBottomOf="@+id/qualidade_text_add_ponto"
             app:maxImageSize="60dp" />
 
         <TextView
-            android:id="@+id/textView130"
+            android:id="@+id/qualidade_text_add_ponto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:text="Adicionar ponto"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/qualidade_percentual_nc_local"
             app:layout_constraintTop_toTopOf="@+id/qualidade_pontos_realizados" />
 
         <Button

@@ -335,6 +335,12 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
             @Override
             public void onItemClick(O_S_ATIVIDADES_DIA oSAtividadesDia) {
                 if (osSelecionada.getSTATUS_NUM() != 2) {
+                    boolean podeEditar = true;
+                    if(usuarioLogado.getNIVEL_ACESSO()==0 && oSAtividadesDia.getID() != null){
+                        podeEditar = false;
+                    }
+
+                if(podeEditar == true){
                     new AlertDialog.Builder(ActivityListaRegistros.this)
                             .setTitle("Editar")
                             .setMessage("Deseja Alterar o Registro?")
@@ -352,6 +358,17 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
                         }
                     }).create()
                             .show();
+                }else{
+                    new AlertDialog.Builder(ActivityListaRegistros.this)
+                            .setTitle("Erro")
+                            .setMessage("O usuário não tem permissão para editar esse registro.")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                }
+                            }).create()
+                            .show();
+                }
                 }
             }
         });

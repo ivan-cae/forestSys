@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.hardware.Camera;
 import android.os.AsyncTask;
+import android.text.style.UpdateAppearance;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -314,7 +315,7 @@ public class ClienteWeb<client> {
                     JSONObject obj = new JSONObject();
 
                     obj.put("ID_PROGRAMACAO_ATIVIDADE", todasCalibragens.get(i).getID_PROGRAMACAO_ATIVIDADE());
-                    obj.put("DATA", todasCalibragens.get(i).getDATA() + " 12:00:00");
+                    obj.put("DATA", todasCalibragens.get(i).getDATA() + " 00:00:00");
                     obj.put("TURNO", todasCalibragens.get(i).getTURNO());
                     obj.put("ID_MAQUINA_IMPLEMENTO", todasCalibragens.get(i).getID_MAQUINA_IMPLEMENTO());
                     obj.put("ID_OPERADOR", todasCalibragens.get(i).getID_OPERADOR());
@@ -341,7 +342,7 @@ public class ClienteWeb<client> {
                         JSONObject obj = new JSONObject();
                         if (todasOsAtividadesDia.get(i).getID() == null || todasOsAtividadesDia.get(i).getID() == JSONObject.NULL) {
                             obj.put("ID_PROGRAMACAO_ATIVIDADE", todasOsAtividadesDia.get(i).getID_PROGRAMACAO_ATIVIDADE());
-                            obj.put("DATA", todasOsAtividadesDia.get(i).getDATA() + " 12:00:00");
+                            obj.put("DATA", todasOsAtividadesDia.get(i).getDATA() + " 00:00:00");
                             obj.put("AREA_REALIZADA", todasOsAtividadesDia.get(i).getAREA_REALIZADA());
                             obj.put("HH", todasOsAtividadesDia.get(i).getHH());
                             obj.put("HM", todasOsAtividadesDia.get(i).getHM());
@@ -397,7 +398,7 @@ public class ClienteWeb<client> {
                             naoFazPut = false;
                             obj.put("ID", todasOsAtividadesDia.get(i).getID());
                             obj.put("ID_PROGRAMACAO_ATIVIDADE", todasOsAtividadesDia.get(i).getID_PROGRAMACAO_ATIVIDADE());
-                            obj.put("DATA", todasOsAtividadesDia.get(i).getDATA() + " 12:00:00");
+                            obj.put("DATA", todasOsAtividadesDia.get(i).getDATA() + " 00:00:00");
                             obj.put("AREA_REALIZADA", todasOsAtividadesDia.get(i).getAREA_REALIZADA());
                             obj.put("HH", todasOsAtividadesDia.get(i).getHH());
                             obj.put("HM", todasOsAtividadesDia.get(i).getHM());
@@ -442,7 +443,7 @@ public class ClienteWeb<client> {
 
                         if (todasOsAtividadeInsumoDia.get(i).getID() == null || todasOsAtividadeInsumoDia.get(i).getID() == JSONObject.NULL) {
                             obj.put("ID_PROGRAMACAO_ATIVIDADE", todasOsAtividadeInsumoDia.get(i).getID_PROGRAMACAO_ATIVIDADE());
-                            obj.put("DATA", todasOsAtividadeInsumoDia.get(i).getDATA() + " 12:00:00");
+                            obj.put("DATA", todasOsAtividadeInsumoDia.get(i).getDATA() + " 00:00:00");
                             obj.put("ID_INSUMO", todasOsAtividadeInsumoDia.get(i).getID_INSUMO());
                             obj.put("QTD_APLICADO", todasOsAtividadeInsumoDia.get(i).getQTD_APLICADO());
                             obj.put("REGISTRO_DESCARREGADO", todasOsAtividadeInsumoDia.get(i).getREGISTRO_DESCARREGADO());
@@ -468,7 +469,7 @@ public class ClienteWeb<client> {
                         } else {
                             naoFazPut = false;
                             obj.put("ID_PROGRAMACAO_ATIVIDADE", todasOsAtividadeInsumoDia.get(i).getID_PROGRAMACAO_ATIVIDADE());
-                            obj.put("DATA", todasOsAtividadeInsumoDia.get(i).getDATA() + " 12:00:00");
+                            obj.put("DATA", todasOsAtividadeInsumoDia.get(i).getDATA() + " 00:00:00");
                             obj.put("ID_INSUMO", todasOsAtividadeInsumoDia.get(i).getID_INSUMO());
                             obj.put("QTD_APLICADO", todasOsAtividadeInsumoDia.get(i).getQTD_APLICADO());
                             obj.put("REGISTRO_DESCARREGADO", todasOsAtividadeInsumoDia.get(i).getREGISTRO_DESCARREGADO());
@@ -520,7 +521,7 @@ public class ClienteWeb<client> {
                         if (todasOsAtividades.get(i).getDATA_INICIAL() == null || todasOsAtividades.get(i).getDATA_INICIAL().trim().equals("null")) {
                             obj.put("DATA_INICIAL", JSONObject.NULL);
                         } else {
-                            obj.put("DATA_INICIAL", todasOsAtividades.get(i).getDATA_INICIAL() + " 12:00:00");
+                            obj.put("DATA_INICIAL", todasOsAtividades.get(i).getDATA_INICIAL() + " 00:00:00");
                         }
 
                         if (todasOsAtividades.get(i).getOBSERVACAO() == null || todasOsAtividades.get(i).getOBSERVACAO().trim().equals("null")) {
@@ -532,7 +533,7 @@ public class ClienteWeb<client> {
                         if (todasOsAtividades.get(i).getDATA_FINAL() == null || todasOsAtividades.get(i).getDATA_FINAL().trim().equals("null")) {
                             obj.put("DATA_FINAL", JSONObject.NULL);
                         } else {
-                            obj.put("DATA_FINAL", todasOsAtividades.get(i).getDATA_FINAL() + " 12:00:00");
+                            obj.put("DATA_FINAL", todasOsAtividades.get(i).getDATA_FINAL() + " 00:00:00");
                         }
 
                         Log.e("Area Realizada put", String.valueOf(dao.somaAreaRealizada(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE())));
@@ -580,7 +581,7 @@ public class ClienteWeb<client> {
                     JSONObject obj = new JSONObject();
 
                     obj.put("ID_PROGRAMACAO_ATIVIDADE", listaIndSubs.get(i).getID_PROGRAMACAO_ATIVIDADE());
-                    obj.put("DATA", listaIndSubs.get(i).getDATA() + " 12:00:00");
+                    obj.put("DATA", listaIndSubs.get(i).getDATA() + " 00:00:00");
                     obj.put("ID_ATIVIDADE", listaIndSubs.get(i).getID_ATIVIDADE());
                     obj.put("ID_INDICADOR", listaIndSubs.get(i).getID_INDICADOR());
                     obj.put("VALOR_INDICADOR", listaIndSubs.get(i).getVALOR_INDICADOR());
@@ -606,12 +607,19 @@ public class ClienteWeb<client> {
                 for (Integer i = 0; i < listaPontos.size(); i++) {
                     JSONObject obj = new JSONObject();
 
-                    String lati = String.valueOf(listaPontos.get(i).getCOORDENADA_X());
-                    String longi = String.valueOf(listaPontos.get(i).getCOORDENADA_Y());
+
+
+                    BigDecimal bd = BigDecimal.valueOf(listaPontos.get(i).getCOORDENADA_X());
+                    bd = bd.setScale(5, RoundingMode.HALF_EVEN);
+                    String lati = String.valueOf(bd.doubleValue());
+
+                    bd = BigDecimal.valueOf(listaPontos.get(i).getCOORDENADA_Y());
+                    bd = bd.setScale(5, RoundingMode.HALF_EVEN);
+                    String longi = String.valueOf(bd.doubleValue());
 
                     if (listaPontos.get(i).getUPDATED_AT() == null) {
                         obj.put("ID_PROGRAMACAO_ATIVIDADE", listaPontos.get(i).getID_PROGRAMACAO_ATIVIDADE());
-                        obj.put("DATA", listaPontos.get(i).getDATA() + " 12:00:00");
+                        obj.put("DATA", listaPontos.get(i).getDATA() + " 00:00:00");
                         obj.put("ID_ATIVIDADE", listaPontos.get(i).getID_ATIVIDADE());
                         obj.put("ID_INDICADOR", listaPontos.get(i).getID_INDICADOR());
                         obj.put("VALOR_INDICADOR", listaPontos.get(i).getID_INDICADOR());
@@ -624,22 +632,22 @@ public class ClienteWeb<client> {
                         requisicaoPOST(HOST_PORTA +
                                 "silvindavalpontosubsolagens", obj.toString());
                     } else {
-                        obj.put("ID_PROGRAMACAO_ATIVIDADE", listaPontos.get(i).getID_PROGRAMACAO_ATIVIDADE());
-                        obj.put("DATA", listaPontos.get(i).getDATA() + " 12:00:00");
-                        obj.put("ID_ATIVIDADE", listaPontos.get(i).getID_ATIVIDADE());
-                        obj.put("ID_INDICADOR", listaPontos.get(i).getID_INDICADOR());
-                        obj.put("VALOR_INDICADOR", listaPontos.get(i).getID_INDICADOR());
-                        obj.put("PONTO", listaPontos.get(i).getPONTO());
-                        obj.put("VALOR_INDICADOR", listaPontos.get(i).getVALOR_INDICADOR());
-                        obj.put("COORDENADA_X", lati);
-                        obj.put("COORDENADA_Y", longi);
-                        obj.put("NC_TRATADA", listaPontos.get(i).getNC_TRATADA());
+                        if(listaPontos.get(i).getEditou() == 1) {
+                            obj.put("ID_PROGRAMACAO_ATIVIDADE", listaPontos.get(i).getID_PROGRAMACAO_ATIVIDADE());
+                            //obj.put("DATA", listaPontos.get(i).getDATA() + " 00:00:00");
+                            obj.put("ID_ATIVIDADE", listaPontos.get(i).getID_ATIVIDADE());
+                            obj.put("ID_INDICADOR", listaPontos.get(i).getID_INDICADOR());
+                            obj.put("VALOR_INDICADOR", listaPontos.get(i).getID_INDICADOR());
+                            obj.put("PONTO", listaPontos.get(i).getPONTO());
+                            obj.put("VALOR_INDICADOR", listaPontos.get(i).getVALOR_INDICADOR());
+                            obj.put("COORDENADA_X", lati);
+                            obj.put("COORDENADA_Y", longi);
+                            obj.put("NC_TRATADA", listaPontos.get(i).getNC_TRATADA());
+                            Integer NC_TRATADA = obj.getInt("NC_TRATADA");
 
-                        Integer NC_TRATADA = obj.getInt("NC_TRATADA");
-                        if (NC_TRATADA == 1) {
                             requisicaoPUT(HOST_PORTA +
-                                            "silvindavalpontosubsolagens" + "/" + listaPontos.get(i).getID_PROGRAMACAO_ATIVIDADE() + "&" +
-                                            listaPontos.get(i).getDATA() + "&" + listaPontos.get(i).getPONTO() + "&" + listaPontos.get(i).getID_ATIVIDADE() +
+                                            "silvindavalpontosubsolagens" + "/" + listaPontos.get(i).getID_PROGRAMACAO_ATIVIDADE() +
+                                            "&" + listaPontos.get(i).getPONTO() + "&" + listaPontos.get(i).getID_ATIVIDADE() +
                                             "&" + listaPontos.get(i).getID_INDICADOR(),
                                     obj.toString());
                         }
@@ -1517,10 +1525,12 @@ public class ClienteWeb<client> {
 
                     Integer NC_TRATADA = obj.getInt("NC_TRATADA");
 
+                    String UPDATED_AT = obj.getString("UPDATED_AT");
+
                     DATA = ignoraHoras(DATA);
 
                     AVAL_PONTO_SUBSOLAGEM pontoSubsolagem = new AVAL_PONTO_SUBSOLAGEM(ID_PROGRAMACAO_ATIVIDADE, DATA, PONTO, ID_ATIVIDADE, ID_INDICADOR, VALOR_INDICADOR, COORDENADA_X,
-                            COORDENADA_Y, NC_TRATADA);
+                            COORDENADA_Y, NC_TRATADA, UPDATED_AT, 0);
 
                     pontoSubsolagem.setUPDATED_AT(obj.getString("UPDATED_AT"));
                     try {

@@ -580,7 +580,17 @@ public interface DAO {
     @Query("SELECT * FROM ATIVIDADE_INDICADORES WHERE REFERENCIA=:ref")
     ATIVIDADE_INDICADORES selecionaIndicadorPeloRef(String ref);
 
+
     //Scripts AVAL_PONTO_SUBSOLAGEM
+
+    @Query("SELECT * FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idAtv AND " +
+            "PONTO=:ponto ORDER BY ID_INDICADOR")
+    List<AVAL_PONTO_SUBSOLAGEM> todosIndicadoresPonto(Integer idAtv, Integer ponto);
+
+    @Query("SELECT * FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idAtv AND ID_INDICADOR=:idInd AND " +
+            "PONTO=:ponto ORDER BY ID_INDICADOR")
+    AVAL_PONTO_SUBSOLAGEM selecionaAvalPontoSubsolagem(Integer idAtv, Integer idInd, Integer ponto);
+
     @Query("SELECT *FROM AVAL_PONTO_SUBSOLAGEM WHERE ID_PROGRAMACAO_ATIVIDADE=:idAtv GROUP BY PONTO ORDER BY PONTO")
     List<AVAL_PONTO_SUBSOLAGEM> listaAvalPontoSubsolagem(Integer idAtv);
 

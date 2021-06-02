@@ -5,6 +5,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 
+import com.example.forestsys.Assets.Ferramentas;
+
 import java.io.Serializable;
 
 @Entity(
@@ -57,9 +59,11 @@ public class AVAL_PONTO_SUBSOLAGEM implements Serializable {
 
     private String UPDATED_AT;
 
+    private Integer editou;
 
     public AVAL_PONTO_SUBSOLAGEM(Integer ID_PROGRAMACAO_ATIVIDADE, @NonNull String DATA, Integer PONTO, Integer ID_ATIVIDADE,
-                                 Integer ID_INDICADOR, double VALOR_INDICADOR, double COORDENADA_X, double COORDENADA_Y, Integer NC_TRATADA) {
+                                 Integer ID_INDICADOR, double VALOR_INDICADOR, double COORDENADA_X,
+                                 double COORDENADA_Y, Integer NC_TRATADA, String UPDATED_AT, Integer editou) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.DATA = DATA;
         this.PONTO = PONTO;
@@ -69,6 +73,8 @@ public class AVAL_PONTO_SUBSOLAGEM implements Serializable {
         this.COORDENADA_X = COORDENADA_X;
         this.COORDENADA_Y = COORDENADA_Y;
         this.NC_TRATADA = NC_TRATADA;
+        this.UPDATED_AT = UPDATED_AT;
+        this.editou = editou;
     }
 
     public Integer getID_PROGRAMACAO_ATIVIDADE() {
@@ -150,5 +156,19 @@ public class AVAL_PONTO_SUBSOLAGEM implements Serializable {
 
     public void setUPDATED_AT(String UPDATED_AT) {
         this.UPDATED_AT = UPDATED_AT;
+    }
+
+    public Integer getEditou() {
+        return editou;
+    }
+
+    public void setEditou(Integer editou) {
+        this.editou = editou;
+    }
+
+    @Override
+    public String toString() {
+        Ferramentas ferramentas = new Ferramentas();
+        return "Ponto: "+PONTO.toString() +" Data: "+ ferramentas.formataDataTextView(DATA);
     }
 }
