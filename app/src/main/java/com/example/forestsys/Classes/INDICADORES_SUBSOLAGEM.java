@@ -41,12 +41,16 @@ public class INDICADORES_SUBSOLAGEM implements Serializable {
 
     private double VALOR_INDICADOR;
 
-    public INDICADORES_SUBSOLAGEM(Integer ID_PROGRAMACAO_ATIVIDADE, Integer ID_ATIVIDADE, Integer ID_INDICADOR, String DATA, double VALOR_INDICADOR) {
+    private Integer fezSinc;
+
+    public INDICADORES_SUBSOLAGEM(Integer ID_PROGRAMACAO_ATIVIDADE, Integer ID_ATIVIDADE,
+                                  Integer ID_INDICADOR, String DATA, double VALOR_INDICADOR, Integer fezSinc) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.ID_ATIVIDADE = ID_ATIVIDADE;
         this.ID_INDICADOR = ID_INDICADOR;
         this.DATA = DATA;
         this.VALOR_INDICADOR = VALOR_INDICADOR;
+        this.fezSinc = fezSinc;
     }
 
     public Integer getID_PROGRAMACAO_ATIVIDADE() {
@@ -87,5 +91,13 @@ public class INDICADORES_SUBSOLAGEM implements Serializable {
 
     public void setVALOR_INDICADOR(double VALOR_INDICADOR) {
         this.VALOR_INDICADOR = VALOR_INDICADOR;
+    }
+
+    public Integer getFezSinc() {
+        return fezSinc;
+    }
+
+    public void setFezSinc(Integer fezSinc) {
+        this.fezSinc = fezSinc;
     }
 }

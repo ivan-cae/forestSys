@@ -24,6 +24,7 @@ import com.example.forestsys.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -121,6 +122,12 @@ public class ActivityConfiguracoes extends AppCompatActivity {
                                         if(configs.getUltimaDataQueApagou()!=null){
                                             ultimaVezQueApagou = configs.getUltimaDataQueApagou();
                                         }
+                                    }else{
+                                        final Calendar cal = Calendar.getInstance();
+                                        cal.add(Calendar.DATE, 0);
+                                        SimpleDateFormat formataDataDeOntem = new SimpleDateFormat("yyyy-MM-dd");
+                                        ultimaVezQueApagou = formataDataDeOntem.format(cal.getTime()).toString();
+                                        Log.e("Ultima data que apagou - null", ultimaVezQueApagou);
                                     }
                                     dao.insert(new Configs(1, empresa, host, porta,
                                             Integer.valueOf(opcoesPermanencia[posicaoSpinnerPermanencia]),

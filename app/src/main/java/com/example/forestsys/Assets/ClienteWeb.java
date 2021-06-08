@@ -97,6 +97,7 @@ public class ClienteWeb<client> {
     private String dataParaApagarDados;
     private boolean chegouDataApagarTudo;
 
+    @SuppressLint("LongLogTag")
     public ClienteWeb(Context context) throws ParseException {
         activity = context;
         baseDeDados = BaseDeDados.getInstance(activity);
@@ -111,8 +112,9 @@ public class ClienteWeb<client> {
             Date date1 = sdf.parse(dataAtual.trim());
             Date date2 = sdf.parse(dataParaApagarDados.trim());
 
-            Log.e("Data atual", date1.toString());
-            Log.e("Data para apagar", date2.toString());
+            Log.e("Data atual", dataAtual.trim());
+            Log.e("Data para apagar", dataParaApagarDados.trim());
+            Log.e("Ultima data que apagou:", configs.getUltimaDataQueApagou());
 
             boolean jaApagouHoje = false;
             if (configs.getUltimaDataQueApagou() != null) {
@@ -121,24 +123,31 @@ public class ClienteWeb<client> {
                 }
             }
 
-            if (date1.compareTo(date2) >= 0 && jaApagouHoje == false) {
-                if (configs.getUltimaDataQueApagou() == null) {
-                    chegouDataApagarTudo = true;
-                    baseDeDados.clearAllTables();
+            Log.e("Data atual e para apagar long", String.valueOf(date1.getTime()) +  ", " +
+                    String.valueOf(date2.getTime()));
 
-                    configs.setDataParaApagarDados(calculaDataParaApagarDados(configs.getPermanenciaDosDados().toString()));
-                    configs.setUltimaDataQueApagou(dataAtual);
-                    Log.e("Data que apagou", dataAtual);
-                    dao.insert(configs);
+            if (date1.getTime() >= date2.getTime()) {
+                if (jaApagouHoje == false) {
+                        chegouDataApagarTudo = true;
+                        baseDeDados.clearAllTables();
+
+                        configs.setDataParaApagarDados(calculaDataParaApagarDados(configs.getPermanenciaDosDados().toString()));
+                        configs.setUltimaDataQueApagou(dataAtual);
+                        Log.e("Próxima data para apagar", configs.getDataParaApagarDados());
+                        dao.insert(configs);
+                    } else {
+                        chegouDataApagarTudo = false;
+                    }
+                }
+
+                if (chegouDataApagarTudo == true) {
+                    Log.e("Apagou?", " Sim");
                 } else {
-                    chegouDataApagarTudo = false;
+                    Log.e("Apagou?", " Não");
                 }
             }
-            if (chegouDataApagarTudo == true) {
-                Log.e("Apagou?", "Apagou Sim");
-            }
         }
-    }
+
 
 
     private static String requisicaoPOST(String url, String json) throws IOException {
@@ -196,22 +205,22 @@ public class ClienteWeb<client> {
         return s;
     }
 
-    private static void calculaAreaRealizada(int id, Context context){
+    private static void calculaAreaRealizada(int id, Context context) {
         baseDeDados = BaseDeDados.getInstance(context);
         dao = baseDeDados.dao();
 
         double calcula = 0;
-        List <O_S_ATIVIDADES_DIA> listaReg = dao.listaAtividadesDia(id);
-        for(int i=0; i <listaReg.size(); i++){
+        List<O_S_ATIVIDADES_DIA> listaReg = dao.listaAtividadesDia(id);
+        for (int i = 0; i < listaReg.size(); i++) {
             String s = listaReg.get(i).getAREA_REALIZADA().replace(',', '.');
             double d = 0;
             try {
                 d = Double.valueOf(s);
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 d = 0;
             }
-            calcula+=d;
+            calcula += d;
         }
         O_S_ATIVIDADES atividade = dao.selecionaOs(id);
 
@@ -220,7 +229,7 @@ public class ClienteWeb<client> {
 
         atividade.setAREA_REALIZADA(bd.doubleValue());
         dao.update(atividade);
-        Log.e("Area Realizada", String.valueOf(bd.doubleValue()));
+        //Log.e("Area Realizada", String.valueOf(bd.doubleValue()));
 
     }
 
@@ -253,7 +262,7 @@ public class ClienteWeb<client> {
     }
 
     public static double corrigeDec(String s) {
-        s = s.replace(".",",");
+        s = s.replace(".", ",");
 
         if (s.contains(",")) {
             String[] antesDaVirgula = s.split(",");
@@ -265,7 +274,7 @@ public class ClienteWeb<client> {
                 }
             }
         }
-        s = s.replace(",",".");
+        s = s.replace(",", ".");
         //Log.e("Valor indicador", s);
         return Double.valueOf(s);
     }
@@ -329,8 +338,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("CALIBRAGEM_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST");
-                ex.printStackTrace();
+                // Log.e("CALIBRAGEM_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST");
+                //ex.printStackTrace();
                 //contadorDeErros ++;
             }
 
@@ -427,8 +436,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("ATIVIDADES_DIA", "Erro ao instanciar objeto para requisição POST ou PUT");
-                ex.printStackTrace();
+                //Log.e("ATIVIDADES_DIA", "Erro ao instanciar objeto para requisição POST ou PUT");
+                //ex.printStackTrace();
                 //contadorDeErros ++;
             }
 
@@ -496,7 +505,7 @@ public class ClienteWeb<client> {
                 }
             } catch (Exception ex) {
                 if (ex != null) {
-                    Log.e("INSUMOS_ATIVIDADES_DIA", ex.getMessage());
+                    //Log.e("INSUMOS_ATIVIDADES_DIA", ex.getMessage());
                 }
                 ex.printStackTrace();
             }
@@ -536,7 +545,7 @@ public class ClienteWeb<client> {
                             obj.put("DATA_FINAL", todasOsAtividades.get(i).getDATA_FINAL() + " 00:00:00");
                         }
 
-                        Log.e("Area Realizada put", String.valueOf(dao.somaAreaRealizada(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE())));
+                        //  Log.e("Area Realizada put", String.valueOf(dao.somaAreaRealizada(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE())));
 
                         obj.put("AREA_REALIZADA", dao.somaAreaRealizada(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE()));
 
@@ -546,8 +555,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("OS_ATIVIDADES", "Erro ao instanciar objeto para requisição PUT");
-                ex.printStackTrace();
+                //Log.e("OS_ATIVIDADES", "Erro ao instanciar objeto para requisição PUT");
+                //ex.printStackTrace();
                 //contadorDeErros ++;
             }
 
@@ -568,8 +577,8 @@ public class ClienteWeb<client> {
                             todasAtvInsumos.get(i).getID_INSUMO(), obj.toString());
                 }
             } catch (Exception ex) {
-                Log.e("O_S_ATIVIDADE_INSUMOS", "Erro ao instanciar objeto para requisição PUT");
-                ex.printStackTrace();
+                // Log.e("O_S_ATIVIDADE_INSUMOS", "Erro ao instanciar objeto para requisição PUT");
+                //ex.printStackTrace();
                 //contadorDeErros ++;
             }
 
@@ -595,8 +604,8 @@ public class ClienteWeb<client> {
 
                 }
             } catch (Exception ex) {
-                Log.e("INDICADOR_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST");
-                ex.printStackTrace();
+                // Log.e("INDICADOR_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST");
+                //  ex.printStackTrace();
                 // contadorDeErros ++;
             }
 
@@ -606,7 +615,6 @@ public class ClienteWeb<client> {
 
                 for (Integer i = 0; i < listaPontos.size(); i++) {
                     JSONObject obj = new JSONObject();
-
 
 
                     BigDecimal bd = BigDecimal.valueOf(listaPontos.get(i).getCOORDENADA_X());
@@ -632,18 +640,15 @@ public class ClienteWeb<client> {
                         requisicaoPOST(HOST_PORTA +
                                 "silvindavalpontosubsolagens", obj.toString());
                     } else {
-                        if(listaPontos.get(i).getEditou() == 1) {
-                            obj.put("ID_PROGRAMACAO_ATIVIDADE", listaPontos.get(i).getID_PROGRAMACAO_ATIVIDADE());
+                        if (listaPontos.get(i).getEditou() == 1) {
                             //obj.put("DATA", listaPontos.get(i).getDATA() + " 00:00:00");
+
+                            obj.put("ID_PROGRAMACAO_ATIVIDADE", listaPontos.get(i).getID_PROGRAMACAO_ATIVIDADE());
+                            obj.put("PONTO", listaPontos.get(i).getPONTO());
                             obj.put("ID_ATIVIDADE", listaPontos.get(i).getID_ATIVIDADE());
                             obj.put("ID_INDICADOR", listaPontos.get(i).getID_INDICADOR());
-                            obj.put("VALOR_INDICADOR", listaPontos.get(i).getID_INDICADOR());
-                            obj.put("PONTO", listaPontos.get(i).getPONTO());
                             obj.put("VALOR_INDICADOR", listaPontos.get(i).getVALOR_INDICADOR());
-                            obj.put("COORDENADA_X", lati);
-                            obj.put("COORDENADA_Y", longi);
                             obj.put("NC_TRATADA", listaPontos.get(i).getNC_TRATADA());
-                            Integer NC_TRATADA = obj.getInt("NC_TRATADA");
 
                             requisicaoPUT(HOST_PORTA +
                                             "silvindavalpontosubsolagens" + "/" + listaPontos.get(i).getID_PROGRAMACAO_ATIVIDADE() +
@@ -654,8 +659,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("AVAL_PONTO_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST ou PUT");
-                ex.printStackTrace();
+                //   Log.e("AVAL_PONTO_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST ou PUT");
+                //   ex.printStackTrace();
                 //contadorDeErros ++;
             }
 
@@ -674,8 +679,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S24", "Sem resposta nas funcs,json");
-                ex.printStackTrace();
+                //     Log.e("S24", "Sem resposta nas funcs,json");
+                //    ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -694,8 +699,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S1", "Sem resposta nas funcs,json");
-                ex.printStackTrace();
+                //      Log.e("S1", "Sem resposta nas funcs,json");
+                //     ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -714,8 +719,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S2", "Sem resposta nos deps,json");
-                ex.printStackTrace();
+                //    Log.e("S2", "Sem resposta nos deps,json");
+                //    ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -732,7 +737,7 @@ public class ClienteWeb<client> {
                     try {
                         NIVEL_ACESSO = obj.getInt("NIVEL_ACESSO");
                     } catch (Exception ex) {
-                        Log.e("Erro ao converter nivel de acesso", "");
+                        // Log.e("Erro ao converter nivel de acesso", "");
                         NIVEL_ACESSO = 0;
                     }
                     Integer ATIVO = obj.getInt("ATIVO");
@@ -745,8 +750,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S3", "Sem resposta nos users:json");
-                ex.printStackTrace();
+                //   Log.e("S3", "Sem resposta nos users:json");
+                //    ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -765,8 +770,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S4", "Sem resposta nos operadores,json");
-                ex.printStackTrace();
+                //   Log.e("S4", "Sem resposta nos operadores,json");
+                //   ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -784,8 +789,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S5", "Sem resposta maquinas,json");
-                ex.printStackTrace();
+                //   Log.e("S5", "Sem resposta maquinas,json");
+                //    ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -804,8 +809,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S6", "Sem resposta implementos,json");
-                ex.printStackTrace();
+                //   Log.e("S6", "Sem resposta implementos,json");
+                //   ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -823,8 +828,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S8", "Sem resposta Maquina implementos,json");
-                ex.printStackTrace();
+                //     Log.e("S8", "Sem resposta Maquina implementos,json");
+                //     ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -844,8 +849,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S10", "Sem resposta Prestador,json");
-                ex.printStackTrace();
+                //     Log.e("S10", "Sem resposta Prestador,json");
+                //     ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -865,8 +870,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S11", "Sem resposta Manejos,json");
-                ex.printStackTrace();
+                //    Log.e("S11", "Sem resposta Manejos,json");
+                //    ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -885,8 +890,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S12", "Sem resposta Espacamentos,json");
-                ex.printStackTrace();
+                //    Log.e("S12", "Sem resposta Espacamentos,json");
+                //    ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -906,8 +911,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S13", "Sem resposta Geo Regionais,json");
-                ex.printStackTrace();
+                //     Log.e("S13", "Sem resposta Geo Regionais,json");
+                //     ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -927,8 +932,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S14", "Sem resposta Geo Setores,json");
-                ex.printStackTrace();
+                //     Log.e("S14", "Sem resposta Geo Setores,json");
+                //     ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -948,8 +953,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S15", "Sem resposta Mat Genético,json");
-                ex.printStackTrace();
+                //    Log.e("S15", "Sem resposta Mat Genético,json");
+                //    ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -991,8 +996,8 @@ public class ClienteWeb<client> {
 
                 }
             } catch (Exception ex) {
-                Log.e("S16", "Sem resposta Cad Florestal,json");
-                ex.printStackTrace();
+                //    Log.e("S16", "Sem resposta Cad Florestal,json");
+                //    ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -1111,6 +1116,8 @@ public class ClienteWeb<client> {
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
+                    } else {
+                        Log.e("Ignora Insert para:", String.valueOf(ID_PROGRAMACAO_ATIVIDADE));
                     }
                 }
             } catch (Exception ex) {
@@ -1119,71 +1126,77 @@ public class ClienteWeb<client> {
                 contadorDeErros++;
             }
 
-
+            String ID_ERRO = null;
             try {
                 response = new JSONArray(requisicaoGET(HOST_PORTA + "silvosatividadesdias"));
                 for (Integer i = 0; i < response.length(); i++) {
-                    JSONObject obj = response.getJSONObject(i);
-
-                    Integer ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
-                    Integer ID = obj.getInt("ID");
-                    String DATA = obj.getString("DATA");
-                    Integer ID_PRESTADOR = obj.getInt("ID_PRESTADOR");
-                    Integer ID_RESPONSAVEL = obj.getInt("ID_RESPONSAVEL");
-                    String HH = String.valueOf(obj.getString("HH"));
-                    String HM = String.valueOf(obj.getString("HM"));
-                    String HO = String.valueOf(obj.getString("HO"));
-                    String HM_ESCAVADEIRA = String.valueOf(obj.getString("HM_ESCAVADEIRA"));
-                    String HO_ESCAVADEIRA = String.valueOf(obj.getString("HO_ESCAVADEIRA"));
-                    String OBSERVACAO = obj.getString("OBSERVACAO");
-                    String REGISTRO_DESCARREGADO = obj.getString("REGISTRO_DESCARREGADO");
-                    String ACAO_INATIVO = obj.getString("ACAO_INATIVO");
-
-
-                    if (OBSERVACAO == null || OBSERVACAO.trim().equals("null")) {
-                        OBSERVACAO = null;
-                    }
-
-                    if (ACAO_INATIVO == null || ACAO_INATIVO.trim().equals("null")) {
-                        ACAO_INATIVO = null;
-                    }
-
-                    DATA = ignoraHoras(DATA);
-
-                    double AREA_REALIZADA = 0.0;
                     try {
-                        AREA_REALIZADA = obj.getDouble("AREA_REALIZADA");
-                    } catch (Exception ex) {
-                        AREA_REALIZADA = 0.0;
-                        ex.printStackTrace();
+                        JSONObject obj = response.getJSONObject(i);
+
+                        Integer ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
+                        Integer ID = obj.getInt("ID");
+                        ID_ERRO = String.valueOf(ID);
+                        String DATA = obj.getString("DATA");
+                        Integer ID_PRESTADOR = obj.getInt("ID_PRESTADOR");
+                        Integer ID_RESPONSAVEL = obj.getInt("ID_RESPONSAVEL");
+                        String HH = String.valueOf(obj.getString("HH"));
+                        String HM = String.valueOf(obj.getString("HM"));
+                        String HO = String.valueOf(obj.getString("HO"));
+                        String HM_ESCAVADEIRA = String.valueOf(obj.getString("HM_ESCAVADEIRA"));
+                        String HO_ESCAVADEIRA = String.valueOf(obj.getString("HO_ESCAVADEIRA"));
+                        String OBSERVACAO = obj.getString("OBSERVACAO");
+                        String REGISTRO_DESCARREGADO = obj.getString("REGISTRO_DESCARREGADO");
+                        String ACAO_INATIVO = obj.getString("ACAO_INATIVO");
+
+
+                        if (OBSERVACAO == null || OBSERVACAO.trim().equals("null")) {
+                            OBSERVACAO = null;
+                        }
+
+                        if (ACAO_INATIVO == null || ACAO_INATIVO.trim().equals("null")) {
+                            ACAO_INATIVO = null;
+                        }
+
+                        DATA = ignoraHoras(DATA);
+
+                        double AREA_REALIZADA = 0.0;
+                        try {
+                            AREA_REALIZADA = obj.getDouble("AREA_REALIZADA");
+                        } catch (Exception ex) {
+                            AREA_REALIZADA = 0.0;
+                            ex.printStackTrace();
+                        }
+                        DecimalFormat format = new DecimalFormat(".##");
+                        String s;
+                        s = format.format(AREA_REALIZADA).replace(',', '.');
+                        AREA_REALIZADA = Double.valueOf(s);
+
+                        O_S_ATIVIDADES_DIA oSAtividadesDia = new O_S_ATIVIDADES_DIA();
+                        oSAtividadesDia.setID_PROGRAMACAO_ATIVIDADE(ID_PROGRAMACAO_ATIVIDADE);
+                        oSAtividadesDia.setID(ID);
+                        oSAtividadesDia.setDATA(DATA);
+                        oSAtividadesDia.setID_PRESTADOR(ID_PRESTADOR);
+                        oSAtividadesDia.setID_RESPONSAVEL(ID_RESPONSAVEL);
+                        oSAtividadesDia.setAREA_REALIZADA(String.valueOf(AREA_REALIZADA).replace('.', ','));
+                        oSAtividadesDia.setHH(HH);
+                        oSAtividadesDia.setHM(HM);
+                        oSAtividadesDia.setHO(HO);
+                        oSAtividadesDia.setHM_ESCAVADEIRA(HM_ESCAVADEIRA);
+                        oSAtividadesDia.setHO_ESCAVADEIRA(HO_ESCAVADEIRA);
+                        oSAtividadesDia.setOBSERVACAO(OBSERVACAO);
+                        oSAtividadesDia.setREGISTRO_DESCARREGADO(REGISTRO_DESCARREGADO);
+                        oSAtividadesDia.setACAO_INATIVO(ACAO_INATIVO);
+                        oSAtividadesDia.setEXPORT_PROXIMA_SINC(false);
+
+                        dao.insert(oSAtividadesDia);
+
+                    } catch (Exception exe) {
+                        Log.e("S18I", "Erro ao fazer insert ATIVIDADES_DIA ID: " + ID_ERRO);
+                        exe.printStackTrace();
                     }
-                    DecimalFormat format = new DecimalFormat(".##");
-                    String s;
-                    s = format.format(AREA_REALIZADA).replace(',', '.');
-                    AREA_REALIZADA = Double.valueOf(s);
-
-                    O_S_ATIVIDADES_DIA oSAtividadesDia = new O_S_ATIVIDADES_DIA();
-                    oSAtividadesDia.setID_PROGRAMACAO_ATIVIDADE(ID_PROGRAMACAO_ATIVIDADE);
-                    oSAtividadesDia.setID(ID);
-                    oSAtividadesDia.setDATA(DATA);
-                    oSAtividadesDia.setID_PRESTADOR(ID_PRESTADOR);
-                    oSAtividadesDia.setID_RESPONSAVEL(ID_RESPONSAVEL);
-                    oSAtividadesDia.setAREA_REALIZADA(String.valueOf(AREA_REALIZADA).replace('.', ','));
-                    oSAtividadesDia.setHH(HH);
-                    oSAtividadesDia.setHM(HM);
-                    oSAtividadesDia.setHO(HO);
-                    oSAtividadesDia.setHM_ESCAVADEIRA(HM_ESCAVADEIRA);
-                    oSAtividadesDia.setHO_ESCAVADEIRA(HO_ESCAVADEIRA);
-                    oSAtividadesDia.setOBSERVACAO(OBSERVACAO);
-                    oSAtividadesDia.setREGISTRO_DESCARREGADO(REGISTRO_DESCARREGADO);
-                    oSAtividadesDia.setACAO_INATIVO(ACAO_INATIVO);
-                    oSAtividadesDia.setEXPORT_PROXIMA_SINC(false);
-
-                    dao.insert(oSAtividadesDia);
-
                 }
             } catch (Exception ex) {
-                Log.e("S18", "Sem resposta Atividades_Dia,json");
+                Log.e("S18", "Sem resposta Atividades_Dia, Json");
                 ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -1220,8 +1233,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S19", "Sem resposta insumos,json");
-                ex.printStackTrace();
+                //    Log.e("S19", "Sem resposta insumos,json");
+                //    ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -1286,8 +1299,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S20", "Sem resposta atividade_indicadores,json");
-                ex.printStackTrace();
+                //    Log.e("S20", "Sem resposta atividade_indicadores,json");
+                //      ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -1319,8 +1332,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S9", "Sem resposta calibração,json");
-                ex.printStackTrace();
+                //      Log.e("S9", "Sem resposta calibração,json");
+                //       ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -1369,8 +1382,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S21", "Sem resposta atividade_insumos,json");
-                ex.printStackTrace();
+                //     Log.e("S21", "Sem resposta atividade_insumos,json");
+                //      ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -1398,8 +1411,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S22", "Sem resposta aval_subsolagem,json");
-                ex.printStackTrace();
+                //     Log.e("S22", "Sem resposta aval_subsolagem,json");
+                //      ex.printStackTrace();
             }
 
 
@@ -1417,8 +1430,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S23", "Sem resposta nas atividades,json");
-                ex.printStackTrace();
+                //      Log.e("S23", "Sem resposta nas atividades,json");
+                //      ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -1457,8 +1470,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S24", "Sem resposta nas atividade_insumos_dia,json");
-                ex.printStackTrace();
+                //     Log.e("S24", "Sem resposta nas atividade_insumos_dia,json");
+                //      ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -1478,14 +1491,14 @@ public class ClienteWeb<client> {
                     DATA = ignoraHoras(DATA);
 
                     try {
-                        dao.insert(new INDICADORES_SUBSOLAGEM(ID_PROGRAMACAO_ATIVIDADE, ID_ATIVIDADE, ID_INDICADOR, DATA, VALOR_INDICADOR));
+                        dao.insert(new INDICADORES_SUBSOLAGEM(ID_PROGRAMACAO_ATIVIDADE, ID_ATIVIDADE, ID_INDICADOR, DATA, VALOR_INDICADOR, 1));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S25", "Sem resposta indicadores_subsolagem,json");
-                ex.printStackTrace();
+                //      Log.e("S25", "Sem resposta indicadores_subsolagem,json");
+                //      ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -1540,8 +1553,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S26", "Sem resposta ponto_subsolagem,json");
-                ex.printStackTrace();
+                //      Log.e("S26", "Sem resposta ponto_subsolagem,json");
+                //      ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -1563,8 +1576,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S27", "Sem resposta geo_localizacoes,json");
-                ex.printStackTrace();
+                //      Log.e("S27", "Sem resposta geo_localizacoes,json");
+                //      ex.printStackTrace();
                 contadorDeErros++;
             }
 
@@ -1575,11 +1588,11 @@ public class ClienteWeb<client> {
             }
 */
             List<O_S_ATIVIDADES> listaOs = dao.todasOs();
-            for(int i =0; i <listaOs.size(); i++) {
+            for (int i = 0; i < listaOs.size(); i++) {
                 calculaAreaRealizada(listaOs.get(i).getID_PROGRAMACAO_ATIVIDADE(), activity);
             }
 
             finalizouSinc = true;
-    }
+        }
     }
 }

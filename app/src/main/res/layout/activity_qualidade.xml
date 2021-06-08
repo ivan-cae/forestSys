@@ -388,8 +388,8 @@
             android:layout_width="100dp"
             android:layout_height="25dp"
             android:textColor="@color/primaryTextColor"
-            android:textSize="17sp"
-            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView137"
             app:layout_constraintTop_toTopOf="@+id/textView137" />
 

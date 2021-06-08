@@ -183,7 +183,13 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
         Double calculo = (1 - (atual / anterior)) * 100;//((anterior - atual) / anterior) * 100.0
         DecimalFormat df = new DecimalFormat("###.##");
         //Log.e("Diferenca percentual", df.format(calculo).replace(',', '.'));
-        return Double.valueOf(df.format(calculo).replace(',', '.'));
+        Double retorno = 0.0;
+        try{
+            Double.valueOf(df.format(calculo).replace(',', '.'));
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return retorno;
     }
 
 

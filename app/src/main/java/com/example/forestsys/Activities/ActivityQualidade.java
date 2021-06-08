@@ -271,25 +271,42 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         botaoVerion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean temPermissao = true;
                 if (listaVerion.size() > 0) {
-                    jaTemVerion = true;
-                    AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
-                            .setTitle("Aviso!")
-                            .setMessage("Já existe um cadastro de dados do sistema de precisão, deseja edita-lo?")
-                            .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    abreDialogoVerion();
-                                }
-                            })
-                            .setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                }
-                            })
-                            .create();
-                    dialog.show();
-                } else abreDialogoVerion();
+                    if (usuarioLogado.getNIVEL_ACESSO() == 0 &&
+                            listaVerion.get(0).getFezSinc() == 1) {
+                        temPermissao = false;
+                        AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
+                                .setTitle("Erro")
+                                .setMessage("O usuário não tem permissão para editar os dados do sistema de precisão")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                }).create();
+                        dialog.show();
+                    }
+
+                    if (temPermissao == true) {
+                        jaTemVerion = true;
+                        AlertDialog dialog = new AlertDialog.Builder(ActivityQualidade.this)
+                                .setTitle("Aviso!")
+                                .setMessage("Já existe um cadastro de dados do sistema de precisão, deseja edita-lo?")
+                                .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        abreDialogoVerion();
+                                    }
+                                })
+                                .setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                })
+                                .create();
+                        dialog.show();
+                    }
+                }else abreDialogoVerion();
             }
         });
 
@@ -1096,19 +1113,19 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                     } else {
                         try {
                             if (listaVerion.size() == 0) {
-                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 11, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP1.getText().toString().replace(',', '.'))));
-                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 12, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP1.getText().toString().replace(',', '.'))));
-                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 13, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP2.getText().toString().replace(',', '.'))));
-                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.'))));
+                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 11, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP1.getText().toString().replace(',', '.')), 0));
+                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 12, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP1.getText().toString().replace(',', '.')), 0));
+                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 13, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP2.getText().toString().replace(',', '.')), 0));
+                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.')), 0));
                             }
 
                             if (listaVerion.size() == 1) {
                                 listaVerion.get(0).setVALOR_INDICADOR(Double.valueOf(mediaEditP1.getText().toString().replace(',', '.')));
                                 dao.update(listaVerion.get(0));
 
-                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 12, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP1.getText().toString().replace(',', '.'))));
-                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 13, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP2.getText().toString().replace(',', '.'))));
-                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.'))));
+                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 12, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP1.getText().toString().replace(',', '.')), 0));
+                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 13, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP2.getText().toString().replace(',', '.')), 0));
+                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.')), 0));
                             }
 
                             if (listaVerion.size() == 2) {
@@ -1117,8 +1134,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                                 dao.update(listaVerion.get(0));
                                 dao.update(listaVerion.get(1));
 
-                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 13, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP2.getText().toString().replace(',', '.'))));
-                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.'))));
+                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 13, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(mediaEditP2.getText().toString().replace(',', '.')), 0));
+                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.')), 0));
                             }
 
                             if (listaVerion.size() == 3) {
@@ -1130,7 +1147,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                                 dao.update(listaVerion.get(1));
                                 dao.update(listaVerion.get(2));
 
-                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.'))));
+                                dao.insert(new INDICADORES_SUBSOLAGEM(idProg, osSelecionada.getID_ATIVIDADE(), 14, ferramentas.formataDataDb(ferramentas.dataAtual()), Double.valueOf(desvioEditP2.getText().toString().replace(',', '.')), 0));
                             }
 
                             if (listaVerion.size() == 4) {

@@ -48,7 +48,7 @@ import com.example.forestsys.Classes.PRESTADORES;
         AVAL_SUBSOLAGEM.class, OPERADORES.class, CALIBRAGEM_SUBSOLAGEM.class, MAQUINA_IMPLEMENTO.class,
         O_S_ATIVIDADE_INSUMOS.class, ATIVIDADE_INDICADORES.class, ATIVIDADES.class, CADASTRO_FLORESTAL.class, ESPACAMENTOS.class, GEO_REGIONAIS.class,
         GEO_SETORES.class, GGF_DEPARTAMENTOS.class, GGF_FUNCOES.class, GGF_USUARIOS.class, INSUMO_ATIVIDADES.class, MATERIAL_GENETICO.class, O_S_ATIVIDADE_INSUMOS_DIA.class, O_S_ATIVIDADES.class, O_S_ATIVIDADES_DIA.class,
-        PRESTADORES.class, Configs.class, GEO_LOCALIZACAO.class}, version = 4, exportSchema = false)
+        PRESTADORES.class, Configs.class, GEO_LOCALIZACAO.class}, version = 5, exportSchema = false)
 
 
 public abstract class BaseDeDados extends RoomDatabase {
@@ -70,6 +70,7 @@ public abstract class BaseDeDados extends RoomDatabase {
                     .addMigrations(MIGRATION_1_2)
                     .addMigrations(MIGRATION_2_3)
                     .addMigrations(MIGRATION_3_4)
+                    .addMigrations(MIGRATION_4_5)
                     .build();
         }
         return instance;
@@ -95,6 +96,14 @@ public abstract class BaseDeDados extends RoomDatabase {
             database.execSQL("ALTER TABLE AVAL_PONTO_SUBSOLAGEM ADD COLUMN editou INTEGER");
         }
     };
+
+    static final Migration MIGRATION_4_5 = new Migration(4, 5) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE INDICADORES_SUBSOLAGEM ADD COLUMN fezSinc INTEGER");
+        }
+    };
+
 
     private static RoomDatabase.Callback roomCallBack = new RoomDatabase.Callback() {
         @Override

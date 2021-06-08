@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="250dp">
+    android:layout_height="180dp">
 
     <Button
         android:id="@+id/dialogo_confirmar_edicao_ponto"
@@ -21,12 +21,14 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginStart="80dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="46dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/botao_arredondado_cor_secundaria_dark"
         android:text="Cancelar"
         android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner_dialogo_edicao_ponto" />
 
     <com.example.forestsys.Assets.NDSpinner
         android:id="@+id/spinner_dialogo_edicao_ponto"
@@ -47,14 +49,14 @@
     <TextView
         android:id="@+id/textView28"
         android:layout_width="0dp"
-        android:layout_height="25dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="Selecione o ponto a ser editado"
         android:textAlignment="center"
         android:textColor="@color/primaryTextColor"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
