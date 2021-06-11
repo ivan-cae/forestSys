@@ -314,6 +314,9 @@ public interface DAO {
     @Query("SELECT * FROM Configs WHERE idConfig=1")
     Configs selecionaConfigs();
 
+    @Query("DELETE FROM Configs")
+    void apagaConfigs();
+
 
     //Scripts GGF_USUARIOS
     @Query("SELECT * FROM GGF_USUARIOS ORDER BY ID_USUARIO asc")
@@ -403,6 +406,9 @@ public interface DAO {
 
     @Query("SELECT * FROM O_S_ATIVIDADES WHERE PRIORIDADE=:prioridade")
     List<O_S_ATIVIDADES> filtraPrioridade(Integer prioridade);
+
+    @Query("DELETE FROM O_S_ATIVIDADES WHERE ID_PROGRAMACAO_ATIVIDADE=:idAtv")
+    void apagaAtividade(Integer idAtv);
 
 
     //Scripts CADASTRO_FLORESTAL

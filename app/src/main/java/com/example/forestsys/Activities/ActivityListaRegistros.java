@@ -119,7 +119,7 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
     public double checaConversao(String numero) {
         double teste;
         try {
-            teste = Double.valueOf(numero);
+            teste = Double.valueOf(numero.replace(',', '.').trim());
         } catch (NumberFormatException | NullPointerException n) {
             teste = 0;
         }
@@ -167,8 +167,15 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
                         difInsumo2.setBackgroundColor(Color.parseColor("#FF0000"));
                     else difInsumo2.setBackgroundColor(Color.parseColor("#BDB8B8"));
                     */
-                    difInsumo1.setText(String.valueOf(diferencaPercentual(atividade_insumos.get(0).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins1)));
-                    difInsumo2.setText(String.valueOf(diferencaPercentual(atividade_insumos.get(1).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins2)));
+
+
+                    BigDecimal bd = BigDecimal.valueOf(diferencaPercentual(atividade_insumos.get(0).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins1));
+                    bd = bd.setScale(2, RoundingMode.HALF_UP);
+                    difInsumo1.setText(String.valueOf(bd));
+
+                    bd = BigDecimal.valueOf(diferencaPercentual(atividade_insumos.get(1).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins2));
+                    bd = bd.setScale(2, RoundingMode.HALF_UP);
+                    difInsumo2.setText(String.valueOf(bd));
                 }
             }
         };
@@ -180,16 +187,26 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
     //Parâmetro de entrada: dois Double
     //Retorna o resultado do cálculo
     private static Double diferencaPercentual(Double anterior, Double atual) {
-        Double calculo = (1 - (atual / anterior)) * 100;//((anterior - atual) / anterior) * 100.0
-        DecimalFormat df = new DecimalFormat("###.##");
-        //Log.e("Diferenca percentual", df.format(calculo).replace(',', '.'));
-        Double retorno = 0.0;
+        if(atual<=0) atual = 0.01;
+        if(anterior<=0) anterior=0.01;
+
+        Log.e("Anterior", String.valueOf(anterior));
+        Log.e("Atual", String.valueOf(atual));
+        BigDecimal calculo = BigDecimal.valueOf(1);
+
         try{
-            Double.valueOf(df.format(calculo).replace(',', '.'));
-        }catch(Exception ex){
-            ex.printStackTrace();
+            calculo = BigDecimal.valueOf((1 - atual / anterior) * 100);
+        }catch(Exception calc){
+            calculo = BigDecimal.valueOf(1);
         }
-        return retorno;
+
+        calculo.setScale(2, RoundingMode.HALF_UP);
+
+        if(calculo.doubleValue() < 0){
+            calculo = BigDecimal.valueOf(calculo.doubleValue()* -1);
+        }
+
+        return calculo.doubleValue();
     }
 
 
@@ -394,6 +411,7 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
             }
             calcula+=d;
         }
+
         O_S_ATIVIDADES atividade = dao.selecionaOs(id);
 
         BigDecimal bd = BigDecimal.valueOf(calcula);

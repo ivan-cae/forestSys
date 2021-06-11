@@ -18,15 +18,13 @@ public class Configs implements Serializable {
     private String ultimaDataQueApagou;
 
     public Configs(Integer idConfig, String nomeEmpresa, String endereçoHost, String portaDeComunicacao, Integer permanenciaDosDados,
-                   Integer posicaoNoSpinner, String dataParaApagarDados, String ultimaDataQueApagou) {
+                   Integer posicaoNoSpinner) {
         this.idConfig = idConfig;
         this.nomeEmpresa = nomeEmpresa;
         this.endereçoHost = endereçoHost;
         this.portaDeComunicacao = portaDeComunicacao;
         this.permanenciaDosDados = permanenciaDosDados;
         this.posicaoNoSpinner = posicaoNoSpinner;
-        this.dataParaApagarDados = dataParaApagarDados;
-        this.ultimaDataQueApagou = ultimaDataQueApagou;
     }
 
     public Integer getIdConfig() {

@@ -63,7 +63,7 @@ public class ActivityConfiguracoes extends AppCompatActivity {
         Configs configs = dao.selecionaConfigs();
         ferramentas = new Ferramentas();
 
-        if(configs!=null) {
+        if (configs != null) {
             if (configs.getNomeEmpresa() != null) editNomeEmpresa.setText(configs.getNomeEmpresa());
             else editNomeEmpresa.setText("GELF");
             if (configs.getEndereçoHost() != null) editHost.setText(configs.getEndereçoHost());
@@ -79,7 +79,7 @@ public class ActivityConfiguracoes extends AppCompatActivity {
         spinnerPermanencia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                posicaoSpinnerPermanencia=position;
+                posicaoSpinnerPermanencia = position;
             }
 
             @Override
@@ -87,9 +87,9 @@ public class ActivityConfiguracoes extends AppCompatActivity {
             }
         });
 
-        if(configs!=null) {
+        if (configs != null) {
             spinnerPermanencia.setSelection(configs.getPosicaoNoSpinner());
-        }else{
+        } else {
             spinnerPermanencia.setSelection(opcoesPermanencia.length - 1);
         }
 
@@ -107,36 +107,49 @@ public class ActivityConfiguracoes extends AppCompatActivity {
                                 String host = null;
                                 String porta = null;
 
-                                if (editNomeEmpresa.length() > 0) empresa = editNomeEmpresa.getText().toString();
+                                if (editNomeEmpresa.length() > 0)
+                                    empresa = editNomeEmpresa.getText().toString();
 
                                 if (editHost.length() > 0) host = editHost.getText().toString();
 
                                 if (editPorta.length() > 0) porta = editPorta.getText().toString();
 
-                                if(empresa == null){
+                                if (empresa == null) {
                                     empresa = "GELF";
                                 }
                                 try {
-                                    String ultimaVezQueApagou = null;
-                                    if(configs != null){
-                                        if(configs.getUltimaDataQueApagou()!=null){
-                                            ultimaVezQueApagou = configs.getUltimaDataQueApagou();
+                                    Integer permanenciaDosDados;
+                                    try {
+                                        permanenciaDosDados = (Integer.valueOf(opcoesPermanencia[posicaoSpinnerPermanencia]));
+                                        if (permanenciaDosDados > 0) {
+                                            permanenciaDosDados *= -1;
                                         }
-                                    }else{
-                                        final Calendar cal = Calendar.getInstance();
-                                        cal.add(Calendar.DATE, 0);
-                                        SimpleDateFormat formataDataDeOntem = new SimpleDateFormat("yyyy-MM-dd");
-                                        ultimaVezQueApagou = formataDataDeOntem.format(cal.getTime()).toString();
-                                        Log.e("Ultima data que apagou - null", ultimaVezQueApagou);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        spinnerPermanencia.setSelection(opcoesPermanencia.length);
+                                        permanenciaDosDados = -90;
                                     }
+
                                     dao.insert(new Configs(1, empresa, host, porta,
-                                            Integer.valueOf(opcoesPermanencia[posicaoSpinnerPermanencia]),
-                                            posicaoSpinnerPermanencia, calculaDataParaApagarDados(opcoesPermanencia[posicaoSpinnerPermanencia]), ultimaVezQueApagou));
-                                    Log.e("Data para apagar os dados", String.valueOf(calculaDataParaApagarDados(opcoesPermanencia[posicaoSpinnerPermanencia])));
+                                            permanenciaDosDados, posicaoSpinnerPermanencia));
+
+                                    Configs teste = dao.selecionaConfigs();
+
+                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                    Calendar cal = Calendar.getInstance();
+                                    cal.add(Calendar.DATE, teste.getPermanenciaDosDados());
+
+
+                                    Log.e("Data intervalo",sdf.format(cal.getTime()));
+                                    Log.e("Permanencia", String.valueOf(teste.getPermanenciaDosDados()));
+
                                     Intent it = new Intent(ActivityConfiguracoes.this, ActivityInicializacao.class);
                                     startActivity(it);
                                 } catch (Exception ex) {
                                     ex.printStackTrace();
+                                    if (configs == null) {
+                                        dao.apagaConfigs();
+                                    }
                                     AlertDialog dialogoErro = new AlertDialog.Builder(ActivityConfiguracoes.this)
                                             .setTitle("Erro")
                                             .setMessage("Houve um problema ao salvar as configurações.")
@@ -156,7 +169,7 @@ public class ActivityConfiguracoes extends AppCompatActivity {
                         }).create();
                 dialog.show();
             }
-            });
+        });
 
         botaoVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,7 +212,7 @@ public class ActivityConfiguracoes extends AppCompatActivity {
         return DateFormat.format(pattern, dataFinal).toString().trim();
     }
 
-        //SObrescrita do método onBackPressed nativo do Android para que não execute nenhuma função
+    //SObrescrita do método onBackPressed nativo do Android para que não execute nenhuma função
     @Override
     public void onBackPressed() {
     }

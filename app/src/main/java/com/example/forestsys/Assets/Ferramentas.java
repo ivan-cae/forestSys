@@ -121,10 +121,10 @@ public class Ferramentas {
                 }
             }
 
-            Log.e("Digitado", s.toString());
+            /*Log.e("Digitado", s.toString());
             Log.e("Anterior", String.valueOf(contAnterior));
             Log.e("Atual", String.valueOf(contAtual));
-
+*/
             edit.setText(valorFinal.trim());
             edit.setSelection(edit.length());
         }

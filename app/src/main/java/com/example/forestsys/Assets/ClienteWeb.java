@@ -52,6 +52,7 @@ import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -93,38 +94,40 @@ public class ClienteWeb<client> {
 
     public static boolean erroNoOracle;
     private static Configs configs;
-    private static String dataAtual;
-    private String dataParaApagarDados;
-    private boolean chegouDataApagarTudo;
+
+    private static Date dataMaximaIntervalo;
+
+    private SimpleDateFormat sdf;
+    private Calendar cal;
+    private String dataAtual;
 
     @SuppressLint("LongLogTag")
     public ClienteWeb(Context context) throws ParseException {
         activity = context;
         baseDeDados = BaseDeDados.getInstance(activity);
         dao = baseDeDados.dao();
-        dataAtual = ferramentas.formataDataDb(ferramentas.dataAtual());
+
         configs = dao.selecionaConfigs();
+
         if (configs != null) {
-            chegouDataApagarTudo = false;
-            dataParaApagarDados = configs.getDataParaApagarDados();
-            String pattern = ("yyyy-MM-dd");
-            SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-            Date date1 = sdf.parse(dataAtual.trim());
-            Date date2 = sdf.parse(dataParaApagarDados.trim());
 
-            Log.e("Data atual", dataAtual.trim());
-            Log.e("Data para apagar", dataParaApagarDados.trim());
-            Log.e("Ultima data que apagou:", configs.getUltimaDataQueApagou());
+            sdf = new SimpleDateFormat("yyyy-MM-dd");
+           cal = Calendar.getInstance();
+            dataAtual = sdf.format(cal.getTime()).trim();
 
-            boolean jaApagouHoje = false;
-            if (configs.getUltimaDataQueApagou() != null) {
-                if (configs.getUltimaDataQueApagou().trim().equals(dataAtual)) {
+            cal.add(Calendar.DATE, (configs.getPermanenciaDosDados())-1);
+
+            dataMaximaIntervalo = cal.getTime();
+
+            Log.e("Data intervalo",sdf.format(dataMaximaIntervalo.getTime()));
+            Log.e("Permanencia", String.valueOf(configs.getPermanenciaDosDados()));
+
+            /*boolean jaApagouHoje = false;
+            if (configs.getDataParaApagarDados() != null) {
+                if (configs.getDataParaApagarDados().trim().equals(dataAtual)) {
                     jaApagouHoje = true;
                 }
             }
-
-            Log.e("Data atual e para apagar long", String.valueOf(date1.getTime()) +  ", " +
-                    String.valueOf(date2.getTime()));
 
             if (date1.getTime() >= date2.getTime()) {
                 if (jaApagouHoje == false) {
@@ -144,7 +147,7 @@ public class ClienteWeb<client> {
                     Log.e("Apagou?", " Sim");
                 } else {
                     Log.e("Apagou?", " Não");
-                }
+                }*/
             }
         }
 
@@ -1096,13 +1099,13 @@ public class ClienteWeb<client> {
 
                     boolean ignorarInsert = false;
 
-                    if (STATUS_NUM == 2 && DATA_FINAL != null && configs.getUltimaDataQueApagou() != null) {
+                    if (STATUS_NUM == 2 && DATA_FINAL != null) {
                         String pattern = ("yyyy-MM-dd");
                         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-                        Date date1 = sdf.parse(DATA_FINAL.trim());
-                        Date date2 = sdf.parse(configs.getUltimaDataQueApagou().trim());
-
-                        if (date1.compareTo(date2) < 0) {
+                        Date dataFinalDate = sdf.parse(DATA_FINAL.trim());
+                        //Log.e("Data Final", String.valueOf(dataFinalDate.getTime()));
+                        //Log.e("Data Intervalo", String.valueOf(dataMaximaIntervalo.getTime()));
+                        if (dataFinalDate.compareTo(dataMaximaIntervalo) <0) {
                             ignorarInsert = true;
                         }
                     }
@@ -1117,7 +1120,8 @@ public class ClienteWeb<client> {
                             ex.printStackTrace();
                         }
                     } else {
-                        Log.e("Ignora Insert para:", String.valueOf(ID_PROGRAMACAO_ATIVIDADE));
+                        dao.apagaAtividade(ID_PROGRAMACAO_ATIVIDADE);
+                        Log.e("Ignorar Atividade", String.valueOf(ID_PROGRAMACAO_ATIVIDADE));
                     }
                 }
             } catch (Exception ex) {
@@ -1191,8 +1195,8 @@ public class ClienteWeb<client> {
                         dao.insert(oSAtividadesDia);
 
                     } catch (Exception exe) {
-                        Log.e("S18I", "Erro ao fazer insert ATIVIDADES_DIA ID: " + ID_ERRO);
-                        exe.printStackTrace();
+                        //Log.e("S18I", "Erro ao fazer insert ATIVIDADES_DIA ID: " + ID_ERRO);
+                        //exe.printStackTrace();
                     }
                 }
             } catch (Exception ex) {

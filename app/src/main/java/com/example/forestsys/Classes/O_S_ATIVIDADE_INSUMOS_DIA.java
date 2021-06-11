@@ -17,7 +17,7 @@ import java.io.Serializable;
                 @ForeignKey(entity = O_S_ATIVIDADES.class,
                         parentColumns = "ID_PROGRAMACAO_ATIVIDADE",
                         childColumns = "ID_PROGRAMACAO_ATIVIDADE",
-                        onDelete = ForeignKey.NO_ACTION,
+                        onDelete = ForeignKey.CASCADE,
                         onUpdate = ForeignKey.NO_ACTION)},
         primaryKeys = {"ID_PROGRAMACAO_ATIVIDADE", "ID_INSUMO", "DATA"})
 
