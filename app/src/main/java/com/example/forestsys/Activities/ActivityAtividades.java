@@ -569,7 +569,7 @@ public class ActivityAtividades extends AppCompatActivity
         atividade.setAREA_REALIZADA(bd.doubleValue());
         osSelecionada.setAREA_REALIZADA(bd.doubleValue());
         dao.update(atividade);
-        Log.e("Area Realizada", String.valueOf(bd.doubleValue()));
+        //Log.e("Area Realizada", String.valueOf(bd.doubleValue()));
     }
 
     public void salvar() {

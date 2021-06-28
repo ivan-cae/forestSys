@@ -427,7 +427,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         atividade.setAREA_REALIZADA(bd.doubleValue());
         osSelecionada.setAREA_REALIZADA(bd.doubleValue());
         dao.update(atividade);
-        Log.e("Area Realizada", String.valueOf(bd.doubleValue()));
+       // Log.e("Area Realizada", String.valueOf(bd.doubleValue()));
 
     }
 
@@ -657,17 +657,17 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             double auxQtdPontos = listaPonto.get(listaPonto.size() - 1).getPONTO();
             double calculoPontosReg = auxQtdPontos * 10;
 
-            Log.e("Qtd itens nc", String.valueOf(nItensNconforme));
-            Log.e("Qtd pontos", String.valueOf(calculoPontosReg));
+            //Log.e("Qtd itens nc", String.valueOf(nItensNconforme));
+            //Log.e("Qtd pontos", String.valueOf(calculoPontosReg));
 
             float percentualQualidade;
             try {
                 percentualQualidade = (float) (nItensNconforme / calculoPontosReg);
-                Log.e("Percentual Qualidade", String.valueOf(percentualQualidade));
+                //Log.e("Percentual Qualidade", String.valueOf(percentualQualidade));
             } catch (Exception e) {
                 e.printStackTrace();
                 percentualQualidade = 0;
-                Log.e("Percentual Qualidade", "deu erro: 0");
+                //Log.e("Percentual Qualidade", "deu erro: 0");
             }
 
             percentualQualidade = (100 - percentualQualidade);

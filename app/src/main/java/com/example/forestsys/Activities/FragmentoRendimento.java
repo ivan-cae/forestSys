@@ -451,7 +451,7 @@ public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
 
         String[] antesDaVirgula = valorReferencia.split(",");
         int casasDecimais = antesDaVirgula[1].length();
-        Log.e("depois da virgula", String.valueOf(casasDecimais));
+       // Log.e("depois da virgula", String.valueOf(casasDecimais));
         if(casasDecimais==1) {
             valorReferencia = valorReferencia + "0";
         }

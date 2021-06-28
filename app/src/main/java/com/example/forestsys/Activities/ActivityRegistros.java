@@ -1105,8 +1105,8 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             dataAntesDoEdit = dataDepoisDoEdit;
         }
 
-        try {
             for (int i = 0; i < listaJoinOsInsumosSelecionados.size(); i++) {
+
                 Join_OS_INSUMOS persisteInsumosDia = listaJoinOsInsumosSelecionados.get(i);
 
                 O_S_ATIVIDADE_INSUMOS editaAtividadeInsumos =
@@ -1176,15 +1176,20 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
                 try {
                     somaQtdApl = Double.valueOf(s);
-                    // Log.e("Valor somaQtdApl", s);
+                     Log.e("Valor somaQtdApl ", s);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    // Log.e("Erro ao obter qtd aplicada", e.getMessage());
+                     Log.e("Erro ao obter qtd aplicada ", e.getMessage());
                     somaQtdApl = 1;
                 }
 
-                String divisao = String.valueOf((long) somaQtdApl / (long) osSelecionada.getAREA_REALIZADA());
-                //Log.e("Valor divisao", divisao);
+                String divisao = "0.0";
+                double area = (long) osSelecionada.getAREA_REALIZADA();
+
+                if(somaQtdApl > 0 && area>0) {
+                    divisao = String.valueOf((long) somaQtdApl / (long) area);
+                    //Log.e("Valor divisao", divisao);
+                }
 
                 qtdHaAplicado = new BigDecimal(divisao).setScale(2, BigDecimal.ROUND_UP);
 
@@ -1203,10 +1208,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
                 dao.update(editaAtividadeInsumos);
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
 
 
         if (osSelecionada.getSTATUS_NUM() == 0) {
@@ -1220,8 +1221,8 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         osSelecionada.setDATA_FINAL(listaAtividades.get(0).getDATA());
         dao.update(osSelecionada);
 
-        Log.e("Apontamento mais antigo", ferramentas.formataDataTextView(osSelecionada.getDATA_INICIAL()));
-        Log.e("Apontamento mais recente", ferramentas.formataDataTextView(osSelecionada.getDATA_FINAL()));
+        //Log.e("Apontamento mais antigo", ferramentas.formataDataTextView(osSelecionada.getDATA_INICIAL()));
+        //Log.e("Apontamento mais recente", ferramentas.formataDataTextView(osSelecionada.getDATA_FINAL()));
         edicaoReg = false;
         editouRegistro = false;
         oSAtividadesDiaAtual = null;
@@ -1271,8 +1272,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         atividade.setAREA_REALIZADA(bd.doubleValue());
         osSelecionada.setAREA_REALIZADA(bd.doubleValue());
         dao.update(atividade);
-        Log.e("Area Realizada", String.valueOf(bd.doubleValue()));
-
+        //Log.e("Area Realizada", String.valueOf(bd.doubleValue()));
     }
 
     //Adiciona o botão de atualização a barra de ação

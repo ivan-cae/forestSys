@@ -140,8 +140,8 @@ public class ActivityConfiguracoes extends AppCompatActivity {
                                     cal.add(Calendar.DATE, teste.getPermanenciaDosDados());
 
 
-                                    Log.e("Data intervalo",sdf.format(cal.getTime()));
-                                    Log.e("Permanencia", String.valueOf(teste.getPermanenciaDosDados()));
+                                    //Log.e("Data intervalo",sdf.format(cal.getTime()));
+                                    //Log.e("Permanencia", String.valueOf(teste.getPermanenciaDosDados()));
 
                                     Intent it = new Intent(ActivityConfiguracoes.this, ActivityInicializacao.class);
                                     startActivity(it);

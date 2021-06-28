@@ -126,8 +126,8 @@ public class FragmentoInsumos extends Fragment {
             } else {
                 listaJoinOsInsumosSelecionados = listaJoinOsInsumos;
 
-                listaJoinOsInsumosSelecionados.get(0).setQTD_APLICADO(0);
-                listaJoinOsInsumosSelecionados.get(1).setQTD_APLICADO(0);
+                listaJoinOsInsumosSelecionados.get(0).setQTD_APLICADO(0.0);
+                listaJoinOsInsumosSelecionados.get(1).setQTD_APLICADO(0.0);
 
                 listaJoinOsInsumosSelecionados.get(0).setID_INSUMO(dao.selecionaInsumoPorRm(listaJoinOsInsumos.get(0).getID_INSUMO_RM()));
                 listaJoinOsInsumosSelecionados.get(1).setID_INSUMO(dao.selecionaInsumoPorRm(listaJoinOsInsumos.get(1).getID_INSUMO_RM()));
@@ -350,7 +350,14 @@ public class FragmentoInsumos extends Fragment {
                 } else {
                     int id = listaJoinOsInsumosSelecionados.indexOf(insumoInsere);
                     if (editouRegistro == false) {
-                        insumoInsere.setQTD_APLICADO(Double.valueOf(str));
+                        double pegaQtdApl = 0;
+                        try{
+                            pegaQtdApl = Double.valueOf(str.replace(',','.'));
+                        }catch(Exception e){
+                            pegaQtdApl = 0.0;
+                            e.printStackTrace();
+                        }
+                        insumoInsere.setQTD_APLICADO(pegaQtdApl);
                         listaJoinOsInsumosSelecionados.set(id, insumoInsere);
                         setInsumos();
                     }
@@ -420,7 +427,14 @@ public class FragmentoInsumos extends Fragment {
                 if (str.trim().length() < 3)
                     valorDialogoEdicao.setError("Justificativa deve ter mais de 2 caracteres.");
                 else {
-                    insumoInsere.setQTD_APLICADO(valor);
+                    double pegaQtdApl = 0;
+                    try{
+                        pegaQtdApl = valor;
+                    }catch(Exception e){
+                        pegaQtdApl = 0.0;
+                    }
+                    insumoInsere.setQTD_APLICADO(pegaQtdApl);
+
                     String obs = listaJoinOsInsumosSelecionados.get(id).getOBSERVACAO();
                     String pegaObs = "";
                     if(obs != null)

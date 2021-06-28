@@ -119,8 +119,8 @@ public class ClienteWeb<client> {
 
             dataMaximaIntervalo = cal.getTime();
 
-            Log.e("Data intervalo",sdf.format(dataMaximaIntervalo.getTime()));
-            Log.e("Permanencia", String.valueOf(configs.getPermanenciaDosDados()));
+            //Log.e("Data intervalo",sdf.format(dataMaximaIntervalo.getTime()));
+            //Log.e("Permanencia", String.valueOf(configs.getPermanenciaDosDados()));
 
             /*boolean jaApagouHoje = false;
             if (configs.getDataParaApagarDados() != null) {
@@ -1121,11 +1121,11 @@ public class ClienteWeb<client> {
                         }
                     } else {
                         dao.apagaAtividade(ID_PROGRAMACAO_ATIVIDADE);
-                        Log.e("Ignorar Atividade", String.valueOf(ID_PROGRAMACAO_ATIVIDADE));
+                        //Log.e("Ignorar Atividade", String.valueOf(ID_PROGRAMACAO_ATIVIDADE));
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S17", "Sem resposta Os_Atividades,json");
+                //Log.e("S17", "Sem resposta Os_Atividades,json");
                 ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -1200,7 +1200,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                Log.e("S18", "Sem resposta Atividades_Dia, Json");
+                //Log.e("S18", "Sem resposta Atividades_Dia, Json");
                 ex.printStackTrace();
                 contadorDeErros++;
             }

@@ -49,7 +49,7 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
 
 
         boolean rec = false;
-        try{
+
             if(insumo.getQTD_HA_RECOMENDADO() != 0){
                 rec = true;
                 holder.itemView.setClickable(true);
@@ -91,12 +91,10 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
                         }
                     }
                 }
-            }
-        }catch(Exception ex){
+            }else{
             rec= false;
-            ex.printStackTrace();
-
         }
+
 
     if(rec == false){
         holder.itemView.setClickable(false);
@@ -104,10 +102,11 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
         holder.descricao.setTextColor(secondaryDarkColor);
         holder.QTDApl.setTextColor(secondaryDarkColor);
         holder.QTDRec.setTextColor(secondaryDarkColor);
-        holder.QTDApl.setText("0");
-        holder.QTDRec.setText("0");
-        insumoConforme1 = true;
-        insumoConforme2 = true;
+        holder.QTDApl.setText("0,0");
+        holder.QTDRec.setText("0,0");
+
+            insumoConforme1 = true;
+            insumoConforme2 = true;
     }
     }
 
