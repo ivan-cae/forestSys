@@ -18,6 +18,7 @@ import com.example.forestsys.Classes.AVAL_SUBSOLAGEM;
 import com.example.forestsys.Classes.CADASTRO_FLORESTAL;
 import com.example.forestsys.Classes.CALIBRAGEM_SUBSOLAGEM;
 import com.example.forestsys.Classes.ClassesAuxiliares.Configs;
+import com.example.forestsys.Classes.ClassesAuxiliares.FOREST_LOG;
 import com.example.forestsys.Classes.ESPACAMENTOS;
 import com.example.forestsys.Classes.GEO_LOCALIZACAO;
 import com.example.forestsys.Classes.GEO_REGIONAIS;
@@ -321,6 +322,34 @@ public class ClienteWeb<client> {
 
 
         if (conectado == true && finalizouSinc == false && erroNoOracle == false) {
+            try {
+                List<FOREST_LOG> todosLogs = dao.todosLogs();
+                for (Integer i = 0; i < todosLogs.size(); i++) {
+                    JSONObject obj = new JSONObject();
+
+                    obj.put("DATA", todosLogs.get(i).getDATA());
+                    obj.put("DISPOSITIVO", todosLogs.get(i).getDISPOSITIVO());
+                    obj.put("USUARIO", todosLogs.get(i).getUSUARIO());
+                    obj.put("MODULO", todosLogs.get(i).getMODULO());
+                    obj.put("ACAO", todosLogs.get(i).getACAO());
+                    obj.put("VALOR", todosLogs.get(i).getVALOR());
+
+                    String resposta = requisicaoPOST(HOST_PORTA + "forestlogs", obj.toString());
+
+                    JSONObject updateId = new JSONObject(resposta);
+                    Integer idRetornado = updateId.getInt("ID");
+                    if (idRetornado != null || idRetornado != JSONObject.NULL) {
+                        dao.delete(todosLogs.get(i));
+                    }
+
+
+                }
+            } catch (Exception ex) {
+                // Log.e("CALIBRAGEM_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST");
+                //ex.printStackTrace();
+                //contadorDeErros ++;
+            }
+
             try {
                 List<CALIBRAGEM_SUBSOLAGEM> todasCalibragens = dao.todasCalibragens();
                 for (Integer i = 0; i < todasCalibragens.size(); i++) {

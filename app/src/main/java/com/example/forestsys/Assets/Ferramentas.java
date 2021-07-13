@@ -14,9 +14,15 @@ import static java.lang.String.format;
 
 public class Ferramentas {
 
-    //Retorna a hora atual do dispositivo
+
+    //Retorna a hora e minutos atuais do dispositivo
     public static String horaAtual() {
         return DateFormat.format("HH:mm", new Date()).toString().trim();
+    }
+
+    //Retorna a hora, minutos e segundos atuais do dispositivo
+    public static String dataHoraMinutosSegundosAtual() {
+        return DateFormat.format("yyyy-MM-dd HH:mm:ss", new Date()).toString().trim();
     }
 
     //Retorna a data atual do dispositivo

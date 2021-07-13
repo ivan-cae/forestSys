@@ -35,7 +35,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.forestsys.Adapters.AdaptadorOs;
 import com.example.forestsys.Assets.ClienteWeb;
+import com.example.forestsys.Assets.Ferramentas;
 import com.example.forestsys.Classes.ClassesAuxiliares.Configs;
+import com.example.forestsys.Classes.ClassesAuxiliares.FOREST_LOG;
 import com.example.forestsys.Classes.O_S_ATIVIDADES_DIA;
 import com.example.forestsys.R;
 import com.example.forestsys.Assets.BaseDeDados;
@@ -55,6 +57,7 @@ import java.util.List;
 
 import static com.example.forestsys.Activities.ActivityInicializacao.HOST_PORTA;
 import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresaPref;
+import static com.example.forestsys.Activities.ActivityLogin.informacaoDispositivo;
 import static com.example.forestsys.Activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.Assets.ClienteWeb.contadorDeErros;
 import static com.example.forestsys.Assets.ClienteWeb.finalizouSinc;
@@ -294,6 +297,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         adaptador.setOnItemClickListener(new AdaptadorOs.OnItemClickListener() {
             @Override
             public void onItemClick(O_S_ATIVIDADES classeOs) {
+
                 osSelecionada = classeOs;
                 Intent it = new Intent(ActivityMain.this, ActivityAtividades.class);
                 startActivity(it);
@@ -458,6 +462,11 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                                     e.printStackTrace();
                                 }
                                 try {
+                                    Ferramentas ferramentas = new Ferramentas();
+                                    FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
+                                            usuarioLogado.getEMAIL(), "Atividades", "Sincronizou", null);
+                                    dao.insert(registroLog);
+
                                     clienteWeb.sincronizaWebService();
                                 } catch (Exception e) {
                                     finalizouSinc = true;

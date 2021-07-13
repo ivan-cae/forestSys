@@ -44,6 +44,7 @@ import com.example.forestsys.Assets.BaseDeDados;
 import com.example.forestsys.Assets.DAO;
 import com.example.forestsys.Assets.Ferramentas;
 import com.example.forestsys.Assets.NDSpinner;
+import com.example.forestsys.Classes.ClassesAuxiliares.FOREST_LOG;
 import com.example.forestsys.Classes.GGF_USUARIOS;
 import com.example.forestsys.Classes.O_S_ATIVIDADES;
 import com.example.forestsys.Classes.O_S_ATIVIDADES_DIA;
@@ -73,13 +74,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.view.View.GONE;
+import static com.example.forestsys.Activities.ActivityAtividades.editouPonto;
 import static com.example.forestsys.Activities.ActivityAtividades.erroPrestadorBool;
 import static com.example.forestsys.Activities.ActivityAtividades.joinOsInsumos;
 import static com.example.forestsys.Activities.ActivityAtividades.listaCorrecoes;
+import static com.example.forestsys.Activities.ActivityAtividades.listaJoinOsInsumosSelecionados;
 import static com.example.forestsys.Activities.ActivityAtividades.listaPontosCorrecaoAux;
+import static com.example.forestsys.Activities.ActivityAtividades.oSAtividadesDiaAtual;
 import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresaPref;
+import static com.example.forestsys.Activities.ActivityLogin.informacaoDispositivo;
 import static com.example.forestsys.Activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
+import static com.example.forestsys.Activities.ActivityAtividades.editouVerion;
 
 public class ActivityQualidade extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -123,6 +129,28 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     private CheckBox editItem8;
     private CheckBox editItem9;
     private EditText editItem10;
+
+    TextView textItem1;
+    TextView textItem2;
+    TextView textItem3;
+    TextView textItem4;
+    TextView textItem5;
+    TextView textItem6;
+    TextView textItem7;
+    TextView textItem8;
+    TextView textItem9;
+    TextView textItem10;
+
+    TextView textLetra1;
+    TextView textLetra2;
+    TextView textLetra3;
+    TextView textLetra4;
+    TextView textLetra5;
+    TextView textLetra6;
+    TextView textLetra7;
+    TextView textLetra8;
+    TextView textLetra9;
+    TextView textLetra10;
 
     private TextView ncProfundidade;
     private TextView ncEstrondamento;
@@ -295,6 +323,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                                 .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
+                                        editouVerion = true;
                                         abreDialogoVerion();
                                     }
                                 })
@@ -306,7 +335,10 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                                 .create();
                         dialog.show();
                     }
-                }else abreDialogoVerion();
+                }else {
+                    abreDialogoVerion();
+                    editouVerion = false;
+                }
             }
         });
 
@@ -794,6 +826,13 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     public void abreDialogoVerion() {
         try {
             dialogoVerionAberto = true;
+            String acao = "Inseriu";
+
+            if(editouVerion == true){
+                acao = "Editou";
+            }else{
+                acao = "Inseriu";
+            }
 
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
             View mView = getLayoutInflater().inflate(R.layout.dialogo_qualidade_verion, null);
@@ -1089,6 +1128,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 }
             });
 
+            String finalAcao = acao;
             botaoRegistrar.setOnClickListener(new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
@@ -1182,6 +1222,19 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                                 dao.update(osSelecionada);
                             }
 
+                            Ferramentas ferramentas = new Ferramentas();
+                            FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
+                                    usuarioLogado.getEMAIL(), "Avaliação Qualidade", finalAcao + " Dados no sistema de precisão",
+                                    String.valueOf("OS: " + osSelecionada.getID_PROGRAMACAO_ATIVIDADE() + " | Talhão: " + osSelecionada.getTALHAO()
+                                            + " | Área: " + osSelecionada.getAREA_PROGRAMADA()
+                                            + " | Área Realizada: " + osSelecionada.getAREA_REALIZADA()
+                                            + " | P1Media: " + listaVerion.get(0).getVALOR_INDICADOR()
+                                            + " | P1Desvio: " + listaVerion.get(1).getVALOR_INDICADOR()
+                                            + " | P2Media: " + listaVerion.get(2).getVALOR_INDICADOR()
+                                            + " | P1Desvio: " + listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
+                            dao.insert(registroLog);
+
+                            editouVerion = false;
                             dialogoVerionAberto = false;
                             dialogoVerion.dismiss();
 
@@ -1221,6 +1274,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 @Override
                 public void onDismiss(DialogInterface dialog) {
                     dialogoVerionAberto = false;
+                    editouVerion = false;
                     auxSavedInstanceState = null;
                 }
             });
@@ -1228,6 +1282,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             dialogoVerion.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
+                    editouVerion = false;
                     dialogoVerionAberto = false;
                     auxSavedInstanceState = null;
                     Toast.makeText(ActivityQualidade.this, "Operação cancelada pelo usuário", Toast.LENGTH_SHORT).show();
@@ -1541,27 +1596,27 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
         TextView numeroPonto = mView.findViewById(R.id.dialogo_qualidade_ponto_numero);
 
-        TextView textItem1 = mView.findViewById(R.id.dialogo_qualidade_ponto_item1);
-        TextView textItem2 = mView.findViewById(R.id.dialogo_qualidade_ponto_item2);
-        TextView textItem3 = mView.findViewById(R.id.dialogo_qualidade_ponto_item3);
-        TextView textItem4 = mView.findViewById(R.id.dialogo_qualidade_ponto_item4);
-        TextView textItem5 = mView.findViewById(R.id.dialogo_qualidade_ponto_item5);
-        TextView textItem6 = mView.findViewById(R.id.dialogo_qualidade_ponto_item6);
-        TextView textItem7 = mView.findViewById(R.id.dialogo_qualidade_ponto_item7);
-        TextView textItem8 = mView.findViewById(R.id.dialogo_qualidade_ponto_item8);
-        TextView textItem9 = mView.findViewById(R.id.dialogo_qualidade_ponto_item9);
-        TextView textItem10 = mView.findViewById(R.id.dialogo_qualidade_ponto_item10);
+         textItem1 = mView.findViewById(R.id.dialogo_qualidade_ponto_item1);
+         textItem2 = mView.findViewById(R.id.dialogo_qualidade_ponto_item2);
+         textItem3 = mView.findViewById(R.id.dialogo_qualidade_ponto_item3);
+         textItem4 = mView.findViewById(R.id.dialogo_qualidade_ponto_item4);
+         textItem5 = mView.findViewById(R.id.dialogo_qualidade_ponto_item5);
+         textItem6 = mView.findViewById(R.id.dialogo_qualidade_ponto_item6);
+         textItem7 = mView.findViewById(R.id.dialogo_qualidade_ponto_item7);
+         textItem8 = mView.findViewById(R.id.dialogo_qualidade_ponto_item8);
+         textItem9 = mView.findViewById(R.id.dialogo_qualidade_ponto_item9);
+         textItem10 = mView.findViewById(R.id.dialogo_qualidade_ponto_item10);
 
-        TextView textLetra1 = mView.findViewById(R.id.dialogo_qualidade_ponto_letra_item1);
-        TextView textLetra2 = mView.findViewById(R.id.dialogo_qualidade_ponto_letra_item2);
-        TextView textLetra3 = mView.findViewById(R.id.dialogo_qualidade_ponto_letra_item3);
-        TextView textLetra4 = mView.findViewById(R.id.dialogo_qualidade_ponto_letra_item4);
-        TextView textLetra5 = mView.findViewById(R.id.dialogo_qualidade_ponto_letra_item5);
-        TextView textLetra6 = mView.findViewById(R.id.dialogo_qualidade_ponto_letra_item6);
-        TextView textLetra7 = mView.findViewById(R.id.dialogo_qualidade_ponto_letra_item7);
-        TextView textLetra8 = mView.findViewById(R.id.dialogo_qualidade_ponto_letra_item8);
-        TextView textLetra9 = mView.findViewById(R.id.dialogo_qualidade_ponto_letra_item9);
-        TextView textLetra10 = mView.findViewById(R.id.dialogo_qualidade_ponto_letra_item10);
+         textLetra1 = mView.findViewById(R.id.dialogo_qualidade_ponto_letra_item1);
+         textLetra2 = mView.findViewById(R.id.dialogo_qualidade_ponto_letra_item2);
+         textLetra3 = mView.findViewById(R.id.dialogo_qualidade_ponto_letra_item3);
+         textLetra4 = mView.findViewById(R.id.dialogo_qualidade_ponto_letra_item4);
+         textLetra5 = mView.findViewById(R.id.dialogo_qualidade_ponto_letra_item5);
+         textLetra6 = mView.findViewById(R.id.dialogo_qualidade_ponto_letra_item6);
+         textLetra7 = mView.findViewById(R.id.dialogo_qualidade_ponto_letra_item7);
+         textLetra8 = mView.findViewById(R.id.dialogo_qualidade_ponto_letra_item8);
+         textLetra9 = mView.findViewById(R.id.dialogo_qualidade_ponto_letra_item9);
+         textLetra10 = mView.findViewById(R.id.dialogo_qualidade_ponto_letra_item10);
 
         editItem1 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item1);
         editItem2 = mView.findViewById(R.id.dialogo_qualidade_ponto_edit_item2);
@@ -1583,8 +1638,10 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         }
 
         if(ponto == null) {
+            editouPonto = false;
             numeroPonto.setText(String.valueOf(numeroPontoAtual));
         }else{
+            editouPonto = true;
             dialogoEdicao.dismiss();
             numeroPontoAtual = ponto.getPONTO();
             numeroPonto.setText(String.valueOf(numeroPontoAtual));
@@ -2080,6 +2137,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             @Override
             public void onCancel(DialogInterface dialog) {
                 dialogoPontoAberto = false;
+                editouPonto = false;
                 auxSavedInstanceState = null;
                 Toast.makeText(ActivityQualidade.this, "Operação cancelada pelo usuário", Toast.LENGTH_SHORT).show();
             }
@@ -2271,6 +2329,46 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             }
 
 
+            String acao = "Inseriu";
+
+            if(editouPonto == true){
+                acao = "Editou";
+            }else{
+                acao = "Inseriu";
+            }
+
+            String valorItem5 = "Não";
+            if(editItem5.isChecked()) valorItem5 = "Sim";
+
+            String valorItem7 = "Não";
+            if(editItem7.isChecked()) valorItem5 = "Sim";
+
+            String valorItem8 = "Não";
+            if(editItem8.isChecked()) valorItem5 = "Sim";
+
+            String valorItem9 = "Não";
+            if(editItem9.isChecked()) valorItem5 = "Sim";
+
+
+            Ferramentas ferramentas = new Ferramentas();
+            FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
+                    usuarioLogado.getEMAIL(), "Avaliação Qualidade", acao + " Ponto " + numeroPontoAtual,
+                    String.valueOf("OS: " + osSelecionada.getID_PROGRAMACAO_ATIVIDADE() + " | Talhão: " + osSelecionada.getTALHAO()
+                            + " | Área: " + osSelecionada.getAREA_PROGRAMADA()
+                            + " | Área Realizada: " + osSelecionada.getAREA_REALIZADA()
+                            + " | "+textItem1.getText().toString() + ": " +editItem1.getText().toString()
+                            + " | "+textItem2.getText().toString() + ": " +editItem2.getText().toString()
+                            + " | "+textItem3.getText().toString() + ": " +editItem3.getText().toString()
+                            + " | "+textItem4.getText().toString() + ": " +editItem4.getText().toString()
+                            + " | "+textItem5.getText().toString() + ": " + valorItem5
+                            + " | "+textItem6.getText().toString() + ": " +editItem6.getText().toString()
+                            + " | "+textItem7.getText().toString() + ": " +valorItem7
+                            + " | "+textItem8.getText().toString() + ": " +valorItem8
+                            + " | "+textItem9.getText().toString() + ": " +valorItem9
+                            + " | "+textItem10.getText().toString() + ": " +editItem10.getText().toString()
+                    ).replace('.', ','));
+            dao.insert(registroLog);
+
             if (osSelecionada.getSTATUS_NUM() == 0) {
                 osSelecionada.setSTATUS("Andamento");
                 osSelecionada.setSTATUS_NUM(1);
@@ -2279,6 +2377,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             }
 
             dialogoPontoAberto = false;
+            editouPonto = false;
             Intent it = new Intent(ActivityQualidade.this, ActivityQualidade.class);
             startActivity(it);
             dialogoPonto.dismiss();

@@ -39,6 +39,9 @@ import android.widget.Toast;
 
 import com.example.forestsys.Adapters.AdaptadorCalibracao;
 
+import com.example.forestsys.Classes.ClassesAuxiliares.FOREST_LOG;
+import com.example.forestsys.Classes.IMPLEMENTOS;
+import com.example.forestsys.Classes.MAQUINA_IMPLEMENTO;
 import com.example.forestsys.R;
 import com.example.forestsys.Assets.BaseDeDados;
 import com.example.forestsys.Assets.DAO;
@@ -64,6 +67,7 @@ import java.util.List;
 
 import static android.view.View.GONE;
 import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresaPref;
+import static com.example.forestsys.Activities.ActivityLogin.informacaoDispositivo;
 import static com.example.forestsys.Activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
 import static com.example.forestsys.Activities.ActivityAtividades.joinOsInsumos;
@@ -1512,9 +1516,13 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                                         CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem = new CALIBRAGEM_SUBSOLAGEM(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
                                                 ferramentas.formataDataDb(ferramentas.dataAtual()), checaTurno(), idImplemento,
                                                 idOperador, mediaP1, desvioProd1, mediaP2, desvioProd2);
+
+                                        boolean inseriu = false;
                                         try {
                                             dao.insert(calibragem_subsolagem);
+                                            inseriu = true;
                                         } catch (SQLiteConstraintException | NullPointerException ex) {
+                                            inseriu = false;
                                             AlertDialog dialogoErro = new AlertDialog.Builder(ActivityCalibracao.this)
                                                     .setTitle("Erro")
                                                     .setMessage("Houve um problema ao salvar a calibração.")
@@ -1525,6 +1533,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                                                     }).create();
                                             dialogoErro.show();
                                         }
+
                                         if (osSelecionada.getSTATUS_NUM() == 0) {
                                             osSelecionada.setSTATUS("Andamento");
                                             osSelecionada.setSTATUS_NUM(1);
@@ -1532,6 +1541,40 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                                             dao.update(osSelecionada);
                                         }
 
+                                        if (inseriu == true) {
+                                            Ferramentas ferramentas = new Ferramentas();
+                                            MAQUINA_IMPLEMENTO maquinaImplemento = dao.selecionaMaquinaImplemento(idImplemento);
+                                            MAQUINAS maquinas = dao.selecionaMaquina(maquinaImplemento.getID_MAQUINA());
+                                            IMPLEMENTOS implementos = dao.selecionaImplemento(maquinaImplemento.getID_IMPLEMENTO());
+                                            OPERADORES operador = dao.selecionaOperador(idOperador);
+                                            try {
+                                                FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
+                                                        usuarioLogado.getEMAIL(), "Calibração", "Inseriu",
+                                                        String.valueOf("OS: " + osSelecionada.getID_PROGRAMACAO_ATIVIDADE()
+                                                                + " | Talhão: " + osSelecionada.getTALHAO()
+                                                                + " | Maquina: " + maquinas.getDESCRICAO()
+                                                                + " | Operador: " + operador.getDESCRICAO()
+                                                                + " | Implemento: " + implementos.getDESCRICAO()
+                                                                + " | P1A1: " + P1_a1.getText().toString()
+                                                                + " | P1A2: " + P1_a2.getText().toString()
+                                                                + " | P1A3: " + P1_a3.getText().toString()
+                                                                + " | P1A4: " + P1_a4.getText().toString()
+                                                                + " | P1A5: " + P1_a5.getText().toString()
+                                                                + " | DesvioP1: " + desvioP1.getText().toString()
+                                                                + " | MediaP1: " + P1Media.getText().toString()
+                                                                + " | P2A1: " + P2_a1.getText().toString()
+                                                                + " | P2A2: " + P2_a2.getText().toString()
+                                                                + " | P2A3: " + P2_a3.getText().toString()
+                                                                + " | P2A4: " + P2_a4.getText().toString()
+                                                                + " | P2A5: " + P2_a5.getText().toString()
+                                                                + " | DesvioP2: " + desvioP2.getText().toString()
+                                                                + " | MediaP2: " + P2Media.getText().toString()).replace('.', ','));
+                                                dao.insert(registroLog);
+                                            } catch (Exception e) {
+                                                Log.e("Erro ao registrar log", "Print stack");
+                                                e.printStackTrace();
+                                            }
+                                        }
                                         Toast.makeText(getApplicationContext(), "Calibração Salva com sucesso!", Toast.LENGTH_LONG).show();
                                         Intent it = new Intent(ActivityCalibracao.this, ActivityCalibracao.class);
                                         startActivity(it);

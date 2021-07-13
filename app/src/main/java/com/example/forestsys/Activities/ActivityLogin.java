@@ -12,6 +12,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.DrawableRes;
@@ -30,7 +31,9 @@ import android.widget.Toast;
 import com.example.forestsys.Assets.BaseDeDados;
 import com.example.forestsys.Assets.ClienteWeb;
 import com.example.forestsys.Assets.DAO;
+import com.example.forestsys.Assets.Ferramentas;
 import com.example.forestsys.Classes.ClassesAuxiliares.Configs;
+import com.example.forestsys.Classes.ClassesAuxiliares.FOREST_LOG;
 import com.example.forestsys.R;
 import com.example.forestsys.Classes.GGF_USUARIOS;
 
@@ -54,6 +57,7 @@ public class ActivityLogin extends AppCompatActivity {
     private final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
     public static GGF_USUARIOS usuarioLogado = null;
+    public static String informacaoDispositivo = null;
 
     private String nomeUsuario;
     private String senhaUsuario;
@@ -96,6 +100,8 @@ public class ActivityLogin extends AppCompatActivity {
         baseDeDados = BaseDeDados.getInstance(getApplicationContext());
         dao = baseDeDados.dao();
 
+        informacaoDispositivo = android.os.Build.MODEL + " " +android.os.Build.SERIAL;
+
         if (dao.selecionaConfigs() != null) {
             configs = dao.selecionaConfigs();
             HOST_PORTA = "http://" + configs.getEndereçoHost() + ":" + configs.getPortaDeComunicacao() + "/";
@@ -110,6 +116,7 @@ public class ActivityLogin extends AppCompatActivity {
         });
 
         loginButton.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("LongLogTag")
             @Override
             public void onClick(View v) {
                 boolean tem = false;
@@ -120,7 +127,14 @@ public class ActivityLogin extends AppCompatActivity {
                 if (tem == false) {
                     Toast.makeText(ActivityLogin.this, "Credenciais Inválidas", Toast.LENGTH_SHORT).show();
                 } else {
+                    Ferramentas ferramentas = new Ferramentas();
+
+                    FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
+                            usuarioLogado.getEMAIL(), "Atividades", "Acessou", null);
+
+                    dao.insert(registroLog);
                     it = new Intent(ActivityLogin.this, ActivityMain.class);
+
                     startActivity(it);
                 }
             }

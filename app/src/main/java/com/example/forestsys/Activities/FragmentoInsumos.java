@@ -134,8 +134,15 @@ public class FragmentoInsumos extends Fragment {
             }
 
 
-            nomeInsumo1.setText("OBS: "+listaJoinOsInsumosSelecionados.get(0).getDESCRICAO());
-            nomeInsumo2.setText("OBS: "+listaJoinOsInsumosSelecionados.get(1).getDESCRICAO());
+            if(listaJoinOsInsumosSelecionados.size() >1) {
+                nomeInsumo1.setText("OBS: " + listaJoinOsInsumosSelecionados.get(0).getDESCRICAO());
+                nomeInsumo2.setText("OBS: " + listaJoinOsInsumosSelecionados.get(1).getDESCRICAO());
+            }
+
+            if(listaJoinOsInsumosSelecionados.size() == 1) {
+                nomeInsumo1.setText("OBS: " + listaJoinOsInsumosSelecionados.get(0).getDESCRICAO());
+            }
+
 
             nomeInsumo1.setMovementMethod(new ScrollingMovementMethod());
             nomeInsumo2.setMovementMethod(new ScrollingMovementMethod());

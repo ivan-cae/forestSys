@@ -37,6 +37,7 @@ import com.example.forestsys.Adapters.AdaptadorInsumos;
 import com.example.forestsys.Assets.BaseDeDados;
 import com.example.forestsys.Assets.DAO;
 import com.example.forestsys.Assets.Ferramentas;
+import com.example.forestsys.Classes.ClassesAuxiliares.FOREST_LOG;
 import com.example.forestsys.Classes.GEO_LOCALIZACAO;
 import com.example.forestsys.Classes.O_S_ATIVIDADES;
 import com.example.forestsys.R;
@@ -63,6 +64,7 @@ import java.util.List;
 
 import static com.example.forestsys.Activities.ActivityCalibracao.checaTurno;
 import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresaPref;
+import static com.example.forestsys.Activities.ActivityLogin.informacaoDispositivo;
 import static com.example.forestsys.Activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
 
@@ -142,6 +144,9 @@ public class ActivityAtividades extends AppCompatActivity
     public static boolean ncInsumo1Justificada;
     public static boolean ncInsumo2Justificada;
 
+    public static boolean editouVerion;
+    public static boolean editouPonto;
+
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,6 +166,9 @@ public class ActivityAtividades extends AppCompatActivity
         insumoInsere = null;
         ncInsumo1Justificada = false;
         ncInsumo2Justificada = false;
+
+        editouVerion = false;
+        editouPonto  = false;
 
         listaJoinOsInsumosSelecionados = new ArrayList<Join_OS_INSUMOS>();
 
@@ -576,6 +584,13 @@ public class ActivityAtividades extends AppCompatActivity
         osSelecionada.setSTATUS_NUM(2);
         osSelecionada.setSTATUS("Finalizado");
         dao.update(osSelecionada);
+
+        FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
+                usuarioLogado.getEMAIL(), "OS Atividade", "Finalizou",
+                String.valueOf(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()));
+        dao.insert(registroLog);
+
+
         Toast.makeText(ActivityAtividades.this, "Atividade Finalizada Com Sucesso!", Toast.LENGTH_LONG).show();
         Intent it = new Intent(ActivityAtividades.this, ActivityMain.class);
         startActivity(it);
@@ -617,6 +632,11 @@ public class ActivityAtividades extends AppCompatActivity
                     osSelecionada.setSTATUS("Andamento");
                     osSelecionada.setSTATUS_NUM(1);
                     dao.update(osSelecionada);
+
+                    FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
+                            usuarioLogado.getEMAIL(), "OS Atividade", "Editou",
+                            String.valueOf(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()));
+                    dao.insert(registroLog);
 
                     startActivity(new Intent(ActivityAtividades.this, ActivityAtividades.class));
                     dialogoEdicaoOs.dismiss();

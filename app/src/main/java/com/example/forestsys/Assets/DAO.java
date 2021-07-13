@@ -15,6 +15,7 @@ import com.example.forestsys.Classes.AVAL_SUBSOLAGEM;
 import com.example.forestsys.Classes.CADASTRO_FLORESTAL;
 import com.example.forestsys.Classes.CALIBRAGEM_SUBSOLAGEM;
 import com.example.forestsys.Classes.ClassesAuxiliares.Configs;
+import com.example.forestsys.Classes.ClassesAuxiliares.FOREST_LOG;
 import com.example.forestsys.Classes.ESPACAMENTOS;
 import com.example.forestsys.Classes.GEO_LOCALIZACAO;
 import com.example.forestsys.Classes.GEO_REGIONAIS;
@@ -127,6 +128,9 @@ public interface DAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(GEO_LOCALIZACAO geoLocalizacao);
+
+    @Insert
+    void insert(FOREST_LOG forest_log);
 
 
     @Update
@@ -298,6 +302,9 @@ public interface DAO {
     @Delete
     void delete(GEO_LOCALIZACAO geoLocalizacao);
 
+    @Delete
+    void delete(FOREST_LOG forest_log);
+
 
     //Scripts GEO_LOCALIZACAO
     @Query("SELECT * FROM GEO_LOCALIZACAO WHERE TALHAO=:talhao")
@@ -316,6 +323,10 @@ public interface DAO {
 
     @Query("DELETE FROM Configs")
     void apagaConfigs();
+
+    //Scripts FOREST_LOG
+    @Query("SELECT * FROM FOREST_LOG")
+    List<FOREST_LOG> todosLogs();
 
 
     //Scripts GGF_USUARIOS

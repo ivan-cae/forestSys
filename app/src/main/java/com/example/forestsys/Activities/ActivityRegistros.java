@@ -35,7 +35,13 @@ import com.example.forestsys.Adapters.AdaptadorApontamentos;
 import com.example.forestsys.Assets.BaseDeDados;
 import com.example.forestsys.Assets.DAO;
 import com.example.forestsys.Assets.Ferramentas;
+import com.example.forestsys.Classes.ClassesAuxiliares.FOREST_LOG;
+import com.example.forestsys.Classes.IMPLEMENTOS;
+import com.example.forestsys.Classes.MAQUINAS;
+import com.example.forestsys.Classes.MAQUINA_IMPLEMENTO;
+import com.example.forestsys.Classes.OPERADORES;
 import com.example.forestsys.Classes.O_S_ATIVIDADES;
+import com.example.forestsys.Classes.PRESTADORES;
 import com.example.forestsys.R;
 import com.example.forestsys.Calculadora.CalculadoraMain;
 import com.example.forestsys.Classes.O_S_ATIVIDADES_DIA;
@@ -66,6 +72,7 @@ import static com.example.forestsys.Activities.ActivityAtividades.joinOsInsumos;
 import static com.example.forestsys.Activities.ActivityAtividades.listaJoinOsInsumosSelecionados;
 import static com.example.forestsys.Activities.ActivityAtividades.oSAtividadesDiaAtual;
 import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresaPref;
+import static com.example.forestsys.Activities.ActivityLogin.informacaoDispositivo;
 import static com.example.forestsys.Activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
 import static com.example.forestsys.Activities.FragmentoInsumos.obsInsumo1;
@@ -269,7 +276,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         talhaoOs.setText(String.valueOf(osSelecionada.getTALHAO()));
 
         statusOs.setText(String.valueOf(osSelecionada.getSTATUS()));
-        areaOs.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace(".", ",")+"ha");
+        areaOs.setText(String.valueOf(osSelecionada.getAREA_PROGRAMADA()).replace(".", ",") + "ha");
         areaRealizada.setText(String.valueOf(osSelecionada.getAREA_REALIZADA()).replace(".", ",") + "ha");
 
         voltar = findViewById(R.id.botao_continuar_voltar);
@@ -1105,109 +1112,111 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             dataAntesDoEdit = dataDepoisDoEdit;
         }
 
-            for (int i = 0; i < listaJoinOsInsumosSelecionados.size(); i++) {
+        for (int i = 0; i < listaJoinOsInsumosSelecionados.size(); i++) {
 
-                Join_OS_INSUMOS persisteInsumosDia = listaJoinOsInsumosSelecionados.get(i);
+            Join_OS_INSUMOS persisteInsumosDia = listaJoinOsInsumosSelecionados.get(i);
 
-                O_S_ATIVIDADE_INSUMOS editaAtividadeInsumos =
-                        dao.selecionaAtividadeInsumos(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), persisteInsumosDia.getID_INSUMO());
+            O_S_ATIVIDADE_INSUMOS editaAtividadeInsumos =
+                    dao.selecionaAtividadeInsumos(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), persisteInsumosDia.getID_INSUMO());
 
-                if (persisteInsumosDia.getREGISTRO_DESCARREGADO() == null ||
-                        persisteInsumosDia.getREGISTRO_DESCARREGADO() == "null") {
-                    persisteInsumosDia.setREGISTRO_DESCARREGADO("N");
-                }
-
-                if (editouRegistro == false) {
-                    persisteInsumosDia.setACAO_INATIVO(null);
-                    persisteInsumosDia.setID(null);
-                }
-                if (editouRegistro == true) {
-                    persisteInsumosDia.setACAO_INATIVO("EDICAO");
-                }
-
-                dao.apagaOsAtividadeInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
-                        dataAntesDoEdit, persisteInsumosDia.getID_INSUMO());
-
-                O_S_ATIVIDADE_INSUMOS_DIA insereInsumosDia = new O_S_ATIVIDADE_INSUMOS_DIA(persisteInsumosDia.getID(), osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
-                        dataDepoisDoEdit,
-                        persisteInsumosDia.getID_INSUMO(), persisteInsumosDia.getQTD_APLICADO(), persisteInsumosDia.getACAO_INATIVO(),
-                        persisteInsumosDia.getREGISTRO_DESCARREGADO(), persisteInsumosDia.getOBSERVACAO());
-
-                insereInsumosDia.setEXPORT_PROXIMA_SINC(true);
-                Log.e("Lista batendo ", String.valueOf(i) + " itens");
-
-
-                if (i == 0) {
-                    if (insumoConforme1 == true) {
-                        if (editouInsumo1 == false) {
-                            if (obsInsumo1.getText().toString().length() == 0) {
-                                insereInsumosDia.setOBSERVACAO(null);
-                            }
-
-                            if (obsInsumo1.getText().toString().length() > 0) {
-                                insereInsumosDia.setOBSERVACAO(obsInsumo1.getText().toString());
-                            }
-                        }
-                    }
-                }
-
-                if (i == 1) {
-                    if (insumoConforme2 == true) {
-                        if (editouInsumo2 == false) {
-                            if (obsInsumo2.getText().toString().length() == 0) {
-                                insereInsumosDia.setOBSERVACAO(null);
-                            }
-
-                            if (obsInsumo2.getText().toString().length() > 0) {
-                                insereInsumosDia.setOBSERVACAO(obsInsumo2.getText().toString());
-                            }
-                        }
-                    }
-                }
-
-
-                dao.insert(insereInsumosDia);
-
-                DecimalFormat format = new DecimalFormat(".##");
-                BigDecimal qtdHaAplicado;
-
-                somaQtdApl = dao.qtdAplicadaTodosInsumos(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), persisteInsumosDia.getID_INSUMO());
-                String s = format.format(somaQtdApl).replace(',', '.');
-
-                try {
-                    somaQtdApl = Double.valueOf(s);
-                     Log.e("Valor somaQtdApl ", s);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                     Log.e("Erro ao obter qtd aplicada ", e.getMessage());
-                    somaQtdApl = 1;
-                }
-
-                String divisao = "0.0";
-                double area = (long) osSelecionada.getAREA_REALIZADA();
-
-                if(somaQtdApl > 0 && area>0) {
-                    divisao = String.valueOf((long) somaQtdApl / (long) area);
-                    //Log.e("Valor divisao", divisao);
-                }
-
-                qtdHaAplicado = new BigDecimal(divisao).setScale(2, BigDecimal.ROUND_UP);
-
-                s = new DecimalFormat(".##").format(qtdHaAplicado).replace(',', '.');
-
-                double converteQtdHaApl;
-                try {
-                    converteQtdHaApl = Double.valueOf(s);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    converteQtdHaApl = 1;
-                }
-
-
-                editaAtividadeInsumos.setQTD_HA_APLICADO(converteQtdHaApl);
-
-                dao.update(editaAtividadeInsumos);
+            if (persisteInsumosDia.getREGISTRO_DESCARREGADO() == null ||
+                    persisteInsumosDia.getREGISTRO_DESCARREGADO() == "null") {
+                persisteInsumosDia.setREGISTRO_DESCARREGADO("N");
             }
+
+            if (editouRegistro == false) {
+                persisteInsumosDia.setACAO_INATIVO(null);
+                persisteInsumosDia.setID(null);
+            }
+            if (editouRegistro == true) {
+                persisteInsumosDia.setACAO_INATIVO("EDICAO");
+            }
+
+            dao.apagaOsAtividadeInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
+                    dataAntesDoEdit, persisteInsumosDia.getID_INSUMO());
+
+            O_S_ATIVIDADE_INSUMOS_DIA insereInsumosDia = new O_S_ATIVIDADE_INSUMOS_DIA(persisteInsumosDia.getID(), osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
+                    dataDepoisDoEdit,
+                    persisteInsumosDia.getID_INSUMO(), persisteInsumosDia.getQTD_APLICADO(), persisteInsumosDia.getACAO_INATIVO(),
+                    persisteInsumosDia.getREGISTRO_DESCARREGADO(), persisteInsumosDia.getOBSERVACAO());
+
+            insereInsumosDia.setEXPORT_PROXIMA_SINC(true);
+            Log.e("Lista batendo ", String.valueOf(i) + " itens");
+
+
+            if (i == 0) {
+                if (insumoConforme1 == true) {
+                    if (editouInsumo1 == false) {
+                        if (obsInsumo1.getText().toString().length() == 0) {
+                            insereInsumosDia.setOBSERVACAO(null);
+                        }
+
+                        if (obsInsumo1.getText().toString().length() > 0) {
+                            insereInsumosDia.setOBSERVACAO(obsInsumo1.getText().toString());
+                        }
+                    }
+                }
+            }
+
+            if (i == 1) {
+                if (insumoConforme2 == true) {
+                    if (editouInsumo2 == false) {
+                        if (obsInsumo2.getText().toString().length() == 0) {
+                            insereInsumosDia.setOBSERVACAO(null);
+                        }
+
+                        if (obsInsumo2.getText().toString().length() > 0) {
+                            insereInsumosDia.setOBSERVACAO(obsInsumo2.getText().toString());
+                        }
+                    }
+                }
+            }
+
+
+            dao.insert(insereInsumosDia);
+
+            DecimalFormat format = new DecimalFormat(".##");
+            BigDecimal qtdHaAplicado;
+
+            somaQtdApl = dao.qtdAplicadaTodosInsumos(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), persisteInsumosDia.getID_INSUMO());
+            String s = format.format(somaQtdApl).replace(',', '.');
+
+            try {
+                somaQtdApl = Double.valueOf(s);
+                Log.e("Valor somaQtdApl ", String.valueOf(somaQtdApl));
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("Erro ao obter qtd aplicada ", e.getMessage());
+                somaQtdApl = 1;
+            }
+
+            String divisao = "0.0";
+
+            calculaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+
+            double area = (long) osSelecionada.getAREA_REALIZADA();
+
+            if (somaQtdApl > 0 && area > 0) {
+                divisao = String.valueOf((long) somaQtdApl / (long) area);
+                //Log.e("Valor divisao", divisao);
+            }
+
+            qtdHaAplicado = new BigDecimal(divisao).setScale(2, BigDecimal.ROUND_UP);
+
+            s = new DecimalFormat(".##").format(qtdHaAplicado).replace(',', '.');
+
+            double converteQtdHaApl;
+            try {
+                converteQtdHaApl = Double.valueOf(s);
+            } catch (Exception e) {
+                e.printStackTrace();
+                converteQtdHaApl = 1;
+            }
+
+            editaAtividadeInsumos.setQTD_HA_APLICADO(converteQtdHaApl);
+
+            dao.update(editaAtividadeInsumos);
+        }
 
 
         if (osSelecionada.getSTATUS_NUM() == 0) {
@@ -1215,6 +1224,36 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             osSelecionada.setSTATUS_NUM(1);
             dao.update(osSelecionada);
         }
+
+
+        String acao = "Inseriu";
+        if(editouRegistro == true) acao = "Editou";
+
+        PRESTADORES prestador = dao.selecionaPrestador(oSAtividadesDiaAtual.getID_PRESTADOR());
+
+        Ferramentas ferramentas = new Ferramentas();
+        FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
+                usuarioLogado.getEMAIL(), "Apontamento Diario", acao,
+                String.valueOf("OS: " + osSelecionada.getID_PROGRAMACAO_ATIVIDADE()
+                        + " | Talhão: " + osSelecionada.getTALHAO()
+                        + " | Área: " + osSelecionada.getAREA_PROGRAMADA()
+                        + " | Data do Apontamento: " + dataApontamento.getText().toString()
+                        + " | Área Realizada: " + osSelecionada.getAREA_REALIZADA()
+                        + " | Prestador: " + prestador.getDESCRICAO()
+                        + " | Hora Operador: " + oSAtividadesDiaAtual.getHO()
+                        + " | Área: " + oSAtividadesDiaAtual.getAREA_REALIZADA()
+                        + " | Hora Máquina: " + oSAtividadesDiaAtual.getHM()
+                        + " | Hora Ajudante: " + oSAtividadesDiaAtual.getHH()
+                        + " | Hora Máquina Escavadeira: " + oSAtividadesDiaAtual.getHM_ESCAVADEIRA()
+                        + " | Observação: " + oSAtividadesDiaAtual.getOBSERVACAO()
+                        + " | Hora Operador Escavadeira: " + oSAtividadesDiaAtual.getHO_ESCAVADEIRA()
+                        + " | P1 Qtd Aplicado: " + listaJoinOsInsumosSelecionados.get(0).getQTD_APLICADO()
+                        + " | P2 Qtd Aplicado: " + listaJoinOsInsumosSelecionados.get(1).getQTD_APLICADO()
+                        + " | P1 OBS: " + listaJoinOsInsumosSelecionados.get(0).getOBSERVACAO()
+                        + " | P2 OBS: " + listaJoinOsInsumosSelecionados.get(1).getOBSERVACAO()
+                ).replace('.', ','));
+        dao.insert(registroLog);
+
 
         listaAtividades = dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
         osSelecionada.setDATA_INICIAL(listaAtividades.get(listaAtividades.size() - 1).getDATA());
@@ -1242,6 +1281,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         insumoRec1 = false;
         insumoRec2 = false;
 
+
         Intent it = new Intent(ActivityRegistros.this, ActivityListaRegistros.class);
         if (dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE()).isEmpty()) {
             it = new Intent(ActivityRegistros.this, ActivityAtividades.class);
@@ -1250,19 +1290,19 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         startActivity(it);
     }
 
-    private void calculaAreaRealizada(int id){
+    private void calculaAreaRealizada(int id) {
         double calcula = 0;
-        List <O_S_ATIVIDADES_DIA> listaReg = dao.listaAtividadesDia(id);
-        for(int i=0; i <listaReg.size(); i++){
+        List<O_S_ATIVIDADES_DIA> listaReg = dao.listaAtividadesDia(id);
+        for (int i = 0; i < listaReg.size(); i++) {
             String s = listaReg.get(i).getAREA_REALIZADA().replace(',', '.');
             double d = 0;
             try {
                 d = Double.valueOf(s);
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 d = 0;
             }
-            calcula+=d;
+            calcula += d;
         }
         O_S_ATIVIDADES atividade = dao.selecionaOs(id);
 
@@ -1270,8 +1310,9 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         bd = bd.setScale(2, RoundingMode.HALF_UP);
 
         atividade.setAREA_REALIZADA(bd.doubleValue());
-        osSelecionada.setAREA_REALIZADA(bd.doubleValue());
         dao.update(atividade);
+        osSelecionada = dao.selecionaOs(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+
         //Log.e("Area Realizada", String.valueOf(bd.doubleValue()));
     }
 
