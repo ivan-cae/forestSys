@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
@@ -62,6 +63,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -121,7 +124,7 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
 
 
         List<O_S_ATIVIDADES> listaTodasOs = dao.todasOs();
-        List<O_S_ATIVIDADES_DIA> listaReg = dao.todasOsAtividadesDia();
+        List<O_S_ATIVIDADES_DIA> todasOsAtvDia = dao.todasOsAtividadesDia();
 
         int contAbertas = 0;
         int contAndamento = 0;
@@ -136,57 +139,22 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
         abertas.setText(String.valueOf(contAbertas));
         andamento.setText(String.valueOf(contAndamento));
         finalizadas.setText(String.valueOf(contfinalizadas));
-        int contasValidadas = contAndamento + contfinalizadas;
-
-        Double acumuladorHH = 0.0;
-        Double acumuladorHO = 0.0;
-        Double acumuladorHM = 0.0;
-
-
-        for (int i = 0; i < listaReg.size(); i++) {
-            O_S_ATIVIDADES aux = dao.selecionaOs(listaReg.get(i).getID_PROGRAMACAO_ATIVIDADE());
-            if (aux.getSTATUS_NUM() != 0) {
-                try {
-                    if (listaReg.get(i).getHH() == null || Double.valueOf(listaReg.get(i).getHH()).isNaN()) {
-                        listaReg.get(i).setHH("0");
-                    }
-                    if (listaReg.get(i).getHO() == null || Double.valueOf(listaReg.get(i).getHO()).isNaN()) {
-                        listaReg.get(i).setHO("0");
-                    }
-                    if (listaReg.get(i).getHM() == null || Double.valueOf(listaReg.get(i).getHM()).isNaN()) {
-                        listaReg.get(i).setHM("0");
-                    }
-                } catch (NumberFormatException n) {
-                    listaReg.get(i).setHO("0");
-                    listaReg.get(i).setHM("0");
-                    listaReg.get(i).setHH("0");
-                }
-                acumuladorHH += Double.valueOf(listaReg.get(i).getHH());
-                acumuladorHM += Double.valueOf(listaReg.get(i).getHM());
-                acumuladorHO += Double.valueOf(listaReg.get(i).getHO());
-            }
-        }
 
         DecimalFormat df = new DecimalFormat(".00");
 
-        acumuladorHH = acumuladorHH / contasValidadas;
-        if (acumuladorHH.isNaN() || acumuladorHH.isInfinite() || acumuladorHH == null)
-            acumuladorHH = 0.0;
-        acumuladorHH = Double.valueOf(df.format(acumuladorHH).replace(',', '.'));
+        double tamListaOsAtvDia = todasOsAtvDia.size();
 
-        acumuladorHM = acumuladorHM / contasValidadas;
-        if (acumuladorHM.isNaN() || acumuladorHM.isInfinite() || acumuladorHM == null)
-            acumuladorHM = 0.0;
-        acumuladorHM = Double.valueOf(df.format(acumuladorHM).replace(',', '.'));
+        BigDecimal bd = BigDecimal.valueOf(dao.somaHoraMaquinaTotal()/tamListaOsAtvDia);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        mediaHM.setText(String.valueOf(bd.doubleValue()).replace('.', '.'));
 
-        acumuladorHO = acumuladorHO / contasValidadas;
-        if (acumuladorHO.isNaN() || acumuladorHO.isInfinite() || acumuladorHO == null)
-            acumuladorHO = 0.0;
-        acumuladorHO = Double.valueOf(df.format(acumuladorHO).replace(',', '.'));
+        bd = BigDecimal.valueOf(dao.somaHoraAjudanteTotal()/tamListaOsAtvDia);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        mediaHH.setText(String.valueOf(bd.doubleValue()).replace('.', '.'));
 
-        mediaHH.setText(String.valueOf(acumuladorHH));
-        mediaHM.setText(String.valueOf(acumuladorHM));
-        mediaHO.setText(String.valueOf(acumuladorHO));
+        bd = BigDecimal.valueOf(dao.somaHoraOperadorTotal()/tamListaOsAtvDia);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        mediaHO.setText(String.valueOf(bd.doubleValue()).replace('.', '.'));
 
         List <PieEntry>valoresRegistroAvaliacao = new ArrayList();
 
@@ -247,11 +215,16 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
              nc10 += dao.qtdNaoConformeForaDaFaixa(idProg, 10, aval_subsolagem.getLOCALIZACAO_INSUMO_INFERIOR(), aval_subsolagem.getLOCALIZACAO_INSUMO_SUPERIOR());
         }
 
-        float diferencaAreaTotal = (100*totalAreaRealizada)/totalAreaProgramada;
-        float percAreaNaoRealizada = 100-diferencaAreaTotal;
 
-        valoresRegistroAvaliacao.add(new PieEntry(diferencaAreaTotal, 0));
-        valoresRegistroAvaliacao.add(new PieEntry(percAreaNaoRealizada, 1));
+        float totalNc = nc1+nc2+nc3+nc4+nc5+nc6+nc7+nc8+nc9+nc10;
+        float percNaoConforme = (100*totalNc)/qtdTodosPontos;
+        float percConforme = 100 - percNaoConforme;
+
+        Log.e("Total nc", String.valueOf(totalNc));
+        Log.e("Total pontos", String.valueOf(qtdTodosPontos));
+
+        valoresRegistroAvaliacao.add(new PieEntry(percConforme, 0));
+        valoresRegistroAvaliacao.add(new PieEntry(percNaoConforme, 1));
 
         valoresRegistroAvaliacao.get(0).setLabel("Conforme");
         valoresRegistroAvaliacao.get(1).setLabel("Não Conforme");
@@ -264,7 +237,7 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
 
         dadosAvaliacao.setValueTextSize(14);
 
-        dataSetAvaliacao.setColors(ColorTemplate.COLORFUL_COLORS);
+        dataSetAvaliacao.setColors(Color.rgb(255, 102, 0), Color.rgb(193, 37, 82));
 
         graficoAvaliacao.animateXY(2000, 2000);
         graficoAvaliacao.setMaxAngle(180);
@@ -288,17 +261,13 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
         graficoAvaliacao.setData(dadosAvaliacao);
 
 
-        float totalNc = nc1+nc2+nc3+nc4+nc5+nc6+nc7+nc8+nc9+nc10;
-
-        float percNaoConforme = (100*totalNc)/qtdTodosPontos;
-
-        float percConforme = 100 - percNaoConforme;
-
+        float diferencaAreaTotal = (100*totalAreaRealizada)/totalAreaProgramada;
+        float percAreaNaoRealizada = 100-diferencaAreaTotal;
 
 
         List <PieEntry>valoresRegistroApontamento = new ArrayList();
-        valoresRegistroApontamento.add(new PieEntry(percConforme, 0));
-        valoresRegistroApontamento.add(new PieEntry(percNaoConforme, 1));
+        valoresRegistroApontamento.add(new PieEntry(diferencaAreaTotal, 0));
+        valoresRegistroApontamento.add(new PieEntry(percAreaNaoRealizada, 1));
 
         valoresRegistroApontamento.get(0).setLabel("Realizada");
         valoresRegistroApontamento.get(1).setLabel("Não Realizada");
@@ -310,13 +279,13 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
         PieData dadosApontamento = new PieData(dataSetApontamento);
 
         dadosApontamento.setValueTextSize(14);
-        dataSetApontamento.setColors(ColorTemplate.COLORFUL_COLORS);
+        dataSetApontamento.setColors(Color.rgb(255, 102, 0), Color.rgb(193, 37, 82));
 
         graficoApontamento.animateXY(2000, 2000);
         graficoApontamento.setMaxAngle(180);
         graficoApontamento.setRotationAngle(180);
         graficoApontamento.setCenterTextSize(14);
-        graficoApontamento.setCenterText("Área Realizada");
+        graficoApontamento.setCenterText("Área Total Realizada");
         graficoApontamento.setDrawSliceText(false);
         graficoApontamento.getDescription().setEnabled(false);
         graficoApontamento.setUsePercentValues(true);

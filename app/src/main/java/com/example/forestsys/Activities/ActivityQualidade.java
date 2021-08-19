@@ -718,7 +718,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             PieData dadosQualidade = new PieData(dataSetQualidade);
 
             dadosQualidade.setValueTextSize(14);
-            dataSetQualidade.setColors(ColorTemplate.COLORFUL_COLORS);
+            dataSetQualidade.setColors(Color.rgb(255, 102, 0), Color.rgb(193, 37, 82));
 
             graficoQualidade.animateXY(2000, 2000);
             graficoQualidade.setMaxAngle(180);

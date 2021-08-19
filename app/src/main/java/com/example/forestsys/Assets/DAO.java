@@ -521,6 +521,14 @@ public interface DAO {
     @Query("SELECT ROUND (SUM(CAST(AREA_REALIZADA AS DECIMAL)), 2) FROM O_S_ATIVIDADES_DIA WHERE ID_PROGRAMACAO_ATIVIDADE=:idProg")
     double somaAreaRealizada(Integer idProg);
 
+    @Query("SELECT ROUND (SUM(CAST(HM AS DECIMAL)), 2) FROM O_S_ATIVIDADES_DIA")
+    double somaHoraMaquinaTotal();
+
+    @Query("SELECT ROUND (SUM(CAST(HO AS DECIMAL)), 2) FROM O_S_ATIVIDADES_DIA")
+    double somaHoraOperadorTotal();
+
+    @Query("SELECT ROUND (SUM(CAST(HH AS DECIMAL)), 2) FROM O_S_ATIVIDADES_DIA")
+    double somaHoraAjudanteTotal();
 
     //Scritps INSUMOS
     @Query("SELECT * FROM INSUMOS WHERE ID_INSUMO=:id")

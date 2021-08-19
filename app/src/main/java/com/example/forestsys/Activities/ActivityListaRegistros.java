@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -282,7 +283,7 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
         PieData dadosListaReg = new PieData(dataSetListaReg);
 
         dadosListaReg.setValueTextSize(14);
-        dataSetListaReg.setColors(ColorTemplate.COLORFUL_COLORS);
+        dataSetListaReg.setColors(Color.rgb(255, 102, 0), Color.rgb(193, 37, 82));
 
         graficoListaReg.animateXY(2000, 2000);
         graficoListaReg.setMaxAngle(180);
