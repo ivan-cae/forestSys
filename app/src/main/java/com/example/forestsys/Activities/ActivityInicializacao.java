@@ -28,12 +28,17 @@ public class ActivityInicializacao extends AppCompatActivity {
     public static boolean pulaSinc;
     private Configs configs;
 
+    public static String informacaoDispositivo = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicializacao);
         BaseDeDados baseDeDados = BaseDeDados.getInstance(getApplicationContext());
         DAO dao = baseDeDados.dao();
+        informacaoDispositivo = android.os.Build.MODEL + " " +android.os.Build.SERIAL;
+
+
         pulaSinc = false;
         if (dao.selecionaConfigs() == null) {
             pulaSinc = true;

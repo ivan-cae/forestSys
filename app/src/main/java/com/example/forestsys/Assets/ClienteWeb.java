@@ -55,8 +55,15 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
+
+import static com.example.forestsys.Activities.ActivityAtividades.listaJoinOsInsumosSelecionados;
+import static com.example.forestsys.Activities.ActivityAtividades.oSAtividadesDiaAtual;
 import static com.example.forestsys.Activities.ActivityInicializacao.HOST_PORTA;
 import static com.example.forestsys.Activities.ActivityInicializacao.conectado;
+import static com.example.forestsys.Activities.ActivityInicializacao.informacaoDispositivo;
+import static com.example.forestsys.Activities.ActivityLogin.usuarioLogado;
+import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
+
 public class ClienteWeb<client> {
 
     private static DAO dao;
@@ -313,34 +320,6 @@ public class ClienteWeb<client> {
 
         if (conectado == true && finalizouSinc == false && erroNoOracle == false) {
             try {
-                List<FOREST_LOG> todosLogs = dao.todosLogs();
-                for (Integer i = 0; i < todosLogs.size(); i++) {
-                    JSONObject obj = new JSONObject();
-
-                    obj.put("DATA", todosLogs.get(i).getDATA());
-                    obj.put("DISPOSITIVO", todosLogs.get(i).getDISPOSITIVO());
-                    obj.put("USUARIO", todosLogs.get(i).getUSUARIO());
-                    obj.put("MODULO", todosLogs.get(i).getMODULO());
-                    obj.put("ACAO", todosLogs.get(i).getACAO());
-                    obj.put("VALOR", todosLogs.get(i).getVALOR());
-
-                    String resposta = requisicaoPOST(HOST_PORTA + "forestlogs", obj.toString());
-
-                    JSONObject updateId = new JSONObject(resposta);
-                    Integer idRetornado = updateId.getInt("ID");
-                    if (idRetornado != null || idRetornado != JSONObject.NULL) {
-                        dao.delete(todosLogs.get(i));
-                    }
-
-
-                }
-            } catch (Exception ex) {
-                // Log.e("CALIBRAGEM_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST");
-                //ex.printStackTrace();
-                //contadorDeErros ++;
-            }
-
-            try {
                 List<CALIBRAGEM_SUBSOLAGEM> todasCalibragens = dao.todasCalibragens();
                 for (Integer i = 0; i < todasCalibragens.size(); i++) {
                     JSONObject obj = new JSONObject();
@@ -551,7 +530,7 @@ public class ClienteWeb<client> {
                     Date updateApp = sdf.parse(todasOsAtividades.get(i).getUPDATED_AT());
 
                     Log.wtf("Update do app", updateApp.toString());
-                    Log.wtf("Update do app", updateOracle.toString());
+                    Log.wtf("Update do oracle", updateOracle.toString());
 
                     Log.wtf("Compare To", String.valueOf(updateApp.compareTo(updateOracle)));
                     if (updateApp.compareTo(updateOracle) > 0) {
@@ -596,8 +575,26 @@ public class ClienteWeb<client> {
                                     String.valueOf(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE()), obj.toString());
 
                         }
-                    } else {
+                    }
+
+                    if(updateApp.compareTo(updateOracle) < 0) {
                         Log.wtf("Update do app", "anterior ao oracle");
+
+                        Ferramentas ferramentas = new Ferramentas();
+                        try {
+                            FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
+                                    "Usuário não logado", "Sincronização", "Sincronizou",
+                                    String.valueOf("OS: " + todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE() + " | Erro: Tentou sincronizar a atividade com o atributo " +
+                                            "UPDATED_AT anterior a data do mesmo atributo para a mesma atividade presente no Oracle, quebrando as regras " +
+                                            "de sincronização e integridade dos dados"));
+                            dao.insert(registroLog);
+                        }catch(Exception exx){
+                            Log.wtf("Erro ao salvar log de erro na sinc", exx.getMessage());
+                        }
+                        }
+
+                    if(updateApp.compareTo(updateOracle) == 0) {
+                        Log.wtf("Update do app", "Igual ao do oracle");
                     }
                 }
             } catch (Exception ex) {
@@ -710,6 +707,33 @@ public class ClienteWeb<client> {
                 //contadorDeErros ++;
             }
 
+            try {
+                List<FOREST_LOG> todosLogs = dao.todosLogs();
+                for (Integer i = 0; i < todosLogs.size(); i++) {
+                    JSONObject obj = new JSONObject();
+
+                    obj.put("DATA", todosLogs.get(i).getDATA());
+                    obj.put("DISPOSITIVO", todosLogs.get(i).getDISPOSITIVO());
+                    obj.put("USUARIO", todosLogs.get(i).getUSUARIO());
+                    obj.put("MODULO", todosLogs.get(i).getMODULO());
+                    obj.put("ACAO", todosLogs.get(i).getACAO());
+                    obj.put("VALOR", todosLogs.get(i).getVALOR());
+
+                    String resposta = requisicaoPOST(HOST_PORTA + "forestlogs", obj.toString());
+
+                    JSONObject updateId = new JSONObject(resposta);
+                    Integer idRetornado = updateId.getInt("ID");
+                    if (idRetornado != null || idRetornado != JSONObject.NULL) {
+                        dao.delete(todosLogs.get(i));
+                    }
+
+
+                }
+            } catch (Exception ex) {
+                // Log.e("CALIBRAGEM_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST");
+                //ex.printStackTrace();
+                //contadorDeErros ++;
+            }
 
             try {
                 response = new JSONArray(requisicaoGET(HOST_PORTA + "silvatividades"));

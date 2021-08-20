@@ -45,6 +45,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import static com.example.forestsys.Activities.ActivityInicializacao.conectado;
+import static com.example.forestsys.Activities.ActivityInicializacao.informacaoDispositivo;
 import static com.example.forestsys.Activities.ActivityInicializacao.pulaSinc;
 import static com.example.forestsys.Assets.ClienteWeb.contadorDeErros;
 import static com.example.forestsys.Assets.ClienteWeb.erroNoOracle;
@@ -57,7 +58,6 @@ public class ActivityLogin extends AppCompatActivity {
     private final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
     public static GGF_USUARIOS usuarioLogado = null;
-    public static String informacaoDispositivo = null;
 
     private String nomeUsuario;
     private String senhaUsuario;
@@ -99,8 +99,6 @@ public class ActivityLogin extends AppCompatActivity {
 
         baseDeDados = BaseDeDados.getInstance(getApplicationContext());
         dao = baseDeDados.dao();
-
-        informacaoDispositivo = android.os.Build.MODEL + " " +android.os.Build.SERIAL;
 
         if (dao.selecionaConfigs() != null) {
             configs = dao.selecionaConfigs();

@@ -67,7 +67,7 @@ import java.util.List;
 
 import static android.view.View.GONE;
 import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresaPref;
-import static com.example.forestsys.Activities.ActivityLogin.informacaoDispositivo;
+import static com.example.forestsys.Activities.ActivityInicializacao.informacaoDispositivo;
 import static com.example.forestsys.Activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
 import static com.example.forestsys.Activities.ActivityAtividades.joinOsInsumos;
