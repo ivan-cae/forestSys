@@ -1538,11 +1538,16 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                                             osSelecionada.setSTATUS("Andamento");
                                             osSelecionada.setSTATUS_NUM(1);
                                             osSelecionada.setDATA_INICIAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
+
+                                            Ferramentas ferramentas = new Ferramentas();
+                                            osSelecionada.setUPDATED_AT(ferramentas.dataHoraMinutosSegundosAtual());
                                             dao.update(osSelecionada);
                                         }
 
                                         if (inseriu == true) {
                                             Ferramentas ferramentas = new Ferramentas();
+
+
                                             MAQUINA_IMPLEMENTO maquinaImplemento = dao.selecionaMaquinaImplemento(idImplemento);
                                             MAQUINAS maquinas = dao.selecionaMaquina(maquinaImplemento.getID_MAQUINA());
                                             IMPLEMENTOS implementos = dao.selecionaImplemento(maquinaImplemento.getID_IMPLEMENTO());

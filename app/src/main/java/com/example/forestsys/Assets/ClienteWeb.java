@@ -2,15 +2,9 @@ package com.example.forestsys.Assets;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
-import android.hardware.Camera;
 import android.os.AsyncTask;
-import android.text.style.UpdateAppearance;
+import android.os.Build;
 import android.util.Log;
-
-import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-
 import com.example.forestsys.Classes.ATIVIDADES;
 import com.example.forestsys.Classes.ATIVIDADE_INDICADORES;
 import com.example.forestsys.Classes.AVAL_PONTO_SUBSOLAGEM;
@@ -60,14 +54,9 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.RequestBody;
-
-import static com.example.forestsys.Activities.ActivityConfiguracoes.calculaDataParaApagarDados;
 import static com.example.forestsys.Activities.ActivityInicializacao.HOST_PORTA;
 import static com.example.forestsys.Activities.ActivityInicializacao.conectado;
-import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
-
 public class ClienteWeb<client> {
 
     private static DAO dao;
@@ -113,10 +102,10 @@ public class ClienteWeb<client> {
         if (configs != null) {
 
             sdf = new SimpleDateFormat("yyyy-MM-dd");
-           cal = Calendar.getInstance();
+            cal = Calendar.getInstance();
             dataAtual = sdf.format(cal.getTime()).trim();
 
-            cal.add(Calendar.DATE, (configs.getPermanenciaDosDados())-1);
+            cal.add(Calendar.DATE, (configs.getPermanenciaDosDados()) - 1);
 
             dataMaximaIntervalo = cal.getTime();
 
@@ -149,9 +138,8 @@ public class ClienteWeb<client> {
                 } else {
                     Log.e("Apagou?", " Não");
                 }*/
-            }
         }
-
+    }
 
 
     private static String requisicaoPOST(String url, String json) throws IOException {
@@ -259,7 +247,9 @@ public class ClienteWeb<client> {
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
+                    super.onPostExecute(aVoid);
+                }
             }
         }.execute();
 
@@ -492,7 +482,7 @@ public class ClienteWeb<client> {
                             obj.put("ACAO_INATIVO", todasOsAtividadeInsumoDia.get(i).getACAO_INATIVO());
 
                             String POST = null;
-                            boolean fezOPost = false;
+                            boolean fezOPost;
                             try {
                                 POST = requisicaoPOST(HOST_PORTA + "silvosatividadeinsumosdias", obj.toString());
                                 fezOPost = true;
@@ -528,9 +518,9 @@ public class ClienteWeb<client> {
                             }
 
 
-                            if (naoFazPut == false) {
+                            if (!naoFazPut) {
                                 requisicaoPUT(HOST_PORTA + "silvosatividadeinsumosdias" + "/" +
-                                        String.valueOf(todasOsAtividadeInsumoDia.get(i).getID()), obj.toString());
+                                        todasOsAtividadeInsumoDia.get(i).getID(), obj.toString());
                             }
                         }
                     }
@@ -544,51 +534,75 @@ public class ClienteWeb<client> {
 
 
             try {
+                String pattern = "yyyy-MM-dd HH:mm:ss";
+
                 List<O_S_ATIVIDADES> todasOsAtividades = dao.todasOs();
+
+                Log.wtf("Tamanho lista OS", String.valueOf(todasOsAtividades.size()));
+
                 for (Integer i = 0; i < todasOsAtividades.size(); i++) {
-                    Integer STATUS_NUM = todasOsAtividades.get(i).getSTATUS_NUM();
 
-                    if (STATUS_NUM != 0) {
-                        JSONObject obj = new JSONObject();
+                    JSONObject objeto = new JSONObject(requisicaoGET(HOST_PORTA +
+                            "silvosatividades" + "/" +
+                            String.valueOf(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE())));
 
-                        if (STATUS_NUM == 1) {
-                            obj.put("STATUS", "A");
+                    SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+                    Date updateOracle = sdf.parse(objeto.getString("UPDATED_AT"));
+                    Date updateApp = sdf.parse(todasOsAtividades.get(i).getUPDATED_AT());
+
+                    Log.wtf("Update do app", updateApp.toString());
+                    Log.wtf("Update do app", updateOracle.toString());
+
+                    Log.wtf("Compare To", String.valueOf(updateApp.compareTo(updateOracle)));
+                    if (updateApp.compareTo(updateOracle) > 0) {
+
+                        Log.wtf("Update do app", "posterior ao oracle");
+                        Integer STATUS_NUM = todasOsAtividades.get(i).getSTATUS_NUM();
+
+                        if (STATUS_NUM != 0) {
+                            JSONObject obj = new JSONObject();
+
+                            if (STATUS_NUM == 1) {
+                                obj.put("STATUS", "A");
+                            }
+                            if (STATUS_NUM == 2) {
+                                obj.put("STATUS", "F");
+                            }
+
+
+                            if (todasOsAtividades.get(i).getDATA_INICIAL() == null || todasOsAtividades.get(i).getDATA_INICIAL().trim().equals("null")) {
+                                obj.put("DATA_INICIAL", JSONObject.NULL);
+                            } else {
+                                obj.put("DATA_INICIAL", todasOsAtividades.get(i).getDATA_INICIAL() + " 00:00:00");
+                            }
+
+                            if (todasOsAtividades.get(i).getOBSERVACAO() == null || todasOsAtividades.get(i).getOBSERVACAO().trim().equals("null")) {
+                                obj.put("OBSERVACAO", JSONObject.NULL);
+                            } else {
+                                obj.put("OBSERVACAO", todasOsAtividades.get(i).getOBSERVACAO());
+                            }
+
+                            if (todasOsAtividades.get(i).getDATA_FINAL() == null || todasOsAtividades.get(i).getDATA_FINAL().trim().equals("null")) {
+                                obj.put("DATA_FINAL", JSONObject.NULL);
+                            } else {
+                                obj.put("DATA_FINAL", todasOsAtividades.get(i).getDATA_FINAL() + " 00:00:00");
+                            }
+
+                            //  Log.e("Area Realizada put", String.valueOf(dao.somaAreaRealizada(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE())));
+
+                            obj.put("AREA_REALIZADA", dao.somaAreaRealizada(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE()));
+
+                            requisicaoPUT(HOST_PORTA + "silvosatividades" + "/" +
+                                    String.valueOf(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE()), obj.toString());
+
                         }
-                        if (STATUS_NUM == 2) {
-                            obj.put("STATUS", "F");
-                        }
-
-
-                        if (todasOsAtividades.get(i).getDATA_INICIAL() == null || todasOsAtividades.get(i).getDATA_INICIAL().trim().equals("null")) {
-                            obj.put("DATA_INICIAL", JSONObject.NULL);
-                        } else {
-                            obj.put("DATA_INICIAL", todasOsAtividades.get(i).getDATA_INICIAL() + " 00:00:00");
-                        }
-
-                        if (todasOsAtividades.get(i).getOBSERVACAO() == null || todasOsAtividades.get(i).getOBSERVACAO().trim().equals("null")) {
-                            obj.put("OBSERVACAO", JSONObject.NULL);
-                        } else {
-                            obj.put("OBSERVACAO", todasOsAtividades.get(i).getOBSERVACAO());
-                        }
-
-                        if (todasOsAtividades.get(i).getDATA_FINAL() == null || todasOsAtividades.get(i).getDATA_FINAL().trim().equals("null")) {
-                            obj.put("DATA_FINAL", JSONObject.NULL);
-                        } else {
-                            obj.put("DATA_FINAL", todasOsAtividades.get(i).getDATA_FINAL() + " 00:00:00");
-                        }
-
-                        //  Log.e("Area Realizada put", String.valueOf(dao.somaAreaRealizada(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE())));
-
-                        obj.put("AREA_REALIZADA", dao.somaAreaRealizada(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE()));
-
-                        requisicaoPUT(HOST_PORTA + "silvosatividades" + "/" +
-                                String.valueOf(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE()), obj.toString());
-
+                    } else {
+                        Log.wtf("Update do app", "anterior ao oracle");
                     }
                 }
             } catch (Exception ex) {
                 //Log.e("OS_ATIVIDADES", "Erro ao instanciar objeto para requisição PUT");
-                //ex.printStackTrace();
+                //Log.wtf("Erro ao fazer get nas OS", ex.getMessage());
                 //contadorDeErros ++;
             }
 
@@ -1122,6 +1136,8 @@ public class ClienteWeb<client> {
                         DATA_FINAL = null;
                     }
 
+                    String UPDATED_AT = obj.getString("UPDATED_AT");
+
                     DATA_FINAL = ignoraHoras(DATA_FINAL);
                     DATA_INICIAL = ignoraHoras(DATA_INICIAL);
                     DATA_PROGRAMADA = ignoraHoras(DATA_PROGRAMADA);
@@ -1134,7 +1150,7 @@ public class ClienteWeb<client> {
                         Date dataFinalDate = sdf.parse(DATA_FINAL.trim());
                         //Log.e("Data Final", String.valueOf(dataFinalDate.getTime()));
                         //Log.e("Data Intervalo", String.valueOf(dataMaximaIntervalo.getTime()));
-                        if (dataFinalDate.compareTo(dataMaximaIntervalo) <0) {
+                        if (dataFinalDate.compareTo(dataMaximaIntervalo) < 0) {
                             ignorarInsert = true;
                         }
                     }
@@ -1144,7 +1160,7 @@ public class ClienteWeb<client> {
                             dao.insert(new O_S_ATIVIDADES(ID_PROGRAMACAO_ATIVIDADE, ID_REGIONAL, ID_SETOR, TALHAO, CICLO,
                                     ID_MANEJO, ID_ATIVIDADE, ID_RESPONSAVEL, DATA_PROGRAMADA, AREA_PROGRAMADA, PRIORIDADE,
                                     EXPERIMENTO, MADEIRA_NO_TALHAO, OBSERVACAO, DATA_INICIAL, DATA_FINAL, 0,
-                                    STATUS, STATUS_NUM));
+                                    STATUS, STATUS_NUM, UPDATED_AT));
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }

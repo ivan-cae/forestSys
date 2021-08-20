@@ -356,7 +356,7 @@ public class ActivityAtividades extends AppCompatActivity
         botaoQualidade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checaCalibracao() == false) {
+                if (checaCalibracao() == false && osSelecionada.getSTATUS_NUM()!=2) {
                     AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
                             .setTitle("Calibração Não Encontrada.")
                             .setMessage("Não Há Calibração No Dia Atual, Deseja Continuar Mesmo Assim?")
@@ -576,6 +576,7 @@ public class ActivityAtividades extends AppCompatActivity
 
         atividade.setAREA_REALIZADA(bd.doubleValue());
         osSelecionada.setAREA_REALIZADA(bd.doubleValue());
+
         dao.update(atividade);
         //Log.e("Area Realizada", String.valueOf(bd.doubleValue()));
     }
@@ -583,6 +584,9 @@ public class ActivityAtividades extends AppCompatActivity
     public void salvar() {
         osSelecionada.setSTATUS_NUM(2);
         osSelecionada.setSTATUS("Finalizado");
+
+        Ferramentas ferramentas = new Ferramentas();
+        osSelecionada.setUPDATED_AT(ferramentas.dataHoraMinutosSegundosAtual());
         dao.update(osSelecionada);
 
         FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
@@ -631,6 +635,9 @@ public class ActivityAtividades extends AppCompatActivity
                     osSelecionada.setOBSERVACAO(obs);
                     osSelecionada.setSTATUS("Andamento");
                     osSelecionada.setSTATUS_NUM(1);
+
+                    Ferramentas ferramentas = new Ferramentas();
+                    osSelecionada.setUPDATED_AT(ferramentas.dataHoraMinutosSegundosAtual());
                     dao.update(osSelecionada);
 
                     FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,

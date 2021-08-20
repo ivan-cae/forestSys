@@ -1222,6 +1222,9 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         if (osSelecionada.getSTATUS_NUM() == 0) {
             osSelecionada.setSTATUS("Andamento");
             osSelecionada.setSTATUS_NUM(1);
+
+            Ferramentas ferramentas = new Ferramentas();
+            osSelecionada.setUPDATED_AT(ferramentas.dataHoraMinutosSegundosAtual());
             dao.update(osSelecionada);
         }
 

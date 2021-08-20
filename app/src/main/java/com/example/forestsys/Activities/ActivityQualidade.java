@@ -458,6 +458,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
         atividade.setAREA_REALIZADA(bd.doubleValue());
         osSelecionada.setAREA_REALIZADA(bd.doubleValue());
+
         dao.update(atividade);
         // Log.e("Area Realizada", String.valueOf(bd.doubleValue()));
 
@@ -1219,6 +1220,9 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                                 osSelecionada.setSTATUS("Andamento");
                                 osSelecionada.setSTATUS_NUM(1);
                                 osSelecionada.setDATA_INICIAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
+
+                                Ferramentas ferramentas = new Ferramentas();
+                                osSelecionada.setUPDATED_AT(ferramentas.dataHoraMinutosSegundosAtual());
                                 dao.update(osSelecionada);
                             }
 
@@ -2385,6 +2389,9 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 osSelecionada.setSTATUS("Andamento");
                 osSelecionada.setSTATUS_NUM(1);
                 osSelecionada.setDATA_INICIAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
+
+                Ferramentas ferramentasAux = new Ferramentas();
+                osSelecionada.setUPDATED_AT(ferramentasAux.dataHoraMinutosSegundosAtual());
                 dao.update(osSelecionada);
             }
 

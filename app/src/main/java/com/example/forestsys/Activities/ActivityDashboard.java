@@ -146,15 +146,15 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
 
         BigDecimal bd = BigDecimal.valueOf(dao.somaHoraMaquinaTotal()/tamListaOsAtvDia);
         bd = bd.setScale(2, RoundingMode.HALF_UP);
-        mediaHM.setText(String.valueOf(bd.doubleValue()).replace('.', '.'));
+        mediaHM.setText(String.valueOf(bd.doubleValue()).replace('.', ','));
 
         bd = BigDecimal.valueOf(dao.somaHoraAjudanteTotal()/tamListaOsAtvDia);
         bd = bd.setScale(2, RoundingMode.HALF_UP);
-        mediaHH.setText(String.valueOf(bd.doubleValue()).replace('.', '.'));
+        mediaHH.setText(String.valueOf(bd.doubleValue()).replace('.', ','));
 
         bd = BigDecimal.valueOf(dao.somaHoraOperadorTotal()/tamListaOsAtvDia);
         bd = bd.setScale(2, RoundingMode.HALF_UP);
-        mediaHO.setText(String.valueOf(bd.doubleValue()).replace('.', '.'));
+        mediaHO.setText(String.valueOf(bd.doubleValue()).replace('.', ','));
 
         List <PieEntry>valoresRegistroAvaliacao = new ArrayList();
 

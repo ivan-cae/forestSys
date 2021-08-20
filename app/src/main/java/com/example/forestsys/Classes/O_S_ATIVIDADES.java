@@ -1,11 +1,15 @@
 package com.example.forestsys.Classes;
 
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
+
+import com.example.forestsys.Assets.Ferramentas;
 
 import java.io.Serializable;
 
@@ -74,11 +78,13 @@ public class O_S_ATIVIDADES implements Serializable {
 
     private Integer STATUS_NUM;
 
+    private String UPDATED_AT;
+
     public O_S_ATIVIDADES(Integer ID_PROGRAMACAO_ATIVIDADE, Integer ID_REGIONAL, Integer ID_SETOR, String TALHAO,
                           Integer CICLO, Integer ID_MANEJO, Integer ID_ATIVIDADE, Integer ID_RESPONSAVEL,
                           String DATA_PROGRAMADA, double AREA_PROGRAMADA, Integer PRIORIDADE, Integer EXPERIMENTO,
                           Integer MADEIRA_NO_TALHAO, String OBSERVACAO, String DATA_INICIAL, String DATA_FINAL,
-                          double AREA_REALIZADA, String STATUS, Integer STATUS_NUM) {
+                          double AREA_REALIZADA, String STATUS, Integer STATUS_NUM, String UPDATED_AT) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
         this.ID_REGIONAL = ID_REGIONAL;
         this.ID_SETOR = ID_SETOR;
@@ -98,6 +104,7 @@ public class O_S_ATIVIDADES implements Serializable {
         this.AREA_REALIZADA = AREA_REALIZADA;
         this.STATUS = STATUS;
         this.STATUS_NUM = STATUS_NUM;
+        this.UPDATED_AT = UPDATED_AT;
     }
 
     public Integer getID_PROGRAMACAO_ATIVIDADE() {
@@ -217,6 +224,8 @@ public class O_S_ATIVIDADES implements Serializable {
     }
 
     public void setDATA_INICIAL(String DATA_INICIAL) {
+        Ferramentas ferramentas = new Ferramentas();
+        setUPDATED_AT(ferramentas.dataHoraMinutosSegundosAtual());
         this.DATA_INICIAL = DATA_INICIAL;
     }
 
@@ -225,6 +234,8 @@ public class O_S_ATIVIDADES implements Serializable {
     }
 
     public void setDATA_FINAL(String DATA_FINAL) {
+        Ferramentas ferramentas = new Ferramentas();
+        setUPDATED_AT(ferramentas.dataHoraMinutosSegundosAtual());
         this.DATA_FINAL = DATA_FINAL;
     }
 
@@ -233,6 +244,7 @@ public class O_S_ATIVIDADES implements Serializable {
     }
 
     public void setAREA_REALIZADA(double AREA_REALIZADA) {
+
         this.AREA_REALIZADA = AREA_REALIZADA;
     }
 
@@ -241,6 +253,7 @@ public class O_S_ATIVIDADES implements Serializable {
     }
 
     public void setSTATUS(String STATUS) {
+
         this.STATUS = STATUS;
     }
 
@@ -250,5 +263,14 @@ public class O_S_ATIVIDADES implements Serializable {
 
     public void setSTATUS_NUM(Integer STATUS_NUM) {
         this.STATUS_NUM = STATUS_NUM;
+    }
+
+    public String getUPDATED_AT() {
+        return UPDATED_AT;
+    }
+
+    public void setUPDATED_AT(String UPDATED_AT) {
+        Log.wtf("Atualizado em", UPDATED_AT);
+        this.UPDATED_AT = UPDATED_AT;
     }
 }
