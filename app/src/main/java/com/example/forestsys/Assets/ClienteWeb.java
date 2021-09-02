@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
+
 import com.example.forestsys.Classes.ATIVIDADES;
 import com.example.forestsys.Classes.ATIVIDADE_INDICADORES;
 import com.example.forestsys.Classes.AVAL_PONTO_SUBSOLAGEM;
@@ -526,14 +527,23 @@ public class ClienteWeb<client> {
                             String.valueOf(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE())));
 
                     SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-                    Date updateOracle = sdf.parse(objeto.getString("UPDATED_AT"));
+                    Date updateOracle;
                     Date updateApp = sdf.parse(todasOsAtividades.get(i).getUPDATED_AT());
 
-                    Log.wtf("Update do app", updateApp.toString());
-                    Log.wtf("Update do oracle", updateOracle.toString());
 
-                    Log.wtf("Compare To", String.valueOf(updateApp.compareTo(updateOracle)));
-                    if (updateApp.compareTo(updateOracle) > 0) {
+                    try {
+                        updateOracle = sdf.parse(objeto.getString("UPDATED_AT"));
+                    } catch (Exception exception) {
+                        updateOracle = null;
+                        Log.wtf("Erro ao converter data Oracle", exception.getMessage());
+                    }
+
+                    //Log.wtf("Update do app", updateApp.toString());
+                    //Log.wtf("Update do oracle", updateOracle.toString());
+
+                    //Log.wtf("Compare To", String.valueOf(updateApp.compareTo(updateOracle)));
+
+                    if (updateOracle == null || updateApp.compareTo(updateOracle) > 0) {
 
                         Log.wtf("Update do app", "posterior ao oracle");
                         Integer STATUS_NUM = todasOsAtividades.get(i).getSTATUS_NUM();
@@ -577,24 +587,26 @@ public class ClienteWeb<client> {
                         }
                     }
 
-                    if(updateApp.compareTo(updateOracle) < 0) {
-                        Log.wtf("Update do app", "anterior ao oracle");
+                    if (updateOracle != null) {
+                        if (updateApp.compareTo(updateOracle) < 0) {
+                            Log.wtf("Update do app", "anterior ao oracle");
 
-                        Ferramentas ferramentas = new Ferramentas();
-                        try {
-                            FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
-                                    "Usuário não logado", "Sincronização", "Sincronizou",
-                                    String.valueOf("OS: " + todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE() + " | Erro: Tentou sincronizar a atividade com o atributo " +
-                                            "UPDATED_AT anterior a data do mesmo atributo para a mesma atividade presente no Oracle, quebrando as regras " +
-                                            "de sincronização e integridade dos dados"));
-                            dao.insert(registroLog);
-                        }catch(Exception exx){
-                            Log.wtf("Erro ao salvar log de erro na sinc", exx.getMessage());
-                        }
+                            Ferramentas ferramentas = new Ferramentas();
+                            try {
+                                FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
+                                        "Usuário não logado", "Sincronização", "Sincronizou",
+                                        String.valueOf("OS: " + todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE() + " | Falha: Tentou sincronizar a atividade com o atributo " +
+                                                "UPDATED_AT anterior a data do mesmo atributo para a mesma atividade presente no Oracle, quebrando as regras " +
+                                                "de sincronização e integridade dos dados"));
+                                dao.insert(registroLog);
+                            } catch (Exception exx) {
+                                Log.wtf("Erro ao salvar log de erro na sinc", exx.getMessage());
+                            }
                         }
 
-                    if(updateApp.compareTo(updateOracle) == 0) {
-                        Log.wtf("Update do app", "Igual ao do oracle");
+                        if (updateApp.compareTo(updateOracle) == 0) {
+                            Log.wtf("Update do app", "Igual ao do oracle");
+                        }
                     }
                 }
             } catch (Exception ex) {
@@ -1160,7 +1172,18 @@ public class ClienteWeb<client> {
                         DATA_FINAL = null;
                     }
 
-                    String UPDATED_AT = obj.getString("UPDATED_AT");
+                    String UPDATED_AT;
+
+                    SimpleDateFormat auxSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date dataUpdate;
+
+                    try {
+                        dataUpdate = auxSdf.parse(obj.getString("UPDATED_AT"));
+                        UPDATED_AT = dataUpdate.toString();
+                    }catch(Exception exception){
+                        Ferramentas ferramentas = new Ferramentas();
+                        UPDATED_AT = ferramentas.dataHoraMinutosSegundosAtual();
+                    }
 
                     DATA_FINAL = ignoraHoras(DATA_FINAL);
                     DATA_INICIAL = ignoraHoras(DATA_INICIAL);
