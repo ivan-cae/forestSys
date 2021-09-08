@@ -514,34 +514,45 @@ public class ClienteWeb<client> {
 
 
             try {
-                String pattern = "yyyy-MM-dd HH:mm:ss";
-
                 List<O_S_ATIVIDADES> todasOsAtividades = dao.todasOs();
 
-                Log.wtf("Tamanho lista OS", String.valueOf(todasOsAtividades.size()));
+                //Log.wtf("Tamanho lista OS", String.valueOf(todasOsAtividades.size()));
 
+                Ferramentas ferramentas = new Ferramentas();
                 for (Integer i = 0; i < todasOsAtividades.size(); i++) {
 
                     JSONObject objeto = new JSONObject(requisicaoGET(HOST_PORTA +
                             "silvosatividades" + "/" +
                             String.valueOf(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE())));
 
-                    SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-                    Date updateOracle;
-                    Date updateApp = sdf.parse(todasOsAtividades.get(i).getUPDATED_AT());
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date updateOracle = null;
+                    Date updateApp = null;
 
 
                     try {
                         updateOracle = sdf.parse(objeto.getString("UPDATED_AT"));
+                    //    Log.wtf("Update do oracle", String.valueOf(updateOracle));
+
                     } catch (Exception exception) {
                         updateOracle = null;
                         Log.wtf("Erro ao converter data Oracle", exception.getMessage());
                     }
 
-                    //Log.wtf("Update do app", updateApp.toString());
-                    //Log.wtf("Update do oracle", updateOracle.toString());
+                    try {
+                        updateApp = sdf.parse(todasOsAtividades.get(i).getUPDATED_AT());
+                        //Log.wtf("Update do app", String.valueOf(updateApp));
 
-                    //Log.wtf("Compare To", String.valueOf(updateApp.compareTo(updateOracle)));
+                    } catch (Exception exception) {
+                        updateApp = sdf.parse(ferramentas.dataHoraMinutosSegundosAtual());
+                        Log.wtf("Erro ao converter data App", exception.getMessage());
+                    }
+
+                    /*try {
+                        Log.wtf("Compare To", String.valueOf(updateApp.compareTo(updateOracle)));
+                    }catch(Exception exception){
+                        Log.wtf("Erro ao comparar datas Oracle e App", exception.getMessage());
+                    }*/
 
                     if (updateOracle == null || updateApp.compareTo(updateOracle) > 0) {
 
@@ -579,7 +590,7 @@ public class ClienteWeb<client> {
 
                             //  Log.e("Area Realizada put", String.valueOf(dao.somaAreaRealizada(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE())));
 
-                            obj.put("AREA_REALIZADA", dao.somaAreaRealizada(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE()));
+                            obj.put("AREA_REALIZADA", todasOsAtividades.get(i).getAREA_REALIZADA());
 
                             requisicaoPUT(HOST_PORTA + "silvosatividades" + "/" +
                                     String.valueOf(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE()), obj.toString());
@@ -591,7 +602,6 @@ public class ClienteWeb<client> {
                         if (updateApp.compareTo(updateOracle) < 0) {
                             Log.wtf("Update do app", "anterior ao oracle");
 
-                            Ferramentas ferramentas = new Ferramentas();
                             try {
                                 FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
                                         "Usuário não logado", "Sincronização", "Sincronizou",
@@ -610,8 +620,8 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //Log.e("OS_ATIVIDADES", "Erro ao instanciar objeto para requisição PUT");
-                //Log.wtf("Erro ao fazer get nas OS", ex.getMessage());
+                //Log.wtf("OS_ATIVIDADES", "Erro ao instanciar objeto para requisição PUT");
+                //Log.wtf("Erro ao fazer get ou Put nas OS", ex.getMessage());
                 //contadorDeErros ++;
             }
 
@@ -1172,17 +1182,24 @@ public class ClienteWeb<client> {
                         DATA_FINAL = null;
                     }
 
-                    String UPDATED_AT;
+                    String UPDATED_AT = null;
 
                     SimpleDateFormat auxSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     Date dataUpdate;
 
+                    boolean updateNull = false;
                     try {
                         dataUpdate = auxSdf.parse(obj.getString("UPDATED_AT"));
-                        UPDATED_AT = dataUpdate.toString();
                     }catch(Exception exception){
+                        updateNull = true;
                         Ferramentas ferramentas = new Ferramentas();
                         UPDATED_AT = ferramentas.dataHoraMinutosSegundosAtual();
+                    }
+
+                    if(updateNull == false){
+                        UPDATED_AT = obj.getString("UPDATED_AT");
+                        //Log.wtf("UPDATED_AT do get da atividade",
+                                //String.valueOf(ID_PROGRAMACAO_ATIVIDADE) + ", " + UPDATED_AT);
                     }
 
                     DATA_FINAL = ignoraHoras(DATA_FINAL);

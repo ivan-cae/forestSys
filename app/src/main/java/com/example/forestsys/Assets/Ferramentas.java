@@ -22,7 +22,7 @@ public class Ferramentas {
 
     //Retorna a hora, minutos e segundos atuais do dispositivo
     public static String dataHoraMinutosSegundosAtual() {
-        return DateFormat.format("yyyy-MM-dd HH:mm:ss", new Date()).toString().trim();
+        return DateFormat.format("yyyy-MM-dd HH:mm:ss", new Date()).toString();
     }
 
     //Retorna a data atual do dispositivo
