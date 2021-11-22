@@ -396,55 +396,7 @@ public class ActivityAtividades extends AppCompatActivity
                                     .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-                                            List<O_S_ATIVIDADES_DIA> listaOsAtiDia = dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
-                                            List<O_S_ATIVIDADE_INSUMOS_DIA> listaOsInsDia = dao.checaOsInsumosDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
-                                            boolean temProblemaNosRegs = false;
-                                            boolean erroGeral = false;
-
-                                            listaPonto = dao.listaAvalPontoSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
-                                            if (listaPonto.size() > 0)
-                                                qtdPontos = listaPonto.get(listaPonto.size() - 1).getPONTO();
-                                            else qtdPontos = 0;
-
-                                            for (int j = 0; j < listaOsAtiDia.size(); j++) {
-                                                if (listaOsAtiDia.get(j).getHO_ESCAVADEIRA() == null)
-                                                    listaOsAtiDia.get(j).setHO_ESCAVADEIRA("0");
-                                                if (listaOsAtiDia.get(j).getHM_ESCAVADEIRA() == null)
-                                                    listaOsAtiDia.get(j).setHM_ESCAVADEIRA("0");
-                                                if (listaOsAtiDia.get(j).getHM() == null || listaOsAtiDia.get(j).getHO() == null
-                                                        || listaOsAtiDia.get(j).getHH() == null || listaOsAtiDia.get(j).getAREA_REALIZADA() == null) {
-                                                    temProblemaNosRegs = true;
-                                                    erroGeral = true;
-                                                }
-                                                dao.update(listaOsAtiDia.get(j));
-                                                if (listaOsAtiDia.size() != listaOsInsDia.size()) {
-                                                    temProblemaNosRegs = true;
-                                                    erroGeral = true;
-                                                }
-                                            }
-                                            if (temProblemaNosRegs) {
-                                                AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
-                                                        .setTitle("Erro!")
-                                                        .setMessage("Faltam informações nos Registros, favor corrigir")
-                                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                                                            }
-                                                        })
-                                                        .create();
-                                                dialog.show();
-                                            }
-                                            if (temProblemaNosRegs == false) {
-                                                if (osSelecionada.getAREA_PROGRAMADA() > osSelecionada.getAREA_REALIZADA() || osSelecionada.getAREA_PROGRAMADA() < osSelecionada.getAREA_REALIZADA()) {
-                                                    erroGeral = true;
-                                                    abreDialogoJustificativaAreaRealizada();
-                                                }
-                                            }
-
-                                            if (erroGeral == false) {
-                                                salvar();
-                                            }
+                                            salvar();
                                         }
                                     }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
                                         @Override

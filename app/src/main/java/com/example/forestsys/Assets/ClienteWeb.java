@@ -533,7 +533,6 @@ public class ClienteWeb<client> {
                     try {
                         updateOracle = sdf.parse(objeto.getString("UPDATED_AT"));
                     //    Log.wtf("Update do oracle", String.valueOf(updateOracle));
-
                     } catch (Exception exception) {
                         updateOracle = null;
                         Log.wtf("Erro ao converter data Oracle", exception.getMessage());
