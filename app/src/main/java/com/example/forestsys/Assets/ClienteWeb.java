@@ -553,7 +553,8 @@ public class ClienteWeb<client> {
                         Log.wtf("Erro ao comparar datas Oracle e App", exception.getMessage());
                     }*/
 
-                    if (updateOracle == null || updateApp.compareTo(updateOracle) >= 0){
+                    if (objeto.getString("UPDATED_AT")== JSONObject.NULL ||
+                            updateOracle == null || updateApp.compareTo(updateOracle) >= 0){
 
                         Log.wtf("Update do app", "Igual ou posterior ao oracle");
                         Integer STATUS_NUM = todasOsAtividades.get(i).getSTATUS_NUM();
