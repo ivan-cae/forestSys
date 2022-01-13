@@ -117,8 +117,8 @@ public class ClienteWeb<client> {
 
             dataMaximaIntervalo = cal.getTime();
 
-            //Log.e("Data intervalo",sdf.format(dataMaximaIntervalo.getTime()));
-            //Log.e("Permanencia", String.valueOf(configs.getPermanenciaDosDados()));
+            //Log.wtf("Data intervalo",sdf.format(dataMaximaIntervalo.getTime()));
+            //Log.wtf("Permanencia", String.valueOf(configs.getPermanenciaDosDados()));
 
             /*boolean jaApagouHoje = false;
             if (configs.getDataParaApagarDados() != null) {
@@ -134,7 +134,7 @@ public class ClienteWeb<client> {
 
                         configs.setDataParaApagarDados(calculaDataParaApagarDados(configs.getPermanenciaDosDados().toString()));
                         configs.setUltimaDataQueApagou(dataAtual);
-                        Log.e("Próxima data para apagar", configs.getDataParaApagarDados());
+                        Log.wtf("Próxima data para apagar", configs.getDataParaApagarDados());
                         dao.insert(configs);
                     } else {
                         chegouDataApagarTudo = false;
@@ -142,9 +142,9 @@ public class ClienteWeb<client> {
                 }
 
                 if (chegouDataApagarTudo == true) {
-                    Log.e("Apagou?", " Sim");
+                    Log.wtf("Apagou?", " Sim");
                 } else {
-                    Log.e("Apagou?", " Não");
+                    Log.wtf("Apagou?", " Não");
                 }*/
         }
     }
@@ -229,7 +229,7 @@ public class ClienteWeb<client> {
 
         atividade.setAREA_REALIZADA(bd.doubleValue());
         dao.update(atividade);
-        //Log.e("Area Realizada", String.valueOf(bd.doubleValue()));
+        //Log.wtf("Area Realizada", String.valueOf(bd.doubleValue()));
 
     }
 
@@ -277,7 +277,7 @@ public class ClienteWeb<client> {
             }
         }
         s = s.replace(",", ".");
-        //Log.e("Valor indicador", s);
+        //Log.wtf("Valor indicador", s);
         return Double.valueOf(s);
     }
 
@@ -293,11 +293,11 @@ public class ClienteWeb<client> {
             URLConnection connection = myUrl.openConnection();
             connection.setConnectTimeout(300000);
             connection.connect();
-            Log.e("Conectado a", myUrl.toString());
+            Log.wtf("Conectado a", myUrl.toString());
             conectado = true;
             finalizouSinc = false;
         } catch (Exception e) {
-            Log.e("Erro", e.toString() + " ao conectar a: " + HOST_PORTA);
+            Log.wtf("Erro", e.toString() + " ao conectar a: " + HOST_PORTA);
             conectado = false;
             finalizouSinc = true;
         }
@@ -340,7 +340,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                // Log.e("CALIBRAGEM_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST");
+                // Log.wtf("CALIBRAGEM_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST");
                 //ex.printStackTrace();
                 //contadorDeErros ++;
             }
@@ -438,7 +438,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //Log.e("ATIVIDADES_DIA", "Erro ao instanciar objeto para requisição POST ou PUT");
+                //Log.wtf("ATIVIDADES_DIA", "Erro ao instanciar objeto para requisição POST ou PUT");
                 //ex.printStackTrace();
                 //contadorDeErros ++;
             }
@@ -507,7 +507,7 @@ public class ClienteWeb<client> {
                 }
             } catch (Exception ex) {
                 if (ex != null) {
-                    //Log.e("INSUMOS_ATIVIDADES_DIA", ex.getMessage());
+                    //Log.wtf("INSUMOS_ATIVIDADES_DIA", ex.getMessage());
                 }
                 ex.printStackTrace();
             }
@@ -525,14 +525,14 @@ public class ClienteWeb<client> {
                             "silvosatividades" + "/" +
                             String.valueOf(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE())));
 
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     Date updateOracle = null;
                     Date updateApp = null;
 
 
                     try {
                         updateOracle = sdf.parse(objeto.getString("UPDATED_AT"));
-                    //    Log.wtf("Update do oracle", String.valueOf(updateOracle));
+                        Log.wtf("Update do oracle", String.valueOf(updateOracle));
                     } catch (Exception exception) {
                         updateOracle = null;
                         Log.wtf("Erro ao converter data Oracle", exception.getMessage());
@@ -540,7 +540,7 @@ public class ClienteWeb<client> {
 
                     try {
                         updateApp = sdf.parse(todasOsAtividades.get(i).getUPDATED_AT());
-                        //Log.wtf("Update do app", String.valueOf(updateApp));
+                        Log.wtf("Update do app", String.valueOf(updateApp));
 
                     } catch (Exception exception) {
                         updateApp = sdf.parse(ferramentas.dataHoraMinutosSegundosAtual());
@@ -553,9 +553,9 @@ public class ClienteWeb<client> {
                         Log.wtf("Erro ao comparar datas Oracle e App", exception.getMessage());
                     }*/
 
-                    if (updateOracle == null || updateApp.compareTo(updateOracle) > 0) {
+                    if (updateOracle == null || updateApp.compareTo(updateOracle) >= 0){
 
-                        Log.wtf("Update do app", "posterior ao oracle");
+                        Log.wtf("Update do app", "Igual ou posterior ao oracle");
                         Integer STATUS_NUM = todasOsAtividades.get(i).getSTATUS_NUM();
 
                         if (STATUS_NUM != 0) {
@@ -587,7 +587,7 @@ public class ClienteWeb<client> {
                                 obj.put("DATA_FINAL", todasOsAtividades.get(i).getDATA_FINAL() + " 00:00:00");
                             }
 
-                            //  Log.e("Area Realizada put", String.valueOf(dao.somaAreaRealizada(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE())));
+                            //  Log.wtf("Area Realizada put", String.valueOf(dao.somaAreaRealizada(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE())));
 
                             obj.put("AREA_REALIZADA", todasOsAtividades.get(i).getAREA_REALIZADA());
 
@@ -611,10 +611,6 @@ public class ClienteWeb<client> {
                             } catch (Exception exx) {
                                 Log.wtf("Erro ao salvar log de erro na sinc", exx.getMessage());
                             }
-                        }
-
-                        if (updateApp.compareTo(updateOracle) == 0) {
-                            Log.wtf("Update do app", "Igual ao do oracle");
                         }
                     }
                 }
@@ -641,7 +637,7 @@ public class ClienteWeb<client> {
                             todasAtvInsumos.get(i).getID_INSUMO(), obj.toString());
                 }
             } catch (Exception ex) {
-                // Log.e("O_S_ATIVIDADE_INSUMOS", "Erro ao instanciar objeto para requisição PUT");
+                // Log.wtf("O_S_ATIVIDADE_INSUMOS", "Erro ao instanciar objeto para requisição PUT");
                 //ex.printStackTrace();
                 //contadorDeErros ++;
             }
@@ -668,7 +664,7 @@ public class ClienteWeb<client> {
 
                 }
             } catch (Exception ex) {
-                // Log.e("INDICADOR_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST");
+                // Log.wtf("INDICADOR_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST");
                 //  ex.printStackTrace();
                 // contadorDeErros ++;
             }
@@ -723,7 +719,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //   Log.e("AVAL_PONTO_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST ou PUT");
+                //   Log.wtf("AVAL_PONTO_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST ou PUT");
                 //   ex.printStackTrace();
                 //contadorDeErros ++;
             }
@@ -751,7 +747,7 @@ public class ClienteWeb<client> {
 
                 }
             } catch (Exception ex) {
-                // Log.e("CALIBRAGEM_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST");
+                // Log.wtf("CALIBRAGEM_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST");
                 //ex.printStackTrace();
                 //contadorDeErros ++;
             }
@@ -770,7 +766,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //     Log.e("S24", "Sem resposta nas funcs,json");
+                //     Log.wtf("S24", "Sem resposta nas funcs,json");
                 //    ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -790,7 +786,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //      Log.e("S1", "Sem resposta nas funcs,json");
+                //      Log.wtf("S1", "Sem resposta nas funcs,json");
                 //     ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -810,7 +806,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //    Log.e("S2", "Sem resposta nos deps,json");
+                //    Log.wtf("S2", "Sem resposta nos deps,json");
                 //    ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -828,7 +824,7 @@ public class ClienteWeb<client> {
                     try {
                         NIVEL_ACESSO = obj.getInt("NIVEL_ACESSO");
                     } catch (Exception ex) {
-                        // Log.e("Erro ao converter nivel de acesso", "");
+                        // Log.wtf("Erro ao converter nivel de acesso", "");
                         NIVEL_ACESSO = 0;
                     }
                     Integer ATIVO = obj.getInt("ATIVO");
@@ -841,7 +837,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //   Log.e("S3", "Sem resposta nos users:json");
+                //   Log.wtf("S3", "Sem resposta nos users:json");
                 //    ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -861,7 +857,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //   Log.e("S4", "Sem resposta nos operadores,json");
+                //   Log.wtf("S4", "Sem resposta nos operadores,json");
                 //   ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -880,7 +876,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //   Log.e("S5", "Sem resposta maquinas,json");
+                //   Log.wtf("S5", "Sem resposta maquinas,json");
                 //    ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -900,7 +896,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //   Log.e("S6", "Sem resposta implementos,json");
+                //   Log.wtf("S6", "Sem resposta implementos,json");
                 //   ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -919,7 +915,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //     Log.e("S8", "Sem resposta Maquina implementos,json");
+                //     Log.wtf("S8", "Sem resposta Maquina implementos,json");
                 //     ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -940,7 +936,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //     Log.e("S10", "Sem resposta Prestador,json");
+                //     Log.wtf("S10", "Sem resposta Prestador,json");
                 //     ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -961,7 +957,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //    Log.e("S11", "Sem resposta Manejos,json");
+                //    Log.wtf("S11", "Sem resposta Manejos,json");
                 //    ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -981,7 +977,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //    Log.e("S12", "Sem resposta Espacamentos,json");
+                //    Log.wtf("S12", "Sem resposta Espacamentos,json");
                 //    ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -1002,7 +998,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //     Log.e("S13", "Sem resposta Geo Regionais,json");
+                //     Log.wtf("S13", "Sem resposta Geo Regionais,json");
                 //     ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -1023,7 +1019,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //     Log.e("S14", "Sem resposta Geo Setores,json");
+                //     Log.wtf("S14", "Sem resposta Geo Setores,json");
                 //     ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -1044,7 +1040,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //    Log.e("S15", "Sem resposta Mat Genético,json");
+                //    Log.wtf("S15", "Sem resposta Mat Genético,json");
                 //    ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -1087,7 +1083,7 @@ public class ClienteWeb<client> {
 
                 }
             } catch (Exception ex) {
-                //    Log.e("S16", "Sem resposta Cad Florestal,json");
+                //    Log.wtf("S16", "Sem resposta Cad Florestal,json");
                 //    ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -1195,11 +1191,11 @@ public class ClienteWeb<client> {
                         UPDATED_AT = ferramentas.dataHoraMinutosSegundosAtual();
                     }
 
-                    if(updateNull == false){
+                    /*if(updateNull == false){
                         UPDATED_AT = obj.getString("UPDATED_AT");
-                        //Log.wtf("UPDATED_AT do get da atividade",
-                                //String.valueOf(ID_PROGRAMACAO_ATIVIDADE) + ", " + UPDATED_AT);
-                    }
+                        Log.wtf("UPDATED_AT do get da atividade",
+                                String.valueOf(ID_PROGRAMACAO_ATIVIDADE) + ", " + UPDATED_AT);
+                    }*/
 
                     DATA_FINAL = ignoraHoras(DATA_FINAL);
                     DATA_INICIAL = ignoraHoras(DATA_INICIAL);
@@ -1211,8 +1207,8 @@ public class ClienteWeb<client> {
                         String pattern = ("yyyy-MM-dd");
                         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
                         Date dataFinalDate = sdf.parse(DATA_FINAL.trim());
-                        //Log.e("Data Final", String.valueOf(dataFinalDate.getTime()));
-                        //Log.e("Data Intervalo", String.valueOf(dataMaximaIntervalo.getTime()));
+                        //Log.wtf("Data Final", String.valueOf(dataFinalDate.getTime()));
+                        //Log.wtf("Data Intervalo", String.valueOf(dataMaximaIntervalo.getTime()));
                         if (dataFinalDate.compareTo(dataMaximaIntervalo) < 0) {
                             ignorarInsert = true;
                         }
@@ -1229,11 +1225,11 @@ public class ClienteWeb<client> {
                         }
                     } else {
                         dao.apagaAtividade(ID_PROGRAMACAO_ATIVIDADE);
-                        //Log.e("Ignorar Atividade", String.valueOf(ID_PROGRAMACAO_ATIVIDADE));
+                        Log.wtf("Ignorar Atividade", String.valueOf(ID_PROGRAMACAO_ATIVIDADE));
                     }
                 }
             } catch (Exception ex) {
-                //Log.e("S17", "Sem resposta Os_Atividades,json");
+                //Log.wtf("S17", "Sem resposta Os_Atividades,json");
                 ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -1303,12 +1299,12 @@ public class ClienteWeb<client> {
                         dao.insert(oSAtividadesDia);
 
                     } catch (Exception exe) {
-                        //Log.e("S18I", "Erro ao fazer insert ATIVIDADES_DIA ID: " + ID_ERRO);
+                        //Log.wtf("S18I", "Erro ao fazer insert ATIVIDADES_DIA ID: " + ID_ERRO);
                         //exe.printStackTrace();
                     }
                 }
             } catch (Exception ex) {
-                //Log.e("S18", "Sem resposta Atividades_Dia, Json");
+                //Log.wtf("S18", "Sem resposta Atividades_Dia, Json");
                 ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -1345,7 +1341,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //    Log.e("S19", "Sem resposta insumos,json");
+                //    Log.wtf("S19", "Sem resposta insumos,json");
                 //    ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -1411,7 +1407,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //    Log.e("S20", "Sem resposta atividade_indicadores,json");
+                //    Log.wtf("S20", "Sem resposta atividade_indicadores,json");
                 //      ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -1444,7 +1440,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //      Log.e("S9", "Sem resposta calibração,json");
+                //      Log.wtf("S9", "Sem resposta calibração,json");
                 //       ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -1494,7 +1490,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //     Log.e("S21", "Sem resposta atividade_insumos,json");
+                //     Log.wtf("S21", "Sem resposta atividade_insumos,json");
                 //      ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -1523,7 +1519,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //     Log.e("S22", "Sem resposta aval_subsolagem,json");
+                //     Log.wtf("S22", "Sem resposta aval_subsolagem,json");
                 //      ex.printStackTrace();
             }
 
@@ -1542,7 +1538,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //      Log.e("S23", "Sem resposta nas atividades,json");
+                //      Log.wtf("S23", "Sem resposta nas atividades,json");
                 //      ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -1582,7 +1578,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //     Log.e("S24", "Sem resposta nas atividade_insumos_dia,json");
+                //     Log.wtf("S24", "Sem resposta nas atividade_insumos_dia,json");
                 //      ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -1609,7 +1605,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //      Log.e("S25", "Sem resposta indicadores_subsolagem,json");
+                //      Log.wtf("S25", "Sem resposta indicadores_subsolagem,json");
                 //      ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -1665,7 +1661,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //      Log.e("S26", "Sem resposta ponto_subsolagem,json");
+                //      Log.wtf("S26", "Sem resposta ponto_subsolagem,json");
                 //      ex.printStackTrace();
                 contadorDeErros++;
             }
@@ -1688,7 +1684,7 @@ public class ClienteWeb<client> {
                     }
                 }
             } catch (Exception ex) {
-                //      Log.e("S27", "Sem resposta geo_localizacoes,json");
+                //      Log.wtf("S27", "Sem resposta geo_localizacoes,json");
                 //      ex.printStackTrace();
                 contadorDeErros++;
             }

@@ -219,7 +219,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     private static Double diferencaPercentual(Double anterior, Double atual) {
         Double calculo = (1 - (atual / anterior)) * 100;//((anterior - atual) / anterior) * 100.0
         DecimalFormat df = new DecimalFormat("###.##");
-        //Log.e("Diferenca percentual", df.format(calculo).replace(',', '.'));
+        //Log.wtf("Diferenca percentual", df.format(calculo).replace(',', '.'));
         return Double.valueOf(df.format(calculo).replace(',', '.'));
     }
 
@@ -317,10 +317,17 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
 
         if (auxSavedInstanceState == null) {
-            fragmentoInsumos = new FragmentoInsumos();
-            getSupportFragmentManager().beginTransaction().replace(R.id.registro_fragmento_insumos,
-                    fragmentoInsumos).commit();
-        }
+            try {
+                fragmentoInsumos = new FragmentoInsumos();
+                getSupportFragmentManager().beginTransaction().replace(R.id.registro_fragmento_insumos,
+                        fragmentoInsumos).commit();
+            }catch(Exception exception){
+                exception.printStackTrace();
+                    Intent it = new Intent(ActivityRegistros.this, ActivityAtividades.class);
+                    it.putExtra("erroAbrirRegistros", true);
+                    startActivity(it);
+            }
+            }
 
         if (auxSavedInstanceState == null) {
             fragmentoRendimento = new FragmentoRendimento();
@@ -658,9 +665,9 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     }
 
                     salva();
-                    Log.e("Chamou a funcao salva()", "");
+                    Log.wtf("Chamou a funcao salva()", "");
                     dialogoQtdForaFaixa.dismiss();
-                    Log.e("Fechou o dialogo de insumos fora da faixa", "");
+                    Log.wtf("Fechou o dialogo de insumos fora da faixa", "");
                 }
             }
         });
@@ -1141,7 +1148,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     persisteInsumosDia.getREGISTRO_DESCARREGADO(), persisteInsumosDia.getOBSERVACAO());
 
             insereInsumosDia.setEXPORT_PROXIMA_SINC(true);
-            Log.e("Lista batendo ", String.valueOf(i) + " itens");
+            Log.wtf("Lista batendo ", String.valueOf(i) + " itens");
 
 
             if (i == 0) {
@@ -1183,10 +1190,10 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
             try {
                 somaQtdApl = Double.valueOf(s);
-                Log.e("Valor somaQtdApl ", String.valueOf(somaQtdApl));
+                Log.wtf("Valor somaQtdApl ", String.valueOf(somaQtdApl));
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.e("Erro ao obter qtd aplicada ", e.getMessage());
+                Log.wtf("Erro ao obter qtd aplicada ", e.getMessage());
                 somaQtdApl = 1;
             }
 
@@ -1198,7 +1205,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
             if (somaQtdApl > 0 && area > 0) {
                 divisao = String.valueOf((long) somaQtdApl / (long) area);
-                //Log.e("Valor divisao", divisao);
+                //Log.wtf("Valor divisao", divisao);
             }
 
             qtdHaAplicado = new BigDecimal(divisao).setScale(2, BigDecimal.ROUND_UP);
@@ -1263,8 +1270,8 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         osSelecionada.setDATA_FINAL(listaAtividades.get(0).getDATA());
         dao.update(osSelecionada);
 
-        //Log.e("Apontamento mais antigo", ferramentas.formataDataTextView(osSelecionada.getDATA_INICIAL()));
-        //Log.e("Apontamento mais recente", ferramentas.formataDataTextView(osSelecionada.getDATA_FINAL()));
+        //Log.wtf("Apontamento mais antigo", ferramentas.formataDataTextView(osSelecionada.getDATA_INICIAL()));
+        //Log.wtf("Apontamento mais recente", ferramentas.formataDataTextView(osSelecionada.getDATA_FINAL()));
         edicaoReg = false;
         editouRegistro = false;
         oSAtividadesDiaAtual = null;
@@ -1316,7 +1323,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         dao.update(atividade);
         osSelecionada = dao.selecionaOs(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
-        //Log.e("Area Realizada", String.valueOf(bd.doubleValue()));
+        //Log.wtf("Area Realizada", String.valueOf(bd.doubleValue()));
     }
 
     //Adiciona o botão de atualização a barra de ação

@@ -213,8 +213,6 @@ public class ActivityLogin extends AppCompatActivity {
                     if (conectado == true && erroNoOracle == false && !it.hasExtra("fechar")) {
                         dialogoProgresso.dismiss();
                         String s = "Sincronizado com " + HOST_PORTA;
-                        //if(contadorDeErros>0) s = "Houveram erros na sincronização, favor comunicar ao responsável.";
-
                         Toast.makeText(ActivityLogin.this, s, Toast.LENGTH_LONG).show();
                     }
                     if (conectado == false) {

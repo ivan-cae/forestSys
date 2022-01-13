@@ -1576,7 +1576,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                                                                 + " | MediaP2: " + P2Media.getText().toString()).replace('.', ','));
                                                 dao.insert(registroLog);
                                             } catch (Exception e) {
-                                                Log.e("Erro ao registrar log", "Print stack");
+                                                Log.wtf("Erro ao registrar log", "Print stack");
                                                 e.printStackTrace();
                                             }
                                         }

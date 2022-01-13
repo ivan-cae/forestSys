@@ -333,7 +333,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
 
         atividade.setAREA_REALIZADA(bd.doubleValue());
         dao.update(atividade);
-        //Log.e("Area Realizada", String.valueOf(bd.doubleValue()));
+        //Log.wtf("Area Realizada", String.valueOf(bd.doubleValue()));
 
     }
 

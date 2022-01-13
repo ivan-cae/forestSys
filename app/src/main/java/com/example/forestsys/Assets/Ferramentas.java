@@ -127,9 +127,9 @@ public class Ferramentas {
                 }
             }
 
-            /*Log.e("Digitado", s.toString());
-            Log.e("Anterior", String.valueOf(contAnterior));
-            Log.e("Atual", String.valueOf(contAtual));
+            /*Log.wtf("Digitado", s.toString());
+            Log.wtf("Anterior", String.valueOf(contAnterior));
+            Log.wtf("Atual", String.valueOf(contAtual));
 */
             edit.setText(valorFinal.trim());
             edit.setSelection(edit.length());

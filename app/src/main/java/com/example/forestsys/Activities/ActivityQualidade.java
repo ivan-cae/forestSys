@@ -460,7 +460,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         osSelecionada.setAREA_REALIZADA(bd.doubleValue());
 
         dao.update(atividade);
-        // Log.e("Area Realizada", String.valueOf(bd.doubleValue()));
+        // Log.wtf("Area Realizada", String.valueOf(bd.doubleValue()));
 
     }
 
@@ -690,17 +690,17 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             double auxQtdPontos = listaPonto.get(listaPonto.size() - 1).getPONTO();
             double calculoPontosReg = auxQtdPontos * 10;
 
-            //Log.e("Qtd itens nc", String.valueOf(nItensNconforme));
-            //Log.e("Qtd pontos", String.valueOf(calculoPontosReg));
+            //Log.wtf("Qtd itens nc", String.valueOf(nItensNconforme));
+            //Log.wtf("Qtd pontos", String.valueOf(calculoPontosReg));
 
             float percentualQualidade;
             try {
                 percentualQualidade = (float) (nItensNconforme / calculoPontosReg);
-                //Log.e("Percentual Qualidade", String.valueOf(percentualQualidade));
+                //Log.wtf("Percentual Qualidade", String.valueOf(percentualQualidade));
             } catch (Exception e) {
                 e.printStackTrace();
                 percentualQualidade = 0;
-                //Log.e("Percentual Qualidade", "deu erro: 0");
+                //Log.wtf("Percentual Qualidade", "deu erro: 0");
             }
 
             percentualQualidade = (100 - percentualQualidade);
@@ -1199,7 +1199,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                                 for (int i = 0; i < 4; i++) {
                                     dao.update(listaVerion.get(i));
-                                    //Log.e("Valor Indicador "+ String.valueOf(listaVerion.get(i).getID_INDICADOR()),
+                                    //Log.wtf("Valor Indicador "+ String.valueOf(listaVerion.get(i).getID_INDICADOR()),
                                     //String.valueOf(listaVerion.get(i).getVALOR_INDICADOR()));
                                 }
                             }
@@ -2186,8 +2186,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             bd = bd.setScale(5, RoundingMode.HALF_EVEN);
             longitude = bd.doubleValue();
 
-            //Log.e("Latitude", String.valueOf(latitude));
-            //Log.e("Longitude", String.valueOf(longitude));
+            //Log.wtf("Latitude", String.valueOf(latitude));
+            //Log.wtf("Longitude", String.valueOf(longitude));
 
             if (ponto == null) {
                 AVAL_PONTO_SUBSOLAGEM insere;

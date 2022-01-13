@@ -1,5 +1,6 @@
 package com.example.forestsys.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,6 +44,7 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
         return new AdaptadorCorrecaoQualidade.CorrecaoQualidadeHolder(itemView);
     }
 
+    @SuppressLint("RecyclerView")
     @Override
     public void onBindViewHolder(@NonNull AdaptadorCorrecaoQualidade.CorrecaoQualidadeHolder holder, int position) {
         List<AVAL_PONTO_SUBSOLAGEM> ponto = pontos.get(position);
@@ -447,7 +449,7 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
     }
 
 public String formataLatLong(String s){
-//Log.e("LatLong", s);
+//Log.wtf("LatLong", s);
         if(s.length()<5) return s.replace(".", ",")+"°";
         if(s.length()>5) {
             String[] antesDaVirgula = s.replace('.', ',').split(",");

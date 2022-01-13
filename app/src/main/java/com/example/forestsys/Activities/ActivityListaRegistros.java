@@ -191,8 +191,8 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
         if(atual<=0) atual = 0.01;
         if(anterior<=0) anterior=0.01;
 
-        //Log.e("Anterior", String.valueOf(anterior));
-        //Log.e("Atual", String.valueOf(atual));
+        //Log.wtf("Anterior", String.valueOf(anterior));
+        //Log.wtf("Atual", String.valueOf(atual));
         BigDecimal calculo = BigDecimal.valueOf(1);
 
         try{
@@ -421,7 +421,7 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
         atividade.setAREA_REALIZADA(bd.doubleValue());
         osSelecionada.setAREA_REALIZADA(bd.doubleValue());
         dao.update(atividade);
-        //Log.e("Area Realizada", String.valueOf(bd.doubleValue()));
+        //Log.wtf("Area Realizada", String.valueOf(bd.doubleValue()));
     }
 
 

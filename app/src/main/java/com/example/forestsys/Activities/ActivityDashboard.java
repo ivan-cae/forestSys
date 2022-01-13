@@ -220,8 +220,8 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
         float percNaoConforme = (100*totalNc)/qtdTodosPontos;
         float percConforme = 100 - percNaoConforme;
 
-        Log.e("Total nc", String.valueOf(totalNc));
-        Log.e("Total pontos", String.valueOf(qtdTodosPontos));
+        Log.wtf("Total nc", String.valueOf(totalNc));
+        Log.wtf("Total pontos", String.valueOf(qtdTodosPontos));
 
         valoresRegistroAvaliacao.add(new PieEntry(percConforme, 0));
         valoresRegistroAvaliacao.add(new PieEntry(percNaoConforme, 1));
