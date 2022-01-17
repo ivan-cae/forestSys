@@ -181,9 +181,9 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
             qtdTodosPontos = todosPontos.size();
         }
 
-        for(int i = 0; i<listaTodasOs.size(); i++){
-            totalAreaProgramada+=listaTodasOs.get(i).getAREA_PROGRAMADA();
-            totalAreaRealizada+=listaTodasOs.get(i).getAREA_REALIZADA();
+        for(int i = 0; i<listaTodasOs.size(); i++) {
+            totalAreaProgramada += listaTodasOs.get(i).getAREA_PROGRAMADA();
+            totalAreaRealizada += listaTodasOs.get(i).getAREA_REALIZADA();
 
             int idReg = listaTodasOs.get(i).getID_REGIONAL();
             int idSet = listaTodasOs.get(i).getID_SETOR();
@@ -202,19 +202,19 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
                 n.printStackTrace();
                 teste = 3;
             }
-
-             nc1 += dao.qtdNaoConformeMenor(idProg, 1, aval_subsolagem.getPROFUNDIDADE());
-             nc2 += dao.qtdNaoConformeForaDaFaixa(idProg, 2, aval_subsolagem.getESTRONDAMENTO_LATERAL_INFERIOR(), aval_subsolagem.getESTRONDAMENTO_LATERAL_SUPERIOR());
-             nc3 += dao.qtdNaoConformeMenor(idProg, 3, aval_subsolagem.getFAIXA_SOLO_PREPARADA());
-             nc4 += dao.qtdNaoConformeForaDaFaixa(idProg, 4, aval_subsolagem.getPROFUNDIDADE_ADUBO_INFERIOR(), aval_subsolagem.getPROFUNDIDADE_ADUBO_SUPERIOR());
-             nc5 += dao.qtdNaoConformebool(idProg, 5);
-             nc6 += dao.qtdNaoConformeForaDaFaixa(idProg, 6, teste * 0.95, teste * 1.05);
-             nc7 += dao.qtdNaoConformebool(idProg, 7);
-             nc8 += dao.qtdNaoConformebool(idProg, 8);
-             nc9 += dao.qtdNaoConformebool(idProg, 9);
-             nc10 += dao.qtdNaoConformeForaDaFaixa(idProg, 10, aval_subsolagem.getLOCALIZACAO_INSUMO_INFERIOR(), aval_subsolagem.getLOCALIZACAO_INSUMO_SUPERIOR());
+            if (aval_subsolagem != null) {
+                nc1 += dao.qtdNaoConformeMenor(idProg, 1, aval_subsolagem.getPROFUNDIDADE());
+                nc2 += dao.qtdNaoConformeForaDaFaixa(idProg, 2, aval_subsolagem.getESTRONDAMENTO_LATERAL_INFERIOR(), aval_subsolagem.getESTRONDAMENTO_LATERAL_SUPERIOR());
+                nc3 += dao.qtdNaoConformeMenor(idProg, 3, aval_subsolagem.getFAIXA_SOLO_PREPARADA());
+                nc4 += dao.qtdNaoConformeForaDaFaixa(idProg, 4, aval_subsolagem.getPROFUNDIDADE_ADUBO_INFERIOR(), aval_subsolagem.getPROFUNDIDADE_ADUBO_SUPERIOR());
+                nc5 += dao.qtdNaoConformebool(idProg, 5);
+                nc6 += dao.qtdNaoConformeForaDaFaixa(idProg, 6, teste * 0.95, teste * 1.05);
+                nc7 += dao.qtdNaoConformebool(idProg, 7);
+                nc8 += dao.qtdNaoConformebool(idProg, 8);
+                nc9 += dao.qtdNaoConformebool(idProg, 9);
+                nc10 += dao.qtdNaoConformeForaDaFaixa(idProg, 10, aval_subsolagem.getLOCALIZACAO_INSUMO_INFERIOR(), aval_subsolagem.getLOCALIZACAO_INSUMO_SUPERIOR());
+            }
         }
-
 
         float totalNc = nc1+nc2+nc3+nc4+nc5+nc6+nc7+nc8+nc9+nc10;
         float percNaoConforme = (100*totalNc)/qtdTodosPontos;

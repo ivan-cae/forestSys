@@ -525,26 +525,26 @@ public class ClienteWeb<client> {
                             "silvosatividades" + "/" +
                             String.valueOf(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE())));
 
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     Date updateOracle = null;
                     Date updateApp = null;
 
 
                     try {
                         updateOracle = sdf.parse(objeto.getString("UPDATED_AT"));
-                        Log.wtf("Update do oracle", String.valueOf(updateOracle));
+                       // Log.wtf("Update do oracle", String.valueOf(updateOracle));
                     } catch (Exception exception) {
                         updateOracle = null;
-                        Log.wtf("Erro ao converter data Oracle", exception.getMessage());
+                       // Log.wtf("Erro ao converter data Oracle", exception.getMessage());
                     }
 
                     try {
                         updateApp = sdf.parse(todasOsAtividades.get(i).getUPDATED_AT());
-                        Log.wtf("Update do app", String.valueOf(updateApp));
+                     //   Log.wtf("Update do app", String.valueOf(updateApp));
 
                     } catch (Exception exception) {
                         updateApp = sdf.parse(ferramentas.dataHoraMinutosSegundosAtual());
-                        Log.wtf("Erro ao converter data App", exception.getMessage());
+                      //  Log.wtf("Erro ao converter data App", exception.getMessage());
                     }
 
                     /*try {
@@ -554,9 +554,9 @@ public class ClienteWeb<client> {
                     }*/
 
                     if (objeto.getString("UPDATED_AT")== JSONObject.NULL ||
-                            updateOracle == null || updateApp.compareTo(updateOracle) >= 0){
+                            updateOracle == null || updateApp.compareTo(updateOracle) > 0){
 
-                        Log.wtf("Update do app", "Igual ou posterior ao oracle");
+                      //  Log.wtf("Update do app", "Posterior ao oracle");
                         Integer STATUS_NUM = todasOsAtividades.get(i).getSTATUS_NUM();
 
                         if (STATUS_NUM != 0) {
@@ -600,7 +600,7 @@ public class ClienteWeb<client> {
 
                     if (updateOracle != null) {
                         if (updateApp.compareTo(updateOracle) < 0) {
-                            Log.wtf("Update do app", "anterior ao oracle");
+                           // Log.wtf("Update do app", "anterior ao oracle");
 
                             try {
                                 FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
@@ -610,7 +610,7 @@ public class ClienteWeb<client> {
                                                 "de sincronização e integridade dos dados"));
                                 dao.insert(registroLog);
                             } catch (Exception exx) {
-                                Log.wtf("Erro ao salvar log de erro na sinc", exx.getMessage());
+                               // Log.wtf("Erro ao salvar log de erro na sinc", exx.getMessage());
                             }
                         }
                     }
@@ -1226,7 +1226,7 @@ public class ClienteWeb<client> {
                         }
                     } else {
                         dao.apagaAtividade(ID_PROGRAMACAO_ATIVIDADE);
-                        Log.wtf("Ignorar Atividade", String.valueOf(ID_PROGRAMACAO_ATIVIDADE));
+                      //  Log.wtf("Ignorar Atividade", String.valueOf(ID_PROGRAMACAO_ATIVIDADE));
                     }
                 }
             } catch (Exception ex) {
