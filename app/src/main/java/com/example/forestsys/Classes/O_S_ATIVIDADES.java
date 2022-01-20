@@ -80,6 +80,8 @@ public class O_S_ATIVIDADES implements Serializable {
 
     private String UPDATED_AT;
 
+    private Integer EXPORT_PROXIMA_SINC;
+
     public O_S_ATIVIDADES(Integer ID_PROGRAMACAO_ATIVIDADE, Integer ID_REGIONAL, Integer ID_SETOR, String TALHAO,
                           Integer CICLO, Integer ID_MANEJO, Integer ID_ATIVIDADE, Integer ID_RESPONSAVEL,
                           String DATA_PROGRAMADA, double AREA_PROGRAMADA, Integer PRIORIDADE, Integer EXPERIMENTO,
@@ -271,6 +273,15 @@ public class O_S_ATIVIDADES implements Serializable {
 
     public void setUPDATED_AT(String UPDATED_AT) {
         Log.wtf("Atualizado em", UPDATED_AT);
+        this.setEXPORT_PROXIMA_SINC(1);
         this.UPDATED_AT = UPDATED_AT;
+    }
+
+    public Integer getEXPORT_PROXIMA_SINC() {
+        return EXPORT_PROXIMA_SINC;
+    }
+
+    public void setEXPORT_PROXIMA_SINC(Integer EXPORT_PROXIMA_SINC) {
+        this.EXPORT_PROXIMA_SINC = EXPORT_PROXIMA_SINC;
     }
 }

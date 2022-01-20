@@ -264,7 +264,8 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         try {
             inicializacao();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.wtf("Erro ao abrir qualidade", e.getMessage());
+
             Intent it = new Intent(ActivityQualidade.this, ActivityAtividades.class);
             it.putExtra("erroAbrirQualidade", true);
             startActivity(it);

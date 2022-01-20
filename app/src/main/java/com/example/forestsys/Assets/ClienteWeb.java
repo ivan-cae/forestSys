@@ -349,7 +349,9 @@ public class ClienteWeb<client> {
                 List<O_S_ATIVIDADES_DIA> todasOsAtividadesDia = dao.todasOsAtividadesDia();
                 boolean naoFazPut = false;
                 for (Integer i = 0; i < todasOsAtividadesDia.size(); i++) {
-                    if (todasOsAtividadesDia.get(i).isEXPORT_PROXIMA_SINC() == true) {
+                    if (todasOsAtividadesDia.get(i).isEXPORT_PROXIMA_SINC() != false) {
+                        Log.wtf("exporta atividades dia?", String.valueOf(todasOsAtividadesDia.get(i).isEXPORT_PROXIMA_SINC()));
+
                         JSONObject obj = new JSONObject();
                         if (todasOsAtividadesDia.get(i).getID() == null || todasOsAtividadesDia.get(i).getID() == JSONObject.NULL) {
                             obj.put("ID_PROGRAMACAO_ATIVIDADE", todasOsAtividadesDia.get(i).getID_PROGRAMACAO_ATIVIDADE());
@@ -449,7 +451,10 @@ public class ClienteWeb<client> {
                 boolean naoFazPut = false;
 
                 for (Integer i = 0; i < todasOsAtividadeInsumoDia.size(); i++) {
-                    if (todasOsAtividadeInsumoDia.get(i).isEXPORT_PROXIMA_SINC() == true) {
+
+                    if (todasOsAtividadeInsumoDia.get(i).isEXPORT_PROXIMA_SINC() != false) {
+                        Log.wtf("exporta insumos dia?", String.valueOf(todasOsAtividadeInsumoDia.get(i).isEXPORT_PROXIMA_SINC()));
+
                         JSONObject obj = new JSONObject();
 
                         if (todasOsAtividadeInsumoDia.get(i).getID() == null || todasOsAtividadeInsumoDia.get(i).getID() == JSONObject.NULL) {
@@ -516,104 +521,105 @@ public class ClienteWeb<client> {
             try {
                 List<O_S_ATIVIDADES> todasOsAtividades = dao.todasOs();
 
-                //Log.wtf("Tamanho lista OS", String.valueOf(todasOsAtividades.size()));
-
                 Ferramentas ferramentas = new Ferramentas();
                 for (Integer i = 0; i < todasOsAtividades.size(); i++) {
 
-                    JSONObject objeto = new JSONObject(requisicaoGET(HOST_PORTA +
-                            "silvosatividades" + "/" +
-                            String.valueOf(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE())));
+                    if (todasOsAtividades.get(i).getEXPORT_PROXIMA_SINC() == 1) {
+                        JSONObject objeto = new JSONObject(requisicaoGET(HOST_PORTA +
+                                "silvosatividades" + "/" +
+                                String.valueOf(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE())));
 
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    Date updateOracle = null;
-                    Date updateApp = null;
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        Date updateOracle = null;
+                        Date updateApp = null;
 
 
-                    try {
-                        updateOracle = sdf.parse(objeto.getString("UPDATED_AT"));
-                       // Log.wtf("Update do oracle", String.valueOf(updateOracle));
-                    } catch (Exception exception) {
-                        updateOracle = null;
-                       // Log.wtf("Erro ao converter data Oracle", exception.getMessage());
-                    }
+                        try {
+                            updateOracle = sdf.parse(objeto.getString("UPDATED_AT"));
+                            Log.wtf("Update do oracle", String.valueOf(updateOracle));
+                        } catch (Exception exception) {
+                            updateOracle = null;
+                            Log.wtf("Erro ao converter data Oracle", exception.getMessage());
+                        }
 
-                    try {
-                        updateApp = sdf.parse(todasOsAtividades.get(i).getUPDATED_AT());
-                     //   Log.wtf("Update do app", String.valueOf(updateApp));
+                        try {
+                            updateApp = sdf.parse(todasOsAtividades.get(i).getUPDATED_AT().toString());
+                            Log.wtf("Update do app", String.valueOf(updateApp));
 
-                    } catch (Exception exception) {
-                        updateApp = sdf.parse(ferramentas.dataHoraMinutosSegundosAtual());
-                      //  Log.wtf("Erro ao converter data App", exception.getMessage());
-                    }
+                        } catch (Exception exception) {
+                            updateApp = sdf.parse(ferramentas.dataHoraMinutosSegundosAtual());
+                            Log.wtf("Erro ao converter data App", exception.getMessage());
+                        }
 
                     /*try {
                         Log.wtf("Compare To", String.valueOf(updateApp.compareTo(updateOracle)));
                     }catch(Exception exception){
                         Log.wtf("Erro ao comparar datas Oracle e App", exception.getMessage());
                     }*/
+                        if (objeto.getString("UPDATED_AT") == JSONObject.NULL ||
+                                updateOracle == null || updateApp.compareTo(updateOracle) > 0) {
 
-                    if (objeto.getString("UPDATED_AT")== JSONObject.NULL ||
-                            updateOracle == null || updateApp.compareTo(updateOracle) > 0){
+                            Log.wtf("Update do app", "Posterior ao oracle");
+                            Integer STATUS_NUM = todasOsAtividades.get(i).getSTATUS_NUM();
 
-                      //  Log.wtf("Update do app", "Posterior ao oracle");
-                        Integer STATUS_NUM = todasOsAtividades.get(i).getSTATUS_NUM();
+                            if (STATUS_NUM != 0) {
+                                JSONObject obj = new JSONObject();
 
-                        if (STATUS_NUM != 0) {
-                            JSONObject obj = new JSONObject();
-
-                            if (STATUS_NUM == 1) {
-                                obj.put("STATUS", "A");
-                            }
-                            if (STATUS_NUM == 2) {
-                                obj.put("STATUS", "F");
-                            }
+                                if (STATUS_NUM == 1) {
+                                    obj.put("STATUS", "A");
+                                }
+                                if (STATUS_NUM == 2) {
+                                    obj.put("STATUS", "F");
+                                }
 
 
-                            if (todasOsAtividades.get(i).getDATA_INICIAL() == null || todasOsAtividades.get(i).getDATA_INICIAL().trim().equals("null")) {
-                                obj.put("DATA_INICIAL", JSONObject.NULL);
-                            } else {
-                                obj.put("DATA_INICIAL", todasOsAtividades.get(i).getDATA_INICIAL() + " 00:00:00");
-                            }
+                                if (todasOsAtividades.get(i).getDATA_INICIAL() == null || todasOsAtividades.get(i).getDATA_INICIAL().trim().equals("null")) {
+                                    obj.put("DATA_INICIAL", JSONObject.NULL);
+                                } else {
+                                    obj.put("DATA_INICIAL", todasOsAtividades.get(i).getDATA_INICIAL() + " 00:00:00");
+                                }
 
-                            if (todasOsAtividades.get(i).getOBSERVACAO() == null || todasOsAtividades.get(i).getOBSERVACAO().trim().equals("null")) {
-                                obj.put("OBSERVACAO", JSONObject.NULL);
-                            } else {
-                                obj.put("OBSERVACAO", todasOsAtividades.get(i).getOBSERVACAO());
-                            }
+                                if (todasOsAtividades.get(i).getOBSERVACAO() == null || todasOsAtividades.get(i).getOBSERVACAO().trim().equals("null")) {
+                                    obj.put("OBSERVACAO", JSONObject.NULL);
+                                } else {
+                                    obj.put("OBSERVACAO", todasOsAtividades.get(i).getOBSERVACAO());
+                                }
 
-                            if (todasOsAtividades.get(i).getDATA_FINAL() == null || todasOsAtividades.get(i).getDATA_FINAL().trim().equals("null")) {
-                                obj.put("DATA_FINAL", JSONObject.NULL);
-                            } else {
-                                obj.put("DATA_FINAL", todasOsAtividades.get(i).getDATA_FINAL() + " 00:00:00");
-                            }
+                                if (todasOsAtividades.get(i).getDATA_FINAL() == null || todasOsAtividades.get(i).getDATA_FINAL().trim().equals("null")) {
+                                    obj.put("DATA_FINAL", JSONObject.NULL);
+                                } else {
+                                    obj.put("DATA_FINAL", todasOsAtividades.get(i).getDATA_FINAL() + " 00:00:00");
+                                }
 
-                            //  Log.wtf("Area Realizada put", String.valueOf(dao.somaAreaRealizada(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE())));
+                                //  Log.wtf("Area Realizada put", String.valueOf(dao.somaAreaRealizada(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE())));
 
-                            obj.put("AREA_REALIZADA", todasOsAtividades.get(i).getAREA_REALIZADA());
+                                obj.put("AREA_REALIZADA", todasOsAtividades.get(i).getAREA_REALIZADA());
 
-                            requisicaoPUT(HOST_PORTA + "silvosatividades" + "/" +
-                                    String.valueOf(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE()), obj.toString());
+                                requisicaoPUT(HOST_PORTA + "silvosatividades" + "/" +
+                                        String.valueOf(todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE()), obj.toString());
 
-                        }
-                    }
-
-                    if (updateOracle != null) {
-                        if (updateApp.compareTo(updateOracle) < 0) {
-                           // Log.wtf("Update do app", "anterior ao oracle");
-
-                            try {
-                                FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
-                                        "Usuário não logado", "Sincronização", "Sincronizou",
-                                        String.valueOf("OS: " + todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE() + " | Falha: Tentou sincronizar a atividade com o atributo " +
-                                                "UPDATED_AT anterior a data do mesmo atributo para a mesma atividade presente no Oracle, quebrando as regras " +
-                                                "de sincronização e integridade dos dados"));
-                                dao.insert(registroLog);
-                            } catch (Exception exx) {
-                               // Log.wtf("Erro ao salvar log de erro na sinc", exx.getMessage());
                             }
                         }
+
+                        if (updateOracle != null) {
+                            if (updateApp.compareTo(updateOracle) < 0) {
+                                // Log.wtf("Update do app", "anterior ao oracle");
+
+                                try {
+                                    FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
+                                            "Usuário não logado", "Sincronização", "Sincronizou",
+                                            String.valueOf("OS: " + todasOsAtividades.get(i).getID_PROGRAMACAO_ATIVIDADE() + " | Falha: Tentou sincronizar a atividade com o atributo " +
+                                                    "UPDATED_AT anterior a data do mesmo atributo para a mesma atividade presente no Oracle, quebrando as regras " +
+                                                    "de sincronização e integridade dos dados"));
+                                    dao.insert(registroLog);
+                                } catch (Exception exx) {
+                                    // Log.wtf("Erro ao salvar log de erro na sinc", exx.getMessage());
+                                }
+                            }
+                        }
                     }
+                    todasOsAtividades.get(i).setEXPORT_PROXIMA_SINC(0);
+                    dao.update(todasOsAtividades.get(i));
                 }
             } catch (Exception ex) {
                 //Log.wtf("OS_ATIVIDADES", "Erro ao instanciar objeto para requisição PUT");
@@ -625,17 +631,19 @@ public class ClienteWeb<client> {
             try {
                 List<O_S_ATIVIDADE_INSUMOS> todasAtvInsumos = dao.todosOsAtividadeInsumos();
                 for (Integer i = 0; i < todasAtvInsumos.size(); i++) {
-                    JSONObject obj = new JSONObject();
+                    if (todasAtvInsumos.get(i).getEXPORT_PROXIMA_SINC() == 1) {
+                        JSONObject obj = new JSONObject();
 
-                    obj.put("ID_INSUMO", todasAtvInsumos.get(i).getID_INSUMO());
-                    obj.put("ID_PROGRAMACAO_ATIVIDADE", todasAtvInsumos.get(i).getID_PROGRAMACAO_ATIVIDADE());
-                    obj.put("RECOMENDACAO", todasAtvInsumos.get(i).getRECOMENDACAO());
-                    obj.put("QTD_HA_RECOMENDADO", todasAtvInsumos.get(i).getQTD_HA_RECOMENDADO());
-                    obj.put("QTD_HA_APLICADO", todasAtvInsumos.get(i).getQTD_HA_APLICADO());
+                        obj.put("ID_INSUMO", todasAtvInsumos.get(i).getID_INSUMO());
+                        obj.put("ID_PROGRAMACAO_ATIVIDADE", todasAtvInsumos.get(i).getID_PROGRAMACAO_ATIVIDADE());
+                        obj.put("RECOMENDACAO", todasAtvInsumos.get(i).getRECOMENDACAO());
+                        obj.put("QTD_HA_RECOMENDADO", todasAtvInsumos.get(i).getQTD_HA_RECOMENDADO());
+                        obj.put("QTD_HA_APLICADO", todasAtvInsumos.get(i).getQTD_HA_APLICADO());
 
-                    requisicaoPUT(HOST_PORTA + "silvosatividadeinsumos" + "/" +
-                            todasAtvInsumos.get(i).getID_PROGRAMACAO_ATIVIDADE() + "&" +
-                            todasAtvInsumos.get(i).getID_INSUMO(), obj.toString());
+                        requisicaoPUT(HOST_PORTA + "silvosatividadeinsumos" + "/" +
+                                todasAtvInsumos.get(i).getID_PROGRAMACAO_ATIVIDADE() + "&" +
+                                todasAtvInsumos.get(i).getID_INSUMO(), obj.toString());
+                    }
                 }
             } catch (Exception ex) {
                 // Log.wtf("O_S_ATIVIDADE_INSUMOS", "Erro ao instanciar objeto para requisição PUT");
@@ -648,21 +656,23 @@ public class ClienteWeb<client> {
                 List<INDICADORES_SUBSOLAGEM> listaIndSubs = dao.todosIndicadoresSubsolagem();
 
                 for (Integer i = 0; i < listaIndSubs.size(); i++) {
-                    JSONObject obj = new JSONObject();
+                    if (listaIndSubs.get(i).getEXPORT_PROXIMA_SINC() == 1) {
+                        JSONObject obj = new JSONObject();
 
-                    obj.put("ID_PROGRAMACAO_ATIVIDADE", listaIndSubs.get(i).getID_PROGRAMACAO_ATIVIDADE());
-                    obj.put("DATA", listaIndSubs.get(i).getDATA() + " 00:00:00");
-                    obj.put("ID_ATIVIDADE", listaIndSubs.get(i).getID_ATIVIDADE());
-                    obj.put("ID_INDICADOR", listaIndSubs.get(i).getID_INDICADOR());
-                    obj.put("VALOR_INDICADOR", listaIndSubs.get(i).getVALOR_INDICADOR());
+                        obj.put("ID_PROGRAMACAO_ATIVIDADE", listaIndSubs.get(i).getID_PROGRAMACAO_ATIVIDADE());
+                        obj.put("DATA", listaIndSubs.get(i).getDATA() + " 00:00:00");
+                        obj.put("ID_ATIVIDADE", listaIndSubs.get(i).getID_ATIVIDADE());
+                        obj.put("ID_INDICADOR", listaIndSubs.get(i).getID_INDICADOR());
+                        obj.put("VALOR_INDICADOR", listaIndSubs.get(i).getVALOR_INDICADOR());
 
-                    requisicaoPUT(HOST_PORTA + "silvindicadoressubsolagens" + "/" + listaIndSubs.get(i).getID_PROGRAMACAO_ATIVIDADE() + "&" +
-                                    listaIndSubs.get(i).getDATA() + "&" + listaIndSubs.get(i).getID_ATIVIDADE() + "&" + listaIndSubs.get(i).getID_INDICADOR()
-                            , obj.toString());
+                        requisicaoPUT(HOST_PORTA + "silvindicadoressubsolagens" + "/" + listaIndSubs.get(i).getID_PROGRAMACAO_ATIVIDADE() + "&" +
+                                        listaIndSubs.get(i).getDATA() + "&" + listaIndSubs.get(i).getID_ATIVIDADE() + "&" + listaIndSubs.get(i).getID_INDICADOR()
+                                , obj.toString());
 
-                    requisicaoPOST(HOST_PORTA + "silvindicadoressubsolagens",
-                            obj.toString());
+                        requisicaoPOST(HOST_PORTA + "silvindicadoressubsolagens",
+                                obj.toString());
 
+                    }
                 }
             } catch (Exception ex) {
                 // Log.wtf("INDICADOR_SUBSOLAGEM", "Erro ao instanciar objeto para requisição POST");
@@ -1186,7 +1196,7 @@ public class ClienteWeb<client> {
                     boolean updateNull = false;
                     try {
                         dataUpdate = auxSdf.parse(obj.getString("UPDATED_AT"));
-                    }catch(Exception exception){
+                    } catch (Exception exception) {
                         updateNull = true;
                         Ferramentas ferramentas = new Ferramentas();
                         UPDATED_AT = ferramentas.dataHoraMinutosSegundosAtual();
@@ -1217,16 +1227,18 @@ public class ClienteWeb<client> {
 
                     if (ignorarInsert == false) {
                         try {
-                            dao.insert(new O_S_ATIVIDADES(ID_PROGRAMACAO_ATIVIDADE, ID_REGIONAL, ID_SETOR, TALHAO, CICLO,
+                            O_S_ATIVIDADES atividadeInsert = new O_S_ATIVIDADES(ID_PROGRAMACAO_ATIVIDADE, ID_REGIONAL, ID_SETOR, TALHAO, CICLO,
                                     ID_MANEJO, ID_ATIVIDADE, ID_RESPONSAVEL, DATA_PROGRAMADA, AREA_PROGRAMADA, PRIORIDADE,
                                     EXPERIMENTO, MADEIRA_NO_TALHAO, OBSERVACAO, DATA_INICIAL, DATA_FINAL, 0,
-                                    STATUS, STATUS_NUM, UPDATED_AT));
+                                    STATUS, STATUS_NUM, UPDATED_AT);
+                            atividadeInsert.setEXPORT_PROXIMA_SINC(0);
+                            dao.insert(atividadeInsert);
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
                     } else {
                         dao.apagaAtividade(ID_PROGRAMACAO_ATIVIDADE);
-                      //  Log.wtf("Ignorar Atividade", String.valueOf(ID_PROGRAMACAO_ATIVIDADE));
+                        //  Log.wtf("Ignorar Atividade", String.valueOf(ID_PROGRAMACAO_ATIVIDADE));
                     }
                 }
             } catch (Exception ex) {
@@ -1485,7 +1497,11 @@ public class ClienteWeb<client> {
                     QTD_HA_APLICADO = Double.valueOf(s);
 
                     try {
-                        dao.insert(new O_S_ATIVIDADE_INSUMOS(ID_INSUMO, ID_PROGRAMACAO_ATIVIDADE, RECOMENDACAO, QTD_HA_RECOMENDADO, QTD_HA_APLICADO));
+                        O_S_ATIVIDADE_INSUMOS atividadeInsumos = new O_S_ATIVIDADE_INSUMOS(ID_INSUMO,
+                                ID_PROGRAMACAO_ATIVIDADE, RECOMENDACAO, QTD_HA_RECOMENDADO,
+                                QTD_HA_APLICADO);
+                        atividadeInsumos.setEXPORT_PROXIMA_SINC(0);
+                        dao.insert(atividadeInsumos);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1600,7 +1616,11 @@ public class ClienteWeb<client> {
                     DATA = ignoraHoras(DATA);
 
                     try {
-                        dao.insert(new INDICADORES_SUBSOLAGEM(ID_PROGRAMACAO_ATIVIDADE, ID_ATIVIDADE, ID_INDICADOR, DATA, VALOR_INDICADOR, 1));
+                        INDICADORES_SUBSOLAGEM indicadores_subsolagem =
+                                new INDICADORES_SUBSOLAGEM(ID_PROGRAMACAO_ATIVIDADE, ID_ATIVIDADE, ID_INDICADOR,
+                                        DATA, VALOR_INDICADOR, 1);
+                        indicadores_subsolagem.setEXPORT_PROXIMA_SINC(0);
+                        dao.insert(indicadores_subsolagem);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

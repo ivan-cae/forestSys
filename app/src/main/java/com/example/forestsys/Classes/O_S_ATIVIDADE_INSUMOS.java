@@ -34,6 +34,9 @@ public class O_S_ATIVIDADE_INSUMOS implements Serializable {
     private double QTD_HA_RECOMENDADO;
     private double QTD_HA_APLICADO;
 
+    private Integer EXPORT_PROXIMA_SINC;
+
+
     public O_S_ATIVIDADE_INSUMOS(Integer ID_INSUMO, Integer ID_PROGRAMACAO_ATIVIDADE, Integer RECOMENDACAO, double QTD_HA_RECOMENDADO, double QTD_HA_APLICADO) {
         this.ID_INSUMO = ID_INSUMO;
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
@@ -83,6 +86,15 @@ public class O_S_ATIVIDADE_INSUMOS implements Serializable {
     }
 
     public void setQTD_HA_APLICADO(double QTD_HA_APLICADO) {
+        this.setEXPORT_PROXIMA_SINC(1);
         this.QTD_HA_APLICADO = QTD_HA_APLICADO;
+    }
+
+    public Integer getEXPORT_PROXIMA_SINC() {
+        return EXPORT_PROXIMA_SINC;
+    }
+
+    public void setEXPORT_PROXIMA_SINC(Integer EXPORT_PROXIMA_SINC) {
+        this.EXPORT_PROXIMA_SINC = EXPORT_PROXIMA_SINC;
     }
 }

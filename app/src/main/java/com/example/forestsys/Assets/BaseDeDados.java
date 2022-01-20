@@ -49,7 +49,7 @@ import com.example.forestsys.Classes.PRESTADORES;
         AVAL_SUBSOLAGEM.class, OPERADORES.class, CALIBRAGEM_SUBSOLAGEM.class, MAQUINA_IMPLEMENTO.class,
         O_S_ATIVIDADE_INSUMOS.class, ATIVIDADE_INDICADORES.class, ATIVIDADES.class, CADASTRO_FLORESTAL.class, ESPACAMENTOS.class, GEO_REGIONAIS.class,
         GEO_SETORES.class, GGF_DEPARTAMENTOS.class, GGF_FUNCOES.class, GGF_USUARIOS.class, INSUMO_ATIVIDADES.class, MATERIAL_GENETICO.class, O_S_ATIVIDADE_INSUMOS_DIA.class, O_S_ATIVIDADES.class, O_S_ATIVIDADES_DIA.class,
-        PRESTADORES.class, Configs.class, GEO_LOCALIZACAO.class, FOREST_LOG.class}, version = 7, exportSchema = false)
+        PRESTADORES.class, Configs.class, GEO_LOCALIZACAO.class, FOREST_LOG.class}, version = 10, exportSchema = false)
 
 
 public abstract class BaseDeDados extends RoomDatabase {
@@ -74,6 +74,9 @@ public abstract class BaseDeDados extends RoomDatabase {
                     .addMigrations(MIGRATION_4_5)
                     .addMigrations(MIGRATION_5_6)
                     .addMigrations(MIGRATION_6_7)
+                    .addMigrations(MIGRATION_7_8)
+                    .addMigrations(MIGRATION_8_9)
+                    .addMigrations(MIGRATION_9_10)
                     .build();
         }
         return instance;
@@ -119,6 +122,27 @@ public abstract class BaseDeDados extends RoomDatabase {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE O_S_ATIVIDADES ADD COLUMN UPDATED_AT TEXT");
+        }
+    };
+
+    static final Migration MIGRATION_7_8 = new Migration(7, 8) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE O_S_ATIVIDADES ADD COLUMN EXPORT_PROXIMA_SINC INTEGER");
+        }
+    };
+
+    static final Migration MIGRATION_8_9 = new Migration(8, 9) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE O_S_ATIVIDADE_INSUMOS ADD COLUMN EXPORT_PROXIMA_SINC INTEGER");
+        }
+    };
+
+    static final Migration MIGRATION_9_10 = new Migration(9, 10) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE INDICADORES_SUBSOLAGEM ADD COLUMN EXPORT_PROXIMA_SINC INTEGER");
         }
     };
 

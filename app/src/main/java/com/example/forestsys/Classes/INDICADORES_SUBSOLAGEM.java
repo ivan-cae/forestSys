@@ -43,6 +43,8 @@ public class INDICADORES_SUBSOLAGEM implements Serializable {
 
     private Integer fezSinc;
 
+    private Integer EXPORT_PROXIMA_SINC;
+
     public INDICADORES_SUBSOLAGEM(Integer ID_PROGRAMACAO_ATIVIDADE, Integer ID_ATIVIDADE,
                                   Integer ID_INDICADOR, String DATA, double VALOR_INDICADOR, Integer fezSinc) {
         this.ID_PROGRAMACAO_ATIVIDADE = ID_PROGRAMACAO_ATIVIDADE;
@@ -90,6 +92,7 @@ public class INDICADORES_SUBSOLAGEM implements Serializable {
     }
 
     public void setVALOR_INDICADOR(double VALOR_INDICADOR) {
+        setEXPORT_PROXIMA_SINC(1);
         this.VALOR_INDICADOR = VALOR_INDICADOR;
     }
 
@@ -99,5 +102,13 @@ public class INDICADORES_SUBSOLAGEM implements Serializable {
 
     public void setFezSinc(Integer fezSinc) {
         this.fezSinc = fezSinc;
+    }
+
+    public Integer getEXPORT_PROXIMA_SINC() {
+        return EXPORT_PROXIMA_SINC;
+    }
+
+    public void setEXPORT_PROXIMA_SINC(Integer EXPORT_PROXIMA_SINC) {
+        this.EXPORT_PROXIMA_SINC = EXPORT_PROXIMA_SINC;
     }
 }
