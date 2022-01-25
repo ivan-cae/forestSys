@@ -48,6 +48,7 @@ import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -536,7 +537,7 @@ public class ClienteWeb<client> {
 
                         try {
                             updateOracle = sdf.parse(objeto.getString("UPDATED_AT"));
-                            Log.wtf("Update do oracle", String.valueOf(updateOracle));
+                            //Log.wtf("Update do oracle", String.valueOf(updateOracle));
                         } catch (Exception exception) {
                             updateOracle = null;
                             Log.wtf("Erro ao converter data Oracle", exception.getMessage());
@@ -544,7 +545,7 @@ public class ClienteWeb<client> {
 
                         try {
                             updateApp = sdf.parse(todasOsAtividades.get(i).getUPDATED_AT().toString());
-                            Log.wtf("Update do app", String.valueOf(updateApp));
+                            //Log.wtf("Update do app", String.valueOf(updateApp));
 
                         } catch (Exception exception) {
                             updateApp = sdf.parse(ferramentas.dataHoraMinutosSegundosAtual());
@@ -559,7 +560,7 @@ public class ClienteWeb<client> {
                         if (objeto.getString("UPDATED_AT") == JSONObject.NULL ||
                                 updateOracle == null || updateApp.compareTo(updateOracle) > 0) {
 
-                            Log.wtf("Update do app", "Posterior ao oracle");
+                            //Log.wtf("Update do app", "Posterior ao oracle");
                             Integer STATUS_NUM = todasOsAtividades.get(i).getSTATUS_NUM();
 
                             if (STATUS_NUM != 0) {
@@ -1225,6 +1226,7 @@ public class ClienteWeb<client> {
                         }
                     }
 
+
                     if (ignorarInsert == false) {
                         try {
                             O_S_ATIVIDADES atividadeInsert = new O_S_ATIVIDADES(ID_PROGRAMACAO_ATIVIDADE, ID_REGIONAL, ID_SETOR, TALHAO, CICLO,
@@ -1239,6 +1241,40 @@ public class ClienteWeb<client> {
                     } else {
                         dao.apagaAtividade(ID_PROGRAMACAO_ATIVIDADE);
                         //  Log.wtf("Ignorar Atividade", String.valueOf(ID_PROGRAMACAO_ATIVIDADE));
+                    }
+                }
+
+                List<O_S_ATIVIDADES> checaAtividadeInexistente = dao.todasOs();
+
+                if (checaAtividadeInexistente != null) {
+                    for (Integer i = 0; i < checaAtividadeInexistente.size(); i++) {
+                        boolean apagaAtividade = true;
+                        O_S_ATIVIDADES atv = checaAtividadeInexistente.get(i);
+
+                        for (Integer j = 0; j < response.length(); j++) {
+                            JSONObject obj = response.getJSONObject(j);
+                            Integer ID_PROGRAMACAO_ATIVIDADE = obj.getInt("ID_PROGRAMACAO_ATIVIDADE");
+                            if(atv.getSTATUS_NUM()==0 && atv.getDATA_INICIAL()==null){
+                                if(atv.getID_PROGRAMACAO_ATIVIDADE().equals(ID_PROGRAMACAO_ATIVIDADE)){
+                                    apagaAtividade = false;
+                                }
+                            }else {
+                                apagaAtividade = false;
+                            }
+                        }
+                        if(apagaAtividade == true){
+
+                            Ferramentas ferramentas = new Ferramentas();
+                            FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
+                                    "Usuário não logado", "Sincronização", "Deleção de atividade",
+                                    "Atividade " +
+                                    String.valueOf(atv.getID_PROGRAMACAO_ATIVIDADE()) + " foi apagada do App pois não " +
+                                    "foi localizada no Json.");
+                            dao.insert(registroLog);
+                            dao.delete(atv);
+                            Log.wtf("Atividade Apagada", String.valueOf(atv.getID_PROGRAMACAO_ATIVIDADE()) + " foi apagada do App pois não " +
+                                    "foi localizada no Json.");
+                        }
                     }
                 }
             } catch (Exception ex) {

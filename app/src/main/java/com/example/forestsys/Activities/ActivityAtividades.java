@@ -39,6 +39,7 @@ import com.example.forestsys.Assets.DAO;
 import com.example.forestsys.Assets.Ferramentas;
 import com.example.forestsys.Classes.ClassesAuxiliares.FOREST_LOG;
 import com.example.forestsys.Classes.GEO_LOCALIZACAO;
+import com.example.forestsys.Classes.INDICADORES_SUBSOLAGEM;
 import com.example.forestsys.Classes.O_S_ATIVIDADES;
 import com.example.forestsys.R;
 import com.example.forestsys.Calculadora.CalculadoraMain;
@@ -396,8 +397,21 @@ public class ActivityAtividades extends AppCompatActivity
                                     .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
+                                            List<INDICADORES_SUBSOLAGEM>listaVerion = dao.listaIndicadoresSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), osSelecionada.getID_ATIVIDADE());
+
+                                            if(listaVerion == null || listaVerion.isEmpty()) {
+                                                AlertDialog dialog = new AlertDialog.Builder(ActivityAtividades.this)
+                                                        .setTitle("Erro!")
+                                                        .setMessage("Os dados do sistema de precisão não estão preenchidos!")
+                                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                            }
+                                                        }).create();
+                                                dialog.show();
+                                            }else{
                                             salvar();
-                                        }
+                                        }}
                                     }).setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
