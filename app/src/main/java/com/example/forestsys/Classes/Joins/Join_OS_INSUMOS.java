@@ -2,6 +2,10 @@ package com.example.forestsys.Classes.Joins;
 
 import java.io.Serializable;
 
+/*
+ * Classe JOIN auxiliar para selecionar todos os insumos recomendados para uma atividade a fim de facilitar
+ a manipulação desses dados no FragmentoInsumo e AdaptadorFragmentoInsumos
+ */
 public class Join_OS_INSUMOS implements Serializable {
     Integer ID_PROGRAMACAO_ATIVIDADE;
 

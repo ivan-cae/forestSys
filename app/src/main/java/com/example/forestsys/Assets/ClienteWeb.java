@@ -62,19 +62,22 @@ import static com.example.forestsys.Activities.ActivityAtividades.listaJoinOsIns
 import static com.example.forestsys.Activities.ActivityAtividades.oSAtividadesDiaAtual;
 import static com.example.forestsys.Activities.ActivityInicializacao.HOST_PORTA;
 import static com.example.forestsys.Activities.ActivityInicializacao.conectado;
+import static com.example.forestsys.Activities.ActivityInicializacao.ferramentas;
 import static com.example.forestsys.Activities.ActivityInicializacao.informacaoDispositivo;
 import static com.example.forestsys.Activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
 
+/*
+    Classe responsável por executar todas as requisições HTTP e checagens da sincronização
+*/
 public class ClienteWeb<client> {
 
     private static DAO dao;
 
-    private final Ferramentas ferramentas = new Ferramentas();
-
     private static final MediaType JSON
             = MediaType.get("application/json; charset=utf-8");
 
+    //Construtor da biblioteca OkHttp que está sendo utilizada para processar as requisições
     private static OkHttpClient client = new OkHttpClient.Builder()
             .addInterceptor(new OkHttpProfilerInterceptor())
             .callTimeout(5, TimeUnit.MINUTES)
@@ -100,6 +103,7 @@ public class ClienteWeb<client> {
     private Calendar cal;
     private String dataAtual;
 
+
     @SuppressLint("LongLogTag")
     public ClienteWeb(Context context) throws ParseException {
         activity = context;
@@ -117,40 +121,14 @@ public class ClienteWeb<client> {
             cal.add(Calendar.DATE, (configs.getPermanenciaDosDados()) - 1);
 
             dataMaximaIntervalo = cal.getTime();
-
-            //Log.wtf("Data intervalo",sdf.format(dataMaximaIntervalo.getTime()));
-            //Log.wtf("Permanencia", String.valueOf(configs.getPermanenciaDosDados()));
-
-            /*boolean jaApagouHoje = false;
-            if (configs.getDataParaApagarDados() != null) {
-                if (configs.getDataParaApagarDados().trim().equals(dataAtual)) {
-                    jaApagouHoje = true;
-                }
-            }
-
-            if (date1.getTime() >= date2.getTime()) {
-                if (jaApagouHoje == false) {
-                        chegouDataApagarTudo = true;
-                        baseDeDados.clearAllTables();
-
-                        configs.setDataParaApagarDados(calculaDataParaApagarDados(configs.getPermanenciaDosDados().toString()));
-                        configs.setUltimaDataQueApagou(dataAtual);
-                        Log.wtf("Próxima data para apagar", configs.getDataParaApagarDados());
-                        dao.insert(configs);
-                    } else {
-                        chegouDataApagarTudo = false;
-                    }
-                }
-
-                if (chegouDataApagarTudo == true) {
-                    Log.wtf("Apagou?", " Sim");
-                } else {
-                    Log.wtf("Apagou?", " Não");
-                }*/
         }
     }
 
-
+    /*
+     * Método responsável por executar uma Requisição POST
+     * Parâmetros de entrada: URL onde será feita a requisição, Json contendo os dados que serão enviados
+     * Retorna: String contendo a resposta do servidor que recebeu a requisição ou Null caso haja algum erro
+    */
     private static String requisicaoPOST(String url, String json) throws IOException {
         RequestBody body = RequestBody.create(json, JSON);
 
@@ -168,19 +146,25 @@ public class ClienteWeb<client> {
         }
     }
 
+    /*
+     * Método responsável por executar uma Requisição GET
+     * Parâmetros de entrada: URL onde será feita a requisição
+     * Retorna: String contendo a resposta do servidor que recebeu a requisição
+    */
     private static String requisicaoGET(String url) throws IOException {
-
         okhttp3.Request request = new okhttp3.Request.Builder().url(url).build();
-
         okhttp3.Response response = client.newCall(request).execute();
-
         String jsonDeResposta = response.body().string();
 
         response.close();
         return jsonDeResposta;
     }
 
-
+    /*
+     * Método responsável por executar uma Requisição POST
+     * Parâmetros de entrada: URL onde será feita a requisição, Json contendo os dados que serão enviados
+     * Retorna: String contendo a resposta do servidor que recebeu a requisição ou Null caso haja algum erro
+     */
     private static String requisicaoPUT(String url, String json) throws IOException {
         RequestBody body = RequestBody.create(json, JSON);
         okhttp3.Request request = new okhttp3.Request.Builder()
@@ -197,6 +181,11 @@ public class ClienteWeb<client> {
         }
     }
 
+    /*
+     * Método responsável por ignorar as horas de uma data com padrão YYYY-MM-DD HH:mm:ss
+     * Parâmetro de entrada: Uma string contendo a data
+     * Retorna: Data formatada no padrão YYYY-MM-DD
+     */
     private static String ignoraHoras(String data) {
         if (data == null || data.length() == 0) return null;
 
@@ -206,34 +195,10 @@ public class ClienteWeb<client> {
         return s;
     }
 
-    private static void calculaAreaRealizada(int id, Context context) {
-        baseDeDados = BaseDeDados.getInstance(context);
-        dao = baseDeDados.dao();
 
-        double calcula = 0;
-        List<O_S_ATIVIDADES_DIA> listaReg = dao.listaAtividadesDia(id);
-        for (int i = 0; i < listaReg.size(); i++) {
-            String s = listaReg.get(i).getAREA_REALIZADA().replace(',', '.');
-            double d = 0;
-            try {
-                d = Double.valueOf(s);
-            } catch (Exception e) {
-                e.printStackTrace();
-                d = 0;
-            }
-            calcula += d;
-        }
-        O_S_ATIVIDADES atividade = dao.selecionaOs(id);
-
-        BigDecimal bd = BigDecimal.valueOf(calcula);
-        bd = bd.setScale(2, RoundingMode.HALF_UP);
-
-        atividade.setAREA_REALIZADA(bd.doubleValue());
-        dao.update(atividade);
-        //Log.wtf("Area Realizada", String.valueOf(bd.doubleValue()));
-
-    }
-
+    /*
+     * Método responsável por fazer a sincronização com o Web Service em segundo plano
+     */
     @SuppressLint("LongLogTag")
     public static void sincronizaWebService() throws Exception, IOException {
         contadorDeErros = 0;
@@ -264,6 +229,12 @@ public class ClienteWeb<client> {
 
     }
 
+    /*
+     * Método responsável por converter uma String em double, alterando o separador decimal de "," para "."
+     e arredondando o valor para duas casas decimais
+     * Parâmetro de entrada: Uma String a ser convertida
+     * Retorna: Um double convertido para o padrão mencionado anteriormente
+     */
     public static double corrigeDec(String s) {
         s = s.replace(".", ",");
 
@@ -282,6 +253,9 @@ public class ClienteWeb<client> {
         return Double.valueOf(s);
     }
 
+    /*
+     * Método responsável por efetuar a sincronização entre o BD local e o remoto
+     */
     @SuppressLint("LongLogTag")
     public static void populaBdComWebService() throws IOException, Exception {
         finalizouSinc = false;
@@ -294,11 +268,11 @@ public class ClienteWeb<client> {
             URLConnection connection = myUrl.openConnection();
             connection.setConnectTimeout(300000);
             connection.connect();
-            Log.wtf("Conectado a", myUrl.toString());
+            //Log.wtf("Conectado a", myUrl.toString());
             conectado = true;
             finalizouSinc = false;
         } catch (Exception e) {
-            Log.wtf("Erro", e.toString() + " ao conectar a: " + HOST_PORTA);
+            //Log.wtf("Erro", e.toString() + " ao conectar a: " + HOST_PORTA);
             conectado = false;
             finalizouSinc = true;
         }
@@ -351,7 +325,7 @@ public class ClienteWeb<client> {
                 boolean naoFazPut = false;
                 for (Integer i = 0; i < todasOsAtividadesDia.size(); i++) {
                     if (todasOsAtividadesDia.get(i).isEXPORT_PROXIMA_SINC() != false) {
-                        Log.wtf("exporta atividades dia?", String.valueOf(todasOsAtividadesDia.get(i).isEXPORT_PROXIMA_SINC()));
+                        //Log.wtf("exporta atividades dia?", String.valueOf(todasOsAtividadesDia.get(i).isEXPORT_PROXIMA_SINC()));
 
                         JSONObject obj = new JSONObject();
                         if (todasOsAtividadesDia.get(i).getID() == null || todasOsAtividadesDia.get(i).getID() == JSONObject.NULL) {
@@ -454,7 +428,7 @@ public class ClienteWeb<client> {
                 for (Integer i = 0; i < todasOsAtividadeInsumoDia.size(); i++) {
 
                     if (todasOsAtividadeInsumoDia.get(i).isEXPORT_PROXIMA_SINC() != false) {
-                        Log.wtf("exporta insumos dia?", String.valueOf(todasOsAtividadeInsumoDia.get(i).isEXPORT_PROXIMA_SINC()));
+                        //Log.wtf("exporta insumos dia?", String.valueOf(todasOsAtividadeInsumoDia.get(i).isEXPORT_PROXIMA_SINC()));
 
                         JSONObject obj = new JSONObject();
 
@@ -522,7 +496,6 @@ public class ClienteWeb<client> {
             try {
                 List<O_S_ATIVIDADES> todasOsAtividades = dao.todasOs();
 
-                Ferramentas ferramentas = new Ferramentas();
                 for (Integer i = 0; i < todasOsAtividades.size(); i++) {
 
                     if (todasOsAtividades.get(i).getEXPORT_PROXIMA_SINC() == 1) {
@@ -540,7 +513,7 @@ public class ClienteWeb<client> {
                             //Log.wtf("Update do oracle", String.valueOf(updateOracle));
                         } catch (Exception exception) {
                             updateOracle = null;
-                            Log.wtf("Erro ao converter data Oracle", exception.getMessage());
+                            //Log.wtf("Erro ao converter data Oracle", exception.getMessage());
                         }
 
                         try {
@@ -549,14 +522,8 @@ public class ClienteWeb<client> {
 
                         } catch (Exception exception) {
                             updateApp = sdf.parse(ferramentas.dataHoraMinutosSegundosAtual());
-                            Log.wtf("Erro ao converter data App", exception.getMessage());
+                            //Log.wtf("Erro ao converter data App", exception.getMessage());
                         }
-
-                    /*try {
-                        Log.wtf("Compare To", String.valueOf(updateApp.compareTo(updateOracle)));
-                    }catch(Exception exception){
-                        Log.wtf("Erro ao comparar datas Oracle e App", exception.getMessage());
-                    }*/
                         if (objeto.getString("UPDATED_AT") == JSONObject.NULL ||
                                 updateOracle == null || updateApp.compareTo(updateOracle) > 0) {
 
@@ -1199,7 +1166,6 @@ public class ClienteWeb<client> {
                         dataUpdate = auxSdf.parse(obj.getString("UPDATED_AT"));
                     } catch (Exception exception) {
                         updateNull = true;
-                        Ferramentas ferramentas = new Ferramentas();
                         UPDATED_AT = ferramentas.dataHoraMinutosSegundosAtual();
                     }
 
@@ -1264,7 +1230,6 @@ public class ClienteWeb<client> {
                         }
                         if(apagaAtividade == true){
 
-                            Ferramentas ferramentas = new Ferramentas();
                             FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
                                     "Usuário não logado", "Sincronização", "Deleção de atividade",
                                     "Atividade " +
@@ -1272,8 +1237,8 @@ public class ClienteWeb<client> {
                                     "foi localizada no Json.");
                             dao.insert(registroLog);
                             dao.delete(atv);
-                            Log.wtf("Atividade Apagada", String.valueOf(atv.getID_PROGRAMACAO_ATIVIDADE()) + " foi apagada do App pois não " +
-                                    "foi localizada no Json.");
+                            //Log.wtf("Atividade Apagada", String.valueOf(atv.getID_PROGRAMACAO_ATIVIDADE()) + " foi apagada do App pois não " +
+                                    //"foi localizada no Json.");
                         }
                     }
                 }
@@ -1754,7 +1719,7 @@ public class ClienteWeb<client> {
 */
             List<O_S_ATIVIDADES> listaOs = dao.todasOs();
             for (int i = 0; i < listaOs.size(); i++) {
-                calculaAreaRealizada(listaOs.get(i).getID_PROGRAMACAO_ATIVIDADE(), activity);
+                ferramentas.calculaAreaRealizada(listaOs.get(i).getID_PROGRAMACAO_ATIVIDADE(), activity);
             }
 
             finalizouSinc = true;

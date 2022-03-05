@@ -19,9 +19,14 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import static com.example.forestsys.Activities.ActivityAtividades.area;
+import static com.example.forestsys.Activities.ActivityInicializacao.ferramentas;
 import static com.example.forestsys.R.color.secondaryDarkColor;
 import static java.sql.Types.NULL;
 
+/*
+ * Adapter responsável por personalizar a lista de insumos exibida no FragmentoInsumos contido na ActivityRegistros
+ e realizar suas interações
+ */
 public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFragmentoInsumos.FragmentoInsumosHolder> {
 
     private List<Join_OS_INSUMOS> insumos = new ArrayList<>();
@@ -71,8 +76,8 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
                         String s = String.valueOf(bd.doubleValue());
 
                         holder.QTDRec.setText(s);
-                        if(diferencaPercentual((insumo.getQTD_HA_RECOMENDADO() * auxDouble), insumo.getQTD_APLICADO()) > 5.0000 ||
-                                diferencaPercentual((insumo.getQTD_HA_RECOMENDADO() * auxDouble), insumo.getQTD_APLICADO()) < -5.0000){
+                        if(ferramentas.diferencaPercentual((insumo.getQTD_HA_RECOMENDADO() * auxDouble), insumo.getQTD_APLICADO()) > 5.0000 ||
+                                ferramentas.diferencaPercentual((insumo.getQTD_HA_RECOMENDADO() * auxDouble), insumo.getQTD_APLICADO()) < -5.0000){
                             if(holder.QTDApl.getText().toString().length()>0){
                                 if(position == 0) insumoConforme1 = false;
                                 if(position == 1) insumoConforme2 = false;
@@ -110,25 +115,28 @@ public class AdaptadorFragmentoInsumos extends RecyclerView.Adapter<AdaptadorFra
     }
     }
 
-    //Calcula a diferença percentual entre dois números do tipo Double
-    //Parâmetro de entrada: dois Doubles
-    private static Double diferencaPercentual(Double anterior, Double atual) {
-           Double calculo = (1 - (atual / anterior)) * 100;//((anterior - atual) / anterior) * 100.0
-        DecimalFormat df = new DecimalFormat("###.##");
-         if (Double.valueOf(df.format(calculo).replace(',', '.')) == 0.0) return -0.0;
-        return Double.valueOf(df.format(calculo).replace(',', '.'));
-    }
-
+    /*
+     * Sobrescrita do método getItemCount  usado para retornar o tamanho da lista que está sendo
+     tratado pelo Adapter
+     */
     @Override
     public int getItemCount() {
         return insumos.size();
     }
 
+    /*
+     * Método responsável por inicializar o Adapter e atualiza-lo sempre que houver uma mudança nos dados da lista
+     tratada pelo Adapter
+     */
     public void setInsumos(List<Join_OS_INSUMOS> insumos) {
         this.insumos = insumos;
         notifyDataSetChanged();
     }
 
+    /*
+     * Classe Holder auxiliar usada para fazer a interface entre a lista tratada pelo Adapter e cada TextView
+     correspondente a um atributo da lista em questão
+     */
     class FragmentoInsumosHolder extends RecyclerView.ViewHolder {
         private TextView descricao;
         private TextView QTDApl;

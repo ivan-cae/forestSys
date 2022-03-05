@@ -42,12 +42,17 @@ import static com.example.forestsys.Activities.ActivityAtividades.editouInsumo1;
 import static com.example.forestsys.Activities.ActivityAtividades.editouInsumo2;
 import static com.example.forestsys.Activities.ActivityAtividades.editouRegistro;
 import static com.example.forestsys.Activities.ActivityAtividades.joinOsInsumos;
+import static com.example.forestsys.Activities.ActivityInicializacao.ferramentas;
 import static com.example.forestsys.Activities.ActivityRegistros.dataDoApontamento;
 import static com.example.forestsys.Activities.ActivityAtividades.listaJoinOsInsumosSelecionados;
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
 import static com.example.forestsys.Activities.ActivityAtividades.insumoInsere;
 import static com.example.forestsys.Activities.ActivityAtividades.area;
 
+/*
+ * Fragment responsavel por mostrar o fragmento de aplicação de insumos dentro da tela de
+ de registros e fazer suas interações
+ */
 public class FragmentoInsumos extends Fragment {
 
     private RecyclerView recyclerView;
@@ -56,7 +61,6 @@ public class FragmentoInsumos extends Fragment {
     private DAO dao;
     private AdaptadorFragmentoInsumos adaptador;
     private ArrayAdapter<Join_OS_INSUMOS> adapterInsumos;
-    private Ferramentas ferramentas;
     public static EditText obsInsumo1;
     public static EditText obsInsumo2;
     private TextView nomeInsumo1;
@@ -87,7 +91,6 @@ public class FragmentoInsumos extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        ferramentas = new Ferramentas();
         return root;
     }
 
@@ -234,16 +237,16 @@ public class FragmentoInsumos extends Fragment {
         }
     }
 
-    //Poe a virgula automaticamente como separador decimal dos números inseridos nas caixas de texto
-    //parâmetros de entrada: Uma instância de uma caixa de texto, um double representando a qtd_ha_recomendado para o insumo,
-    //a string contendo os valores inseridos na caixa de texto
+    /*
+     * Método responsável por adicionar a virgula automaticamente como separador decimal dos números inseridos
+     nas caixas de texto
+     * parâmetros de entrada: Uma instância de uma caixa de texto, um CharSequence contendo o valor a ser formatado,
+     um inteiro representando o número de casas decimais, uma string com um valor de referência para calcular o
+     número de casas antes da virgula, um inteiro contendo o tamanho do CharSequence antes da formatação,
+     um inteiro contendo o tamanho do CharSequence depois da formatação
+    */
     public static void mascaraVirgula(EditText edit, CharSequence s, int casasDecimais, String valorReferencia,
                                       int contAtual, int contAnterior) {
-
-        /*Log.wtf("Digitado", s.toString());
-        Log.wtf("Anterior", String.valueOf(contAnterior));
-        Log.wtf("Atual", String.valueOf(contAtual));
-*/
         if(casasDecimais == 0) casasDecimais = 2;
 
         String input = s.toString();
@@ -292,8 +295,10 @@ public class FragmentoInsumos extends Fragment {
         }
     }
 
-    //Abre o diálogo para preencher a quantidade aplicada de um insumo.
-    //Parâmetro de entrada: instância da classe Join_OS_INSUMOS
+    /*
+     * Método responsável por abrir uma caixa de diálogo para preencher a quantidade aplicada de um insumo
+     * Parâmetro de entrada: Instância da classe Join_OS_INSUMOS
+    */
     public void abreDialogoQtdAplicada(Join_OS_INSUMOS insere) {
         abriuDialogo = true;
         insumoInsere = insere;
@@ -409,8 +414,9 @@ public class FragmentoInsumos extends Fragment {
     }
 
 
-    //Abre diálogo para justificar a edição da quantidade do insumo
-    //Método de entrada: um double, esse double é a quantidade aplicada na edição do insumo
+    /* Método usado para abrir uma caixa de diálogo para justificar a edição da quantidade do insumo
+     * Parâmetro de entrada: um double que armazena a quantidade aplicada na edição do insumo
+    */
     public void abreDialogoEdicaoIns(double valor) {
         abriuDialogoEdicao = true;
         auxValorDialogoQtd = valor;
@@ -485,10 +491,17 @@ public class FragmentoInsumos extends Fragment {
         });
     }
 
+    /*
+     * Método auxiliar do Adapter usado para personalizar a lista de insumos
+     * Usado para atualizar a lista de insumos sempre que houver uma alteração
+     */
     public void setInsumos(){
         adaptador.setInsumos(listaJoinOsInsumosSelecionados);
     }
 
+    /*
+     * Salva uma instância da tela para reconstrução ao alterar entre modo paisagem e retrato ou vice-versa
+     */
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         if (osSelecionada != null && osSelecionada.getSTATUS_NUM() != 2) {
@@ -518,6 +531,9 @@ public class FragmentoInsumos extends Fragment {
         }
     }
 
+    /*
+     * SObrescrita do método onBackPressed  para que feche quaisquer caixas de diálogo abertas
+     */
     public void onBackPressed() {
         if (abriuDialogoEdicao) dialogoEdicao.cancel();
         if (abriuDialogo) dialogoQtdAplicada.cancel();

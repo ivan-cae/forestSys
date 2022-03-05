@@ -1,5 +1,7 @@
 package com.example.forestsys.Adapters;
 
+import static com.example.forestsys.Activities.ActivityInicializacao.ferramentas;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -24,7 +26,9 @@ import com.example.forestsys.Classes.O_S_ATIVIDADES;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/*
+ * Adapter responsável por personalizar a lista de atividades exibida na ActivityMain e realizar suas interações
+ */
 public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> implements Filterable {
     private List<O_S_ATIVIDADES> ordens = new ArrayList<>();
     private List<O_S_ATIVIDADES> ordensFiltradas;
@@ -34,7 +38,6 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
     private DAO dao;
     private BaseDeDados baseDeDados;
     private Context context = ApplicationTodos.getAppContext();
-    private Ferramentas ferramentas = new Ferramentas();
 
     @NonNull
     @Override
@@ -53,17 +56,6 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
 
         ordem = ordens.get(position);
 
-        Drawable d;
-
-        //holder.status.setBackgroundColor(corFundo);
-        // aberta-verde
-        //        if (ordem.getSTATUS_NUM() == 0) corFundo = (Color.parseColor("#a9d18e"));
-        //        //andamento-bege
-        //        if (ordem.getSTATUS_NUM() == 1) corFundo = (Color.parseColor("#fff2cc"));
-        //
-        //        //azul-finalizada
-        //        if (ordem.getSTATUS_NUM() == 2) corFundo = (Color.parseColor("#9dc3e6"));
-
         // aberta-verde
         if (ordem.getSTATUS_NUM() == 0) holder.iconeStatus.setBackgroundResource(R.drawable.status_nao_iniciado);
         //andamento-bege
@@ -74,7 +66,6 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
 
         holder.status.setText(ordem.getSTATUS());
         holder.setor.setText(String.valueOf(dao.selecionaSetor(ordem.getID_SETOR()).getDESCRICAO()));
-        Ferramentas ferramentas = new Ferramentas();
         holder.data.setText(String.valueOf(ferramentas.formataDataTextView(ordem.getDATA_PROGRAMADA())));
         holder.talhao.setText(String.valueOf(ordem.getTALHAO()));
         holder.area.setText(String.valueOf(ordem.getAREA_PROGRAMADA()).replace(".", ","));
@@ -90,21 +81,29 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
         if (ordem.getPRIORIDADE() == 4) prio = "Nenhuma";
     }
 
+    /*
+     * Sobrescrita do método getItemCount  usado para retornar o tamanho da lista que está sendo
+     tratado pelo Adapter
+     */
     @Override
     public int getItemCount() {
         return ordens.size();
     }
 
+    /*
+     * Método responsável por inicializar o Adapter e atualiza-lo sempre que houver uma mudança nos dados da lista
+     tratada pelo Adapter
+     */
     public void setOrdens(List<O_S_ATIVIDADES> ordens) {
         this.ordens = ordens;
         ordensFiltradas = new ArrayList<>(ordens);
         notifyDataSetChanged();
     }
 
-    public List<O_S_ATIVIDADES> getOrdensFiltradas() {
-        return ordensFiltradas;
-    }
-
+    /*
+     * Classe Holder auxiliar usada para fazer a interface entre a lista tratada pelo Adapter e cada TextView
+     correspondente a um atributo da lista em questão
+     */
     class OsHolder extends RecyclerView.ViewHolder {
         private TextView status;
         private TextView madeira;
@@ -147,11 +146,20 @@ public class AdaptadorOs extends RecyclerView.Adapter<AdaptadorOs.OsHolder> impl
         this.listener = listener;
     }
 
+    /*
+     * Sobrescrita do método getFilter para que retorne o filtro criado abaixo ou invés de utilizar o padrão
+    */
     @Override
     public Filter getFilter() {
         return filtro;
     }
 
+    /*
+     * Classe responsável por efetuar a busca(ou filtragem) de acordo com os parâmetros definidos através
+     da sobreescrita do método performFiltering
+     Retorna: Um filtro personalizado que nesse caso efetua a busca na lista tratada pelo Adapter a partir
+     dos atributos "PERIODO_PROGRAMADO", "SETOR" ou "TALHAO" da tabela O_S_ATIVIDADES
+    */
     private Filter filtro = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {

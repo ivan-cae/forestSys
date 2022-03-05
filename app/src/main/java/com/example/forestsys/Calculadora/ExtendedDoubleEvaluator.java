@@ -5,6 +5,9 @@ import com.fathzer.soft.javaluator.Function;
 import com.fathzer.soft.javaluator.Parameters;
 import java.util.Iterator;
 
+/*
+ * Classe auxiliar responsável por calcular a raiz quadrada de um numero
+ */
 public class ExtendedDoubleEvaluator extends DoubleEvaluator {
     private static final Function SQRT = new Function("sqrt", 1);
     private static final Parameters PARAMS;

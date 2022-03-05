@@ -1,5 +1,7 @@
 package com.example.forestsys.Classes;
 
+import static com.example.forestsys.Activities.ActivityInicializacao.ferramentas;
+
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -226,7 +228,6 @@ public class O_S_ATIVIDADES implements Serializable {
     }
 
     public void setDATA_INICIAL(String DATA_INICIAL) {
-        Ferramentas ferramentas = new Ferramentas();
         setUPDATED_AT(ferramentas.dataHoraMinutosSegundosAtual());
         this.DATA_INICIAL = DATA_INICIAL;
     }
@@ -236,7 +237,6 @@ public class O_S_ATIVIDADES implements Serializable {
     }
 
     public void setDATA_FINAL(String DATA_FINAL) {
-        Ferramentas ferramentas = new Ferramentas();
         setUPDATED_AT(ferramentas.dataHoraMinutosSegundosAtual());
         this.DATA_FINAL = DATA_FINAL;
     }
@@ -272,7 +272,7 @@ public class O_S_ATIVIDADES implements Serializable {
     }
 
     public void setUPDATED_AT(String UPDATED_AT) {
-        Log.wtf("Atualizado em", UPDATED_AT);
+        //Log.wtf("Atualizado em", UPDATED_AT);
         this.setEXPORT_PROXIMA_SINC(1);
         this.UPDATED_AT = UPDATED_AT;
     }

@@ -45,6 +45,9 @@ import com.example.forestsys.Classes.O_S_ATIVIDADE_INSUMOS;
 import com.example.forestsys.Classes.O_S_ATIVIDADE_INSUMOS_DIA;
 import com.example.forestsys.Classes.PRESTADORES;
 
+/*
+ * Classe abstrata responsável por controlar o ORM RoomDatabase
+ */
 @Database(entities = {MANEJO.class, MAQUINAS.class, IMPLEMENTOS.class, INSUMOS.class, INDICADORES_SUBSOLAGEM.class, AVAL_PONTO_SUBSOLAGEM.class,
         AVAL_SUBSOLAGEM.class, OPERADORES.class, CALIBRAGEM_SUBSOLAGEM.class, MAQUINA_IMPLEMENTO.class,
         O_S_ATIVIDADE_INSUMOS.class, ATIVIDADE_INDICADORES.class, ATIVIDADES.class, CADASTRO_FLORESTAL.class, ESPACAMENTOS.class, GEO_REGIONAIS.class,
@@ -82,6 +85,10 @@ public abstract class BaseDeDados extends RoomDatabase {
         return instance;
     }
 
+    /*
+     * Migrações de versões do BD entre 1 e 10 usadas para que não seja necessário apagar os dados após
+     mudança no schema
+     */
     static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {

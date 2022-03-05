@@ -2,6 +2,9 @@ package com.example.forestsys.Assets;
 
 import java.text.DecimalFormat;
 
+/*
+ * Classe contendo as formulas definidas pela GELF para calculo da conformidade dos indicadores da subsolagem
+ */
 public class Formulas {
 
     //A

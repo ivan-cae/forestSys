@@ -29,6 +29,10 @@ import static com.example.forestsys.Activities.ActivityAtividades.listaPontosCor
 import static com.example.forestsys.Activities.ActivityQualidade.botaoCorrecaoRegistrar;
 import static com.example.forestsys.Activities.ActivityQualidade.naoHaNCNaoTratada;
 
+/*
+ * Adapter responsável por personalizar a lista de Calibrações que podem ser corrigidas exibida na
+ ActivityQualidade e realizar suas interações
+ */
 public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCorrecaoQualidade.CorrecaoQualidadeHolder> {
     private DAO dao;
     private Context context = ApplicationTodos.getAppContext();
@@ -448,6 +452,11 @@ public class AdaptadorCorrecaoQualidade extends RecyclerView.Adapter<AdaptadorCo
         }
     }
 
+    /*
+     * Método responsável por formatar os campos "Lat" e "Long" mostrados na coluna "Coordenadas" do Adapter
+     * Parâmetro de entrada: String contendo latitude e longitude
+     * Retorna: String formatada para o padrão mostrado no Adapter
+     */
 public String formataLatLong(String s){
 //Log.wtf("LatLong", s);
         if(s.length()<5) return s.replace(".", ",")+"°";
@@ -461,17 +470,28 @@ public String formataLatLong(String s){
         }
         return s;
 }
+
+    /*
+    * Sobrescrita do método getItemCount  usado para retornar o tamanho da lista que está sendo
+    tratado pelo Adapter
+    */
     @Override
     public int getItemCount() {
         return pontos.size();
     }
 
+    /*
+     * Método responsável por inicializar o Adapter
+     */
     public void setCorrecao(List<List<AVAL_PONTO_SUBSOLAGEM>> pontos) {
         this.pontos = pontos;
     }
 
+    /*
+     * Classe Holder auxiliar usada para fazer a interface entre a lista tratada pelo Adapter e cada TextView
+     correspondente a um atributo da lista em questão
+     */
     class CorrecaoQualidadeHolder extends RecyclerView.ViewHolder {
-
         private TextView numeroPonto;
         private TextView textViewPonto;
         private TextView textViewCorrecao;

@@ -1,5 +1,7 @@
 package com.example.forestsys.Adapters;
 
+import static com.example.forestsys.Activities.ActivityInicializacao.ferramentas;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,9 @@ import com.example.forestsys.Classes.OPERADORES;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * Adapter responsável por personalizar a lista de Calibrações exibida na ActivityCalibracao
+ */
 public class AdaptadorCalibracao extends RecyclerView.Adapter<AdaptadorCalibracao.CalibragemHolder>{
 
     private List<CALIBRAGEM_SUBSOLAGEM> calibragens = new ArrayList<>();
@@ -51,8 +56,6 @@ public class AdaptadorCalibracao extends RecyclerView.Adapter<AdaptadorCalibraca
         IMPLEMENTOS aux3 = dao.selecionaImplemento(aux1.getID_IMPLEMENTO());
         OPERADORES aux4 = dao.selecionaOperador(calibragem.getID_OPERADOR());
 
-        Ferramentas ferramentas = new Ferramentas();
-
         holder.data.setText((ferramentas.formataDataTextView(calibragem.getDATA())));
         holder.turno.setText((calibragem.getTURNO()));
         holder.maquina.setText(aux2.getDESCRICAO());
@@ -64,16 +67,28 @@ public class AdaptadorCalibracao extends RecyclerView.Adapter<AdaptadorCalibraca
         holder.p2Media.setText(String.valueOf(calibragem.getP2_MEDIA()).replace(".", ","));
     }
 
+    /*
+         * Sobrescrita do método getItemCount  usado para retornar o tamanho da lista que está sendo
+         tratado pelo Adapter
+         */
     @Override
     public int getItemCount() {
         return calibragens.size();
     }
 
+    /*
+     * Método responsável por inicializar o Adapter e atualiza-lo sempre que houver uma mudança nos dados da lista
+     tratada pelo Adapter
+     */
     public void setCalibragem(List<CALIBRAGEM_SUBSOLAGEM> calibragens) {
         this.calibragens = calibragens;
         notifyDataSetChanged();
     }
 
+    /*
+     * Classe Holder auxiliar usada para fazer a interface entre a lista tratada pelo Adapter e cada TextView
+     correspondente a um atributo da lista em questão
+     */
     class CalibragemHolder extends RecyclerView.ViewHolder {
         TextView data;
         TextView turno;

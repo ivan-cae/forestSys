@@ -43,10 +43,15 @@ import static com.example.forestsys.Activities.ActivityAtividades.hoe;
 import static com.example.forestsys.Activities.ActivityAtividades.oSAtividadesDiaAtual;
 import static com.example.forestsys.Activities.ActivityAtividades.obs;
 import static com.example.forestsys.Activities.ActivityAtividades.area;
+import static com.example.forestsys.Activities.ActivityInicializacao.ferramentas;
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
 import static com.example.forestsys.Activities.ActivityRegistros.auxSavedInstanceState;
 
+/*
+ * Fragment responsavel por mostrar o fragmento de apontamento dentro da tela de registros e fazer suas interações
+ */
 public class FragmentoRendimento extends Fragment {
+
     public static NDSpinner spinnerPrestador;
     public static EditText areaRealizadaApontamento;
     public static EditText HOEscavadeiraApontamento;
@@ -71,7 +76,6 @@ public class FragmentoRendimento extends Fragment {
     private BaseDeDados baseDeDados;
     private DAO dao;
 
-    private Ferramentas ferramentas = new Ferramentas();
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragmento_rendimento, container, false);
@@ -132,39 +136,10 @@ public class FragmentoRendimento extends Fragment {
     }
 
 
-
-
-
     /*
-public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
-        int tamanho;
-        String input;
+     * Método responsável por inicializar todos os itens na tela e seta valores de variáveis
+     */
 
-        tamanho = edit.length();
-        input = s.toString();
-
-        if (input.length()>0) {
-
-            edit.setFilters(new InputFilter[]{
-                    new InputFilter.LengthFilter(antesDaVirgula + 3)});
-
-            char[] aux = input.toCharArray();
-            if ((tamanho + 1) != antesDaVirgula && aux[tamanho - 1] == ',') {
-                edit.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
-            } else {
-                if (tamanho == antesDaVirgula + 1) {
-                    char[] charAux = input.toCharArray();
-                    String stringAux = String.valueOf(charAux[tamanho - 1]);
-                    input = input.substring(0, tamanho - 1);
-                    edit.setText(input + "," + stringAux);
-                    edit.setSelection(edit.getText().toString().length());
-                }
-            }
-        }
-    }
-*/
-
-    //inicialização dos itens na tela e variáveis
     public void inicializacao() {
         spinnerPrestador = getView().findViewById(R.id.spinner_prestador_apontamento);
         areaRealizadaApontamento = getView().findViewById(R.id.area_realizada_apontamento);
@@ -407,15 +382,21 @@ public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
         }
     }
 
-    //Checa se o valor de um TextView pode ser convertido para double
-    //parâmetro de entrada: TextView e uma String
-    //parâmetro de saída: null se o valor não puder ser convertido, a própria string se o valor puder ser convertido
+    /*
+     * Método responsável por checar se o valor de um TextView pode ser convertido em double
+     * Caso a String não puder ser convertida ou o valor limite for excedido durante a conversão é adicionada uma
+     flag indicando o erro no TextView
+     * Parâmetros de entrada: Instância do TextView a ser testado, a string que será convertida, um double contendo
+     o valor máximo permitido para conversão
+     * Retorna: Null se o valor não puder ser convertido ou a própria string se o valor puder ser convertido
+     * Obs: A conversão não é feita no método, ele somente verifica se uma conversão pode ser feita
+    */
     public String checaTextView(TextView t, String str, double limite) {
         String s1 = t.getText().toString().trim();
         if (s1.length() == 0) return null;
         char[] c = s1.toCharArray();
         if (s1.length() > 0) {
-            if (s1 == "," || c[s1.length() - 1] == ',' || c[0] == ',' || contaVirgula(s1, ',') > 1) {
+            if (s1 == "," || c[s1.length() - 1] == ',' || c[0] == ',' || ferramentas.contaVirgula(s1, ',') > 1) {
                 t.setError("Valor incorreto! O registro não será salvo.");
                 str = "";
             } else {
@@ -438,20 +419,16 @@ public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
         return str;
     }
 
-    //Conta quantas indicências de um caractere há em uma String.
-    //Parâmetros de entrada: uma String, um Char
-    //Retorna quantidade de indicências do caracter
-    public int contaVirgula(String s, char c) {
-        return s.length() == 0 ? 0 : (s.charAt(0) == c ? 1 : 0) + contaVirgula(s.substring(1), c);
-    }
-
+    /*
+     * Método auxiliar responsável por adicionar casas decimais a um campo numérico que o Java
+     removeu as casas decimais por se tratar de um valor inteiro
+     */
     private String corrigeCasasDecimais(String valorReferencia){
         if(!valorReferencia.contains(","))
             return valorReferencia;
 
         String[] antesDaVirgula = valorReferencia.split(",");
         int casasDecimais = antesDaVirgula[1].length();
-       // Log.wtf("depois da virgula", String.valueOf(casasDecimais));
         if(casasDecimais==1) {
             valorReferencia = valorReferencia + "0";
         }
@@ -459,7 +436,12 @@ public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
         return valorReferencia;
     }
 
-    //Mostra as informações do apontamento nos seus respectivos campos
+    /*
+     * Método responsável por mostrar as informações do apontamento nos seus respectivos campos na tela
+     a partir da atividade selecionada para edição
+     * Parâmetro de entrada: Uma instância da classe O_S_ATIVIDADES_DIA contendo os dados a serem carregados
+     nos TextViews
+    */
     public void populaInfo(O_S_ATIVIDADES_DIA osAtv) {
         posicaoPrestador = osAtv.getID_PRESTADOR();
         posicaoResponsavel = osAtv.getID_RESPONSAVEL();
@@ -508,9 +490,11 @@ public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
         } else obs = "";
     }
 
+    /*
+     * Salva uma instância da tela para reconstrução ao alterar entre modo paisagem e retrato ou vice-versa
+     */
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-
         super.onSaveInstanceState(outState);
         outState.putString("area", area);
         outState.putString("hoe", hoe);
@@ -522,6 +506,5 @@ public void mascaraVirgula(EditText edit, int antesDaVirgula, CharSequence s) {
 
         outState.putInt("posicaoPrestador", posicaoPrestador);
         outState.putInt("posicaoResponsavel", posicaoResponsavel);
-
     }
 }

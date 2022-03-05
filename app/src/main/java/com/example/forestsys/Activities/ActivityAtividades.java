@@ -64,12 +64,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.forestsys.Activities.ActivityCalibracao.checaTurno;
+import static com.example.forestsys.Activities.ActivityInicializacao.ferramentas;
 import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresaPref;
 import static com.example.forestsys.Activities.ActivityInicializacao.informacaoDispositivo;
 import static com.example.forestsys.Activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
 
-
+/*
+* Activity responsavel por mostrar a tela da atividade e fazer suas interações
+*/
 public class ActivityAtividades extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
 
@@ -94,7 +97,6 @@ public class ActivityAtividades extends AppCompatActivity
     private AdaptadorInsumos adaptador;
 
     public static List<Join_OS_INSUMOS> joinOsInsumos;
-    private Ferramentas ferramentas;
 
     private BaseDeDados baseDeDados;
     private DAO dao;
@@ -159,7 +161,6 @@ public class ActivityAtividades extends AppCompatActivity
         setContentView(R.layout.activity_atividades);
         setTitle(nomeEmpresaPref);
 
-        ferramentas = new Ferramentas();
         oSAtividadesDiaAtual = null;
         editouRegistro = false;
         editouInsumo1 = false;
@@ -194,7 +195,7 @@ public class ActivityAtividades extends AppCompatActivity
         dao = baseDeDados.dao();
         joinOsInsumos = dao.listaJoinInsumoAtividades(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
-        calculaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+        ferramentas.calculaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), getApplicationContext());
         dao.update(osSelecionada);
 
 
@@ -521,37 +522,15 @@ public class ActivityAtividades extends AppCompatActivity
 
     }
 
-    private void calculaAreaRealizada(int id){
-        double calcula = 0;
-        List <O_S_ATIVIDADES_DIA> listaReg = dao.listaAtividadesDia(id);
-        for(int i=0; i <listaReg.size(); i++){
-            String s = listaReg.get(i).getAREA_REALIZADA().replace(',', '.');
-            double d = 0;
-            try {
-                d = Double.valueOf(s);
-            }catch(Exception e){
-                e.printStackTrace();
-                d = 0;
-            }
-            calcula+=d;
-        }
-        O_S_ATIVIDADES atividade = dao.selecionaOs(id);
 
-        BigDecimal bd = BigDecimal.valueOf(calcula);
-        bd = bd.setScale(2, RoundingMode.HALF_UP);
-
-        atividade.setAREA_REALIZADA(bd.doubleValue());
-        osSelecionada.setAREA_REALIZADA(bd.doubleValue());
-
-        dao.update(atividade);
-        //Log.wtf("Area Realizada", String.valueOf(bd.doubleValue()));
-    }
-
+    /*
+    * Método responsável por salvar a finalização de uma atividade, atualizar o atributo "UPDATED_AT" e gerar um
+    * registro de log
+    */
     public void salvar() {
         osSelecionada.setSTATUS_NUM(2);
         osSelecionada.setSTATUS("Finalizado");
 
-        Ferramentas ferramentas = new Ferramentas();
         osSelecionada.setUPDATED_AT(ferramentas.dataHoraMinutosSegundosAtual());
         dao.update(osSelecionada);
 
@@ -566,6 +545,11 @@ public class ActivityAtividades extends AppCompatActivity
         startActivity(it);
     }
 
+    /*
+    * Método responsável por abrir o diálogo para editar uma atividade
+    * Após informar uma justificativa válida o status da atividade é alterado de "Finalizado" para "Andamento"
+    * Em seguida é gerado um registro de log
+    */
     public void abreDialogoEdicaoAtividade() {
         abriuDialogoJustificativaEdicaoOs = true;
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityAtividades.this);
@@ -602,7 +586,6 @@ public class ActivityAtividades extends AppCompatActivity
                     osSelecionada.setSTATUS("Andamento");
                     osSelecionada.setSTATUS_NUM(1);
 
-                    Ferramentas ferramentas = new Ferramentas();
                     osSelecionada.setUPDATED_AT(ferramentas.dataHoraMinutosSegundosAtual());
                     dao.update(osSelecionada);
 
@@ -634,7 +617,12 @@ public class ActivityAtividades extends AppCompatActivity
         });
     }
 
-    //Abre diálogo para justificar por que a area realizada é maior ou menor que a área realizada da atividade
+    /*
+     * Método responsável por abrir o diálogo para informar uma justificativa para a área realizada de uma atividade
+     * ser diferente da área programada
+     * Após informar uma justificativa válida a atividade será salva e uma linha informando a justificativa
+     * será adicionada no atributo OBSERVACAO
+     */
     public void abreDialogoJustificativaAreaRealizada() {
         abriuDialogoAreaRealizada = true;
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityAtividades.this);
@@ -701,29 +689,9 @@ public class ActivityAtividades extends AppCompatActivity
         });
     }
 
-
-    //Adiciona o botão de atualização a barra de ação
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater i = getMenuInflater();
-        i.inflate(R.menu.menu_action_bar, menu);
-        return true;
-    }
-
-
-    //Trata a seleção do botão de atualização
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.atualizar:
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-
-    //Sobreescrita do método de seleção de item do menu de navegação localizado na lateral da tela
+    /*
+     * Sobrescrita do método de seleção de item do menu de navegação localizado na lateral da tela
+    */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -748,8 +716,10 @@ public class ActivityAtividades extends AppCompatActivity
         return true;
     }
 
-    //Define parâmetros para inicialização do mapa
-    //Parâmetro de entrada: item do tipo GoogleMap para iniciazalização
+    /*
+     * Método responsável por Definir os parâmetros para inicialização do mapa mostrado na tela
+     * Parâmetro de entrada: item do tipo GoogleMap para iniciazalização
+    */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -765,28 +735,22 @@ public class ActivityAtividades extends AppCompatActivity
         }
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
 
         if (talhao != null) {
             mMap.setMyLocationEnabled(true);
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(talhao, 16));
-            //mMap.setMinZoomPreference(1.f);
             mMap.setMaxZoomPreference(14.0f);
             mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         }
     }
 
 
-    //Desenha um circulo no marcador do mapa
-    //Parâmetro de entrada: variável tipo LatLng indicando a posição do marcador
+    /*
+     * Método responsável por desenhar um circulo no talhão em que a atividade será executada
+     * Parâmetro de entrada: variável tipo LatLng indicando a posição do talhão
+    */
     private void desenharCirculo(LatLng posicao) {
         double raio = 150.0;
         int corLinha = 0xffff0000;
@@ -799,7 +763,10 @@ public class ActivityAtividades extends AppCompatActivity
         mMap.addMarker(markerOptions.title("Talhão " + osSelecionada.getTALHAO()));
     }
 
-    //Checa se há uma calibração naquela data e turno
+    /*
+     * Método responsável por checar se há uma calibração registrada na data e turno atuais
+     * Retorna: true se houver a calibração na data e turno atuais ou false caso contrário
+     */
     private boolean checaCalibracao() {
         CALIBRAGEM_SUBSOLAGEM calibragem_subsolagem = dao.checaCalibragem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
                 ferramentas.formataDataDb(ferramentas.dataAtual()), checaTurno());
@@ -809,7 +776,9 @@ public class ActivityAtividades extends AppCompatActivity
         return true;
     }
 
-    //Verifica se há calibração ou apontamento ou coleta de ponto cadastrados
+    /*
+     * Método responsável por verificar se há calibração ou apontamento ou coleta de ponto cadastrados
+    */
     @SuppressLint("ResourceAsColor")
     private void checaCalibragemRegistro() {
         List<CALIBRAGEM_SUBSOLAGEM> listaCalib = dao.listaCalibragem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
@@ -827,6 +796,9 @@ public class ActivityAtividades extends AppCompatActivity
         }
     }
 
+    /*
+     * Salva uma instância da tela para reconstrução ao alterar entre modo paisagem e retrato ou vice-versa
+    */
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -843,8 +815,9 @@ public class ActivityAtividades extends AppCompatActivity
         if (abriuDialogoJustificativaEdicaoOs == true) dialogoEdicaoOs.dismiss();
     }
 
-
-    //SObrescrita do método onBackPressed nativo do Android para que feche o menu de navegação lateral
+    /*
+     * SObrescrita do método onBackPressed  para que feche o menu de navegação lateral
+    */
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {

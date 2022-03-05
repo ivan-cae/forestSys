@@ -24,13 +24,15 @@ import java.util.List;
 
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
 
+/*
+ * Adapter responsável por personalizar a lista de registros exibida na ActivityListaRegistros e tratar suas interações
+ */
 public class AdaptadorApontamentos extends RecyclerView.Adapter<AdaptadorApontamentos.ApontamentosHolder>{
 
     private List<O_S_ATIVIDADES_DIA> apontamentos = new ArrayList<>();
     private DAO dao;
     private OnItemClickListener listener;
     private Context context = ApplicationTodos.getAppContext();
-    private Ferramentas ferramentas;
 
     @NonNull
     @Override
@@ -55,7 +57,6 @@ public class AdaptadorApontamentos extends RecyclerView.Adapter<AdaptadorApontam
         GGF_USUARIOS ggf_usuarios = dao.selecionaUser(oSAtividadesDia.getID_RESPONSAVEL());
         PRESTADORES prestadores = dao.selecionaPrestador(oSAtividadesDia.getID_PRESTADOR());
 
-        ferramentas = new Ferramentas();
         holder.data.setText((Ferramentas.formataDataTextView(oSAtividadesDia.getDATA())));
         holder.responsavel.setText((ggf_usuarios.getDESCRICAO()));
         holder.prestador.setText(prestadores.getDESCRICAO());
@@ -73,16 +74,28 @@ public class AdaptadorApontamentos extends RecyclerView.Adapter<AdaptadorApontam
         if(oSAtividadesDia.getHM_ESCAVADEIRA()!=null)holder.hme.setText(oSAtividadesDia.getHM_ESCAVADEIRA().replace('.', ','));
     }
 
+    /*
+     * Sobrescrita do método getItemCount  usado para retornar o tamanho da lista que está sendo
+     tratado pelo Adapter
+     */
     @Override
     public int getItemCount() {
         return apontamentos.size();
     }
 
+    /*
+     * Método responsável por inicializar o Adapter e atualiza-lo sempre que houver uma mudança nos dados da lista
+     tratada pelo Adapter
+     */
     public void setApontamentos(List<O_S_ATIVIDADES_DIA> apontamentos) {
         this.apontamentos = apontamentos;
         notifyDataSetChanged();
     }
 
+    /*
+     * Classe Holder auxiliar usada para fazer a interface entre a lista tratada pelo Adapter e cada TextView
+     correspondente a um atributo da lista em questão
+     */
     class ApontamentosHolder extends RecyclerView.ViewHolder {
         TextView data;
         TextView responsavel;
@@ -123,6 +136,7 @@ public class AdaptadorApontamentos extends RecyclerView.Adapter<AdaptadorApontam
             });
         }
     }
+
 
     public interface OnItemClickListener {
         void onItemClick(O_S_ATIVIDADES_DIA oSAtividadesDia);

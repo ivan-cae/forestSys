@@ -23,6 +23,9 @@ import java.util.List;
 
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
 
+/*
+ * Adapter responsável por personalizar a lista de insumos exibida na ActivityAtividades
+ */
 public class AdaptadorInsumos extends RecyclerView.Adapter<AdaptadorInsumos.InsumosHolder> {
 
     private List<Join_OS_INSUMOS> insumos = new ArrayList<>();
@@ -85,16 +88,29 @@ public class AdaptadorInsumos extends RecyclerView.Adapter<AdaptadorInsumos.Insu
         holder.QTDApl.setText(String.valueOf(acumulador).replace(".", ","));
     }
 
+    /*
+     * Sobrescrita do método getItemCount  usado para retornar o tamanho da lista que está sendo
+     tratado pelo Adapter
+     */
     @Override
     public int getItemCount() {
         return insumos.size();
     }
 
+
+    /*
+     * Método responsável por inicializar o Adapter e atualiza-lo sempre que houver uma mudança nos dados da lista
+     tratada pelo Adapter
+     */
     public void setInsumos(List<Join_OS_INSUMOS> insumos) {
         this.insumos = insumos;
         notifyDataSetChanged();
     }
 
+    /*
+     * Classe Holder auxiliar usada para fazer a interface entre a lista tratada pelo Adapter e cada TextView
+     correspondente a um atributo da lista em questão
+     */
     class InsumosHolder extends RecyclerView.ViewHolder {
         private TextView descricao;
         private TextView recomendado;

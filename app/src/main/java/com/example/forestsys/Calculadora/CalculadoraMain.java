@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.forestsys.R;
 
-
+/*
+ * Classe responsável por executar a calculadora do aplicativo
+ */
 public class CalculadoraMain extends AppCompatActivity {
 
     private TextView e1, e2;

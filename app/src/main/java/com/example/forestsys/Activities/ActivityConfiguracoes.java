@@ -28,7 +28,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-
+/*
+ * Activity responsavel por mostrar a tela de configuração e fazer suas interações
+ */
 public class ActivityConfiguracoes extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 0;
@@ -44,7 +46,6 @@ public class ActivityConfiguracoes extends AppCompatActivity {
     private NDSpinner spinnerPermanencia;
     private static Integer posicaoSpinnerPermanencia;
     private Integer diasPermanencia;
-    private static Ferramentas ferramentas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,6 @@ public class ActivityConfiguracoes extends AppCompatActivity {
         BaseDeDados baseDeDados = BaseDeDados.getInstance(getApplicationContext());
         DAO dao = baseDeDados.dao();
         Configs configs = dao.selecionaConfigs();
-        ferramentas = new Ferramentas();
 
         if (configs != null) {
             if (configs.getNomeEmpresa() != null) editNomeEmpresa.setText(configs.getNomeEmpresa());
@@ -196,23 +196,10 @@ public class ActivityConfiguracoes extends AppCompatActivity {
         });
     }
 
-    public static String calculaDataParaApagarDados(String dias) {
-        String pattern = ("yyyy-MM-dd");
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-        Date data1 = null;
 
-        long qtdDias = Long.valueOf(dias);
-        try {
-            data1 = sdf.parse(ferramentas.formataDataDb(ferramentas.dataAtual()));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        long dataInicialMilis = data1.getTime();
-        long dataFinal = dataInicialMilis + TimeUnit.DAYS.toMillis(qtdDias);
-        return DateFormat.format(pattern, dataFinal).toString().trim();
-    }
-
-    //SObrescrita do método onBackPressed nativo do Android para que não execute nenhuma função
+    /*
+     * SObrescrita do método onBackPressed  para que não execute nenhuma função
+    */
     @Override
     public void onBackPressed() {
     }

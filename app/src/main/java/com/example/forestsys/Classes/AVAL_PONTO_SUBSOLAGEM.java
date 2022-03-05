@@ -1,5 +1,7 @@
 package com.example.forestsys.Classes;
 
+import static com.example.forestsys.Activities.ActivityInicializacao.ferramentas;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -168,7 +170,6 @@ public class AVAL_PONTO_SUBSOLAGEM implements Serializable {
 
     @Override
     public String toString() {
-        Ferramentas ferramentas = new Ferramentas();
         return "Ponto: "+PONTO.toString() +" Data: "+ ferramentas.formataDataTextView(DATA);
     }
 }

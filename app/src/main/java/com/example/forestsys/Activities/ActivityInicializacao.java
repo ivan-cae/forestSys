@@ -11,6 +11,7 @@ import android.os.Handler;
 import com.example.forestsys.Assets.BaseDeDados;
 import com.example.forestsys.Assets.ClienteWeb;
 import com.example.forestsys.Assets.DAO;
+import com.example.forestsys.Assets.Ferramentas;
 import com.example.forestsys.Classes.ClassesAuxiliares.Configs;
 import com.example.forestsys.R;
 
@@ -21,14 +22,17 @@ import java.text.ParseException;
 
 import static com.example.forestsys.Assets.ClienteWeb.finalizouSinc;
 
+/*
+ * Activity responsavel por mostrar a tela de inicialização
+ */
 public class ActivityInicializacao extends AppCompatActivity {
     public static String HOST_PORTA;
     public static String nomeEmpresaPref;
     public static boolean conectado;
     public static boolean pulaSinc;
     private Configs configs;
-
     public static String informacaoDispositivo = null;
+    public static final Ferramentas ferramentas = new Ferramentas();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +41,6 @@ public class ActivityInicializacao extends AppCompatActivity {
         BaseDeDados baseDeDados = BaseDeDados.getInstance(getApplicationContext());
         DAO dao = baseDeDados.dao();
         informacaoDispositivo = android.os.Build.MODEL + " " +android.os.Build.SERIAL;
-
 
         pulaSinc = false;
         if (dao.selecionaConfigs() == null) {
@@ -55,7 +58,7 @@ public class ActivityInicializacao extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if(temRede()==true && pulaSinc==false){
+        if(ferramentas.temRede(getApplicationContext())==true && pulaSinc==false){
         try {
             clienteWeb.sincronizaWebService();
         } catch (Exception e) {
@@ -79,16 +82,10 @@ public class ActivityInicializacao extends AppCompatActivity {
         }, 10000);
     }
 
-    private boolean temRede() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
+    /*
+     * SObrescrita do método onBackPressed  para que não execute nenhuma função
+     */
     @Override
     public void onBackPressed() {
     }

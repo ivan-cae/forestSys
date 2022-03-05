@@ -72,6 +72,9 @@ import java.util.List;
 import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresaPref;
 import static com.example.forestsys.Activities.ActivityLogin.usuarioLogado;
 
+/*
+ * Activity responsavel por mostrar a tela de Dashboard e fazer suas interações
+*/
 public class ActivityDashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
 
     private DrawerLayout drawer;
@@ -220,8 +223,8 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
         float percNaoConforme = (100*totalNc)/qtdTodosPontos;
         float percConforme = 100 - percNaoConforme;
 
-        Log.wtf("Total nc", String.valueOf(totalNc));
-        Log.wtf("Total pontos", String.valueOf(qtdTodosPontos));
+        //Log.wtf("Total nc", String.valueOf(totalNc));
+        //Log.wtf("Total pontos", String.valueOf(qtdTodosPontos));
 
         valoresRegistroAvaliacao.add(new PieEntry(percConforme, 0));
         valoresRegistroAvaliacao.add(new PieEntry(percNaoConforme, 1));
@@ -303,8 +306,10 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
         graficoApontamento.setData(dadosApontamento);
     }
 
-    //Define parâmetros para inicialização do mapa
-    //Parâmetro de entrada: item do tipo GoogleMap para iniciazalização
+    /*
+     * Método responsável por Definir os parâmetros para inicialização do mapa mostrado na tela
+     * Parâmetro de entrada: item do tipo GoogleMap para iniciazalização
+    */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -338,13 +343,6 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
 
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
 
@@ -358,9 +356,11 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
         }
     }
 
-    //Gera dinamicamente um ícone do tipo BitmapDescriptor
-    //Parâmetro de entrada: A id de um Drawable
-    //Parâmetro de saída: Um ícone do tipo BitmapDescriptor
+    /*
+     * Método responsável por gerar dinamicamente um ícone do tipo BitmapDescriptor
+     * Parâmetro de entrada: A id de um Drawable
+     * Retorna: Um ícone do tipo BitmapDescriptor
+    */
     private BitmapDescriptor desenhaIconeDrawable(int id) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             VectorDrawable vectorDrawable = (VectorDrawable) getDrawable(id);
@@ -381,9 +381,11 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
         }
     }
 
-    //Desenha um marcador no mapa com o ícone correspondente ao status da atividade relacionada ao talhão
-    //Parâmetro de entrada: variável tipo LatLng indicando a posição do marcador, uma string com o nome do
-    // talhão e um BitmapDescriptor contendo ícone a ser desenhado no marcador
+    /*
+     * Desenha um marcador no mapa com o ícone correspondente ao status da atividade relacionada ao talhão
+     * Parâmetro de entrada: variável tipo LatLng indicando a posição do marcador, uma string com o nome do
+     talhão e um BitmapDescriptor contendo ícone a ser desenhado no marcador
+    */
     private void desenharCirculo(LatLng posicao, String nome, BitmapDescriptor icone) {
         double raio = 75.0;
         CircleOptions circleOptions = new CircleOptions().center(posicao)
@@ -395,28 +397,10 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
         mMap.addMarker(markerOptions);
     }
 
-    //Adiciona o botão de atualização a barra de ação
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater i = getMenuInflater();
-        i.inflate(R.menu.menu_action_bar, menu);
-        return true;
-    }
 
-
-    //Trata a seleção do botão de atualização
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.atualizar:
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-
-    //Sobreescrita do método de seleção de item do menu de navegação localizado na lateral da tela
+    /*
+     * Sobrescrita do método de seleção de item do menu de navegação localizado na lateral da tela
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -442,7 +426,9 @@ public class ActivityDashboard extends AppCompatActivity implements NavigationVi
     }
 
 
-    //SObrescrita do método onBackPressed nativo do Android para que feche o menu de navegação lateral
+    /*
+     * SObrescrita do método onBackPressed  para que feche o menu de navegação lateral
+     */
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {

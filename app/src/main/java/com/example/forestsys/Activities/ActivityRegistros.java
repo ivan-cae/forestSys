@@ -71,6 +71,7 @@ import static com.example.forestsys.Activities.ActivityAtividades.insumoRec2;
 import static com.example.forestsys.Activities.ActivityAtividades.joinOsInsumos;
 import static com.example.forestsys.Activities.ActivityAtividades.listaJoinOsInsumosSelecionados;
 import static com.example.forestsys.Activities.ActivityAtividades.oSAtividadesDiaAtual;
+import static com.example.forestsys.Activities.ActivityInicializacao.ferramentas;
 import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresaPref;
 import static com.example.forestsys.Activities.ActivityInicializacao.informacaoDispositivo;
 import static com.example.forestsys.Activities.ActivityLogin.usuarioLogado;
@@ -98,6 +99,9 @@ import static com.example.forestsys.Adapters.AdaptadorFragmentoInsumos.insumoCon
 import static com.example.forestsys.Adapters.AdaptadorFragmentoInsumos.insumoConforme2;
 import static java.sql.Types.NULL;
 
+/*
+ * Activity responsavel por mostrar a tela de lançamento dos registros e fazer suas interações
+ */
 public class ActivityRegistros extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
@@ -109,7 +113,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     private FloatingActionButton voltar;
     private FloatingActionButton botaoSalvar;
     private ImageButton botaoDatePicker;
-    private static Ferramentas ferramentas;
     public static String dataDoApontamento;
 
     private BaseDeDados baseDeDados;
@@ -158,7 +161,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         auxSavedInstanceState = savedInstanceState;
         try {
             inicializacao();
@@ -190,58 +192,14 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         }
     }
 
-    //Calcula os totalizadores na lista de registros
-    public void calculaTotais() {
-        Thread t = new Thread() {
-            @Override
-            public void run() {
-                for (int i = 0; i < listaAtividades.size(); i++) {
-                    hoAux += checaConversao(listaAtividades.get(i).getHO());
-                    hhAux += checaConversao(listaAtividades.get(i).getHH());
-                    hmAux += checaConversao(listaAtividades.get(i).getHM());
-                    hoeAux += checaConversao(listaAtividades.get(i).getHO_ESCAVADEIRA());
-                    hmeAux += checaConversao(listaAtividades.get(i).getHM_ESCAVADEIRA());
-                    areaAux += checaConversao(listaAtividades.get(i).getAREA_REALIZADA());
-                }
 
-                double ins1 = dao.qtdAplicadaTodosInsumos(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), atividade_insumos.get(0).getID_INSUMO());
-                double ins2 = dao.qtdAplicadaTodosInsumos(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), atividade_insumos.get(1).getID_INSUMO());
-
-            }
-        };
-        t.run();
-    }
-
-    //formula= (1-(amostra atual/amostra anterior))/100
-    //Calcula a diferença percentual entre dois números do tipo Double
-    //Parâmetro de entrada: dois Double
-    //Retorna o resultado do cálculo
-    private static Double diferencaPercentual(Double anterior, Double atual) {
-        Double calculo = (1 - (atual / anterior)) * 100;//((anterior - atual) / anterior) * 100.0
-        DecimalFormat df = new DecimalFormat("###.##");
-        //Log.wtf("Diferenca percentual", df.format(calculo).replace(',', '.'));
-        return Double.valueOf(df.format(calculo).replace(',', '.'));
-    }
-
-    //Verifica se é possível converter o valor de uma string para double, retorna o valor convertido se possível converter.
-    //Se não for possível, retorna 0.
-    //Parâmetro de entrada: uma String
-    public double checaConversao(String numero) {
-        double teste;
-        try {
-            teste = Double.valueOf(numero);
-        } catch (NumberFormatException | NullPointerException n) {
-            teste = 0;
-        }
-        return teste;
-    }
-
-    //Inicializa todas as variáveis e todos os itens da tela
+    /*
+     * Método responsável por inicializar todos os itens na tela e seta valores de variáveis
+     */
     public void inicializacao() {
         setContentView(R.layout.activity_registros);
         setTitle(nomeEmpresaPref);
 
-        ferramentas = new Ferramentas();
 
         abriuDialogoEdicaoReg = false;
         edicaoReg = false;
@@ -264,7 +222,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
         atividade_insumos = dao.listaInsumosatividade(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
-        calculaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+        ferramentas.calculaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), getApplicationContext());
 
         dataApontamento = findViewById(R.id.data_apontamento);
         talhaoOs = findViewById(R.id.talhao_os_continuar);
@@ -334,10 +292,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             getSupportFragmentManager().beginTransaction().replace(R.id.registro_fragmento_rendimento,
                     fragmentoRendimento).commit();
         }
-
-
-        calculaTotais();
-
 
         pattern = ("dd-MM-yyyy");
         sdf = new SimpleDateFormat(pattern);
@@ -528,7 +482,13 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         }
     }
 
-    //Chama a função salva().
+    /*
+    * Método responsável por chamar em uma thread no background o método que salva no banco de dados
+    um registro de apontamento, um registro de insumos aplicados e verificar a conformidade de todos
+    os campos a serem salvos
+    * Caso algum dos insumos aplicados não esteja conforme, será aberto uma caixa de diálogo para que seja
+    informada a justificativa para a inconformidade
+    */
     public void chamaSalvar() {
         Thread t = new Thread() {
             @Override
@@ -558,8 +518,10 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     }
 
 
-    //Abre diálogo para justificar a edição da quantidade do insumo
-    //Método de entrada: um double, esse double é a quantidade aplicada na edição do insumo
+    /*
+     * Método responsável por abrir uma caixa de diálogo para justificar a razão pela qual a quantidade de um ou
+     mais insumos estar fora da faixa
+    */
     public void abreDialogoQtdForaFaixa() {
         abriuDialogoForaFaixa = true;
 
@@ -665,9 +627,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     }
 
                     salva();
-                    Log.wtf("Chamou a funcao salva()", "");
                     dialogoQtdForaFaixa.dismiss();
-                    Log.wtf("Fechou o dialogo de insumos fora da faixa", "");
                 }
             }
         });
@@ -691,7 +651,9 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     }
 
 
-    //Abre o diálogo para edição dos registros
+    /*
+     *Abre uma caixa de diálogo para informar a justificativa para a edição do registro que está sendo salvo
+     */
     public void abreDialogoEdicaoReg() {
         abriuDialogoEdicaoReg = true;
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityRegistros.this);
@@ -745,6 +707,10 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         dialogoEdicaoReg.show();
     }
 
+    /*
+     * Classe responsável por inicializar os parâmetros do calendário mostrado para que seja selecionada a data do
+     apontamento
+     */
     public static class FragmentoDatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
         //Sobrescrita do método onCreateDialog, nele são definidos os parâmetros do calendário quando aberto
         @NonNull
@@ -789,7 +755,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             boolean temErro = false;
             String auxTeste = (auxDia + "-" + auxMes + "-" + auxAno).trim();
 
-            Ferramentas ferramentas = new Ferramentas();
             if (!auxTeste.equals(dataDoApontamento)) {
                 if (dao.selecionaOsAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), ferramentas.formataDataDb(auxTeste)) != null) {
                     AlertDialog dialog = new AlertDialog.Builder(getContext())
@@ -804,27 +769,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     temErro = true;
                 }
             }
-
-            //Pedaço de código responsável por checar se a data selecionada é posterior á programada
-            /*try {
-                Date date1 = sdf.parse(auxTeste);
-                Date date2 = sdf.parse((ferramentas.formataDataTextView(osSelecionada.getDATA_PROGRAMADA())));
-
-                if (date1.before(date2)) {
-                    temErro = true;
-                    AlertDialog dialog = new AlertDialog.Builder(getContext())
-                            .setTitle("Erro!")
-                            .setMessage("A data selecionada deve ser igual ou posterior a data programada da atividade.")
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                }
-                            }).create();
-                    dialog.show();
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }*/
 
             try {
                 Date date1 = sdf.parse(auxTeste);
@@ -865,7 +809,10 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         }
     }
 
-    //testa as condições para conformidade
+    /*
+     * Método responsável por verificar todas as conformidades de todos os campos preenchidos no apontamento
+     antes de permitir o salvamento do mesmo no banco de dados
+    */
     public void testaConformidade() {
         erroGeral = false;
 
@@ -934,11 +881,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             hoe = "";
             HOEscavadeiraApontamento.setError("");
         }
-
-        /*if (posicaoResponsavel == -1) {
-            erro = true;
-            erroGeral = true;
-        }*/
 
         if (listaJoinOsInsumosSelecionados.size() != 2) {
             erroInsumos = true;
@@ -1030,10 +972,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         if (erro == false && erroInsumos == false && editouRegistro == true) {
             edicaoReg = false;
 
-            /*if (posicaoResponsavel != oSAtividadesDiaAtual.getID_RESPONSAVEL())
-                edicaoReg = true;
-*/
-
             if (posicaoPrestador != oSAtividadesDiaAtual.getID_PRESTADOR()) edicaoReg = true;
 
             if (!ho.equals(oSAtividadesDiaAtual.getHO())) edicaoReg = true;
@@ -1052,7 +990,10 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         }
     }
 
-    //Persiste os dados no DB
+    /*
+     * Método responsável por realizar o salvamento do apontamento e dos insumos aplicados em suas respectivas
+     tabelas
+    */
     @SuppressLint("LongLogTag")
     public void salva() {
 
@@ -1096,7 +1037,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         oSAtividadesDiaAtual.setHO_ESCAVADEIRA(hoe.replace(',', '.'));
 
         oSAtividadesDiaAtual.setID_PRESTADOR(posicaoPrestador);
-        //oSAtividadesDiaAtual.setID_RESPONSAVEL(posicaoResponsavel);
         oSAtividadesDiaAtual.setID_RESPONSAVEL(usuarioLogado.getID_USUARIO());
 
         if (obs != null) {
@@ -1148,7 +1088,7 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
                     persisteInsumosDia.getREGISTRO_DESCARREGADO(), persisteInsumosDia.getOBSERVACAO());
 
             insereInsumosDia.setEXPORT_PROXIMA_SINC(true);
-            Log.wtf("Lista batendo ", String.valueOf(i) + " itens");
+            //Log.wtf("Lista batendo ", String.valueOf(i) + " itens");
 
 
             if (i == 0) {
@@ -1190,22 +1130,21 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
             try {
                 somaQtdApl = Double.valueOf(s);
-                Log.wtf("Valor somaQtdApl ", String.valueOf(somaQtdApl));
+                //Log.wtf("Valor somaQtdApl ", String.valueOf(somaQtdApl));
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.wtf("Erro ao obter qtd aplicada ", e.getMessage());
+                //Log.wtf("Erro ao obter qtd aplicada ", e.getMessage());
                 somaQtdApl = 1;
             }
 
             String divisao = "0.0";
 
-            calculaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+            ferramentas.calculaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), getApplicationContext());
 
             double area = (long) osSelecionada.getAREA_REALIZADA();
 
             if (somaQtdApl > 0 && area > 0) {
                 divisao = String.valueOf((long) somaQtdApl / (long) area);
-                //Log.wtf("Valor divisao", divisao);
             }
 
             qtdHaAplicado = new BigDecimal(divisao).setScale(2, BigDecimal.ROUND_UP);
@@ -1230,7 +1169,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
             osSelecionada.setSTATUS("Andamento");
             osSelecionada.setSTATUS_NUM(1);
 
-            Ferramentas ferramentas = new Ferramentas();
             osSelecionada.setUPDATED_AT(ferramentas.dataHoraMinutosSegundosAtual());
             dao.update(osSelecionada);
         }
@@ -1241,7 +1179,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
 
         PRESTADORES prestador = dao.selecionaPrestador(oSAtividadesDiaAtual.getID_PRESTADOR());
 
-        Ferramentas ferramentas = new Ferramentas();
         FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
                 usuarioLogado.getEMAIL(), "Apontamento Diario", acao,
                 String.valueOf("OS: " + osSelecionada.getID_PROGRAMACAO_ATIVIDADE()
@@ -1270,8 +1207,6 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         osSelecionada.setDATA_FINAL(listaAtividades.get(0).getDATA());
         dao.update(osSelecionada);
 
-        //Log.wtf("Apontamento mais antigo", ferramentas.formataDataTextView(osSelecionada.getDATA_INICIAL()));
-        //Log.wtf("Apontamento mais recente", ferramentas.formataDataTextView(osSelecionada.getDATA_FINAL()));
         edicaoReg = false;
         editouRegistro = false;
         oSAtividadesDiaAtual = null;
@@ -1300,52 +1235,12 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         startActivity(it);
     }
 
-    private void calculaAreaRealizada(int id) {
-        double calcula = 0;
-        List<O_S_ATIVIDADES_DIA> listaReg = dao.listaAtividadesDia(id);
-        for (int i = 0; i < listaReg.size(); i++) {
-            String s = listaReg.get(i).getAREA_REALIZADA().replace(',', '.');
-            double d = 0;
-            try {
-                d = Double.valueOf(s);
-            } catch (Exception e) {
-                e.printStackTrace();
-                d = 0;
-            }
-            calcula += d;
-        }
-        O_S_ATIVIDADES atividade = dao.selecionaOs(id);
-
-        BigDecimal bd = BigDecimal.valueOf(calcula);
-        bd = bd.setScale(2, RoundingMode.HALF_UP);
-
-        atividade.setAREA_REALIZADA(bd.doubleValue());
-        dao.update(atividade);
-        osSelecionada = dao.selecionaOs(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
-
-        //Log.wtf("Area Realizada", String.valueOf(bd.doubleValue()));
-    }
-
-    //Adiciona o botão de atualização a barra de ação
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater i = getMenuInflater();
-        i.inflate(R.menu.menu_action_bar, menu);
-        return true;
-    }
-
-    //Trata a seleção do botão de atualização
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.atualizar:
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    //Retorna false se não houver nenhum item preenchido ou true se houver
+    /*
+     * Método responsável por verificar se há algum campos preenchido no apontamento ou aplicação de insumos
+     * Esse é um método auxiliar usado para determinar se será necessário mostrar o diálogo
+     avisando que o usuário perderá os dados preenchidos caso decida sair da Activity sem salvar
+     * Retorna: False se não houver nenhum campo preenchido ou true se houver
+    */
     public boolean algumItemPreenchido() {
         if (osSelecionada.getSTATUS_NUM() == 2) return false;
 
@@ -1384,7 +1279,9 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
     }
 
 
-    //Sobreescrita do método de seleção de item do menu de navegação localizado na lateral da tela
+    /*
+     * Sobrescrita do método de seleção de item do menu de navegação localizado na lateral da tela
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -1480,27 +1377,27 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         return true;
     }
 
-    //Verifica se uma String pode ser convertida para double, se possível retorna true, senão retorna false.
-    //Parâmetro de entrada: String
+    /*
+     * Método responsável por verificar se uma String pode ser convertida em double
+     * Parâmetro de entrada: String a ser testada
+     * Retorna: True se for possível converter a string ou false caso contrário
+    */
     public boolean erroNaString(String str) {
         if (str == null) return true;
         if (str.length() == 0) return true;
         char[] c = str.toCharArray();
         if (str.length() > 0) {
-            if (str == "," || c[str.length() - 1] == ',' || c[0] == ',' || contaVirgula(str, ',') > 1) {
+            if (str == "," || c[str.length() - 1] == ',' || c[0] == ',' || ferramentas.contaVirgula(str, ',') > 1) {
                 return true;
             }
         }
         return false;
     }
 
-    //Conta quantas indicências de um caractere há em uma String.
-    //Parâmetros de entrada: uma String, um Char
-    //Retorna quantidade de indicências do caracter
-    public int contaVirgula(String s, char c) {
-        return s.length() == 0 ? 0 : (s.charAt(0) == c ? 1 : 0) + contaVirgula(s.substring(1), c);
-    }
-
+    /*
+     * SObrescrita do método onBackPressed  para que feche o menu de navegação lateral
+     * Ou para que feche o diálogo de justificativa para edição do registro
+     */
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -1511,6 +1408,9 @@ public class ActivityRegistros extends AppCompatActivity implements NavigationVi
         if (abriuDialogoEdicaoReg) dialogoEdicaoReg.cancel();
     }
 
+    /*
+     * Salva uma instância da tela para reconstrução ao alterar entre modo paisagem e retrato ou vice-versa
+     */
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);

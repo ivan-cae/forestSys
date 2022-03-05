@@ -56,6 +56,7 @@ import java.text.ParseException;
 import java.util.List;
 
 import static com.example.forestsys.Activities.ActivityInicializacao.HOST_PORTA;
+import static com.example.forestsys.Activities.ActivityInicializacao.ferramentas;
 import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresaPref;
 import static com.example.forestsys.Activities.ActivityInicializacao.informacaoDispositivo;
 import static com.example.forestsys.Activities.ActivityLogin.usuarioLogado;
@@ -63,6 +64,9 @@ import static com.example.forestsys.Assets.ClienteWeb.contadorDeErros;
 import static com.example.forestsys.Assets.ClienteWeb.finalizouSinc;
 import static com.example.forestsys.Activities.ActivityInicializacao.conectado;
 
+/*
+ * Activity responsavel por mostrar a tela principal com a listagem de atividades e fazer suas interações
+ */
 public class ActivityMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static O_S_ATIVIDADES osSelecionada;
@@ -71,7 +75,6 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
     private RecyclerView recyclerView;
     private DrawerLayout drawer;
     private AdaptadorOs adaptador;
-    private ImageButton botaoMainVoltar;
     private TextView ordenaSetor;
 
     private TextView ordenaTalhao;
@@ -105,7 +108,6 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
 
         osSelecionada = null;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
-        botaoMainVoltar = findViewById(R.id.botao_main_voltar);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setSubtitle(usuarioLogado.getDESCRICAO());
@@ -135,7 +137,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         listaOs = dao.listaOsDataSemPrioridadeAsc();
 
         for(int i =0; i <listaOs.size(); i++) {
-            calculaAreaRealizada(listaOs.get(i).getID_PROGRAMACAO_ATIVIDADE());
+            ferramentas.calculaAreaRealizada(listaOs.get(i).getID_PROGRAMACAO_ATIVIDADE(), getApplicationContext());
         }
 
         adaptador.setOrdens(listaOs);
@@ -303,63 +305,8 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                 startActivity(it);
             }
         });
-
-        botaoMainVoltar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogoVoltar();
-            }
-        });
     }
 
-    private void calculaAreaRealizada(int id){
-        double calcula = 0;
-        List <O_S_ATIVIDADES_DIA> listaReg = dao.listaAtividadesDia(id);
-        for(int i=0; i <listaReg.size(); i++){
-            String s = listaReg.get(i).getAREA_REALIZADA().replace(',', '.');
-            double d = 0;
-            try {
-                d = Double.valueOf(s);
-            }catch(Exception e){
-                e.printStackTrace();
-                d = 0;
-            }
-            calcula+=d;
-        }
-        O_S_ATIVIDADES atividade = dao.selecionaOs(id);
-
-        BigDecimal bd = BigDecimal.valueOf(calcula);
-        bd = bd.setScale(2, RoundingMode.HALF_UP);
-
-        atividade.setAREA_REALIZADA(bd.doubleValue());
-        dao.update(atividade);
-        //Log.wtf("Area Realizada", String.valueOf(bd.doubleValue()));
-
-    }
-
-
-    //Abre caixa de diálogo perguntando se o usuário deseja realmente voltar para a tela anterior
-    public void dialogoVoltar() {
-        new AlertDialog.Builder(this)
-                .setTitle("SAIR")
-                .setMessage("Deseja fechar o aplicativo ?")
-                .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent it = new Intent(ActivityMain.this, ActivityLogin.class);
-                        boolean fechou = true;
-                        it.putExtra("fechar", fechou);
-                        startActivity(it);
-                    }
-                })
-                .setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                    }
-                })
-                .create()
-                .show();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -368,9 +315,16 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    /*
+     * Método responsável por verificar o resultado da sincronização
+     * Podendo mostrar um dialogo de falha caso a sincronização não seja bem sucedida
+     * Um dialogo avisando que não há conexão com a rede caso detecte tal problema
+     * Um  dialogo avisando que não foi possível se conectar ao banco de dados
+     * Um Toast avisando que a sincronização foi bem sucedida
+     */
     @SuppressLint("StaticFieldLeak")
     private void checaFimDaSinc() {
-        if (temRede() == true) {
+        if (ferramentas.temRede(getApplicationContext()) == true) {
 
             dialogoProgresso.show();
 
@@ -435,16 +389,9 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private boolean temRede() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+    /*
+     * Sobrescrita do método de seleção de item na barra de ação localizada na parte superior da tela
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -462,7 +409,6 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                                     e.printStackTrace();
                                 }
                                 try {
-                                    Ferramentas ferramentas = new Ferramentas();
                                     FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
                                             usuarioLogado.getEMAIL(), "Atividades", "Sincronizou", null);
                                     dao.insert(registroLog);
@@ -510,6 +456,9 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /*
+     * Sobrescrita do método de seleção de item do menu de navegação localizado na lateral da tela
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -534,6 +483,9 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    /*
+     * SObrescrita do método onBackPressed  para que feche o menu de navegação lateral
+     */
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -541,6 +493,10 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /*
+     * SObrescrita do método onDestroy  para que feche o diálogo de título "SAIR" antes de fechar
+     o aplicativo
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -549,6 +505,9 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /*
+     * Salva uma instância da tela para reconstrução ao alterar entre modo paisagem e retrato ou vice-versa
+     */
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);

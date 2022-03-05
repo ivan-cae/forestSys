@@ -42,6 +42,9 @@ import com.example.forestsys.Classes.Joins.Join_OS_INSUMOS;
 
 import java.util.List;
 
+/*
+ * Interface DAO(Data Access Object) utilizada para executar as querys no BD
+ */
 @Dao
 public interface DAO {
 

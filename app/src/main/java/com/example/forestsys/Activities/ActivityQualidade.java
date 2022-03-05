@@ -81,12 +81,16 @@ import static com.example.forestsys.Activities.ActivityAtividades.listaCorrecoes
 import static com.example.forestsys.Activities.ActivityAtividades.listaJoinOsInsumosSelecionados;
 import static com.example.forestsys.Activities.ActivityAtividades.listaPontosCorrecaoAux;
 import static com.example.forestsys.Activities.ActivityAtividades.oSAtividadesDiaAtual;
+import static com.example.forestsys.Activities.ActivityInicializacao.ferramentas;
 import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresaPref;
 import static com.example.forestsys.Activities.ActivityInicializacao.informacaoDispositivo;
 import static com.example.forestsys.Activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
 import static com.example.forestsys.Activities.ActivityAtividades.editouVerion;
 
+/*
+ * Activity responsavel por mostrar a tela de qualidade e fazer suas interações
+ */
 public class ActivityQualidade extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
@@ -96,7 +100,6 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     private TextView area;
     private TextView areaRealizada;
     private TextView manejo;
-    private Ferramentas ferramentas;
     private DAO dao;
     private BaseDeDados baseDeDados;
     private FloatingActionButton botaoVerion;
@@ -237,7 +240,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         baseDeDados = BaseDeDados.getInstance(getApplicationContext());
         dao = baseDeDados.dao();
 
-        calculaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+        ferramentas.calculaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), getApplicationContext());
 
         AVAL_SUBSOLAGEM avlSub = dao.selecionaAvalSubsolagem(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
         List<ATIVIDADE_INDICADORES> atvIndicadoresPonto = dao.listaAtividadeIndicadores(osSelecionada.getID_ATIVIDADE(), "N");
@@ -264,7 +267,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         try {
             inicializacao();
         } catch (Exception e) {
-            Log.wtf("Erro ao abrir qualidade", e.getMessage());
+            //Log.wtf("Erro ao abrir qualidade", e.getMessage());
 
             Intent it = new Intent(ActivityQualidade.this, ActivityAtividades.class);
             it.putExtra("erroAbrirQualidade", true);
@@ -293,10 +296,6 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             auxSavedInstanceState = null;
         }
 
-        /*if (listaVerion.size() > 3) {
-            botaoVerion.setVisibility(View.GONE);
-        }
-*/
         botaoVerion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -438,40 +437,15 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         }
     }
 
-    private void calculaAreaRealizada(int id) {
-        double calcula = 0;
-        List<O_S_ATIVIDADES_DIA> listaReg = dao.listaAtividadesDia(id);
-        for (int i = 0; i < listaReg.size(); i++) {
-            String s = listaReg.get(i).getAREA_REALIZADA().replace(',', '.');
-            double d = 0;
-            try {
-                d = Double.valueOf(s);
-            } catch (Exception e) {
-                e.printStackTrace();
-                d = 0;
-            }
-            calcula += d;
-        }
-        O_S_ATIVIDADES atividade = dao.selecionaOs(id);
-
-        BigDecimal bd = BigDecimal.valueOf(calcula);
-        bd = bd.setScale(2, RoundingMode.HALF_UP);
-
-        atividade.setAREA_REALIZADA(bd.doubleValue());
-        osSelecionada.setAREA_REALIZADA(bd.doubleValue());
-
-        dao.update(atividade);
-        // Log.wtf("Area Realizada", String.valueOf(bd.doubleValue()));
-
-    }
-
+    /*
+        * Método responsável por inicializar todos os itens na tela e seta valores de variáveis
+    */
     private void inicializacao() {
 
         formulas = new Formulas();
 
         baseDeDados = BaseDeDados.getInstance(getApplicationContext());
         dao = baseDeDados.dao();
-        ferramentas = new Ferramentas();
         dialogoPontoAberto = false;
         dialogoVerionAberto = false;
         dialogoCorrecaoAberto = false;
@@ -764,42 +738,10 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         itemSelecionadoSpinnerEdicao = 0;
     }
 
-    //Poe a virgula automaticamente como separador decimal dos números inseridos nas caixas de teste
-    //parâmetros de entrada: Uma instância de uma caixa de texto, um inteiro representando o índice da lista de indicadores onde está armazenado
-    //limite superiorn inferior e casas decimais permitidos para o indicador, a string contendo os valores inseridos na caixa de texto
-    /*public void mascaraVirgula(EditText edit, int i, CharSequence s) {
-        int tamanho;
-        String input;
-        String[] antesDaVirgula;
 
-        tamanho = edit.getText().toString().length();
-        input = s.toString();
-
-        if (input.length() > 0) {
-
-            antesDaVirgula = String.valueOf(atividadeIndicadores.get(i).getLIMITE_SUPERIOR())
-                    .replace('.', ',').split(",");
-
-            edit.setFilters(new InputFilter[]{
-                    new InputFilter.LengthFilter(antesDaVirgula[0].length() + atividadeIndicadores.get(i).getCASAS_DECIMAIS() + 1)});
-
-            char[] aux = input.toCharArray();
-            if ((tamanho + 1) != antesDaVirgula[0].length() && aux[tamanho - 1] == ',') {
-                edit.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
-            } else {
-                if (tamanho == antesDaVirgula[0].length() + 1) {
-                    char[] charAux = input.toCharArray();
-                    String stringAux = String.valueOf(charAux[tamanho - 1]);
-                    input = input.substring(0, tamanho - 1);
-                    edit.setText(input + "," + stringAux);
-                    edit.setSelection(edit.getText().toString().length());
-                }
-            }
-        }
-    }
-*/
-
-    //Sobreescrita do método de seleção de item do menu de navegação localizado na lateral da tela
+    /*
+     * Sobrescrita do método de seleção de item do menu de navegação localizado na lateral da tela
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -824,7 +766,9 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         return true;
     }
 
-    //Abre caixa de diálogo para preenchimento dos dados verion
+    /*
+     * Método responsável por abrir caixa de diálogo para preenchimento dos dados do sistema de precisao
+    */
     public void abreDialogoVerion() {
         try {
             dialogoVerionAberto = true;
@@ -1213,21 +1157,15 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                             listaMediaP2.setText(String.valueOf(listaVerion.get(2).getVALOR_INDICADOR()).replace('.', ','));
                             listaDesvioP2.setText(String.valueOf(listaVerion.get(3).getVALOR_INDICADOR()).replace('.', ','));
 
-                        /*if (listaVerion.size() > 3) {
-                            botaoVerion.setVisibility(View.GONE);
-                        }*/
-
                             if (osSelecionada.getSTATUS_NUM() == 0) {
                                 osSelecionada.setSTATUS("Andamento");
                                 osSelecionada.setSTATUS_NUM(1);
                                 osSelecionada.setDATA_INICIAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
 
-                                Ferramentas ferramentas = new Ferramentas();
                                 osSelecionada.setUPDATED_AT(ferramentas.dataHoraMinutosSegundosAtual());
                                 dao.update(osSelecionada);
                             }
 
-                            Ferramentas ferramentas = new Ferramentas();
                             FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
                                     usuarioLogado.getEMAIL(), "Avaliação Qualidade", finalAcao + " Dados no sistema de precisão",
                                     String.valueOf("OS: " + osSelecionada.getID_PROGRAMACAO_ATIVIDADE() + " | Talhão: " + osSelecionada.getTALHAO()
@@ -1253,24 +1191,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
 
                             ex.printStackTrace();
                             dialogoVerion.dismiss();
-
-                            /*
-                            for(int i = 0; i<listaVerion.size(); i++){
-                                listaVerion.get(i).setVALOR_INDICADOR(0);
-                                dao.update(listaVerion.get(i));
-                            }
-                            AlertDialog dialogoErro = new AlertDialog.Builder(ActivityQualidade.this)
-                                    .setTitle("Erro")
-                                    .setMessage("Houve um problema ao salvar a avaliação.")
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                        }
-                                    }).create();
-                            dialogoErro.show();
-                             */
                         }
-
                     }
                 }
             });
@@ -1308,6 +1229,9 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         }
     }
 
+    /*
+    * Método responsável por abrir o diálogo para correção dos pontos
+    */
     public void abreDialogoCorrecao() {
 
         dialogoCorrecaoAberto = true;
@@ -1404,6 +1328,12 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         }
     }
 
+    /*
+    *  Método responsável por verificar se algum dos pontos registrados é passível de correção
+    *  Parâmetro de entrada: Uma lista de listas de indicadores contidos em cada ponto
+    *  Retorna: Uma lista de listas dos indicadores passíveis de correção, a lista estará vazia
+     se não houver nenhum indicador a ser corrigido
+    */
     public List<List<AVAL_PONTO_SUBSOLAGEM>> checaCorrecoes(List<List<AVAL_PONTO_SUBSOLAGEM>> pontos) {
         int tam = pontos.size();
         List<List<AVAL_PONTO_SUBSOLAGEM>> aux = new ArrayList<>();
@@ -1509,8 +1439,10 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         }
         return aux;
     }
+    /*
+     * Método responsável por abrir uma caixa de diálogo para edição dos dados de um ponto
+    */
 
-    //Abre caixa de diálogo para edição dos dados de um ponto
     public void abreDialogoEdicao() {
         dialogoEdicaoAberto = true;
 
@@ -1605,7 +1537,9 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
     }
 
 
-    //Abre caixa de diálogo para preenchimento dos dados do ponto
+    /*
+     * Método responsável por abrir uma caixa de diálogo para preenchimento dos dados do ponto a ser adicionado
+    */
     public void abreDialogoPonto(AVAL_PONTO_SUBSOLAGEM ponto) {
         dialogoPontoAberto = true;
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
@@ -2095,24 +2029,10 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                     dialog.show();
                 } else {
                     if (ActivityCompat.checkSelfPermission(ActivityQualidade.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ActivityQualidade.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
                         return;
                     }
 
                     if (ActivityCompat.checkSelfPermission(ActivityQualidade.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ActivityQualidade.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
                         return;
                     }
 
@@ -2161,6 +2081,10 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         });
     }
 
+    /*
+     * Método responsável por salvar um ponto no banco de dados
+     * Parâmetro de entrada: Uma instância do tipo AVAL_PONTO_SUBSOLAGEM a ser salva
+     */
     public void salvaPonto(AVAL_PONTO_SUBSOLAGEM ponto) {
         double check = 0;
         String dataAtual = null;
@@ -2171,14 +2095,6 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             dataAtual = ponto.getDATA();
         }
         try {
-            /*DecimalFormat df = new DecimalFormat(".####");
-            String s = df.format(String.valueOf(latitude));
-            latitude = Double.valueOf(s);
-
-            s = df.format(String.valueOf(longitude));
-            longitude = Double.valueOf(s);
-*/
-
             BigDecimal bd = BigDecimal.valueOf(latitude);
             bd = bd.setScale(5, RoundingMode.HALF_EVEN);
             latitude = bd.doubleValue();
@@ -2186,9 +2102,6 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             bd = BigDecimal.valueOf(longitude);
             bd = bd.setScale(5, RoundingMode.HALF_EVEN);
             longitude = bd.doubleValue();
-
-            //Log.wtf("Latitude", String.valueOf(latitude));
-            //Log.wtf("Longitude", String.valueOf(longitude));
 
             if (ponto == null) {
                 AVAL_PONTO_SUBSOLAGEM insere;
@@ -2367,7 +2280,6 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
             if (editItem9.isChecked()) valorItem5 = "Sim";
 
 
-            Ferramentas ferramentas = new Ferramentas();
             FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
                     usuarioLogado.getEMAIL(), "Avaliação Qualidade", acao + " Ponto " + numeroPontoAtual,
                     String.valueOf("OS: " + osSelecionada.getID_PROGRAMACAO_ATIVIDADE() + " | Talhão: " + osSelecionada.getTALHAO()
@@ -2391,8 +2303,7 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
                 osSelecionada.setSTATUS_NUM(1);
                 osSelecionada.setDATA_INICIAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
 
-                Ferramentas ferramentasAux = new Ferramentas();
-                osSelecionada.setUPDATED_AT(ferramentasAux.dataHoraMinutosSegundosAtual());
+                osSelecionada.setUPDATED_AT(ferramentas.dataHoraMinutosSegundosAtual());
                 dao.update(osSelecionada);
             }
 
@@ -2416,7 +2327,14 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         }
     }
 
-    //Verifica se o valor em um EditText no dialog de registro de ponto é válido
+    /*
+     * Método responsável por verificar se o valor em um EditText no dialogo de registro de ponto é válido
+     * Parâmetros de entrada: Uma instância do EditText a ser verificado, o valor minimo que o indicador permite e
+     o valor máximo que o indicador permite
+     * Caso o valor for inválido será adicionada uma flag no EditText indicando ao usuário a razão do erro e
+     os valores máximo e mínimo que o indicador pode receber
+     * Retorna: True se o valor digitado for válido ou false caso contrário
+     */
     private boolean converteuPonto(EditText valor, int limiteInf, int limiteSup) {
         double teste;
         try {
@@ -2432,7 +2350,13 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         return true;
     }
 
-    //Verifica se o valor em um EditText no dialog de registro de ponto é válido
+    /*
+     * Verifica se é possível converter o valor digitado em um EditText no dialog de registro de ponto
+     para o tipo Double
+     * Parâmetro de entrada: EditText a ser testado
+     * Adiciona uma flag indicando ao usuário que o valor digitado é inválido
+     * Retorna: True se o valor digitado é válido ou false caso contrário
+     */
     private boolean converteuPrecisao(EditText valor) {
         double teste;
         try {
@@ -2445,7 +2369,9 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         return true;
     }
 
-
+    /*
+     * Salva uma instância da tela para reconstrução ao alterar entre modo paisagem e retrato ou vice-versa
+     */
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -2494,6 +2420,10 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         }
     }
 
+    /*
+     * SObrescrita do método onDestroy  para que feche todos os diálogos abertos antes de mudar
+     a orientação da tela
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -2503,6 +2433,9 @@ public class ActivityQualidade extends AppCompatActivity implements NavigationVi
         if (dialogoEdicaoAberto == true) dialogoEdicao.dismiss();
     }
 
+    /*
+     * SObrescrita do método onBackPressed  para que não execute nenhuma função
+     */
     @Override
     public void onBackPressed() {
     }

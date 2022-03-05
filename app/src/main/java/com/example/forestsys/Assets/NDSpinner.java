@@ -6,6 +6,9 @@ import android.util.AttributeSet;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+/*
+ * Classe auxiliar para substituir o Spinner padrão do Android
+ */
 @SuppressLint("AppCompatCustomView")
 public class NDSpinner extends Spinner {
 
@@ -36,9 +39,5 @@ public class NDSpinner extends Spinner {
         if (sameSelected) {
             getOnItemSelectedListener().onItemSelected(this, getSelectedView(), position, getSelectedItemId());
         }
-    }
-
-    public void setError(String s){
-        ((TextView)getSelectedView()).setError(s);
     }
 }

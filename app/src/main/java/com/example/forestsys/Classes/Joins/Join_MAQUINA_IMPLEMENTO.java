@@ -4,6 +4,10 @@ import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 
+/*
+ * Classe JOIN auxiliar que trata Máquina e Implemento como parte da mesma classe para facilitar a seleção de
+ máquina e implemento na calibração
+ */
 public class Join_MAQUINA_IMPLEMENTO implements Serializable {
     Integer ID_MAQUINA_IMPLEMENTO;
     Integer ID_MAQUINA;

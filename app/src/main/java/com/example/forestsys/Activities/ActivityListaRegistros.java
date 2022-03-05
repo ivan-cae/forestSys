@@ -53,10 +53,14 @@ import static android.view.View.GONE;
 import static com.example.forestsys.Activities.ActivityAtividades.editouRegistro;
 import static com.example.forestsys.Activities.ActivityAtividades.joinOsInsumos;
 import static com.example.forestsys.Activities.ActivityAtividades.oSAtividadesDiaAtual;
+import static com.example.forestsys.Activities.ActivityInicializacao.ferramentas;
 import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresaPref;
 import static com.example.forestsys.Activities.ActivityLogin.usuarioLogado;
 import static com.example.forestsys.Activities.ActivityMain.osSelecionada;
 
+/*
+ * Activity responsavel por mostrar a tela de listagem de registros e fazer suas interações
+ */
 public class ActivityListaRegistros extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
@@ -114,9 +118,11 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
             inicializacao();
     }
 
-    //Verifica se é possível converter o valor de uma string para double, retorna o valor convertido se possível converter.
-    //Se não for possível, retorna 0.
-    //Parâmetro de entrada: uma String
+    /*
+     * Método responsável por verificar se é possível converter o valor de uma string para double,
+     * Parâmetro de entrada: uma String
+     * Retorna: O valor convertido se possível converter, se não for possível, retorna 0.
+     */
     public double checaConversao(String numero) {
         double teste;
         try {
@@ -131,7 +137,9 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
         return bd.doubleValue();
     }
 
-    //Calcula os totalizadores na lista de registros
+    /*
+     * Método responsável por calcular todos os totalizadores na lista de registros
+    */
     public void calculaTotais() {
         Thread t = new Thread() {
             @Override
@@ -158,23 +166,11 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
                 totalInsumo2.setText(String.valueOf(ins2).replace(".", ","));
 
                 if (listaAtividades.size() > 0) {
-                    /*if (diferencaPercentual(insumos_dia.get(0).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins1) > 5 ||
-                            diferencaPercentual(insumos_dia.get(0).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins1) < -5)
-                        difInsumo1.setBackgroundColor(Color.parseColor("#FF0000"));
-                    else difInsumo1.setBackgroundColor(Color.parseColor("#BDB8B8"));
-
-                    if (diferencaPercentual(insumos_dia.get(1).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins2) > 5 ||
-                            diferencaPercentual(insumos_dia.get(1).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins2) < -5)
-                        difInsumo2.setBackgroundColor(Color.parseColor("#FF0000"));
-                    else difInsumo2.setBackgroundColor(Color.parseColor("#BDB8B8"));
-                    */
-
-
-                    BigDecimal bd = BigDecimal.valueOf(diferencaPercentual(atividade_insumos.get(0).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins1));
+                    BigDecimal bd = BigDecimal.valueOf(diferencaPercentualDuasCasasDecimais(atividade_insumos.get(0).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins1));
                     bd = bd.setScale(2, RoundingMode.HALF_UP);
                     difInsumo1.setText(String.valueOf(bd));
 
-                    bd = BigDecimal.valueOf(diferencaPercentual(atividade_insumos.get(1).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins2));
+                    bd = BigDecimal.valueOf(diferencaPercentualDuasCasasDecimais(atividade_insumos.get(1).getQTD_HA_RECOMENDADO() * osSelecionada.getAREA_PROGRAMADA(), ins2));
                     bd = bd.setScale(2, RoundingMode.HALF_UP);
                     difInsumo2.setText(String.valueOf(bd));
                 }
@@ -183,16 +179,16 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
         t.run();
     }
 
-    //formula= (1-(amostra atual/amostra anterior))/100
-    //Calcula a diferença percentual entre dois números do tipo Double
-    //Parâmetro de entrada: dois Double
-    //Retorna o resultado do cálculo
-    private static Double diferencaPercentual(Double anterior, Double atual) {
+    /*
+     * formula= (1-(amostra atual/amostra anterior))/100
+     * Método responsável por calcular a diferença percentual entre dois números do tipo Double
+     * Parâmetro de entrada: dois Double
+     * Retorna: A diferença percentual
+    */
+    private static Double diferencaPercentualDuasCasasDecimais(Double anterior, Double atual) {
         if(atual<=0) atual = 0.01;
         if(anterior<=0) anterior=0.01;
 
-        //Log.wtf("Anterior", String.valueOf(anterior));
-        //Log.wtf("Atual", String.valueOf(atual));
         BigDecimal calculo = BigDecimal.valueOf(1);
 
         try{
@@ -211,7 +207,9 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
     }
 
 
-    //Inicializa todas as variáveis e todos os itens da tela
+    /*
+     * Método responsável por inicializar todos os itens na tela e seta valores de variáveis
+     */
     public void inicializacao() {
         setTitle(nomeEmpresaPref);
 
@@ -240,7 +238,7 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
         baseDeDados = BaseDeDados.getInstance(getApplicationContext());
         dao = baseDeDados.dao();
 
-        calculaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
+        ferramentas.calculaAreaRealizada(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(), getApplicationContext());
 
         listaAtividades = dao.listaAtividadesDia(osSelecionada.getID_PROGRAMACAO_ATIVIDADE());
 
@@ -279,7 +277,6 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
 
         dataSetListaReg.setYValuePosition(PieDataSet.ValuePosition.INSIDE_SLICE);
         dataSetListaReg.setValueFormatter(new PercentFormatter(graficoListaReg));
-        //dataSetListaReg.setDrawValues(false);
         PieData dadosListaReg = new PieData(dataSetListaReg);
 
         dadosListaReg.setValueTextSize(14);
@@ -398,44 +395,10 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
         });
     }
 
-    private void calculaAreaRealizada(int id){
-        double calcula = 0;
-        List <O_S_ATIVIDADES_DIA> listaReg = dao.listaAtividadesDia(id);
-        for(int i=0; i <listaReg.size(); i++){
-            String s = listaReg.get(i).getAREA_REALIZADA().replace(',', '.');
-            double d = 0;
-            try {
-                d = Double.valueOf(s);
-            }catch(Exception e){
-                e.printStackTrace();
-                d = 0;
-            }
-            calcula+=d;
-        }
 
-        O_S_ATIVIDADES atividade = dao.selecionaOs(id);
-
-        BigDecimal bd = BigDecimal.valueOf(calcula);
-        bd = bd.setScale(2, RoundingMode.HALF_UP);
-
-        atividade.setAREA_REALIZADA(bd.doubleValue());
-        osSelecionada.setAREA_REALIZADA(bd.doubleValue());
-        dao.update(atividade);
-        //Log.wtf("Area Realizada", String.valueOf(bd.doubleValue()));
-    }
-
-
-
-    //Adiciona o botão de atualização a barra de ação
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater i = getMenuInflater();
-        i.inflate(R.menu.menu_action_bar, menu);
-        return true;
-    }
-
-
-    //Sobreescrita do método de seleção de item do menu de navegação localizado na lateral da tela
+    /*
+     * Sobrescrita do método de seleção de item do menu de navegação localizado na lateral da tela
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -460,6 +423,9 @@ public class ActivityListaRegistros extends AppCompatActivity implements Navigat
         return true;
     }
 
+    /*
+     * SObrescrita do método onBackPressed  para que feche o menu de navegação lateral
+     */
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {

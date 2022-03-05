@@ -66,6 +66,7 @@ import java.util.Date;
 import java.util.List;
 
 import static android.view.View.GONE;
+import static com.example.forestsys.Activities.ActivityInicializacao.ferramentas;
 import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresaPref;
 import static com.example.forestsys.Activities.ActivityInicializacao.informacaoDispositivo;
 import static com.example.forestsys.Activities.ActivityLogin.usuarioLogado;
@@ -74,7 +75,11 @@ import static com.example.forestsys.Activities.ActivityAtividades.joinOsInsumos;
 
 import static java.sql.Types.NULL;
 
-public class ActivityCalibracao extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+/*
+ * Activity responsavel por mostrar a tela de calibração e fazer suas interações
+ */
+public class ActivityCalibracao extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
 
     private TextView P1_a1;
@@ -148,8 +153,6 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
 
     private BaseDeDados baseDeDados;
     private DAO dao;
-
-    private Ferramentas ferramentas;
 
     private RecyclerView recyclerView;
     private AdaptadorCalibracao adaptador;
@@ -271,7 +274,10 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         }
     }
 
-    //Método chamado ao clicar no botão "+" para o produto 1
+    /*
+     * Método chamado ao clicar no botão "+" para o produto 1
+     * Usado para abrir o diálogo onde será digitado o valor da amostra atual
+    */
     public void cliqueP1() {
         corrigirP1 = 0;
         corrigirP2 = 0;
@@ -279,7 +285,10 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         if (atualP1 <= 5) abreDialogoP1();
     }
 
-    //Libera a edição das amostras no produto 1
+    /*
+     * Método responsável por liberar a edição das amostras no produto 1
+     * A liberação é feita quando a amostra já foi preenchida anteriormente
+    */
     public void testaCliqueP1() {
         if (atualP1 >= 2) {
             P1_a1.setOnClickListener(new View.OnClickListener() {
@@ -340,7 +349,10 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         }
     }
 
-    //Método chamado ao clicar no botão "+" para o produto 2
+    /*
+     * Método chamado ao clicar no botão "+" para o produto 2
+     * Usado para abrir o diálogo onde será digitado o valor da amostra atual
+     */
     public void cliqueP2() {
         corrigirP1 = 0;
         corrigirP2 = 0;
@@ -348,7 +360,10 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         if (atualP2 <= 5) abreDialogoP2();
     }
 
-    //Libera a edição das amostras no produto 2
+    /*
+     * Método responsável por liberar a edição das amostras no produto 2
+     * A liberação é feita quando a amostra já foi preenchida anteriormente
+     */
     public void testaCliqueP2() {
         if (atualP2 >= 2) {
             P2_a1.setOnClickListener(new View.OnClickListener() {
@@ -410,7 +425,10 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         }
     }
 
-    //Abre a caixa de diálogo perguntando se o usuário deseja sair da tela e avisando que ele perderá o que não foi salvo
+    /*
+     * Método responsável por abrir a caixa de diálogo perguntando se o usuário deseja sair da tela e avisando
+     * que ele perderá o que não foi salvo
+    */
     public void dialogoFechar() {
         AlertDialog dialog = new AlertDialog.Builder(ActivityCalibracao.this)
                 .setTitle("Voltar Para a Tela da Atividade?")
@@ -430,7 +448,10 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         dialog.show();
     }
 
-    //Retorna false se não houver nenhum item preenchido ou true se houver
+    /*
+     * Método usado para verificar se algum dos campos na tela já foi preenchido pelo usuário
+     * Retorna: False se não houver nenhum item preenchido ou true se houver
+    */
     public boolean algumItemPreenchido() {
         if (osSelecionada.getSTATUS_NUM() == 2) return false;
         if (P1_a1.getText().toString().length() == 0 && P2_a1.getText().toString().length() == 0 && idImplemento == -1 && idMaquina == -1
@@ -439,28 +460,9 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         return true;
     }
 
-    //Adiciona o botão de atualização a barra de ação
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater i = getMenuInflater();
-        i.inflate(R.menu.menu_action_bar, menu);
-        return true;
-    }
-
-
-    //Trata a seleção do botão de atualização
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.atualizar:
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-
-    //Sobreescrita do método de seleção de item do menu de navegação localizado na lateral da tela
+    /*
+     * Sobrescrita do método de seleção de item do menu de navegação localizado na lateral da tela
+    */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -531,8 +533,9 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         return true;
     }
 
-
-    //Abre caixa de diálogo para preencher amostras do produto 1
+    /*
+     * Método responsável por abrir a caixa de diálogo para preencher amostras do produto 1
+    */
     public void abreDialogoP1() {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_calibracao, null);
@@ -670,50 +673,52 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         });
     }
 
-    //Verifica as regras de conformidade para o produto 1
+    /*
+     * Método responsável por verificr as regras de conformidade para o produto 1
+    */
     public void testaP1() {
 
         todosConformeP1 = true;
-        if (diferencaPercentual(amostrasP1[0], amostrasP1[1]) > 5.00 || diferencaPercentual(amostrasP1[0], amostrasP1[1]) < -5.00) {
+        if (ferramentas.diferencaPercentual(amostrasP1[0], amostrasP1[1]) > 5.00 || ferramentas.diferencaPercentual(amostrasP1[0], amostrasP1[1]) < -5.00) {
             dif1_P1.setTextColor(Color.parseColor("#FF0000"));
 
             todosConformeP1 = false;
         } else {
             dif1_P1.setTextColor(Color.parseColor("#FF1A9C1A"));
         }
-        if (((diferencaPercentual(amostrasP1[0], amostrasP1[1]).isInfinite()) || diferencaPercentual(amostrasP1[0], amostrasP1[1]).isNaN()))
+        if (((ferramentas.diferencaPercentual(amostrasP1[0], amostrasP1[1]).isInfinite()) || ferramentas.diferencaPercentual(amostrasP1[0], amostrasP1[1]).isNaN()))
             dif1_P1.setText("");
         else
-            dif1_P1.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP1[0], amostrasP1[1])))).replace('.', ','));
+            dif1_P1.setText(String.valueOf(-1 * arredonda1Casa((ferramentas.diferencaPercentual(amostrasP1[0], amostrasP1[1])))).replace('.', ','));
 
 
-        if (diferencaPercentual(amostrasP1[1], amostrasP1[2]) > 5.00 || diferencaPercentual(amostrasP1[1], amostrasP1[2]) < -5.00) {
+        if (ferramentas.diferencaPercentual(amostrasP1[1], amostrasP1[2]) > 5.00 || ferramentas.diferencaPercentual(amostrasP1[1], amostrasP1[2]) < -5.00) {
             dif2_P1.setTextColor(Color.parseColor("#FF0000"));
 
             todosConformeP1 = false;
         } else {
             dif2_P1.setTextColor(Color.parseColor("#FF1A9C1A"));
         }
-        if (((diferencaPercentual(amostrasP1[1], amostrasP1[2]).isNaN() || diferencaPercentual(amostrasP1[1], amostrasP1[2]).isInfinite())))
+        if (((ferramentas.diferencaPercentual(amostrasP1[1], amostrasP1[2]).isNaN() || ferramentas.diferencaPercentual(amostrasP1[1], amostrasP1[2]).isInfinite())))
             dif2_P1.setText("");
         else
-            dif2_P1.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP1[1], amostrasP1[2])))).replace('.', ','));
+            dif2_P1.setText(String.valueOf(-1 * arredonda1Casa((ferramentas.diferencaPercentual(amostrasP1[1], amostrasP1[2])))).replace('.', ','));
 
 
-        if (diferencaPercentual(amostrasP1[2], amostrasP1[3]) > 5.00 || diferencaPercentual(amostrasP1[2], amostrasP1[3]) < -5.00) {
+        if (ferramentas.diferencaPercentual(amostrasP1[2], amostrasP1[3]) > 5.00 || ferramentas.diferencaPercentual(amostrasP1[2], amostrasP1[3]) < -5.00) {
             dif3_P1.setTextColor(Color.parseColor("#FF0000"));
             todosConformeP1 = false;
         } else {
             dif3_P1.setTextColor(Color.parseColor("#FF1A9C1A"));
 
         }
-        if (((diferencaPercentual(amostrasP1[2], amostrasP1[3]).isInfinite() || diferencaPercentual(amostrasP1[2], amostrasP1[3]).isNaN())))
+        if (((ferramentas.diferencaPercentual(amostrasP1[2], amostrasP1[3]).isInfinite() || ferramentas.diferencaPercentual(amostrasP1[2], amostrasP1[3]).isNaN())))
             dif3_P1.setText("");
         else
-            dif3_P1.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP1[2], amostrasP1[3])))).replace('.', ','));
+            dif3_P1.setText(String.valueOf(-1 * arredonda1Casa((ferramentas.diferencaPercentual(amostrasP1[2], amostrasP1[3])))).replace('.', ','));
 
 
-        if (diferencaPercentual(amostrasP1[3], amostrasP1[4]) > 5.00 || diferencaPercentual(amostrasP1[3], amostrasP1[4]) < -5.00) {
+        if (ferramentas.diferencaPercentual(amostrasP1[3], amostrasP1[4]) > 5.00 || ferramentas.diferencaPercentual(amostrasP1[3], amostrasP1[4]) < -5.00) {
             dif4_P1.setTextColor(Color.parseColor("#FF0000"));
 
             todosConformeP1 = false;
@@ -721,41 +726,25 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         } else {
             dif4_P1.setTextColor(Color.parseColor("#FF1A9C1A"));
         }
-        if (((diferencaPercentual(amostrasP1[3], amostrasP1[4]).isInfinite() || diferencaPercentual(amostrasP1[3], amostrasP1[4]).isNaN())))
+        if (((ferramentas.diferencaPercentual(amostrasP1[3], amostrasP1[4]).isInfinite() || ferramentas.diferencaPercentual(amostrasP1[3], amostrasP1[4]).isNaN())))
             dif4_P1.setText("");
         else
-            dif4_P1.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP1[3], amostrasP1[4])))).replace('.', ','));
+            dif4_P1.setText(String.valueOf(-1 * arredonda1Casa((ferramentas.diferencaPercentual(amostrasP1[3], amostrasP1[4])))).replace('.', ','));
 
-
-        //testando p2
-        /*todosConformeP2 = true;
-        if (diferencaPercentual(amostrasP2[0], amostrasP2[1]) > 5.00 || diferencaPercentual(amostrasP2[0], amostrasP2[1]) < -5.00) {
-            todosConformeP2 = false;
-        }
-        if (diferencaPercentual(amostrasP2[1], amostrasP2[2]) > 5.00 || diferencaPercentual(amostrasP2[1], amostrasP2[2]) < -5.00) {
-            todosConformeP2 = false;
-        }
-        if (diferencaPercentual(amostrasP2[2], amostrasP2[3]) > 5.00 || diferencaPercentual(amostrasP2[2], amostrasP2[3]) < -5.00) {
-            todosConformeP2 = false;
-        }
-        if (diferencaPercentual(amostrasP2[3], amostrasP2[4]) > 5.00 || diferencaPercentual(amostrasP2[3], amostrasP2[4]) < -5.00) {
-            todosConformeP2 = false;
-        }
-*/
 
         mediaPercentualP1 = (
-                diferencaPercentual(amostrasP1[0], amostrasP1[1]) +
-                        diferencaPercentual(amostrasP1[1], amostrasP1[2]) +
-                        diferencaPercentual(amostrasP1[2], amostrasP1[3]) +
-                        diferencaPercentual(amostrasP1[3], amostrasP1[4])) / 4;
+                ferramentas.diferencaPercentual(amostrasP1[0], amostrasP1[1]) +
+                        ferramentas.diferencaPercentual(amostrasP1[1], amostrasP1[2]) +
+                        ferramentas.diferencaPercentual(amostrasP1[2], amostrasP1[3]) +
+                        ferramentas.diferencaPercentual(amostrasP1[3], amostrasP1[4])) / 4;
 
         Double maiorDif = 0.0;
         int posicaoMaiorDif = 0;
 
         if (atualP1 >= 5) {
             for (int i = 0; i < 4; i++) {
-                if (Math.abs(diferencaPercentual(amostrasP1[i], amostrasP1[i + 1])) > maiorDif) {
-                    maiorDif = Math.abs(diferencaPercentual(amostrasP1[i], amostrasP1[i + 1]));
+                if (Math.abs(ferramentas.diferencaPercentual(amostrasP1[i], amostrasP1[i + 1])) > maiorDif) {
+                    maiorDif = Math.abs(ferramentas.diferencaPercentual(amostrasP1[i], amostrasP1[i + 1]));
                     posicaoMaiorDif = i + 1;
                 }
             }
@@ -786,88 +775,73 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         desvioP1.setText(String.valueOf((aux1)).replace('.', ','));
     }
 
-    //Verifica as regras de conformidade para o produto 2
+    /*
+     * Método responsável por verificr as regras de conformidade para o produto 2
+    */
     public void testaP2() {
 
         todosConformeP2 = true;
-        if (diferencaPercentual(amostrasP2[0], amostrasP2[1]) > 5.00 || diferencaPercentual(amostrasP2[0], amostrasP2[1]) < -5.00) {
+        if (ferramentas.diferencaPercentual(amostrasP2[0], amostrasP2[1]) > 5.00 || ferramentas.diferencaPercentual(amostrasP2[0], amostrasP2[1]) < -5.00) {
             dif1_P2.setTextColor(Color.parseColor("#FF0000"));
             todosConformeP2 = false;
 
         } else {
             dif1_P2.setTextColor(Color.parseColor("#FF1A9C1A"));
         }
-        if (((diferencaPercentual(amostrasP2[0], amostrasP2[1]).isInfinite()) || diferencaPercentual(amostrasP2[0], amostrasP2[1]).isNaN()))
+        if (((ferramentas.diferencaPercentual(amostrasP2[0], amostrasP2[1]).isInfinite()) || ferramentas.diferencaPercentual(amostrasP2[0], amostrasP2[1]).isNaN()))
             dif1_P2.setText("");
         else
-            dif1_P2.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP2[0], amostrasP2[1])))).replace('.', ','));
+            dif1_P2.setText(String.valueOf(-1 * arredonda1Casa((ferramentas.diferencaPercentual(amostrasP2[0], amostrasP2[1])))).replace('.', ','));
 
 
-        if (diferencaPercentual(amostrasP2[1], amostrasP2[2]) > 5.00 || diferencaPercentual(amostrasP2[1], amostrasP2[2]) < -5.00) {
+        if (ferramentas.diferencaPercentual(amostrasP2[1], amostrasP2[2]) > 5.00 || ferramentas.diferencaPercentual(amostrasP2[1], amostrasP2[2]) < -5.00) {
             dif2_P2.setTextColor(Color.parseColor("#FF0000"));
             todosConformeP2 = false;
         } else {
             dif2_P2.setTextColor(Color.parseColor("#FF1A9C1A"));
         }
-        if (((diferencaPercentual(amostrasP2[1], amostrasP2[2]).isNaN() || diferencaPercentual(amostrasP2[1], amostrasP2[2]).isInfinite())))
+        if (((ferramentas.diferencaPercentual(amostrasP2[1], amostrasP2[2]).isNaN() || ferramentas.diferencaPercentual(amostrasP2[1], amostrasP2[2]).isInfinite())))
             dif2_P2.setText("");
         else
-            dif2_P2.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP2[1], amostrasP2[2])))).replace('.', ','));
+            dif2_P2.setText(String.valueOf(-1 * arredonda1Casa((ferramentas.diferencaPercentual(amostrasP2[1], amostrasP2[2])))).replace('.', ','));
 
 
-        if (diferencaPercentual(amostrasP2[2], amostrasP2[3]) > 5.00 || diferencaPercentual(amostrasP2[2], amostrasP2[3]) < -5.00) {
+        if (ferramentas.diferencaPercentual(amostrasP2[2], amostrasP2[3]) > 5.00 || ferramentas.diferencaPercentual(amostrasP2[2], amostrasP2[3]) < -5.00) {
             dif3_P2.setTextColor(Color.parseColor("#FF0000"));
             todosConformeP2 = false;
         } else {
             dif3_P2.setTextColor(Color.parseColor("#FF1A9C1A"));
         }
-        if (((diferencaPercentual(amostrasP2[2], amostrasP2[3]).isInfinite() || diferencaPercentual(amostrasP2[2], amostrasP2[3]).isNaN())))
+        if (((ferramentas.diferencaPercentual(amostrasP2[2], amostrasP2[3]).isInfinite() || ferramentas.diferencaPercentual(amostrasP2[2], amostrasP2[3]).isNaN())))
             dif3_P2.setText("");
         else
-            dif3_P2.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP2[2], amostrasP2[3])))).replace('.', ','));
+            dif3_P2.setText(String.valueOf(-1 * arredonda1Casa((ferramentas.diferencaPercentual(amostrasP2[2], amostrasP2[3])))).replace('.', ','));
 
 
-        if (diferencaPercentual(amostrasP2[3], amostrasP2[4]) > 5.00 || diferencaPercentual(amostrasP2[3], amostrasP2[4]) < -5.00) {
+        if (ferramentas.diferencaPercentual(amostrasP2[3], amostrasP2[4]) > 5.00 || ferramentas.diferencaPercentual(amostrasP2[3], amostrasP2[4]) < -5.00) {
             dif4_P2.setTextColor(Color.parseColor("#FF0000"));
             todosConformeP2 = false;
         } else {
             dif4_P2.setTextColor(Color.parseColor("#FF1A9C1A"));
         }
-        if (((diferencaPercentual(amostrasP2[3], amostrasP2[4]).isInfinite() || diferencaPercentual(amostrasP2[3], amostrasP2[4]).isNaN())))
+        if (((ferramentas.diferencaPercentual(amostrasP2[3], amostrasP2[4]).isInfinite() || ferramentas.diferencaPercentual(amostrasP2[3], amostrasP2[4]).isNaN())))
             dif4_P2.setText("");
         else
-            dif4_P2.setText(String.valueOf(-1 * arredonda1Casa((diferencaPercentual(amostrasP2[3], amostrasP2[4])))).replace('.', ','));
-
-
-        //testando p1
-        /*todosConformeP1 = true;
-        if (diferencaPercentual(amostrasP1[0], amostrasP1[1]) > 5.00 || diferencaPercentual(amostrasP1[0], amostrasP1[1]) < -5.00) {
-            todosConformeP1 = false;
-        }
-        if (diferencaPercentual(amostrasP1[1], amostrasP1[2]) > 5.00 || diferencaPercentual(amostrasP1[1], amostrasP1[2]) < -5.00) {
-            todosConformeP1 = false;
-        }
-        if (diferencaPercentual(amostrasP1[2], amostrasP1[3]) > 5.00 || diferencaPercentual(amostrasP1[2], amostrasP1[3]) < -5.00) {
-            todosConformeP1 = false;
-        }
-        if (diferencaPercentual(amostrasP1[3], amostrasP1[4]) > 5.00 || diferencaPercentual(amostrasP1[3], amostrasP1[4]) < -5.00) {
-            todosConformeP1 = false;
-        }*/
-
+            dif4_P2.setText(String.valueOf(-1 * arredonda1Casa((ferramentas.diferencaPercentual(amostrasP2[3], amostrasP2[4])))).replace('.', ','));
 
         mediaPercentualP2 = (
-                diferencaPercentual(amostrasP2[0], amostrasP2[1]) +
-                        diferencaPercentual(amostrasP2[1], amostrasP2[2]) +
-                        diferencaPercentual(amostrasP2[2], amostrasP2[3]) +
-                        diferencaPercentual(amostrasP2[3], amostrasP2[4])) / 4;
+                ferramentas.diferencaPercentual(amostrasP2[0], amostrasP2[1]) +
+                        ferramentas.diferencaPercentual(amostrasP2[1], amostrasP2[2]) +
+                        ferramentas.diferencaPercentual(amostrasP2[2], amostrasP2[3]) +
+                        ferramentas.diferencaPercentual(amostrasP2[3], amostrasP2[4])) / 4;
 
         Double maiorDif = 0.0;
         int posicaoMaiorDif = 0;
 
         if (atualP2 >= 5) {
             for (int i = 0; i < 4; i++) {
-                if (Math.abs(diferencaPercentual(amostrasP2[i], amostrasP2[i + 1])) > maiorDif) {
-                    maiorDif = Math.abs(diferencaPercentual(amostrasP2[i], amostrasP2[i + 1]));
+                if (Math.abs(ferramentas.diferencaPercentual(amostrasP2[i], amostrasP2[i + 1])) > maiorDif) {
+                    maiorDif = Math.abs(ferramentas.diferencaPercentual(amostrasP2[i], amostrasP2[i + 1]));
                     posicaoMaiorDif = i + 1;
                 }
             }
@@ -898,7 +872,9 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         desvioP2.setText(String.valueOf((aux1)).replace('.', ','));
     }
 
-    //Abre caixa de diálogo para preencher amostras do produto
+    /*
+     * Método responsável por abrir a caixa de diálogo para preencher amostras do produto 1
+    */
     public void abreDialogoP2() {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_calibracao, null);
@@ -1037,9 +1013,14 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         });
     }
 
-    //Checa se há uma calibração para a máquina selecionada na data e turno atuais
-    //Parâmetro de entrada: Descrição da máquina selecionada
+    /*
+     * Método responsável por checar se há uma calibração para a máquina e implemento selecionados
+     na data e turno atuais
+     * Parâmetro de entrada: idMaquinaImplemento
+     * retorna: False se não há calibração para a maquina e implemento selecionados ou true se há uma calibração
+    */
     public boolean checaMaquinaImplemento(Integer idMaquinaImplemento) {
+
         Integer checagem = dao.checaMaquinaImplemento(osSelecionada.getID_PROGRAMACAO_ATIVIDADE(),
                 ferramentas.formataDataDb(ferramentas.dataAtual()), checaTurno(), idMaquinaImplemento);
         if (checagem != null) {
@@ -1048,52 +1029,46 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         return false;
     }
 
-    //Cria uma animação pulsante no botão de conclusão da calibragem
-    public void pulseAnimation(ImageButton btnObj) {
-        objAnim = ObjectAnimator.ofPropertyValuesHolder(btnObj, PropertyValuesHolder.ofFloat("scaleX", 1.5f), PropertyValuesHolder.ofFloat("scaleY", 1.5f));
-        objAnim.setDuration(300);
-        objAnim.setRepeatCount(ObjectAnimator.INFINITE);
-        objAnim.setRepeatMode(ObjectAnimator.REVERSE);
-        objAnim.start();
-    }
 
-
-    //Arredonda um número do tipo Double para que tenha 1 casa decimal
-    //Parâmetro de entrada: um Double
+    /*
+     * Método responsável por arredondar um número do tipo Double para que tenha 1 casa decimal
+     * Parâmetro de entrada: um Double
+     * Retorna: Um tipo Double com somente uma casa decimal
+    */
     private static Double arredonda1Casa(Double media) {
         DecimalFormat df = new DecimalFormat(".#");
         return Double.valueOf(df.format(media).replace(',', '.'));
     }
 
 
-    //Arredonda um número do tipo Double para que tenha  casas decimais
-    //Parâmetro de entrada: um Double
+    /*
+     * Método responsável por arredondar um número do tipo Double para que tenha 2 casas decimais
+     * Parâmetro de entrada: um Double
+     * Retorna: Um tipo Double com somente duas casas decimais
+     */
     private static Double arredonda2Casas(Double media) {
         DecimalFormat df = new DecimalFormat("###.##");
         return Double.valueOf(df.format(media).replace(',', '.'));
     }
 
 
-    //Arredonda um número do tipo Double para que tenha 3 casas decimais
-    //Parâmetro de entrada: um Double
+    /*
+     * Método responsável por arredondar um número do tipo Double para que tenha 3 casas decimais
+     * Parâmetro de entrada: um Double
+     * Retorna: Um tipo Double com somente três casas decimais
+     */
     private static Double arredonda3Casas(Double media) {
         DecimalFormat df = new DecimalFormat("###.###");
         return Double.valueOf(df.format(media).replace(',', '.'));
     }
 
-    //formula= (1-(amostra atual/amostra anterior))/100
-    //Calcula a diferença percentual entre dois números do tipo Double
-    //Parâmetro de entrada: dois Doubles
-    private static Double diferencaPercentual(Double anterior, Double atual) {
-        Double calculo = (1 - (atual / anterior)) * 100;//((anterior - atual) / anterior) * 100.0
-        DecimalFormat df = new DecimalFormat("###.##");
-        if (Double.valueOf(df.format(calculo).replace(',', '.')) == 0.0) return -0.0;
-        return Double.valueOf(df.format(calculo).replace(',', '.'));
-    }
 
 
-    //Calcula o desvio padrão de um array do tipo Double
-    //Parâmetro de entrada: um array do tipo Double
+    /*
+     * Método responsável por calcular o desvio padrão de um array do tipo Double
+     * Parâmetro de entrada: um array do tipo Double
+     * Retorna: O desvio padrão
+    */
     public static Double desvioPadrao(double[] data) {
         if (data == null) {
             throw new IllegalArgumentException("Null 'data' array.");
@@ -1111,32 +1086,37 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         return Math.sqrt(sum / (data.length - 1));
     }
 
-    //Calcula a média entre os números em um array do tipo Double
-    //Parâmetro de entrada: um array do tipo Double
-    public static Double calculaMedia(double[] values, boolean includeNullAndNaN) {
-
-        if (values == null) {
-            throw new IllegalArgumentException("Null 'values' argument.");
+    /*
+     * Método responsável por calcular a média entre os números em um array do tipo Double
+     * Parâmetro de entrada: um array do tipo Double e um boolean auxiliar para verificar se o array é valido
+     * Retorna: A média entre os valores contidos no array
+    */
+    public static Double calculaMedia(double[] valores, boolean incluirNullNan) {
+        if (valores == null) {
+            throw new IllegalArgumentException("Valores nulos");
         }
-        Double sum = 0.0;
-        Double current;
-        int counter = 0;
-        for (int i = 0; i < values.length; i++) {
-            if (values[i] != NULL) {
-                Double.valueOf(current = values[i]);
+        Double soma = 0.0;
+        Double atual;
+        int cont = 0;
+        for (int i = 0; i < valores.length; i++) {
+            if (valores[i] != NULL) {
+                Double.valueOf(atual = valores[i]);
             } else {
-                current = Double.NaN;
+                atual = Double.NaN;
             }
-            if (includeNullAndNaN || !Double.isNaN(current)) {
-                sum = sum + current;
-                counter++;
+            if (incluirNullNan || !Double.isNaN(atual)) {
+                soma += atual;
+                cont++;
             }
         }
-        Double result = (sum / counter);
-        return result;
+        Double resultado = (soma / cont);
+        return resultado;
     }
 
-    //Checa se o turno atual é manhã ou tarde baseado na hora atual
+    /*
+     * Método responsável por checar se o turno atual é manhã ou tarde baseado na hora atual
+     * Retorna: Uma string contendo o turno atual
+    */
     public static String checaTurno() {
         String pattern = "HH:mm";
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
@@ -1157,7 +1137,9 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         return "Erro";
     }
 
-    //Mostra uma caixa de alerta caso a máquina selecionada já foi calibrada no turno atual
+    /*
+     * Método responsável por mostrar uma caixa de alerta caso a máquina selecionada já foi calibrada no turno atual
+    */
     public void caixaAlertaMaquinaImplemento() {
         AlertDialog dialog = new AlertDialog.Builder(ActivityCalibracao.this)
                 .setTitle("ERRO")
@@ -1170,7 +1152,10 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         dialog.show();
     }
 
-    //Testa as conformidades para liberar o botão de confirmação
+    /*
+     * Método responsável por testar as conformidades para liberar o botão de confirmação
+     * Retorna: True se todos os campos estão conforme ou false caso contrário
+    */
     public boolean testaConfirmacao() {
         if (atualP1 >= 5 && atualP2 >= 5) {
             testaP1();
@@ -1184,13 +1169,13 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         return false;
     }
 
-    //Inicializa todos os itens na tela e seta valores de variáveis
+    /*
+     * Método responsável por inicializar todos os itens na tela e seta valores de variáveis
+    */
     @SuppressLint("ResourceAsColor")
     public void inicializacao() {
         setContentView(R.layout.activity_calibracao);
         setTitle(nomeEmpresaPref);
-
-        ferramentas = new Ferramentas();
 
         baseDeDados = BaseDeDados.getInstance(getApplicationContext());
         dao = baseDeDados.dao();
@@ -1539,14 +1524,11 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                                             osSelecionada.setSTATUS_NUM(1);
                                             osSelecionada.setDATA_INICIAL(ferramentas.formataDataDb(ferramentas.dataAtual()));
 
-                                            Ferramentas ferramentas = new Ferramentas();
                                             osSelecionada.setUPDATED_AT(ferramentas.dataHoraMinutosSegundosAtual());
                                             dao.update(osSelecionada);
                                         }
 
                                         if (inseriu == true) {
-                                            Ferramentas ferramentas = new Ferramentas();
-
 
                                             MAQUINA_IMPLEMENTO maquinaImplemento = dao.selecionaMaquinaImplemento(idImplemento);
                                             MAQUINAS maquinas = dao.selecionaMaquina(maquinaImplemento.getID_MAQUINA());
@@ -1576,7 +1558,7 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
                                                                 + " | MediaP2: " + P2Media.getText().toString()).replace('.', ','));
                                                 dao.insert(registroLog);
                                             } catch (Exception e) {
-                                                Log.wtf("Erro ao registrar log", "Print stack");
+                                                //Log.wtf("Erro ao registrar log", "Print stack");
                                                 e.printStackTrace();
                                             }
                                         }
@@ -1693,6 +1675,9 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         mudouOrientacao = false;
     }
 
+    /*
+     * Salva uma instância da tela para reconstrução ao alterar entre modo paisagem e retrato ou vice-versa
+    */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -1751,7 +1736,9 @@ public class ActivityCalibracao extends AppCompatActivity implements NavigationV
         outState.putInt("posicaoOperador", posicaoOperador);
     }
 
-    //SObrescrita do método onBackPressed nativo do Android para que feche o menu de navegação lateral
+    /*
+     * SObrescrita do método onBackPressed  para que feche o menu de navegação lateral
+     */
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {

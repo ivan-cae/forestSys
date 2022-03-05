@@ -15,7 +15,7 @@ import androidx.fragment.app.DialogFragment;
  * Utility class for access to runtime permissions.
  */
 
-//Classe pronta para solicitar permissões ao usuário
+//Classe pronta fornecida pelo Android para solicitar permissões ao usuário
 
 public abstract class PermissionUtils {
 

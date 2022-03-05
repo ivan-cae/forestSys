@@ -45,6 +45,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import static com.example.forestsys.Activities.ActivityInicializacao.conectado;
+import static com.example.forestsys.Activities.ActivityInicializacao.ferramentas;
 import static com.example.forestsys.Activities.ActivityInicializacao.informacaoDispositivo;
 import static com.example.forestsys.Activities.ActivityInicializacao.pulaSinc;
 import static com.example.forestsys.Assets.ClienteWeb.contadorDeErros;
@@ -52,6 +53,10 @@ import static com.example.forestsys.Assets.ClienteWeb.erroNoOracle;
 import static com.example.forestsys.Assets.ClienteWeb.finalizouSinc;
 import static com.example.forestsys.Activities.ActivityInicializacao.HOST_PORTA;
 import static com.example.forestsys.Activities.ActivityInicializacao.nomeEmpresaPref;
+
+/*
+ * Activity responsavel por mostrar a tela de login e fazer suas interações
+ */
 
 public class ActivityLogin extends AppCompatActivity {
 
@@ -86,8 +91,6 @@ public class ActivityLogin extends AppCompatActivity {
         dialogoProgresso = new ProgressDialog(ActivityLogin.this);
         dialogoProgresso.setTitle("Sincronizando com o servidor");
         dialogoProgresso.setMessage("Aguarde um momento...");
-        //dialogoProgresso.setIndeterminate(true);
-        //dialogoProgresso.setIndeterminateDrawable(getResources().getDrawable(R.mipmap.icone_progresso));
 
         dialogoProgresso.setCancelable(false);
         dialogoProgresso.setCanceledOnTouchOutside(false);
@@ -125,8 +128,6 @@ public class ActivityLogin extends AppCompatActivity {
                 if (tem == false) {
                     Toast.makeText(ActivityLogin.this, "Credenciais Inválidas", Toast.LENGTH_SHORT).show();
                 } else {
-                    Ferramentas ferramentas = new Ferramentas();
-
                     FOREST_LOG registroLog = new FOREST_LOG(ferramentas.dataHoraMinutosSegundosAtual(), informacaoDispositivo,
                             usuarioLogado.getEMAIL(), "Atividades", "Acessou", null);
 
@@ -138,29 +139,6 @@ public class ActivityLogin extends AppCompatActivity {
             }
         });
 
-        /*botaoVoltar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AlertDialog.Builder(ActivityLogin.this)
-                        .setTitle("SAIR")
-                        .setMessage("Deseja fechar o aplicativo ?")
-                        .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                it = new Intent(ActivityLogin.this, ActivityLogin.class);
-                                boolean fechou = true;
-                                it.putExtra("fechar", fechou);
-                                startActivity(it);
-                            }
-                        })
-                        .setNegativeButton("NÃO",  new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {}
-                        })
-                        .create()
-                        .show();
-            }
-        });*/
         if (it.hasExtra("deslogar")) {
             usuarioLogado = null;
         }
@@ -184,10 +162,16 @@ public class ActivityLogin extends AppCompatActivity {
         }
     }
 
-
+    /*
+     * Método responsável por verificar o resultado da sincronização
+     * Podendo mostrar um dialogo de falha caso a sincronização não seja bem sucedida
+     * Um dialogo avisando que não há conexão com a rede caso detecte tal problema
+     * Um  dialogo avisando que não foi possível se conectar ao banco de dados
+     * Um Toast avisando que a sincronização foi bem sucedida
+     */
     @SuppressLint("StaticFieldLeak")
     private void checaFimDaSinc() {
-        if (temRede() == true) {
+        if (ferramentas.temRede(getApplicationContext()) == true) {
 
             dialogoProgresso.show();
 
@@ -262,18 +246,13 @@ public class ActivityLogin extends AppCompatActivity {
         checarPermissaodeLocalizacao();
     }
 
-    private boolean temRede() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
-    //checa as permissões de localização
-    //retorna true se a permissão for concedida e false se não for
+
+
+    /*
+     *Método responsável por checar as permissões de localização
+     *Retorna: True se a permissão for concedida ou false se não for
+     */
     public boolean checarPermissaodeLocalizacao() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -307,7 +286,10 @@ public class ActivityLogin extends AppCompatActivity {
         }
     }
 
-
+    /*
+     * SObrescrita do método onBackPressed  para que abra um diálogo perguntando ao usuário
+     se ele deseja fechar o aplicativo
+     */
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(ActivityLogin.this)
@@ -331,6 +313,10 @@ public class ActivityLogin extends AppCompatActivity {
                 .show();
     }
 
+    /*
+     * SObrescrita do método onDestroy  para que feche o diálogo de título "SAIR" antes de fechar
+     o aplicativo
+     */
     @Override
     protected void onDestroy() {
         dialogoProgresso.dismiss();
