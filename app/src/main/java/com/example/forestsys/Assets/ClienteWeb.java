@@ -268,11 +268,11 @@ public class ClienteWeb<client> {
             URLConnection connection = myUrl.openConnection();
             connection.setConnectTimeout(300000);
             connection.connect();
-            //Log.wtf("Conectado a", myUrl.toString());
+            Log.wtf("Conectado a", myUrl.toString());
             conectado = true;
             finalizouSinc = false;
         } catch (Exception e) {
-            //Log.wtf("Erro", e.toString() + " ao conectar a: " + HOST_PORTA);
+            Log.wtf("Erro", e.toString() + " ao conectar a: " + HOST_PORTA);
             conectado = false;
             finalizouSinc = true;
         }
